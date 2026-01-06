@@ -1,0 +1,616 @@
+<h1 id="multiple-regression">Multiple Regression</h1>
+<p>In 1978, David Harrison and Daniel Rubinfeld published a
+groundbreaking study on housing values and air pollution in the Boston
+metropolitan area. Their work introduced what has become one of the most
+studied datasets in econometrics and demonstrated how hedonic pricing
+models can be used to value environmental amenities—specifically, how
+air quality affects property values.</p>
+<p>The Harrison-Rubinfeld model remains a cornerstone example in applied
+econometrics courses because it elegantly combines theory with empirical
+analysis, using a rich set of neighborhood characteristics to explain
+median home values across census tracts in the Boston area.</p>
+<div class="question">
+<p>What is a hedonic pricing model, and why is it useful for valuing
+environmental goods?</p>
+</div>
+<div class="answer">
+<p>A hedonic pricing model decomposes the price of a good into the value
+of its constituent characteristics. For housing, this means breaking
+down the home price into components attributable to structural features
+(number of rooms, age), neighborhood characteristics (crime rate, school
+quality), and environmental amenities (air quality, proximity to
+employment centers).</p>
+<p>This approach is particularly valuable for environmental economics
+because many environmental goods—like clean air—don’t have explicit
+market prices. By observing how home values change with air quality
+while controlling for other factors, we can infer people’s willingness
+to pay for cleaner air. This is crucial for cost-benefit analysis of
+environmental regulations.</p>
+</div>
+<h2 id="the-model-specification">The Model Specification</h2>
+<p>The Harrison-Rubinfeld model estimates the logarithm of median home
+value as a function of 13 explanatory variables:</p>
+<p><span class="math display">
+\begin{aligned}
+\log(\text{MEDV}) = \beta_0 &amp;+ \beta_1 \text{ NOX}^2 + \beta_2
+\text{ RM}^2 + \beta_3 \text{ AGE} + \beta_4 (\text{B} - 0.63)^2 \\
+&amp;+ \beta_5 \log(\text{LSTAT}) + \beta_6 \text{ CRIM} + \beta_7
+\text{ ZN} + \beta_8 \text{ INDUS} \\
+&amp;+ \beta_9 \text{ TAX} + \beta_{10} \text{ PTRATIO} + \beta_{11}
+\text{ CHAS} \\
+&amp;+ \beta_{12} \log(\text{DIS}) + \beta_{13} \log(\text{RAD}) +
+\epsilon
+\end{aligned}
+</span></p>
+<p>Before interpreting the coefficients, let’s understand what each
+variable represents and why certain functional forms were chosen.</p>
+<h2 id="the-variables-and-their-transformations">The Variables and Their
+Transformations</h2>
+<div class="definition">
+<p><strong>NOX (Nitric Oxide Concentration)</strong>: Annual average
+concentration of nitric oxides in parts per 10 million, measured at the
+census tract level. This is the key environmental variable in the
+study.</p>
+</div>
+<p>The model includes <strong>NOX²</strong> rather than NOX itself. This
+quadratic specification allows for a nonlinear relationship between air
+pollution and housing values—suggesting that the marginal effect of
+pollution may increase at higher pollution levels.</p>
+<div class="question">
+<p>Why might the relationship between pollution and home values be
+nonlinear?</p>
+</div>
+<div class="answer">
+<p>There are several economic reasons to expect nonlinearity. First, at
+very low pollution levels, small increases may have minimal health
+impacts and thus little effect on property values. But at higher levels,
+additional pollution could have increasingly severe health consequences,
+making marginal increases more harmful.</p>
+<p>Second, there may be threshold effects—once pollution reaches certain
+levels, it becomes visibly obvious (as smog) or causes noticeable health
+effects, triggering a sharper decline in willingness to pay for homes in
+that area.</p>
+<p>Third, people who are highly sensitive to pollution likely already
+avoid high-pollution areas, so the remaining residents may be those who
+are relatively less concerned about pollution, leading to smaller
+marginal price effects at higher pollution levels. However, this
+selection effect would actually suggest the opposite of what Harrison
+and Rubinfeld found.</p>
+</div>
+<div class="definition">
+<p><strong>RM (Average Number of Rooms)</strong>: The average number of
+rooms per dwelling in the census tract. This is a proxy for house size
+and quality.</p>
+</div>
+<p>The model includes <strong>RM²</strong> to capture potential
+nonlinear effects of house size. Larger homes may command
+disproportionately higher prices, or there may be diminishing returns to
+additional rooms.</p>
+<div class="definition">
+<p><strong>AGE (Proportion of Old Units)</strong>: The proportion of
+owner-occupied units built prior to 1940. This captures the age
+composition of the housing stock.</p>
+</div>
+<div class="definition">
+<p><strong>B (Proportion Black)</strong>: A transformation of the
+proportion of Black residents, specifically <span
+class="math inline">(1000(B_k - 0.63)^2)</span>, where <span
+class="math inline">B_k</span> is the proportion of the population that
+is Black. The model includes <strong>(B - 0.63)²</strong>.</p>
+</div>
+<p>This is perhaps the most controversial variable in the model. The
+quadratic form centered at 0.63 suggests that home values are maximized
+when the proportion of Black residents is 63%, declining as the
+proportion moves away from this value in either direction.</p>
+<div class="question">
+<p>What does the racial composition variable tell us about housing
+markets in 1970s Boston?</p>
+</div>
+<div class="answer">
+<p>The inclusion and specification of this variable reflect the
+unfortunate reality of racial segregation and discrimination in housing
+markets during this period. The quadratic form centered at 0.63 could be
+interpreted in different ways:</p>
+<ol type="1">
+<li><p><strong>Tipping point dynamics</strong>: Housing economics
+literature has documented “tipping points” in neighborhood racial
+composition, where rapid demographic change leads to accelerated White
+flight and declining property values. The centered quadratic could
+capture these dynamics.</p></li>
+<li><p><strong>Preference heterogeneity</strong>: Different demographic
+groups may have different preferences regarding neighborhood racial
+composition, and the quadratic form could reflect these varying
+preferences.</p></li>
+<li><p><strong>Historical discrimination</strong>: The pattern likely
+reflects discriminatory practices including redlining, steering by real
+estate agents, and discriminatory lending practices that were widespread
+before the Fair Housing Act of 1968.</p></li>
+</ol>
+<p>Modern researchers often exclude or carefully respecify racial
+composition variables, as their interpretation requires careful
+attention to whether they reflect preferences, discrimination, or
+correlated socioeconomic factors.</p>
+</div>
+<div class="definition">
+<p><strong>LSTAT (Lower Status Population)</strong>: The percentage of
+the population considered “lower status” (defined by education and
+occupation). The model includes <strong>log(LSTAT)</strong>.</p>
+</div>
+<p>The logarithmic transformation suggests that percentage point changes
+in lower-status population have diminishing effects—going from 5% to 10%
+has a larger impact than going from 25% to 30%.</p>
+<div class="definition">
+<p><strong>CRIM (Crime Rate)</strong>: Per capita crime rate by town.
+Measured as incidents per capita.</p>
+</div>
+<div class="definition">
+<p><strong>ZN (Large Residential Lots)</strong>: The proportion of
+residential land zoned for lots over 25,000 square feet. This captures
+whether the area has large-lot zoning, typically associated with more
+expensive neighborhoods.</p>
+</div>
+<div class="definition">
+<p><strong>INDUS (Industrial Land)</strong>: The proportion of
+non-retail business acres per town. This measures the industrial
+character of the area.</p>
+</div>
+<div class="definition">
+<p><strong>TAX (Property Tax Rate)</strong>: The full-value property tax
+rate per $10,000 of assessed value.</p>
+</div>
+<div class="question">
+<p>Why might property tax rates affect home values even though buyers
+will pay these taxes anyway?</p>
+</div>
+<div class="answer">
+<p>Property taxes affect home values through several channels:</p>
+<ol type="1">
+<li><p><strong>Capitalization</strong>: Higher taxes reduce the present
+value of owning the home, which gets capitalized into lower purchase
+prices. Buyers are willing to pay less upfront if they face higher
+ongoing costs.</p></li>
+<li><p><strong>Public services</strong>: Property taxes fund local
+services like schools, police, and infrastructure. If high taxes reflect
+good services, they might increase values. If they reflect inefficient
+government, they decrease values.</p></li>
+<li><p><strong>Tax competition</strong>: In metropolitan areas with many
+municipalities, people can “vote with their feet,” choosing towns with
+favorable tax-service packages. This leads to stratification by
+preferences and income.</p></li>
+</ol>
+<p>The model doesn’t directly account for the services financed by these
+taxes, so the coefficient primarily captures the capitalization
+effect.</p>
+</div>
+<div class="definition">
+<p><strong>PTRATIO (Pupil-Teacher Ratio)</strong>: The pupil-teacher
+ratio by town. Lower ratios indicate smaller class sizes, typically
+associated with better schools.</p>
+</div>
+<div class="definition">
+<p><strong>CHAS (Charles River Dummy)</strong>: A binary variable equal
+to 1 if the census tract borders the Charles River, 0 otherwise. This
+captures the amenity value of water proximity.</p>
+</div>
+<div class="definition">
+<p><strong>DIS (Distance to Employment)</strong>: Weighted distance to
+five Boston employment centers. The model includes
+<strong>log(DIS)</strong>.</p>
+</div>
+<p>The logarithmic transformation implies that distance has diminishing
+effects—being 1 mile from employment centers versus 2 miles matters more
+than being 10 miles versus 11 miles.</p>
+<div class="definition">
+<p><strong>RAD (Highway Accessibility)</strong>: An index of
+accessibility to radial highways. The model includes
+<strong>log(RAD)</strong>.</p>
+</div>
+<h2 id="interpreting-the-coefficients">Interpreting the
+Coefficients</h2>
+<p>Now that we understand the variables, let’s interpret what each
+coefficient tells us. The dependent variable is log(MEDV), which means
+we need to be careful about the interpretation depending on whether the
+independent variable is in levels, logs, or transformed.</p>
+<h3 id="environmental-quality-beta_1-nox²">Environmental Quality: <span
+class="math inline">\beta_1</span> (NOX²)</h3>
+<p>Since the model includes NOX², the effect of pollution on home values
+is:</p>
+<p><span class="math display">
+\frac{\partial \log(\text{MEDV})}{\partial \text{NOX}} = 2\beta_1 \cdot
+\text{NOX}
+</span></p>
+<p>If <span class="math inline">\beta_1 &lt; 0</span> (which Harrison
+and Rubinfeld found), then higher pollution reduces home values, and
+this effect intensifies at higher pollution levels.</p>
+<div class="question">
+<p>If <span class="math inline">\beta_1 = -0.008</span> and the mean NOX
+level is 0.55, what does this tell us about the effect of pollution?</p>
+</div>
+<div class="answer">
+<p>At the mean pollution level, the marginal effect is:</p>
+<p><span class="math display">
+\frac{\partial \log(\text{MEDV})}{\partial \text{NOX}} = 2(-0.008)(0.55)
+= -0.0088
+</span></p>
+<p>This means a one-unit increase in NOX (from 0.55 to 1.55 parts per 10
+million) would decrease log(MEDV) by 0.0088, which corresponds to
+approximately a 0.88% decrease in median home value.</p>
+<p>However, this interpretation requires careful thought about units. A
+one-unit change in NOX is actually quite large given the scale of the
+variable. A more realistic interpretation considers smaller changes—say,
+a 0.1 unit increase in NOX:</p>
+<p><span class="math display">
+\Delta \log(\text{MEDV}) \approx 2(-0.008)(0.55)(0.1) = -0.00088
+</span></p>
+<p>This suggests a 0.1 unit increase in NOX is associated with about a
+0.09% decrease in home values.</p>
+</div>
+<p>The key insight from this coefficient is that air quality has a
+measurable, statistically significant effect on property
+values—providing evidence that people value clean air and are willing to
+pay for it through higher home prices.</p>
+<h3 id="housing-stock-beta_2-rm²-and-beta_3-age">Housing Stock: <span
+class="math inline">\beta_2</span> (RM²) and <span
+class="math inline">\beta_3</span> (AGE)</h3>
+<p>The coefficient on RM² captures how house size affects values:</p>
+<p><span class="math display">
+\frac{\partial \log(\text{MEDV})}{\partial \text{RM}} = 2\beta_2 \cdot
+\text{RM}
+</span></p>
+<p>If <span class="math inline">\beta_2 &gt; 0</span>, larger homes
+command higher prices, with the effect strengthening for larger homes.
+This makes economic sense: going from a 4-room to a 5-room dwelling
+might add 25% more space, but going from 8 rooms to 9 rooms adds only
+12.5% more space, yet the marginal value might be similar in both cases,
+implying larger percentage increases for bigger homes.</p>
+<p>For AGE, the coefficient <span class="math inline">\beta_3</span>
+indicates how the proportion of older housing stock affects values. If
+<span class="math inline">\beta_3 &lt; 0</span>, areas with older
+housing have lower median values. This could reflect: - Physical
+depreciation of older structures - Obsolete layouts or designs - Higher
+maintenance costs</p>
+<p>However, in some markets, older housing might be valued for
+architectural character or historical significance, potentially yielding
+<span class="math inline">\beta_3 &gt; 0</span>.</p>
+<h3 id="demographics-beta_4-b---0.63²-and-beta_5-loglstat">Demographics:
+<span class="math inline">\beta_4</span> ((B - 0.63)²) and <span
+class="math inline">\beta_5</span> (log(LSTAT))</h3>
+<p>The coefficient on (B - 0.63)² tells us how racial composition
+affects values. If <span class="math inline">\beta_4 &lt; 0</span>, home
+values decline as the proportion of Black residents moves away from 63%
+in either direction. The marginal effect is:</p>
+<p><span class="math display">
+\frac{\partial \log(\text{MEDV})}{\partial B} = 2\beta_4(B - 0.63)
+</span></p>
+<p>This means: - When B &lt; 0.63: The derivative is negative if <span
+class="math inline">\beta_4 &lt; 0</span>, so decreasing B (more
+segregation) reduces values - When B &gt; 0.63: The derivative is
+positive if <span class="math inline">\beta_4 &lt; 0</span>, so
+increasing B reduces values - When B = 0.63: The derivative is zero,
+representing a local maximum</p>
+<p>For LSTAT, since we have log(LSTAT) on the right side and log(MEDV)
+on the left:</p>
+<p><span class="math display">
+\beta_5 = \frac{\partial \log(\text{MEDV})}{\partial \log(\text{LSTAT})}
+= \frac{\%\Delta \text{MEDV}}{\%\Delta \text{LSTAT}}
+</span></p>
+<p>This is an elasticity. If <span class="math inline">\beta_5 =
+-0.4</span>, then a 1% increase in the lower-status population is
+associated with a 0.4% decrease in median home values. This captures
+socioeconomic stratification across neighborhoods.</p>
+<h3 id="crime-and-safety-beta_6-crim">Crime and Safety: <span
+class="math inline">\beta_6</span> (CRIM)</h3>
+<p>Since CRIM enters in levels (not logged), while MEDV is logged:</p>
+<p><span class="math display">
+\beta_6 = \frac{\partial \log(\text{MEDV})}{\partial \text{CRIM}}
+\approx \frac{\%\Delta \text{MEDV}}{\Delta \text{CRIM}}
+</span></p>
+<p>If <span class="math inline">\beta_6 = -0.02</span>, then a one-unit
+increase in the per capita crime rate (say, from 5 to 6 incidents per
+capita) is associated with approximately a 2% decrease in home values.
+This quantifies the safety premium in housing markets.</p>
+<div class="question">
+<p>Why might the crime effect on home values differ from the direct
+costs of crime victimization?</p>
+</div>
+<div class="answer">
+<p>The home value effect captures not just the direct expected costs of
+victimization (which might be small for any individual household), but
+also:</p>
+<ol type="1">
+<li><p><strong>Risk aversion</strong>: People are willing to pay
+premiums to avoid even small risks of victimization, especially violent
+crime.</p></li>
+<li><p><strong>Quality of life</strong>: High crime areas may have other
+undesirable features correlated with crime (noise, disorder, vandalism)
+that directly reduce neighborhood quality.</p></li>
+<li><p><strong>Peer effects</strong>: Crime rates may signal the type of
+neighbors one would have, affecting social capital and community
+cohesion.</p></li>
+<li><p><strong>Endogeneity concerns</strong>: Crime might be correlated
+with omitted variables like school quality or local government
+effectiveness, so the coefficient may capture more than just crime per
+se.</p></li>
+</ol>
+<p>The hedonic coefficient thus represents the total willingness to pay
+for safety and associated neighborhood characteristics, not just the
+expected loss from crime.</p>
+</div>
+<h3 id="zoning-and-land-use-beta_7-zn-and-beta_8-indus">Zoning and Land
+Use: <span class="math inline">\beta_7</span> (ZN) and <span
+class="math inline">\beta_8</span> (INDUS)</h3>
+<p>For ZN (large-lot zoning), if <span class="math inline">\beta_7 &gt;
+0</span>, then areas with more large-lot zoning have higher home values.
+This could reflect: - Exclusionary zoning that maintains low density and
+high values - Preferences for space and privacy - Correlation with
+higher-income neighborhoods</p>
+<p>For INDUS, if <span class="math inline">\beta_8 &lt; 0</span>, then
+areas with more industrial land have lower residential values. This
+makes intuitive sense: industrial activity may generate noise,
+pollution, traffic, and aesthetic disamenities that reduce the
+desirability of nearby housing.</p>
+<h3 id="fiscal-variables-beta_9-tax-and-beta_10-ptratio">Fiscal
+Variables: <span class="math inline">\beta_9</span> (TAX) and <span
+class="math inline">\beta_{10}</span> (PTRATIO)</h3>
+<p>The property tax coefficient <span class="math inline">\beta_9</span>
+captures the capitalization of taxes into home values. If <span
+class="math inline">\beta_9 &lt; 0</span>, higher tax rates reduce home
+values, suggesting that the capitalization effect dominates any positive
+effect from better services.</p>
+<p>The pupil-teacher ratio coefficient <span
+class="math inline">\beta_{10}</span> tells us about school quality
+effects. If <span class="math inline">\beta_{10} &lt; 0</span>, higher
+pupil-teacher ratios (worse schools) reduce home values. This is
+evidence that school quality is capitalized into housing prices—a key
+finding in public finance.</p>
+<div class="question">
+<p>The model includes both TAX and PTRATIO. What does this tell us about
+the relationship between taxes and school quality?</p>
+</div>
+<div class="answer">
+<p>Including both variables allows us to separately identify: 1. The
+effect of taxes holding school quality constant (captured by <span
+class="math inline">\beta_9</span>) 2. The effect of school quality
+holding taxes constant (captured by <span
+class="math inline">\beta_{10}</span>)</p>
+<p>If people valued taxes and school quality purely as a “tax-service
+package,” we might expect these effects to offset: higher taxes would be
+acceptable if they bought better schools. But by including both, we can
+see whether:</p>
+<ul>
+<li>High taxes with poor schools (high PTRATIO) lead to especially low
+values</li>
+<li>Good schools (low PTRATIO) can partially compensate for high
+taxes</li>
+<li>Taxes and school quality are independently capitalized</li>
+</ul>
+<p>The separate inclusion suggests that residents care about both the
+level of public services AND the tax price they pay for them, consistent
+with models of local public finance where efficient jurisdictions (good
+services, lower taxes) command premiums.</p>
+</div>
+<h3 id="amenities-beta_11-chas">Amenities: <span
+class="math inline">\beta_{11}</span> (CHAS)</h3>
+<p>The Charles River dummy coefficient <span
+class="math inline">\beta_{11}</span> captures the premium for water
+proximity. Since CHAS is a dummy variable:</p>
+<p><span class="math display">
+\beta_{11} = \mathbb{E}[\log(\text{MEDV}) | \text{CHAS}=1] -
+\mathbb{E}[\log(\text{MEDV}) | \text{CHAS}=0]
+</span></p>
+<p>If <span class="math inline">\beta_{11} = 0.08</span>, then census
+tracts bordering the Charles River have median home values approximately
+8.3% higher than comparable tracts not bordering the river (using the
+exact formula: <span class="math inline">e^{0.08} - 1 \approx
+0.083</span>).</p>
+<p>This demonstrates the capitalization of environmental amenities into
+property values and is one of many ways economists can estimate
+willingness to pay for environmental goods.</p>
+<h3 id="accessibility-beta_12-logdis-and-beta_13-lograd">Accessibility:
+<span class="math inline">\beta_{12}</span> (log(DIS)) and <span
+class="math inline">\beta_{13}</span> (log(RAD))</h3>
+<p>For distance to employment centers, since both sides are logged:</p>
+<p><span class="math display">
+\beta_{12} = \frac{\partial \log(\text{MEDV})}{\partial
+\log(\text{DIS})} = \frac{\%\Delta \text{MEDV}}{\%\Delta \text{DIS}}
+</span></p>
+<p>This is an elasticity. If <span class="math inline">\beta_{12} =
+-0.15</span>, then a 1% increase in distance to employment centers is
+associated with a 0.15% decrease in home values. The negative
+coefficient reflects the commuting cost premium—people pay more to live
+closer to jobs.</p>
+<p>Similarly, for highway accessibility:</p>
+<p><span class="math display">
+\beta_{13} = \frac{\partial \log(\text{MEDV})}{\partial
+\log(\text{RAD})}
+</span></p>
+<p>If <span class="math inline">\beta_{13} = 0.10</span>, then a 1%
+increase in highway accessibility is associated with a 0.10% increase in
+home values. Better highway access reduces commuting time and connects
+residents to amenities, increasing the area’s desirability.</p>
+<div class="question">
+<p>Could highway accessibility have a negative effect on home values?
+Under what circumstances?</p>
+</div>
+<div class="answer">
+<p>Yes, highway accessibility could theoretically have negative
+effects:</p>
+<ol type="1">
+<li><p><strong>Noise and pollution</strong>: Being very close to
+highways generates noise pollution and air pollution from traffic, which
+could reduce values despite improved accessibility.</p></li>
+<li><p><strong>Barrier effects</strong>: Highways can divide
+neighborhoods and create pedestrian barriers, reducing walkability and
+community cohesion.</p></li>
+<li><p><strong>Aesthetic disamenities</strong>: The visual presence of
+elevated highways or large interchanges can be unappealing.</p></li>
+</ol>
+<p>The sign and magnitude of the highway accessibility coefficient
+likely depends on the measurement: an index of network accessibility
+(how well-connected the area is) would likely have positive effects,
+while distance to the nearest highway might have ambiguous effects—some
+proximity is good (accessibility) but too close is bad (noise).</p>
+<p>In the Harrison-Rubinfeld model, RAD measures accessibility as an
+index, so it likely captures the network connectivity benefits rather
+than the disamenities of being immediately adjacent to a highway.</p>
+</div>
+<h2 id="the-intercept-beta_0">The Intercept: <span
+class="math inline">\beta_0</span></h2>
+<p>The intercept <span class="math inline">\beta_0</span> represents the
+predicted log median home value when all explanatory variables are zero.
+This has no meaningful interpretation in this context because:</p>
+<ol type="1">
+<li>Many variables can’t actually be zero (like RM—houses need at least
+some rooms)</li>
+<li>The model includes squared and logged terms that make zero points
+artificial</li>
+<li>No census tract in the data has all variables at zero</li>
+</ol>
+<p>The intercept’s role is to shift the entire prediction function to
+match the observed range of home values given the actual distribution of
+the explanatory variables. It’s a necessary component for accurate
+predictions but doesn’t have a substantive economic interpretation.</p>
+<h2 id="the-error-term-epsilon">The Error Term: <span
+class="math inline">\epsilon</span></h2>
+<p>The error term captures all determinants of home values not included
+in the model: - Idiosyncratic features of specific properties -
+Measurement error in the variables - Omitted neighborhood
+characteristics - Unobservable location amenities - Time-specific
+shocks</p>
+<p>The key assumption for causal interpretation is that <span
+class="math inline">\mathbb{E}[\epsilon | X] = 0</span>—the error term
+is uncorrelated with the included explanatory variables. This requires
+that all confounding factors are either included in the model or are
+uncorrelated with both home values and the variables of interest.</p>
+<div class="question">
+<p>What are the main threats to the identification assumption in the
+Harrison-Rubinfeld model?</p>
+</div>
+<div class="answer">
+<p>Several potential violations could bias the coefficients:</p>
+<ol type="1">
+<li><p><strong>Omitted variables</strong>: Any characteristic that
+affects both home values and is correlated with included variables will
+bias estimates. For example:</p>
+<ul>
+<li>School quality measures beyond PTRATIO</li>
+<li>Crime type (violent vs. property)</li>
+<li>Local amenities (parks, restaurants, retail)</li>
+<li>Housing unit quality within tracts</li>
+</ul></li>
+<li><p><strong>Reverse causality</strong>: Some variables might be
+endogenous. For example:</p>
+<ul>
+<li>High home values might attract more property tax revenue,
+potentially affecting TAX</li>
+<li>Expensive neighborhoods might invest more in crime prevention,
+affecting CRIM</li>
+<li>Demand for housing might influence zoning decisions (ZN)</li>
+</ul></li>
+<li><p><strong>Measurement error</strong>: Variables are measured at the
+census tract level but ideally would be property-specific:</p>
+<ul>
+<li>Not all houses in a tract face the same crime risk</li>
+<li>Distance to employment varies within tracts</li>
+<li>Air quality can have micro-scale variation</li>
+</ul></li>
+<li><p><strong>Sample selection</strong>: The data covers only the
+Boston metropolitan area in 1970. Results may not generalize to other
+cities, time periods, or housing markets.</p></li>
+<li><p><strong>Spatial correlation</strong>: Nearby census tracts likely
+have correlated unobservables, violating the assumption of independent
+errors and potentially biasing standard errors even if point estimates
+are unbiased.</p></li>
+</ol>
+<p>Modern applications often address these concerns through instrumental
+variables, spatial econometric methods, or quasi-experimental designs
+exploiting policy changes or other sources of exogenous variation.</p>
+</div>
+<h2 id="synthesizing-the-results">Synthesizing the Results</h2>
+<p>The Harrison-Rubinfeld model demonstrates how hedonic pricing methods
+can decompose property values into their constituent parts. Each
+coefficient tells us how much people are willing to pay—through higher
+home prices—for marginal improvements in that characteristic.</p>
+<p>Key insights from the coefficient interpretations:</p>
+<ol type="1">
+<li><p><strong>Environmental quality is valued</strong>: The negative
+coefficient on NOX² shows that air pollution reduces property values,
+providing a revealed-preference measure of willingness to pay for clean
+air.</p></li>
+<li><p><strong>Neighborhood socioeconomics matter</strong>: The
+coefficients on LSTAT and the racial composition variable show strong
+effects of neighborhood demographics, reflecting either preferences or
+the correlation of these variables with unobserved neighborhood
+quality.</p></li>
+<li><p><strong>Safety commands a premium</strong>: The negative
+coefficient on CRIM quantifies how much people pay to live in safer
+neighborhoods.</p></li>
+<li><p><strong>Local public finance is capitalized</strong>: Both
+property taxes and school quality (PTRATIO) significantly affect home
+values, consistent with theories of fiscal capitalization.</p></li>
+<li><p><strong>Location and accessibility matter</strong>: The distance
+to employment centers and highway accessibility coefficients show the
+value of reduced commuting costs.</p></li>
+<li><p><strong>Natural amenities are priced</strong>: The Charles River
+dummy shows that even simple geographical features command measurable
+premiums.</p></li>
+</ol>
+<p>Understanding these interpretations is crucial not just for applied
+econometrics, but for policy analysis. When regulators conduct
+cost-benefit analysis of environmental regulations, hedonic pricing
+studies like Harrison and Rubinfeld’s provide the benefit estimates.
+When local governments make zoning decisions or invest in public
+services, understanding how these choices are capitalized into property
+values helps predict impacts on community composition and tax
+revenues.</p>
+<h2 id="technical-notes-on-functional-form">Technical Notes on
+Functional Form</h2>
+<p>The Harrison-Rubinfeld specification makes several functional form
+choices that affect interpretation:</p>
+<div class="definition">
+<p><strong>Log-linear model</strong>: When the dependent variable is
+logged but some independent variables are in levels, the coefficient
+represents the approximate percentage change in Y for a one-unit change
+in X.</p>
+</div>
+<div class="definition">
+<p><strong>Log-log model</strong>: When both the dependent and
+independent variables are logged, the coefficient represents an
+elasticity—the percentage change in Y for a one percent change in X.</p>
+</div>
+<div class="definition">
+<p><strong>Quadratic terms</strong>: When a variable appears squared,
+its effect is nonlinear, and the marginal effect depends on the level of
+the variable.</p>
+</div>
+<p>The choice among these functional forms should ideally be guided by
+economic theory and tested using the data. Harrison and Rubinfeld likely
+experimented with various specifications, choosing functional forms
+that: 1. Fit the data well (high R², low residual variance) 2. Made
+economic sense (appropriate signs, reasonable magnitudes) 3. Satisfied
+statistical diagnostics (no heteroskedasticity, normality of
+residuals)</p>
+<p>Modern practice often uses more flexible functional forms (splines,
+polynomials, or nonparametric methods) or machine learning approaches
+that let the data reveal the functional relationships without imposing
+strong restrictions.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The Harrison-Rubinfeld hedonic pricing model exemplifies how careful
+empirical analysis can reveal the implicit prices of characteristics
+that don’t trade in explicit markets. By interpreting each coefficient
+correctly—accounting for functional form, units, and identification
+assumptions—we transform a regression equation into a rich description
+of how various neighborhood and housing characteristics are valued in
+the housing market.</p>
+<p>These interpretations matter for: - <strong>Policy makers</strong>
+evaluating the benefits of environmental regulations - <strong>Urban
+planners</strong> understanding the trade-offs residents make regarding
+location, density, and amenities - <strong>Economists</strong> studying
+how households sort across neighborhoods and how local public goods are
+valued - <strong>Real estate professionals</strong> predicting how
+property values respond to changes in neighborhood characteristics</p>
+<p>The model’s enduring influence in economics stems not just from its
+methodological contributions, but from its demonstration that even
+complex, multifaceted goods like housing can be decomposed and
+understood through careful economic analysis—revealing the preferences
+and values that lie beneath market prices.</p>

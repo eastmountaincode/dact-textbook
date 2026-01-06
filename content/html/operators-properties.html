@@ -1,0 +1,520 @@
+<p>Statistical operators are powerful tools that transform random
+variables in systematic ways. In this chapter, we’ll explore two
+fundamental operators: the expectation operator and the variance
+operator. These operators will appear throughout the rest of this book,
+so understanding their properties deeply will pay dividends as we tackle
+more complex statistical concepts.</p>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Define what an operator is in the statistical context</li>
+<li>Calculate and interpret expected values</li>
+<li>Calculate and interpret variances</li>
+<li>Apply the properties of expectation and variance to simplify complex
+expressions</li>
+<li>Understand how these operators behave under linear
+transformations</li>
+</ul>
+<h2 id="what-is-an-operator">What is an Operator?</h2>
+<section id="definition" class="callout-note" data-icon="false">
+<h2>Definition</h2>
+<p>An <strong>operator</strong> is a mapping that takes elements from
+one space and produces elements in another space (which may be the same
+space). In statistics, operators act on random variables to produce new
+quantities.</p>
+</section>
+<p>Think of an operator as a special kind of function that acts on
+random variables rather than on simple numbers. Just as the square root
+function takes a number and returns another number, statistical
+operators take random variables and return quantities that summarize key
+features of those variables.</p>
+<section
+id="question-why-do-we-call-them-operators-instead-of-just-functions"
+class="callout-tip" data-icon="false" data-collapse="true">
+<h2>Question: Why do we call them “operators” instead of just
+“functions”?</h2>
+<p>The term “operator” emphasizes that these mappings act on objects
+(random variables) that are themselves functions. This distinguishes
+them from ordinary functions that act on numbers. The expectation
+operator, for instance, takes an entire probability distribution and
+distills it down to a single number representing its center.</p>
+</section>
+<h2 id="the-expectation-operator">The Expectation Operator</h2>
+<h3 id="intuition-and-definition">Intuition and Definition</h3>
+<p>Intuitively, a random variable’s expected value represents the
+average we would see if we observed many independent realizations of
+that variable. For example, if we roll a fair six-sided die thousands of
+times and compute the average of all the outcomes, that average will
+converge to 3.5. This value—3.5—is the expected value of the die
+roll.</p>
+<section id="definition-expected-value" class="callout-important"
+data-icon="false">
+<h2>Definition: Expected Value</h2>
+<p>The <strong>expected value</strong> (or <strong>expectation</strong>)
+of a discrete random variable <span class="math inline">X</span> is the
+probability-weighted average of all its possible values:</p>
+<p><span class="math display">
+\mathbb{E}[X] = \sum_{i=1}^n x_i p_i
+</span></p>
+<p>where <span class="math inline">x_i</span> are the possible values
+and <span class="math inline">p_i = \mathrm{P}(X = x_i)</span> are their
+respective probabilities.</p>
+</section>
+<p>More generally, we can write this as:</p>
+<p><span class="math display">
+\mathbb{E}[X] = \sum_{i=1}^n p_i X_i = \mu
+</span></p>
+<p>where we often use the Greek letter <span
+class="math inline">\mu</span> (mu) to denote the expected value.</p>
+<p>For continuous random variables, the sum becomes an integral:</p>
+<p><span class="math display">
+\mathbb{E}[X] = \int_{\mathbb{R}} x f(x) \, dx
+</span></p>
+<p>where <span class="math inline">f(x)</span> is the probability
+density function of <span class="math inline">X</span>.</p>
+<section
+id="question-can-you-give-a-concrete-example-of-computing-an-expected-value"
+class="callout-tip" data-icon="false" data-collapse="true">
+<h2>Question: Can you give a concrete example of computing an expected
+value?</h2>
+<p>Consider a simple game where you flip a fair coin. If it lands heads,
+you win $10; if it lands tails, you lose $5. What are your expected
+winnings?</p>
+<p>Let <span class="math inline">X</span> represent your winnings.
+Then:</p>
+<p><span class="math display">
+\mathbb{E}[X] = 10 \cdot \mathrm{P}(H) + (-5) \cdot \mathrm{P}(T) = 10
+\cdot \frac{1}{2} + (-5) \cdot \frac{1}{2} = \$2.50
+</span></p>
+<p>On average, you expect to win $2.50 per game. This doesn’t mean
+you’ll ever actually win $2.50 in any single game—you’ll either win $10
+or lose $5. But over many games, your average winnings will approach
+$2.50 per game.</p>
+</section>
+<h3 id="properties-of-the-expectation-operator">Properties of the
+Expectation Operator</h3>
+<p>The expectation operator has several important properties that make
+it remarkably useful for statistical analysis. These properties allow us
+to simplify complex calculations and derive important results.</p>
+<h4 id="property-1-non-negativity">Property 1: Non-negativity</h4>
+<p>If <span class="math inline">X</span> is a random variable such that
+<span class="math inline">\mathrm{P}(X \geq 0) = 1</span> (that is,
+<span class="math inline">X</span> is always non-negative), then <span
+class="math inline">\mathbb{E}[X] \geq 0</span>.</p>
+<section id="proof" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p>If <span class="math inline">\mathrm{P}(X \geq 0) = 1</span>, then
+the probability mass function satisfies <span class="math inline">p_X(x)
+= 0</span> for all <span class="math inline">x &lt; 0</span>.
+Therefore:</p>
+<p><span class="math display">
+\mathbb{E}[X] = \sum_x x p_X(x) = \sum_{x: x \geq 0} x p_X(x) \geq 0
+</span></p>
+<p>since we’re summing only non-negative terms (<span
+class="math inline">x \geq 0</span> and <span class="math inline">p_X(x)
+\geq 0</span>).</p>
+</section>
+<p>This property formalizes an intuitive idea: if a random variable can
+only take non-negative values, its average must also be
+non-negative.</p>
+<h4 id="property-2-expectation-of-a-constant">Property 2: Expectation of
+a Constant</h4>
+<p>If <span class="math inline">X</span> is a random variable such that
+<span class="math inline">\mathrm{P}(X = r) = 1</span> for some fixed
+number <span class="math inline">r</span>, then <span
+class="math inline">\mathbb{E}[X] = r</span>. In other words, the
+expectation of a constant equals that constant.</p>
+<section id="proof-1" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p>If <span class="math inline">\mathrm{P}(X = r) = 1</span>, then <span
+class="math inline">p_X(r) = 1</span> and <span
+class="math inline">p_X(x) = 0</span> for all <span
+class="math inline">x \neq r</span>. Therefore:</p>
+<p><span class="math display">
+\mathbb{E}[X] = \sum_x x p_X(x) = r \cdot 1 = r
+</span></p>
+</section>
+<p>This property tells us that constants behave exactly as we’d expect
+under the expectation operator—their “average” value is simply
+themselves.</p>
+<h4 id="property-3-linearity">Property 3: Linearity</h4>
+<p>The expectation operator is <strong>linear</strong>. Given two random
+variables <span class="math inline">X</span> and <span
+class="math inline">Y</span> and two real constants <span
+class="math inline">a</span> and <span class="math inline">b</span>:</p>
+<p><span class="math display">
+\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]
+</span></p>
+<section id="proof-2" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p>For discrete random variables with joint probability mass function
+<span class="math inline">p_{X,Y}(x,y)</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+\mathbb{E}[aX + bY] &amp;= \sum_{x,y}(ax+by)p_{X,Y}(x,y) \\
+&amp;= a\sum_x x \sum_y p_{X,Y}(x,y) + b\sum_y y \sum_x p_{X,Y}(x,y) \\
+&amp;= a\sum_x x \, p_{X}(x) + b\sum_y y \, p_{Y}(y) \\
+&amp;= a\mathbb{E}[X] + b\mathbb{E}[Y]
+\end{aligned}
+</span></p>
+<p>where in the third line we used the fact that <span
+class="math inline">\sum_y p_{X,Y}(x,y) = p_X(x)</span> (the marginal
+distribution).</p>
+</section>
+<section id="why-linearity-matters" class="callout-important"
+data-icon="false">
+<h2>Why Linearity Matters</h2>
+<p>Linearity is perhaps the most important property of expectation. It
+allows us to break complex random variables into simpler parts, compute
+expectations of the parts separately, and combine them. Moreover,
+linearity holds <em>regardless of whether the random variables are
+independent</em>—a remarkable and powerful feature.</p>
+</section>
+<section id="question-how-can-we-use-linearity-in-practice"
+class="callout-tip" data-icon="false" data-collapse="true">
+<h2>Question: How can we use linearity in practice?</h2>
+<p>Suppose you’re analyzing a portfolio with investments in three
+different assets. Let <span class="math inline">X_1, X_2, X_3</span>
+represent the returns on these assets, and suppose you invest amounts
+<span class="math inline">w_1, w_2, w_3</span> in each. Your total
+return is <span class="math inline">R = w_1 X_1 + w_2 X_2 + w_3
+X_3</span>. By linearity:</p>
+<p><span class="math display">
+\mathbb{E}[R] = w_1 \mathbb{E}[X_1] + w_2 \mathbb{E}[X_2] + w_3
+\mathbb{E}[X_3]
+</span></p>
+<p>This means you can calculate your expected portfolio return simply by
+taking a weighted average of the expected returns of the individual
+assets—no need to work out the entire joint distribution of all three
+assets together.</p>
+</section>
+<p>Additional properties that follow from linearity include:</p>
+<p><span class="math display">
+\begin{aligned}
+\mathbb{E}[kY] &amp;= k\mathbb{E}[Y] \quad \text{(scaling)} \\
+\mathbb{E}[X + Y] &amp;= \mathbb{E}[X] + \mathbb{E}[Y] \quad
+\text{(additivity)}
+\end{aligned}
+</span></p>
+<h2 id="the-variance-operator">The Variance Operator</h2>
+<h3 id="intuition-and-definition-1">Intuition and Definition</h3>
+<p>While the expected value tells us about the center of a distribution,
+it says nothing about the spread. Consider two random variables: one
+that always equals 10, and one that equals 0 half the time and 20 half
+the time. Both have an expected value of 10, but they behave very
+differently. The variance operator captures this difference.</p>
+<p>Variance measures how far a set of random values typically lie from
+their expected value. A small variance indicates that values cluster
+tightly around the mean; a large variance indicates that values are more
+dispersed.</p>
+<section id="definition-variance" class="callout-important"
+data-icon="false">
+<h2>Definition: Variance</h2>
+<p>The <strong>variance</strong> of a random variable <span
+class="math inline">X</span> is the expected value of the squared
+deviation from the mean:</p>
+<p><span class="math display">
+\mathrm{Var}(X) = \mathbb{E}[(X - \mu)^2]
+</span></p>
+<p>where <span class="math inline">\mu = \mathbb{E}[X]</span> is the
+mean of <span class="math inline">X</span>. We often denote variance as
+<span class="math inline">\sigma^2</span> (sigma squared).</p>
+</section>
+<p>For a discrete random variable, we can write this explicitly as:</p>
+<p><span class="math display">
+\mathrm{Var}(Y) = \sum_{i=1}^n p_i (Y_i - \mu)^2 = \sigma^2
+</span></p>
+<section
+id="question-why-do-we-square-the-deviations-why-not-just-take-the-absolute-value"
+class="callout-tip" data-icon="false" data-collapse="true">
+<h2>Question: Why do we square the deviations? Why not just take the
+absolute value?</h2>
+<p>Squaring serves several purposes. First, it ensures that positive and
+negative deviations don’t cancel out (which would happen if we just
+summed the deviations directly). Second, squaring gives more weight to
+extreme deviations, making variance sensitive to outliers. Third, the
+squared form has beautiful mathematical properties that simplify many
+derivations. While we could use absolute deviations instead (this gives
+the “mean absolute deviation”), the squared form is more tractable
+mathematically and appears naturally in many statistical contexts.</p>
+</section>
+<h3 id="an-alternative-formula">An Alternative Formula</h3>
+<p>The definition of variance can be algebraically rearranged into a
+form that’s often more convenient for computation:</p>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(X) &amp;= \mathbb{E}[(X - \mathbb{E}[X])^2] \\
+&amp;= \mathbb{E}[X^2 - 2X\mathbb{E}[X] + \mathbb{E}[X]^2] \\
+&amp;= \mathbb{E}[X^2] - 2\mathbb{E}[X]\mathbb{E}[X] + \mathbb{E}[X]^2
+\\
+&amp;= \mathbb{E}[X^2] - \mathbb{E}[X]^2
+\end{aligned}
+</span></p>
+<p>This gives us the memorable formula:</p>
+<p><span class="math display">
+\mathrm{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
+</span></p>
+<p>In words: the variance equals the expected value of the square minus
+the square of the expected value. This computational formula is often
+easier to work with than the definitional formula.</p>
+<h3 id="properties-of-the-variance-operator">Properties of the Variance
+Operator</h3>
+<h4 id="property-1-non-negativity-1">Property 1: Non-negativity</h4>
+<p>Variance is always non-negative: <span
+class="math inline">\mathrm{Var}(X) \geq 0</span>.</p>
+<section id="proof-3" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p>Since <span class="math inline">(X - \mu)^2 \geq 0</span> for all
+values of <span class="math inline">X</span>, we have:</p>
+<p><span class="math display">
+\mathrm{Var}(X) = \mathbb{E}[(X - \mu)^2] \geq 0
+</span></p>
+<p>by the non-negativity property of expectation.</p>
+</section>
+<h4 id="property-2-variance-of-a-constant">Property 2: Variance of a
+Constant</h4>
+<p>The variance of a constant is zero: <span
+class="math inline">\mathrm{Var}(a) = 0</span>.</p>
+<section id="proof-4" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(a) &amp;= \mathbb{E}[(a - \mathbb{E}[a])^2] \\
+&amp;= \mathbb{E}[(a - a)^2] \\
+&amp;= \mathbb{E}[0^2] \\
+&amp;= 0
+\end{aligned}
+</span></p>
+</section>
+<p>This makes intuitive sense: if a variable doesn’t vary (it’s
+constant), its variance should be zero.</p>
+<h4 id="property-3-zero-variance-implies-constant">Property 3: Zero
+Variance Implies Constant</h4>
+<p>If the variance of a random variable is zero, then the variable must
+be constant with probability 1: <span
+class="math inline">\mathrm{Var}(X) = 0 \Rightarrow \mathrm{P}(X = a) =
+1</span> for some constant <span class="math inline">a</span>.</p>
+<section id="proof-5" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p>Let <span class="math inline">\mathbb{E}[X] = a</span> for some
+constant <span class="math inline">a</span>. Then:</p>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(X) = 0 &amp;\Rightarrow \mathbb{E}[(X - a)^2] = 0 \\
+&amp;\Rightarrow (X - a)^2 = 0 \quad \text{(since $(X-a)^2$ cannot be
+negative)} \\
+&amp;\Rightarrow X - a = 0 \\
+&amp;\Rightarrow X = a
+\end{aligned}
+</span></p>
+</section>
+<p>Together, Properties 2 and 3 tell us that constants are precisely the
+random variables with zero variance—and vice versa.</p>
+<h4 id="property-4-variance-of-a-sum">Property 4: Variance of a Sum</h4>
+<p>The variance of a sum of two random variables is:</p>
+<p><span class="math display">
+\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y) +
+2\mathrm{Cov}(X,Y)
+</span></p>
+<p>where <span class="math inline">\mathrm{Cov}(X,Y) = \mathbb{E}[XY] -
+\mathbb{E}[X]\mathbb{E}[Y]</span> is the covariance between <span
+class="math inline">X</span> and <span class="math inline">Y</span>.</p>
+<section id="proof-6" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(X+Y) &amp;= \mathbb{E}[(X+Y - \mathbb{E}[X+Y])^2] \\
+&amp;= \mathbb{E}[(X+Y)^2 - 2(X+Y)\mathbb{E}[X+Y] + (\mathbb{E}[X+Y])^2]
+\\
+&amp;= \mathbb{E}[(X+Y)^2] - \mathbb{E}[X+Y]^2 \\
+&amp;= \mathbb{E}[X^2] + 2\mathbb{E}[XY] + \mathbb{E}[Y^2] -
+(\mathbb{E}[X] + \mathbb{E}[Y])^2 \\
+&amp;= \mathbb{E}[X^2] + 2\mathbb{E}[XY] + \mathbb{E}[Y^2] -
+\mathbb{E}[X]^2 - 2\mathbb{E}[X]\mathbb{E}[Y] - \mathbb{E}[Y]^2 \\
+&amp;= (\mathbb{E}[X^2] - \mathbb{E}[X]^2) + (\mathbb{E}[Y^2] -
+\mathbb{E}[Y]^2) + 2(\mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]) \\
+&amp;= \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\mathrm{Cov}(X,Y)
+\end{aligned}
+</span></p>
+</section>
+<section id="special-case-independent-variables"
+class="callout-important" data-icon="false">
+<h2>Special Case: Independent Variables</h2>
+<p>If <span class="math inline">X</span> and <span
+class="math inline">Y</span> are independent random variables, then
+<span class="math inline">\mathrm{Cov}(X,Y) = 0</span>, and the formula
+simplifies to:</p>
+<p><span class="math display">
+\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)
+</span></p>
+<p>Similarly, for the difference of independent variables: <span
+class="math inline">\mathrm{Var}(X - Y) = \mathrm{Var}(X) +
+\mathrm{Var}(Y)</span>.</p>
+</section>
+<h4 id="property-5-variance-is-invariant-to-location-shifts">Property 5:
+Variance is Invariant to Location Shifts</h4>
+<p>If a constant is added to all values of a variable, the variance is
+unchanged:</p>
+<p><span class="math display">
+\mathrm{Var}(X + a) = \mathrm{Var}(X)
+</span></p>
+<section id="proof-7" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(X + a) &amp;= \mathrm{Var}(X) + \mathrm{Var}(a) +
+2\mathrm{Cov}(X, a) \\
+&amp;= \mathrm{Var}(X)
+\end{aligned}
+</span></p>
+<p>since <span class="math inline">\mathrm{Var}(a) = 0</span> and <span
+class="math inline">\mathrm{Cov}(X, a) = 0</span> (a constant has zero
+covariance with any variable).</p>
+</section>
+<p>This property reflects the fact that variance measures spread, not
+location. Shifting all values by the same amount doesn’t change how
+spread out they are.</p>
+<h4 id="property-6-variance-under-scaling">Property 6: Variance Under
+Scaling</h4>
+<p>If all values are scaled by a constant, the variance is scaled by the
+square of that constant:</p>
+<p><span class="math display">
+\mathrm{Var}(aX) = a^2 \mathrm{Var}(X)
+</span></p>
+<section id="proof-8" class="callout-note" data-icon="false"
+data-collapse="true">
+<h2>Proof</h2>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(aX) &amp;= \mathbb{E}[(aX - \mathbb{E}[aX])^2] \\
+&amp;= \mathbb{E}[(aX - a\mathbb{E}[X])^2] \\
+&amp;= \mathbb{E}[(a(X - \mathbb{E}[X]))^2] \\
+&amp;= \mathbb{E}[a^2(X - \mathbb{E}[X])^2] \\
+&amp;= a^2\mathbb{E}[(X - \mathbb{E}[X])^2] \\
+&amp;= a^2 \mathrm{Var}(X)
+\end{aligned}
+</span></p>
+</section>
+<section
+id="question-why-does-variance-scale-with-the-square-of-the-constant-rather-than-just-the-constant-itself"
+class="callout-tip" data-icon="false" data-collapse="true">
+<h2>Question: Why does variance scale with the square of the constant
+rather than just the constant itself?</h2>
+<p>Remember that variance involves squared deviations: <span
+class="math inline">\mathrm{Var}(X) = \mathbb{E}[(X-\mu)^2]</span>. When
+we scale <span class="math inline">X</span> by <span
+class="math inline">a</span>, we also scale the deviations by <span
+class="math inline">a</span>: <span class="math inline">(aX - a\mu) =
+a(X - \mu)</span>. When we square this, we get <span
+class="math inline">a^2(X-\mu)^2</span>, which explains the <span
+class="math inline">a^2</span> factor.</p>
+<p>This property is why the standard deviation (the square root of
+variance) scales linearly with <span class="math inline">a</span>: if we
+double all values, we double the standard deviation but quadruple the
+variance.</p>
+</section>
+<h4
+id="property-7-variance-of-a-sum-of-independent-identically-distributed-variables">Property
+7: Variance of a Sum of Independent Identically Distributed
+Variables</h4>
+<p>If <span class="math inline">Y_1, Y_2, \ldots, Y_n</span> are
+independent and identically distributed random variables, then:</p>
+<p><span class="math display">
+\mathrm{Var}\left(\sum_{i=1}^n Y_i\right) = \sum_{i=1}^n
+\mathrm{Var}(Y_i) = n\mathrm{Var}(Y)
+</span></p>
+<p>where the last equality uses the fact that all the <span
+class="math inline">Y_i</span> have the same variance.</p>
+<p>This property is fundamental to understanding sampling distributions
+and the behavior of sample means.</p>
+<h2 id="putting-it-all-together">Putting It All Together</h2>
+<p>Let’s work through a comprehensive example that uses both operators
+and their properties.</p>
+<section id="question-a-manufacturing-quality-control-example"
+class="callout-tip" data-icon="false" data-collapse="true">
+<h2>Question: A Manufacturing Quality Control Example</h2>
+<p>Suppose you’re managing quality control for a manufacturing process.
+Each item has a production cost that’s normally distributed with mean
+$50 and variance $25. If an item passes inspection (which happens 90% of
+the time), you can sell it for $100. If it fails inspection, you must
+sell it at a loss for $30. You produce 100 items. What are the expected
+total profit and the variance of total profit?</p>
+<p><strong>Solution:</strong></p>
+<p>Let’s define our random variables carefully. For item <span
+class="math inline">i</span>:</p>
+<ul>
+<li>Let <span class="math inline">C_i</span> be the production cost
+(mean $50, variance $25)</li>
+<li>Let <span class="math inline">R_i</span> be the revenue, which is
+$100 with probability 0.9 and $30 with probability 0.1</li>
+<li>The profit for item <span class="math inline">i</span> is <span
+class="math inline">P_i = R_i - C_i</span></li>
+</ul>
+<p>First, let’s find <span
+class="math inline">\mathbb{E}[R_i]</span>:</p>
+<p><span class="math display">
+\mathbb{E}[R_i] = 100(0.9) + 30(0.1) = 90 + 3 = \$93
+</span></p>
+<p>For the expected profit on one item:</p>
+<p><span class="math display">
+\mathbb{E}[P_i] = \mathbb{E}[R_i - C_i] = \mathbb{E}[R_i] -
+\mathbb{E}[C_i] = 93 - 50 = \$43
+</span></p>
+<p>For 100 items, by linearity of expectation:</p>
+<p><span class="math display">
+\mathbb{E}\left[\sum_{i=1}^{100} P_i\right] = \sum_{i=1}^{100}
+\mathbb{E}[P_i] = 100 \times 43 = \$4,300
+</span></p>
+<p>Now for the variance. First, we need <span
+class="math inline">\mathrm{Var}(R_i)</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+\mathrm{Var}(R_i) &amp;= \mathbb{E}[R_i^2] - (\mathbb{E}[R_i])^2 \\
+&amp;= [100^2(0.9) + 30^2(0.1)] - 93^2 \\
+&amp;= [9000 + 90] - 8649 \\
+&amp;= 441
+\end{aligned}
+</span></p>
+<p>For the variance of profit on one item, assuming cost and revenue are
+independent:</p>
+<p><span class="math display">
+\mathrm{Var}(P_i) = \mathrm{Var}(R_i - C_i) = \mathrm{Var}(R_i) +
+\mathrm{Var}(C_i) = 441 + 25 = 466
+</span></p>
+<p>Finally, if items are produced independently:</p>
+<p><span class="math display">
+\mathrm{Var}\left(\sum_{i=1}^{100} P_i\right) = \sum_{i=1}^{100}
+\mathrm{Var}(P_i) = 100 \times 466 = 46,600
+</span></p>
+<p>Therefore, expected total profit is $4,300 with variance $46,600
+(standard deviation of approximately $216).</p>
+</section>
+<h2 id="summary">Summary</h2>
+<p>The expectation and variance operators are fundamental tools in
+probability and statistics. The expectation operator <span
+class="math inline">\mathbb{E}[\cdot]</span> captures the center or
+average of a distribution, while the variance operator <span
+class="math inline">\mathrm{Var}(\cdot)</span> captures its spread.</p>
+<p>Key takeaways:</p>
+<ul>
+<li>Expectation is linear: <span class="math inline">\mathbb{E}[aX + bY]
+= a\mathbb{E}[X] + b\mathbb{E}[Y]</span>, regardless of dependence</li>
+<li>Variance is not linear: <span class="math inline">\mathrm{Var}(X +
+Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)</span> only when <span
+class="math inline">X</span> and <span class="math inline">Y</span> are
+independent</li>
+<li>Adding constants doesn’t change variance: <span
+class="math inline">\mathrm{Var}(X + a) = \mathrm{Var}(X)</span></li>
+<li>Scaling affects variance quadratically: <span
+class="math inline">\mathrm{Var}(aX) = a^2\mathrm{Var}(X)</span></li>
+</ul>
+<p>These operators and their properties will appear repeatedly
+throughout your study of statistics. Mastering them now will make
+everything that follows much more intuitive.</p>

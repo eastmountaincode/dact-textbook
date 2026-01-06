@@ -1,0 +1,82 @@
+\documentclass[12pt]{article}
+\usepackage{setspace}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Panel regressions \vspace{-5mm}}
+\date{}
+
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+%	\doublespacing
+
+	\noindent What do you understand by the term ``panel data''?
+
+	\vspace{5cm}
+
+	\noindent What is the intent behind using panel data?
+
+	\vspace{6cm}
+
+	\noindent What is the difference between fixed and random effects?
+
+	\vspace{6cm}
+
+	\newpage
+
+	\noindent For each scenario, determine the causal variable, the outcome variable, and the time-invariant control. Determine whether a \textbf{fixed effects} or \textbf{random effects} model is more plausible and why.
+
+	\section{Export Performance of Firms}
+	You have panel data on manufacturing firms across 10 years. You want to study how adopting a new production technology affects export intensity. Firms differ in long-standing traits such as managerial quality, historical export orientation, and internal capabilities.
+
+	\section{Minimum Wage and Restaurant Prices}
+	You analyze how local minimum wage changes affect restaurant menu prices across cities. Cities vary in geography, cost of living, and political preferences, but minimum wage policies change according to state-level legislative cycles.
+
+	\section{Legislative Productivity}
+	You track members of parliament (MPs) over multiple sessions to explain how staff budget size influences the number of bills they sponsor. MPs differ in experience, ideology, ambition, and constituency characteristics.
+
+	\section{Election-Day Weather}
+	You study the impact of precipitation on voter turnout at the county level over several election cycles. Weather varies unpredictably across counties over time, while counties have stable political cultures and demographic compositions.
+
+	\section{Neighborhood Policing Programs}
+	A city implements community policing programs in various neighborhoods over 8 years. Program intensity depends on short-run crime spikes and mayoral initiatives. Neighborhoods have persistent differences such as ethnic composition, historical segregation, and communal cohesion.
+
+	\section{Educational Outcomes Across Schools}
+	You examine how class size affects average test scores in a panel of schools. Schools differ by leadership quality, teacher culture, and long-standing funding norms. Class size is partly determined by parental demand, zoning, and long-term school characteristics.
+
+	\section{Therapy Frequency and Outcomes}
+	A dataset tracks patients across clinics over several months. You analyze how weekly therapy-session frequency affects anxiety scores. Clinics differ in philosophy, therapist experience, and organizational culture, but insurance rules create standardized scheduling constraints.
+
+	\section{Cognitive Training App Usage}
+	You study the effect of daily usage of a cognitive training app on performance across users over time. Users differ in baseline intelligence, motivation, personality traits, and initial familiarity with technology.
+
+	\newpage
+	\setcounter{section}{0}
+
+	\section{Export Performance of Firms}
+	\textbf{Model: Fixed Effects.} Firm-level traits such as managerial quality and innovative capacity are strongly correlated with technology adoption. These unobserved traits drive both export outcomes and the likelihood of adopting new technologies, violating the random effects assumption.
+
+	\section{Minimum Wage and Restaurant Prices}
+	\textbf{Model: Random Effects (plausible).} Minimum wage changes stem from state-level policies rather than city-specific restaurant characteristics. Stable city traits are plausibly uncorrelated with the timing of policy changes, making the random effects assumption more defensible.
+
+	\section{Legislative Productivity}
+	\textbf{Model: Fixed Effects.} Stable MP traits---ideology, ambition, seniority, constituency characteristics---affect both staff budgets and productivity. These traits are highly likely to be correlated with the explanatory variable, violating the random effects assumption.
+
+	\section{Election-Day Weather}
+	\textbf{Model: Random Effects.} Weather shocks are essentially exogenous and unrelated to persistent county-level characteristics. The unobserved county effect is therefore plausibly independent of precipitation.
+
+	\section{Neighborhood Policing Programs}
+	\textbf{Model: Fixed Effects.} Deeply embedded neighborhood traits such as segregation history or cohesion shape both policing needs and outcomes. Program intensity is likely correlated with these long-standing characteristics, invalidating the random effects assumption.
+
+	\section{Educational Outcomes Across Schools}
+	\textbf{Model: Fixed Effects.} Class size decisions are tied to stable school characteristics such as reputation, leadership, and parental involvement. These traits influence both class size and test scores, violating the random effects assumption.
+
+	\section{Therapy Frequency and Outcomes}
+	\textbf{Model: Random Effects (plausible).} Therapy session frequency is determined more by insurance constraints, therapist evaluation, and patient needs than by stable clinic-level traits. If scheduling practices are standardized, the unobserved clinic effect may be independent of the regressor.
+
+	\section{Cognitive Training App Usage}
+	\textbf{Model: Fixed Effects.} Users differ in stable characteristics---motivation, cognitive ability, personality, technology comfort---that heavily influence both app usage and performance. These unobservables correlate with the key regressor, violating the random effects assumption.
+
+
+\end{document}

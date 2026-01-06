@@ -1,0 +1,497 @@
+<h1 id="the-purpose-of-data-analytics">The Purpose of Data
+Analytics</h1>
+<p>In this chapter, we’ll explore the fundamental purpose and scope of
+data analytics. By the end of this chapter, you will understand:</p>
+<ul>
+<li>The distinction between correlation and causation</li>
+<li>How patterns emerge from randomness</li>
+<li>The difference between population and sample data</li>
+<li>The two primary goals of statistical analysis</li>
+<li>The philosophical divide between frequentist and Bayesian
+approaches</li>
+</ul>
+<h2 id="what-is-data-analytics-really-about">What Is Data Analytics
+Really About?</h2>
+<section id="key-question" class="callout-note" data-icon="false">
+<h2>Key Question</h2>
+<p>What is the ultimate goal of data analytics?</p>
+</section>
+<p>Data analytics is fundamentally about understanding <strong>cause and
+effect relationships</strong> in the world. While it’s easy to observe
+that two variables move together—that they are correlated—establishing
+causation is far more challenging and far more valuable.</p>
+<p>Consider a simple example: we might observe that ice cream sales and
+drowning incidents are correlated. They both increase during summer
+months. But does ice cream cause drowning? Of course not. Both are
+caused by a third factor: warm weather, which leads people to buy ice
+cream and also to swim more frequently.</p>
+<section id="important-distinction" class="callout-warning"
+data-icon="false">
+<h2>Important Distinction</h2>
+<p><strong>Correlation does not imply causation.</strong> Two variables
+can move together without one causing the other. Establishing causal
+relationships requires careful analysis and often experimental
+design.</p>
+</section>
+<p>The distinction between correlation and causation is not merely
+academic—it has profound implications for how we understand the world
+and make decisions. Consider the famous closing lines of Robert Frost’s
+poem “The Road Not Taken”:</p>
+<blockquote>
+<p><em>Two roads diverged in a wood, and I—</em><br />
+<em>I took the one less traveled by,</em><br />
+<em>And that has made all the difference.</em></p>
+</blockquote>
+<p>Frost claims that taking the road less traveled “made all the
+difference” to his life. But as statisticians, we must ask: how does he
+know? To establish causation, we would need a
+<strong>counterfactual</strong>—an alternative version of his life where
+he took the other road. Without observing this counterfactual, Frost
+cannot definitively claim that his choice caused the difference in his
+life’s trajectory. Perhaps his life would have turned out similarly
+regardless of which road he chose. Or perhaps taking the more traveled
+road would have led to even better outcomes.</p>
+<p>This challenge—the impossibility of observing counterfactuals in our
+own lives—is precisely what makes causal inference so difficult and why
+rigorous statistical methods are essential.</p>
+<p>In policy work—especially environmental policy and climate science—we
+need causal understanding. When we ask “how much warming will occur if
+we add X more tons of carbon dioxide to the atmosphere?”, we’re asking a
+causal question. The relationship between greenhouse gas concentrations
+and temperature change is incredibly complicated, random, and
+stochastic. Yet climate scientists have developed good estimates of what
+is called the <strong>global warming potential</strong> of different
+greenhouse gases. These estimates are based on a causal understanding of
+physical processes, not mere correlation.</p>
+<p>This is why data analytics matters: we want to establish cause and
+effect, not just observe patterns. We’re here to understand how the
+world works, not just to make pretty pictures or note correlations.</p>
+<h2 id="from-randomness-to-pattern">From Randomness to Pattern</h2>
+<p>One of the most remarkable features of statistical analysis is how
+patterns emerge from what initially appears to be pure randomness. When
+we look at individual observations, they often seem chaotic and
+unpredictable. But when we collect enough observations, macro-level
+patterns begin to reveal themselves.</p>
+<section id="conceptual-question" class="callout-note"
+data-icon="false">
+<h2>Conceptual Question</h2>
+<p>How can predictable patterns emerge from random individual
+events?</p>
+</section>
+<section id="answer" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>While individual events may be unpredictable, the aggregate behavior
+of many random events often follows predictable patterns. This is the
+fundamental insight of probability theory—that randomness at the micro
+level produces regularity at the macro level.</p>
+</section>
+<p>Consider the classic example of a Galton board (sometimes called a
+bean machine). When a single ball drops through the board, hitting pegs
+as it falls, its path is essentially random—at each peg, it bounces left
+or right unpredictably. We cannot predict where any individual ball will
+land.</p>
+<p>However, when we drop hundreds or thousands of balls, a clear pattern
+emerges: they pile up in the shape of a bell curve, forming what
+statisticians call the <strong>normal distribution</strong>. The
+randomness of individual ball drops gives way to a predictable aggregate
+pattern.</p>
+<p>This emergence of order from randomness is not magic—it’s
+mathematics. And it’s the foundation of statistical inference.</p>
+<h2 id="many-patterns-not-just-one">Many Patterns, Not Just One</h2>
+<section id="beware-of-normalitis" class="callout-warning"
+data-icon="false">
+<h2>Beware of Normalitis</h2>
+<p>One common misconception in statistics is that every pattern follows
+the normal distribution (the familiar bell curve). This is simply not
+true. While the normal distribution is important and widely applicable,
+it is just one of dozens of probability distributions used in
+statistics.</p>
+<p>I call the mistaken belief that everything is normally distributed
+<strong>normalitis</strong>—and it’s a condition to avoid.</p>
+</section>
+<p>Different real-world phenomena follow different distributions:</p>
+<ul>
+<li><strong>Bernoulli distribution</strong>: Events with only two
+possible outcomes (coin flip: heads or tails; ball at a peg: left or
+right)</li>
+<li><strong>Binomial distribution</strong>: The number of successes in a
+fixed number of independent Bernoulli trials (how many heads in 10 coin
+flips?)</li>
+<li><strong>Poisson distribution</strong>: Count data and waiting times
+(how long you wait for the bus each day; how many customers arrive per
+hour)</li>
+<li><strong>Normal distribution</strong>: Many continuous phenomena in
+nature and society (heights, test scores, measurement errors)</li>
+</ul>
+<p>These distributions are often mathematically related. For instance,
+when you sum up many independent Bernoulli trials (each ball on the
+Galton board making left-right decisions), you get a binomial
+distribution. And when the number of trials becomes very large, that
+binomial distribution approximates the normal distribution.</p>
+<section id="conceptual-question-1" class="callout-note"
+data-icon="false">
+<h2>Conceptual Question</h2>
+<p>The word “Poisson” comes from French. What does it mean, and who was
+Poisson?</p>
+</section>
+<section id="answer-1" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>“Poisson” means “fish” in French (related to “Pisces,” the
+astrological sign). Siméon Denis Poisson was a French mathematician and
+physicist who discovered this particular distribution, which describes
+the probability of a given number of events occurring in a fixed
+interval of time or space.</p>
+</section>
+<p>Throughout this course, we’ll work with many different distributions.
+Each captures a different kind of pattern in data. The key is learning
+to recognize which pattern fits which situation—and to never assume that
+one pattern applies universally.</p>
+<h2 id="population-and-sample">Population and Sample</h2>
+<p>In statistical analysis, we make a crucial distinction between two
+types of data:</p>
+<section id="definitions" class="callout-important" data-icon="false">
+<h2>Definitions</h2>
+<p><strong>Population</strong>: All possible data points that exist in
+the world for a given phenomenon. This includes data that has been
+collected, data that could be collected, and data that will exist in the
+future.</p>
+<p><strong>Sample</strong>: A subset of the population that we have
+actually collected and can analyze. The sample is always smaller—often
+infinitesimally smaller—than the population.</p>
+</section>
+<p>Consider studying human height. The population would include the
+heights of all humans who have ever lived, are living now, and will live
+in the future. That’s an enormous—indeed, infinite—amount of data. Your
+sample might be the heights of 1,000 people surveyed in a particular
+city during a particular year.</p>
+<p>No matter how large your sample, it remains tiny compared to the
+population. Even if you collect data on millions of individuals, that’s
+still just a tiny fraction of the theoretical population. As a
+mathematical principle:</p>
+<p><span class="math display">\lim_{n \to \infty} \text{Sample} =
+\text{Population}</span></p>
+<p>As the sample size approaches infinity, it approaches the population.
+But in practice, our samples are always finite and small relative to the
+population.</p>
+<h2 id="two-goals-of-statistical-analysis">Two Goals of Statistical
+Analysis</h2>
+<p>What do we do with sample data once we collect it? We pursue one or
+both of two fundamental goals:</p>
+<h3 id="description">1. Description</h3>
+<p>The first goal is to <strong>describe</strong> the data we have
+collected. This is called <strong>descriptive statistics</strong>. We
+might:</p>
+<ul>
+<li>Calculate the average (mean) age in our sample</li>
+<li>Determine the most common (mode) educational level</li>
+<li>Find the middle value (median) of family incomes</li>
+<li>Measure the spread (variance or standard deviation) of environmental
+commitment scores</li>
+</ul>
+<p>Descriptive statistics summarize and organize data in meaningful
+ways. They help us understand what our sample looks like. When we
+describe sample data, we’re making statements only about that specific
+set of observations.</p>
+<h3 id="inference">2. Inference</h3>
+<p>The second, more ambitious goal is to <strong>infer</strong> patterns
+and relationships that extend beyond our sample to the broader
+population. This is called <strong>inferential statistics</strong> or
+<strong>statistical inference</strong>.</p>
+<p>Suppose we collect sample data on 25 different variables for each
+person: age, education level, commitment to environmental causes, family
+income, transportation choices, and so on. We might discover
+relationships among these variables in our sample—for instance, that
+people with higher education levels tend to show stronger commitment to
+environmental causes.</p>
+<p>The question then becomes: Can we <strong>extrapolate</strong> this
+relationship from our tiny sample to the entire population? Can we say
+with confidence that the relationship we found in this specific dataset
+also exists more broadly?</p>
+<p>This is the central challenge of inferential statistics. We observe
+patterns in our sample and attempt to make general claims about the
+population. The entire machinery of statistical inference—hypothesis
+tests, confidence intervals, p-values, regression analysis—exists to
+help us make this logical leap from sample to population in a rigorous,
+quantifiable way.</p>
+<section id="reflective-question" class="callout-note"
+data-icon="false">
+<h2>Reflective Question</h2>
+<p>Why is it more valuable to make inferences about the population than
+to simply describe our sample?</p>
+</section>
+<section id="answer-2" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>Describing our sample tells us only about the specific observations
+we happened to collect. But policy decisions, scientific theories, and
+practical applications require understanding that extends beyond our
+particular sample. We need to know whether the patterns we observe are
+likely to hold generally, not just in the specific cases we studied.
+This is what makes statistical inference so powerful and so essential
+for decision-making.</p>
+</section>
+<p>When we perform inference successfully—when we can say with justified
+confidence that our sample findings reflect population patterns—we
+achieve what statisticians call <strong>external validity</strong>. But
+before we can even attempt to generalize to the population, we must
+first ensure that our findings within the sample are sound. When our
+causal analysis within the sample is properly conducted and the
+relationships we identify are genuine (not artifacts of confounding
+variables or measurement error), we say our analysis has
+<strong>internal validity</strong>. Both forms of validity are essential
+for credible statistical work.</p>
+<h2 id="two-philosophical-approaches-to-inference">Two Philosophical
+Approaches to Inference</h2>
+<p>How many fundamentally different approaches exist for making
+statistical inferences? The answer is two: the <strong>frequentist
+approach</strong> and the <strong>Bayesian approach</strong>. These
+represent two distinct philosophical frameworks for reasoning about
+probability and uncertainty.</p>
+<h3 id="the-frequentist-approach">The Frequentist Approach</h3>
+<p>The frequentist approach, which has dominated statistical practice
+for much of the 20th century, interprets probability in terms of
+long-run frequencies. From this perspective, probability statements only
+make sense for events that can be repeated many times.</p>
+<p>Consider flipping a coin. A frequentist interprets “the probability
+of heads is 0.5” to mean: if we flip this coin infinitely many times,
+heads will appear in 50% of the flips. Probability, in this view, is an
+objective property of the world—a statement about what would happen if
+we could repeat an experiment indefinitely.</p>
+<p>This philosophical stance has important implications. Imagine I flip
+a coin and catch it in my hand, concealing the result. I know how it
+landed, but you don’t. What is the probability that it landed heads?</p>
+<section id="thought-experiment" class="callout-note" data-icon="false">
+<h2>Thought Experiment</h2>
+<p>I’ve just flipped a coin and caught it in my closed hand. I can see
+the result, but you cannot. What is the probability that the coin shows
+heads?</p>
+</section>
+<p>A frequentist would say: the probability is either 0 or 1, depending
+on how it actually landed. If it landed heads, the probability is 1
+(certainty). If it landed tails, the probability is 0 (impossibility).
+The coin has already landed—there’s nothing probabilistic about it
+anymore. The event has occurred, and its outcome is now a fact of the
+world, even if you don’t know what that fact is.</p>
+<p>This reveals a key feature of frequentist thinking:
+<strong>probabilities apply to events that haven’t happened
+yet</strong>, not to events that have already occurred but whose
+outcomes we simply don’t know. From a frequentist perspective, once the
+coin has landed, talking about the “probability” of how it landed is
+meaningless. It landed some particular way. The uncertainty you feel is
+about your knowledge, not about the event itself.</p>
+<h3 id="the-bayesian-approach">The Bayesian Approach</h3>
+<p>The Bayesian approach takes a fundamentally different view. Bayesians
+interpret probability as a measure of our <strong>degree of
+belief</strong> or state of knowledge about an event. Probability, from
+this perspective, is subjective—it represents how confident we are,
+given the information we have.</p>
+<p>Let’s return to the coin in my hand. A Bayesian would say: given that
+you don’t know how it landed and you have no reason to believe the coin
+is unfair, your probability assessment should be 0.5. This doesn’t mean
+the coin is somehow in a superposition of states. Rather, it means that
+given your current state of knowledge, you should be equally uncertain
+about whether it shows heads or tails.</p>
+<p>If I were to give you a hint—say, “It’s not tails”—a Bayesian would
+immediately update your probability to 1 for heads. Your degree of
+belief changes as you gain new information, even though the physical
+state of the coin hasn’t changed at all.</p>
+<section id="fundamental-philosophical-difference"
+class="callout-important" data-icon="false">
+<h2>Fundamental Philosophical Difference</h2>
+<p><strong>Frequentist view</strong>: Probability is an objective
+property of repeatable events. It doesn’t make sense to assign
+probabilities to fixed but unknown quantities.</p>
+<p><strong>Bayesian view</strong>: Probability represents our degree of
+belief or state of knowledge. We can assign probabilities to any
+uncertain proposition, including fixed but unknown quantities.</p>
+</section>
+<p>This philosophical difference leads to very different statistical
+methodologies. Frequentists develop procedures that work well in the
+long run—if we used this test over and over, we’d make correct decisions
+most of the time. Bayesians explicitly incorporate prior knowledge and
+update their beliefs as new evidence arrives.</p>
+<p>Most practicing statisticians today are implicitly Bayesian in their
+everyday reasoning about uncertainty, even if they use frequentist
+methods in their formal analyses. When we say “there’s a 70% chance it
+will rain tomorrow,” we’re thinking like Bayesians—probability as degree
+of belief. When we conduct a hypothesis test with a significance level
+of 0.05, we’re using frequentist methodology—probability as long-run
+frequency.</p>
+<h3 id="which-approach-is-right">Which Approach Is “Right”?</h3>
+<p>Neither approach is universally correct or incorrect. They answer
+different questions and serve different purposes. Frequentist methods
+provide objective procedures with well-understood long-run properties,
+which makes them particularly valuable in fields like medical research
+where regulatory decisions require clear standards. Bayesian methods
+allow us to explicitly incorporate prior knowledge and provide direct
+probability statements about hypotheses, which makes them particularly
+valuable in fields where we have genuine prior information and want to
+update our beliefs.</p>
+<p>Throughout this course, we’ll primarily use frequentist methods, as
+these remain the dominant framework in most applied fields and are what
+you’ll encounter in published research. However, we’ll also discuss
+Bayesian perspectives where they provide valuable insights or
+alternative ways of thinking about inference.</p>
+<p>The key is to understand both philosophical frameworks and recognize
+that they represent different—but equally rigorous—ways of reasoning
+about uncertainty and evidence.</p>
+<h2 id="understanding-hypothesis-testing-concepts">Understanding
+Hypothesis Testing Concepts</h2>
+<p>Before we can intelligently discuss either frequentist or Bayesian
+inference, we need to understand some fundamental concepts that appear
+throughout statistical testing. These ideas—particularly around errors
+in decision-making—form the conceptual foundation for statistical
+inference.</p>
+<h3 id="types-of-errors">Types of Errors</h3>
+<p>When we conduct a statistical test, we’re making a decision: either
+reject a hypothesis or fail to reject it. Like any decision made under
+uncertainty, we can make mistakes. There are two types of mistakes we
+might make:</p>
+<section id="type-i-error" class="callout-important" data-icon="false">
+<h2>Type I Error</h2>
+<p>A <strong>Type I error</strong> occurs when we reject a hypothesis
+that is actually correct. We declare that something is happening when,
+in fact, it is not.</p>
+<p>In medical testing: declaring a healthy patient is sick (false
+positive)<br />
+In criminal justice: convicting an innocent person<br />
+In scientific research: claiming we’ve found an effect when none
+exists</p>
+</section>
+<section id="type-ii-error" class="callout-important" data-icon="false">
+<h2>Type II Error</h2>
+<p>A <strong>Type II error</strong> occurs when we fail to reject a
+hypothesis that is actually false. We fail to detect something that is
+really happening.</p>
+<p>In medical testing: declaring a sick patient is healthy (false
+negative)<br />
+In criminal justice: acquitting a guilty person<br />
+In scientific research: failing to detect an effect that actually
+exists</p>
+</section>
+<p>These two types of errors are in tension with each other. If we make
+it harder to commit a Type I error (by requiring very strong evidence
+before rejecting a hypothesis), we inevitably make it easier to commit a
+Type II error (we’ll fail to detect real effects more often).
+Conversely, if we’re very eager to detect effects (reducing Type II
+errors), we’ll end up making more Type I errors by seeing patterns that
+aren’t really there.</p>
+<h3 id="the-p-value">The P-Value</h3>
+<p>The <strong>p-value</strong> is the probability of making a Type I
+error—the probability of rejecting a correct hypothesis. More precisely,
+it’s the probability of observing data as extreme as (or more extreme
+than) what we actually observed, assuming the hypothesis we’re testing
+is true.</p>
+<p>The p-value is calculated from your data using statistical
+procedures. It’s an output of your analysis, not an input. In the old
+days, p-values were looked up in printed tables at the back of
+statistics textbooks. Today, statistical software calculates them
+instantly.</p>
+<section id="common-misconception" class="callout-warning"
+data-icon="false">
+<h2>Common Misconception</h2>
+<p>The p-value is <strong>not</strong> “the probability that our results
+are wrong” or “the probability that the hypothesis is true.” It is
+specifically the probability of observing our data (or more extreme
+data) if the hypothesis we’re testing is actually correct.</p>
+</section>
+<h3 id="the-significance-level-α">The Significance Level (α)</h3>
+<p>The <strong>significance level</strong>, denoted by the Greek letter
+α (alpha), is the threshold probability you choose before collecting
+data. It represents how much Type I error risk you’re willing to
+tolerate.</p>
+<p>Commonly used significance levels include: - α = 0.05 (5%): The most
+common choice in many fields - α = 0.01 (1%): Used when Type I errors
+are particularly costly - α = 0.10 (10%): Used when Type I errors are
+less concerning or when sample sizes are small</p>
+<p>Here’s the crucial point: <strong>you choose α before looking at your
+data</strong>. The significance level is an input to your analysis,
+while the p-value is an output. You then compare them:</p>
+<ul>
+<li>If p-value &lt; α: Reject the hypothesis (the evidence is strong
+enough)</li>
+<li>If p-value ≥ α: Fail to reject the hypothesis (the evidence is not
+strong enough)</li>
+</ul>
+<h3 id="why-we-never-accept-hypotheses">Why We Never “Accept”
+Hypotheses</h3>
+<p>Notice the careful language: we “reject” or “fail to reject”
+hypotheses. We never “accept” a hypothesis. Why this asymmetry?</p>
+<p>The reason is fundamental to the nature of scientific reasoning.
+Consider the history of physics. About 500 years ago, Isaac Newton
+developed his theory of gravity, which explained why objects fall to the
+ground. For over two centuries, Newton’s theory was supported by all
+available evidence. Scientists didn’t say “we accept Newton’s theory as
+correct”—they said “we fail to reject it; it’s the best explanation we
+have so far.”</p>
+<p>Then, about 100 years ago, Albert Einstein developed general
+relativity, which showed that Newton’s theory, while extremely useful
+for everyday purposes, is actually incorrect in important ways.
+Einstein’s theory superseded Newton’s.</p>
+<p>But does this mean Einstein’s theory is “correct”? Not necessarily.
+It’s the best explanation we have now, consistent with all currently
+available evidence. But tomorrow, someone might develop an even better
+theory that supersedes Einstein’s.</p>
+<section id="scientific-humility" class="callout-tip" data-icon="false">
+<h2>Scientific Humility</h2>
+<p>In science, we can demonstrate that theories are <em>wrong</em> or
+<em>false</em> (by finding contradictory evidence), but we can never
+prove that theories are <em>correct</em> or <em>true</em> (because
+future evidence might contradict them). This is why we never “accept”
+hypotheses—we only fail to reject them given current evidence.</p>
+</section>
+<p>This principle, articulated by philosopher Karl Popper, is called
+<strong>falsificationism</strong>. Scientific theories can be falsified
+but never verified with absolute certainty. This is why statistical
+hypothesis testing is framed around rejection rather than
+acceptance.</p>
+<h3 id="statistical-power">Statistical Power</h3>
+<p>There’s one more important concept related to errors:
+<strong>statistical power</strong>. Power is defined as the probability
+of <em>not</em> making a Type II error—that is, the probability of
+correctly rejecting a false hypothesis.</p>
+<p>High statistical power is desirable: it means your test is good at
+detecting effects when they exist. Power depends on several factors: -
+Sample size (larger samples → higher power) - Effect size (larger
+effects → easier to detect → higher power) - Significance level (higher
+α → higher power, but also more Type I errors) - Variability in the data
+(less noise → higher power)</p>
+<p>While there’s no standard name for the “probability of making a Type
+II error” (parallel to how we call Type I error probability the
+“p-value”), it’s typically denoted β (beta). Then power = 1 - β.</p>
+<h2 id="looking-ahead">Looking Ahead</h2>
+<p>Throughout this course, we’ll develop both descriptive and
+inferential tools. We’ll learn to:</p>
+<ul>
+<li>Visualize data through graphs and charts</li>
+<li>Calculate summary statistics that capture essential features of
+datasets</li>
+<li>Recognize different probability distributions and understand when
+each applies</li>
+<li>Use sample data to make justified inferences about populations</li>
+<li>Establish cause-and-effect relationships through careful
+analysis</li>
+<li>Navigate the philosophical differences between frequentist and
+Bayesian approaches</li>
+</ul>
+<p>Most importantly, we’ll engage in <strong>abstract thinking</strong>
+about data and probability. Statistics is not just a collection of
+computational procedures—it’s a coherent framework for reasoning about
+uncertainty, variability, and inference. Understanding this framework
+will serve you in any field where data and evidence matter.</p>
+<p>The goal of this book is not merely to learn formulas and procedures,
+but to develop statistical intuition—to think clearly about randomness,
+patterns, causation, and inference. This kind of thinking is
+increasingly essential in environmental policy, climate science,
+economics, public health, and virtually every domain where
+evidence-based decision-making matters.</p>
+<p>We’ll build this understanding gradually, starting with the
+foundations of probability and working our way up to sophisticated
+inferential methods. Along the way, we’ll grapple with deep questions:
+How do we know what we know? What does it mean for evidence to support a
+claim? How much uncertainty should we tolerate in our conclusions? These
+aren’t just technical questions—they’re fundamental questions about
+knowledge itself, approached through the lens of mathematical
+reasoning.</p>

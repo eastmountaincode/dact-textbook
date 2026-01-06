@@ -1,0 +1,989 @@
+<h1 id="dichotomous-choice-modeling">Dichotomous Choice Modeling</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In the 1980s, researchers Ben-Akiva and Lerman interviewed commuters
+in Boston about their transportation choices. Their specific research
+question was simple but important: <em>Does the difference in commute
+time between car and bus affect people’s mode choice?</em></p>
+<p>To answer this, they surveyed huundreds of commuters, collecting data
+on: - Their actual commute times by car and by bus - Their actual
+commuting choice (0 = drove to work, 1 = took the bus)</p>
+<p>Here’s a table showing these data for 21 of the commuters surveyed.
+While the authors collected data on a whole range of variables, we will
+just ignore them for the purpose of this chapter. In our model, we will
+not include any controls to keep things simple. In real life, of course,
+a person’s commuting choice will depend of many, many factors.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ID</th>
+<th style="text-align: center;">Commute Time (minutes)</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">Choice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Auto</td>
+<td style="text-align: center;">Bus</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">:–:</td>
+<td style="text-align: center;">:—-:</td>
+<td style="text-align: center;">:—:</td>
+<td style="text-align: center;">:——:</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">51.0</td>
+<td style="text-align: center;">85.0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">95.0</td>
+<td style="text-align: center;">43.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">18.5</td>
+<td style="text-align: center;">84.0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">62.0</td>
+<td style="text-align: center;">4.4</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">41.5</td>
+<td style="text-align: center;">24.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: center;">91.2</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">82.0</td>
+<td style="text-align: center;">38.0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">27.6</td>
+<td style="text-align: center;">79.7</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">99.1</td>
+<td style="text-align: center;">2.2</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">51.4</td>
+<td style="text-align: center;">83.8</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">8.6</td>
+<td style="text-align: center;">1.6</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">22.5</td>
+<td style="text-align: center;">74.1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">51.8</td>
+<td style="text-align: center;">20.2</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">4.1</td>
+<td style="text-align: center;">86.9</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">62.2</td>
+<td style="text-align: center;">90.1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">89.9</td>
+<td style="text-align: center;">2.2</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">41.6</td>
+<td style="text-align: center;">91.5</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">56.2</td>
+<td style="text-align: center;">31.6</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">19</td>
+<td style="text-align: center;">4.1</td>
+<td style="text-align: center;">28.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">95.1</td>
+<td style="text-align: center;">22.5</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">81.0</td>
+<td style="text-align: center;">19.2</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>Some of the values in the table are very odd. And no, I
+double-checked, I transcribed them here correctly.</p>
+<p>The variable choice is coded as either 0 or 1, where 0 is the code
+for commuters who drove to work and 1 for those that took the bus. We
+can now sort these by this variable and calculate the difference in
+commute times. We will further assume that a person’s commuting choice
+depends <em>only</em> on the difference in commute time between the two
+options they have. Here’s the modified table.</p>
+<table>
+<thead>
+<tr>
+<th rowspan="2" style="text-align: center;">
+ID
+</th>
+<th colspan="2" style="text-align: center;">
+Commute Time (minutes)
+</th>
+<th rowspan="2" style="text-align: center;">
+Choice
+</th>
+</tr>
+<tr>
+<th style="text-align: center;">
+Auto
+</th>
+<th style="text-align: center;">
+Bus
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">
+1
+</td>
+<td style="text-align: center;">
+51.0
+</td>
+<td style="text-align: center;">
+85.0
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+2
+</td>
+<td style="text-align: center;">
+95.0
+</td>
+<td style="text-align: center;">
+43.5
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+3
+</td>
+<td style="text-align: center;">
+18.5
+</td>
+<td style="text-align: center;">
+84.0
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+4
+</td>
+<td style="text-align: center;">
+62.0
+</td>
+<td style="text-align: center;">
+4.4
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+5
+</td>
+<td style="text-align: center;">
+41.5
+</td>
+<td style="text-align: center;">
+24.5
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+6
+</td>
+<td style="text-align: center;">
+2.0
+</td>
+<td style="text-align: center;">
+91.2
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+7
+</td>
+<td style="text-align: center;">
+82.0
+</td>
+<td style="text-align: center;">
+38.0
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+8
+</td>
+<td style="text-align: center;">
+27.6
+</td>
+<td style="text-align: center;">
+79.7
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+9
+</td>
+<td style="text-align: center;">
+99.1
+</td>
+<td style="text-align: center;">
+2.2
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+10
+</td>
+<td style="text-align: center;">
+51.4
+</td>
+<td style="text-align: center;">
+83.8
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+11
+</td>
+<td style="text-align: center;">
+8.6
+</td>
+<td style="text-align: center;">
+1.6
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+12
+</td>
+<td style="text-align: center;">
+22.5
+</td>
+<td style="text-align: center;">
+74.1
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+13
+</td>
+<td style="text-align: center;">
+51.8
+</td>
+<td style="text-align: center;">
+20.2
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+14
+</td>
+<td style="text-align: center;">
+4.1
+</td>
+<td style="text-align: center;">
+86.9
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+15
+</td>
+<td style="text-align: center;">
+62.2
+</td>
+<td style="text-align: center;">
+90.1
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+16
+</td>
+<td style="text-align: center;">
+89.9
+</td>
+<td style="text-align: center;">
+2.2
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+17
+</td>
+<td style="text-align: center;">
+41.6
+</td>
+<td style="text-align: center;">
+91.5
+</td>
+<td style="text-align: center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+18
+</td>
+<td style="text-align: center;">
+56.2
+</td>
+<td style="text-align: center;">
+31.6
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+19
+</td>
+<td style="text-align: center;">
+4.1
+</td>
+<td style="text-align: center;">
+28.5
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+20
+</td>
+<td style="text-align: center;">
+95.1
+</td>
+<td style="text-align: center;">
+22.5
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+21
+</td>
+<td style="text-align: center;">
+81.0
+</td>
+<td style="text-align: center;">
+19.2
+</td>
+<td style="text-align: center;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>We can now make a scatter plot of the last two columns, with
+difference in commute times on the X-axis and the commuters’ choices on
+the Y-axis.</p>
+<figure id="fig-commute-scatter">
+<img src="/assets/dichotomous-choice/figures/commute_scatter.png" style="width:85.0%"
+data-fig-align="center"
+alt="Scatter plot showing the relationship between commute time differences and mode choice. When driving takes longer than the bus (positive differences), commuters tend to choose the bus. When the bus takes longer (negative differences), commuters tend to drive." />
+<figcaption aria-hidden="true">Scatter plot showing the relationship
+between commute time differences and mode choice. When driving takes
+longer than the bus (positive differences), commuters tend to choose the
+bus. When the bus takes longer (negative differences), commuters tend to
+drive.</figcaption>
+</figure>
+<p>Our task is to model this relationship: to understand how the
+difference in commute time influences the probability that someone will
+choose transit. To do this, I want to bring you on a brief historical
+journey.</p>
+<h2 id="a-problem-of-transportation-planning">A Problem of
+Transportation Planning</h2>
+<p>In the mid-1960s, traffic congestion in the Bay Area had reached a
+critical juncture. The California Highway Commission faced a fundamental
+decision: should they continue investing in freeway expansion, or could
+a new mass transit system offer a better path forward? They proposed an
+ambitious solution—a network of buses and rail that would connect the
+region, fundamentally reshaping how people commuted.</p>
+<p>But there was a problem. Before committing billions in public
+resources, the Commission needed to answer a deceptively simple
+question: <em>How many people would actually use this system?</em></p>
+<p>In 1969, with the first BART station under construction, the
+Commission faced a pilot phase evaluation. They needed to estimate
+ridership—not based on hunches or optimistic projections, but on actual
+data about people’s choices. So they conducted an extensive survey of
+Bay Area residents, asking a seemingly straightforward question:
+<em>Would you take the bus instead of driving?</em></p>
+<p>Yes or no.</p>
+<p>This binary question—a dichotomous choice—would unlock something far
+more significant than transit planning. It would lead to the discovery
+of a new statistical framework that would transform how economists,
+marketers, and policymakers understand decision-making itself.</p>
+<h2 id="the-birth-of-a-framework-dan-mcfaddens-insight">The Birth of a
+Framework: Dan McFadden’s Insight</h2>
+<p>The Commission’s first instinct was to use standard
+regression—treating the yes/no responses as if they were continuous
+measurements. Using this linear probability model, they estimated that
+about 15% of Bay Area residents would use the new transit system.</p>
+<p>But then they hired a young economist named Dan McFadden, recently
+arrived at UC Berkeley. McFadden looked at the problem differently. He
+recognized something fundamental: when people make discrete choices—yes
+or no, use transit or drive, buy or don’t buy—the standard tools of
+regression analysis were fundamentally mismatched to the problem.</p>
+<p>McFadden developed a new approach using what he called <em>latent
+variable models</em>. The insight was elegant: behind every observed
+choice lies an unobserved psychological disposition. When someone
+decides whether to take the bus, they’re processing information about
+commute time, cost, convenience, and comfort—all of which feed into a
+latent evaluation of the option. When that latent evaluation exceeds
+some threshold, they choose to use transit.</p>
+<p>Using this framework, McFadden predicted that only about 6.3% of
+residents would use BART. His colleagues dismissed this as too
+pessimistic. Yet when BART opened and ridership was measured, it came in
+at 6.2%—remarkably close to McFadden’s prediction.</p>
+<p>This work on discrete choice modeling was so significant that in
+2000—more than three decades later—McFadden was awarded the Nobel Prize
+in Economics. The Nobel citation recognized his contribution: <em>“he
+showed how to statistically handle fundamental aspects of microdata,
+namely data on the most important decisions we make in life: the choice
+of education, occupation, place of residence, marital status, number of
+children, so called discrete choices.”</em></p>
+<p>Today, the methods McFadden pioneered are used everywhere: predicting
+consumer behavior, understanding labor market decisions, analyzing
+election outcomes, and evaluating policy interventions.</p>
+<h2 id="back-to-boston-understanding-commuting-choices">Back to Boston:
+Understanding Commuting Choices</h2>
+<p>The data we plotted above tell a clear visual story. When the
+difference in commute time favors driving (negative values), people
+drive. When the difference favors the bus (positive values), people take
+transit. Yet there’s variation even within these patterns—some people
+take the bus despite longer commute times, and others drive even when
+the bus would be faster.</p>
+<p>So let’s get on with our task. We will build a model that answers the
+following question: If the commute time by transit could be reduce, by
+how much would the probability that someone will choose transit
+increase?</p>
+<h2 id="the-binary-probability-function">The Binary Probability
+Function</h2>
+<p>To begin, let’s establish some basic foundations. When people make
+dichotomous (two-choice) decisions, we can describe the outcome using
+the <strong>Bernoulli distribution</strong>.</p>
+<section id="the-bernoulli-distribution" class="callout-important">
+<h2>The Bernoulli Distribution</h2>
+<p>For a dichotomous outcome <span class="math inline">Y</span> that
+takes the value 1 with probability <span class="math inline">p</span>
+and the value 0 with probability <span class="math inline">(1-p)</span>,
+the probability function is:</p>
+<p><span class="math display">f(y) = p^y(1-p)^{1-y}</span></p>
+<p>The expected value of <span class="math inline">Y</span> is
+simply:</p>
+<p><span class="math display">E(Y) = (1-p) \times 0 + p \times 1 =
+p</span></p>
+</section>
+<p>In our commuting example, <span class="math inline">Y = 1</span>
+represents choosing transit and <span class="math inline">Y = 0</span>
+represents choosing a car. The probability <span
+class="math inline">p</span> represents the probability that an
+individual will choose transit, given their specific circumstances.</p>
+<p>Following standard econometric practice, we decompose the observed
+outcome into a deterministic part (what we can predict) and a stochastic
+part (random variation):</p>
+<p><span class="math display">Y_i = p_i + \epsilon_i</span></p>
+<p>where <span class="math inline">p_i</span> is the predicted
+probability for individual <span class="math inline">i</span> and <span
+class="math inline">\epsilon_i</span> is the error term.</p>
+<p>The key question becomes: <strong>How does the difference in commute
+times relate to <span class="math inline">p</span>?</strong></p>
+<h2 id="the-linear-probability-model-a-first-attempt">The Linear
+Probability Model: A First Attempt</h2>
+<p>The most straightforward approach is the <strong>Linear Probability
+Model (LPM)</strong>, which assumes a linear relationship between the
+commute time difference and the probability of choosing transit:</p>
+<p><span class="math display">p_i = \beta_0 + \beta_1 \cdot
+\text{diff}_i</span></p>
+<p>where <span class="math inline">\text{diff}_i = \text{car\_time}_i -
+\text{bus\_time}_i</span> is the difference in commute times for
+individual <span class="math inline">i</span>.</p>
+<div class="callout-note">
+<h2 id="question">Question</h2>
+<p>What are the advantages of starting with a linear model?</p>
+<h2 id="answer">Answer</h2>
+<p>The linear model is computationally simple and has a clear
+interpretation: <span class="math inline">\beta_1</span> represents the
+change in probability per unit increase in the commute time difference.
+It’s easy to estimate using OLS (ordinary least squares) regression, and
+students already understand how to interpret linear coefficients.</p>
+</div>
+<h3 id="estimating-the-lpm">Estimating the LPM</h3>
+<p>When we estimate this model on the Ben-Akiva commuting data, we
+get:</p>
+<p><span class="math display">\widehat{p}_i = 0.515 + 0.007031 \cdot
+\text{diff}_i</span></p>
+<p>The coefficient on <code>diff</code> is positive and statistically
+significant, confirming that a longer drive time relative to bus time
+increases the probability of choosing transit. The magnitude suggests
+that each additional minute of driving time (relative to bus time)
+increases the probability of choosing the bus by about 0.7 percentage
+points.</p>
+<p>We can also calculate the <strong>threshold difference</strong> at
+which someone is indifferent between modes:</p>
+<p><span class="math display">0.5 = 0.515 + 0.007031 \cdot
+\text{diff}</span></p>
+<p>Solving for the threshold: <span class="math inline">\text{diff} =
+-6.93</span> minutes. This means when the bus time exceeds car time by
+about 7 minutes, we’d predict a 50% probability of choosing transit.</p>
+<h3 id="problems-with-the-linear-probability-model">Problems with the
+Linear Probability Model</h3>
+<p>Despite its simplicity, the LPM has serious problems that make it
+unsuitable for modeling binary choices:</p>
+<p><strong>1. Unbounded predictions:</strong> The model can predict
+values less than 0 or greater than 1, which are nonsensical for
+probabilities. Looking at our scatter plot, we can see that the fitted
+line would predict negative probabilities for very negative differences
+in commute times.</p>
+<p><strong>2. Constant marginal effects:</strong> The model assumes that
+each additional minute of commute time difference has the same effect on
+the choice probability, regardless of the current situation. But this
+seems unrealistic. The effect of an additional minute likely matters
+more when someone is on the fence (near 50% probability) than when
+they’re already strongly committed to one mode.</p>
+<p><strong>3. Heteroskedasticity:</strong> Since <span
+class="math inline">Y</span> is binary, the variance of the error term
+is <span class="math inline">\text{Var}(\epsilon_i) = p_i(1-p_i)</span>,
+which depends on <span class="math inline">p_i</span>. This violates the
+homoskedasticity assumption of OLS, making standard errors
+unreliable.</p>
+<section id="the-core-problem" class="callout-important">
+<h2>The Core Problem</h2>
+<p>The fundamental issue is that we’re using a tool designed for
+continuous outcomes to model a categorical choice. We need a
+fundamentally different approach—one that respects the binary nature of
+the outcome.</p>
+</section>
+<h2 id="latent-variable-models-a-better-framework">Latent Variable
+Models: A Better Framework</h2>
+<p>McFadden’s insight was to introduce a <strong>latent
+variable</strong>—an unobserved psychological disposition that drives
+the observed choice. Think of it this way:</p>
+<p>When a commuter considers transit versus driving, they’re mentally
+evaluating the overall utility (satisfaction) of each option. Let <span
+class="math inline">Y^*_i</span> represent this latent evaluation of
+transit relative to driving:</p>
+<ul>
+<li>If <span class="math inline">Y^*_i &gt; 0</span>: The net benefit of
+transit exceeds that of driving → choose transit</li>
+<li>If <span class="math inline">Y^*_i \leq 0</span>: Driving is better
+→ choose driving</li>
+</ul>
+<p>The observed choice is determined by an <strong>indicator
+function</strong>:</p>
+<p><span class="math display">Y_i = \begin{cases} 1 &amp; \text{if }
+Y^*_i &gt; 0 \\ 0 &amp; \text{if } Y^*_i \leq 0 \end{cases}</span></p>
+<div class="video-container">
+<div class="video-wrapper">
+<video controls>
+<source src="/assets/dichotomous-choice/animations/media/videos/dichotomous_choice/1080p60/DichotomousChoice.mp4" type="video/mp4">
+Your browser does not support the video tag. </video>
+</div>
+<div class="video-caption">
+<p><strong>Animation:</strong> This visualization shows how the probit
+and logit models create S-shaped probability curves that respect the
+bounds of probability (0 to 1), unlike the linear probability model
+which can predict impossible values outside this range. Watch how the
+sigmoid curves are steepest where probability is around 50%—exactly
+where marginal information matters most for decision-making.</p>
+</div>
+</div>
+<p>We assume the latent variable depends on observed commute times plus
+unobserved factors:</p>
+<p><span class="math display">Y^*_i = \beta_0 + \beta_1 \cdot
+\text{diff}_i + \epsilon_i</span></p>
+<p>The error term <span class="math inline">\epsilon_i</span> captures
+all the unmeasured factors affecting choice—personal preferences,
+comfort sensitivity, environmental consciousness, and so on.</p>
+<h3 id="deriving-the-probability">Deriving the Probability</h3>
+<p>Now we can derive the probability of observing <span
+class="math inline">Y_i = 1</span>:</p>
+<p><span class="math display">\Pr(Y_i = 1) = \Pr(Y^*_i &gt; 0) =
+\Pr(\epsilon_i &gt; -(\beta_0 + \beta_1 \cdot \text{diff}_i))</span></p>
+<p>Let <span class="math inline">F</span> denote the cumulative
+distribution function (CDF) of <span
+class="math inline">\epsilon_i</span>. Assuming <span
+class="math inline">\epsilon_i</span> has zero mean and a symmetric
+distribution around that mean (standard assumptions), we can show:</p>
+<p><span class="math display">p_i = \Pr(Y_i = 1) = F(\beta_0 + \beta_1
+\cdot \text{diff}_i)</span></p>
+<p>This is a beautiful result. The probability of choosing transit is a
+nonlinear function of the commute time difference, determined by
+whatever distribution we assume for <span
+class="math inline">\epsilon_i</span>.</p>
+<h2 id="the-probit-model-using-the-normal-distribution">The Probit
+Model: Using the Normal Distribution</h2>
+<p>The <strong>probit model</strong> assumes <span
+class="math inline">\epsilon_i</span> follows a standard normal
+distribution:</p>
+<p><span class="math display">f(\epsilon_i) = \phi(\epsilon_i) =
+\frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}\epsilon_i^2}</span></p>
+<p><span class="math display">F(\epsilon_i) = \Phi(\epsilon_i) =
+\int_{-\infty}^{\epsilon_i} \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
+dx</span></p>
+<p>Therefore:</p>
+<p><span class="math display">p_i = \Phi(\beta_0 + \beta_1 \cdot
+\text{diff}_i)</span></p>
+<p>where <span class="math inline">\Phi</span> is the standard normal
+CDF (familiar from introductory statistics as the standard normal
+cumulative probability).</p>
+<h3 id="interpreting-probit-coefficients">Interpreting Probit
+Coefficients</h3>
+<p>The probit coefficients don’t have a direct probability
+interpretation. Instead, they tell us the effect on the <em>latent
+variable</em> <span class="math inline">Y^*_i</span>. The actual effect
+on the probability of choosing transit is the <strong>marginal
+effect</strong>:</p>
+<p><span class="math display">\frac{dp_i}{d(\text{diff}_i)} =
+\phi(\beta_0 + \beta_1 \cdot \text{diff}_i) \times \beta_1</span></p>
+<p>where <span class="math inline">\phi</span> is the standard normal
+probability density function (PDF). Notice that this marginal effect
+varies depending on the value of the commute time difference—it’s
+largest when <span class="math inline">\beta_0 + \beta_1 \cdot
+\text{diff}_i \approx 0</span> (near 50% probability) and smaller at the
+extremes.</p>
+<h2 id="the-logit-model-using-the-logistic-distribution">The Logit
+Model: Using the Logistic Distribution</h2>
+<p>An alternative to probit is the <strong>logit model</strong>, which
+assumes <span class="math inline">\epsilon_i</span> follows a logistic
+distribution:</p>
+<p><span class="math display">f(\epsilon_i) = \lambda(\epsilon_i) =
+\frac{e^{\epsilon_i}}{(1+e^{\epsilon_i})^2}</span></p>
+<p><span class="math display">F(\epsilon_i) = \Lambda(\epsilon_i) =
+\frac{e^{\epsilon_i}}{1+e^{\epsilon_i}}</span></p>
+<p>Therefore:</p>
+<p><span class="math display">p_i = \Lambda(\beta_0 + \beta_1 \cdot
+\text{diff}_i) = \frac{e^{\beta_0 + \beta_1 \cdot \text{diff}_i}}{1 +
+e^{\beta_0 + \beta_1 \cdot \text{diff}_i}}</span></p>
+<p>This is the <strong>logistic function</strong>, which has a
+particularly nice property. If we take the ratio of the probability of
+choosing transit to the probability of choosing driving:</p>
+<p><span class="math display">\frac{p_i}{1-p_i} = e^{\beta_0 + \beta_1
+\cdot \text{diff}_i}</span></p>
+<p>Taking natural logarithms:</p>
+<p><span class="math display">\ln\left(\frac{p_i}{1-p_i}\right) =
+\beta_0 + \beta_1 \cdot \text{diff}_i</span></p>
+<p>The left side is the <strong>log-odds</strong>. This means logit
+coefficients directly represent changes in the log-odds, which is why
+epidemiologists and health researchers prefer logit.</p>
+<h3 id="marginal-effects-in-logit">Marginal Effects in Logit</h3>
+<p>The marginal effect in logit is:</p>
+<p><span class="math display">\frac{dp_i}{d(\text{diff}_i)} =
+\Lambda(\beta_0 + \beta_1 \cdot \text{diff}_i) \times (1-\Lambda(\beta_0
++ \beta_1 \cdot \text{diff}_i)) \times \beta_1</span></p>
+<p>This can also be written as <span class="math inline">p_i(1-p_i)
+\times \beta_1</span>, showing how the effect of the commute difference
+depends on the current probability.</p>
+<h2 id="estimation-maximum-likelihood">Estimation: Maximum
+Likelihood</h2>
+<p>How do we actually estimate the parameters <span
+class="math inline">\beta_0</span> and <span
+class="math inline">\beta_1</span> in probit and logit models? We can’t
+use OLS because the model isn’t linear. Instead, we use <strong>Maximum
+Likelihood Estimation (MLE)</strong>.</p>
+<p>The core idea is intuitive: choose the parameter values that make the
+observed data most likely. For binary choice data, the
+<strong>likelihood function</strong> is:</p>
+<p><span class="math display">\mathcal{L} = \prod_{i: Y_i=1} p_i \times
+\prod_{i: Y_i=0} (1-p_i)</span></p>
+<p>In plain language: the likelihood is the product of the predicted
+probabilities of choosing transit (for those who did) and predicted
+probabilities of choosing driving (for those who didn’t).</p>
+<div class="callout-note">
+<h2 id="question-1">Question</h2>
+<p>Why is maximizing the likelihood the right approach for binary choice
+models?</p>
+<h2 id="answer-1">Answer</h2>
+<p>Maximizing likelihood means finding the parameter values that make
+our observed data as probable as possible. If our model is correct, the
+parameters that generated the data should make that data more likely
+than alternative parameter values. This is a fundamental principle of
+statistical inference that works even when OLS assumptions are
+violated.</p>
+</div>
+<h3 id="how-mle-works-conceptually">How MLE Works (Conceptually)</h3>
+<ol type="1">
+<li><strong>Start with an initial guess</strong> about the parameter
+values</li>
+<li><strong>For each observation</strong>, calculate the predicted
+probability of their observed choice</li>
+<li><strong>Compute the likelihood</strong> as the product of these
+probabilities</li>
+<li><strong>Adjust the parameters</strong> to increase the
+likelihood</li>
+<li><strong>Repeat</strong> until the likelihood stops increasing
+(convergence)</li>
+</ol>
+<p>In practice, software implements sophisticated optimization
+algorithms (like Newton-Raphson) to perform this search efficiently.</p>
+<h2 id="results-comparing-lpm-probit-and-logit">Results: Comparing LPM,
+Probit, and Logit</h2>
+<p>When we estimate these three models on the Ben-Akiva commuting data,
+here’s what we find:</p>
+<p><strong>Linear Probability Model:</strong> - Coefficient on diff:
+0.007031 (p &lt; 0.001) - Intercept: 0.515</p>
+<p><strong>Probit Model:</strong> - Coefficient on diff: 0.030000 (p =
+0.004) - Intercept: 0.064434 - Pseudo-R²: 0.5758</p>
+<p><strong>Logit Model:</strong> - Coefficient on diff: 0.053110 (p =
+0.010)<br />
+- Intercept: 0.237575 - Pseudo-R²: 0.5757</p>
+<p>Note that the probit and logit coefficients are much larger than the
+LPM coefficient. This isn’t because the effects are actually larger—it’s
+because these coefficients represent changes in the latent variable, not
+changes in probability.</p>
+<h2 id="marginal-effects-the-real-story">Marginal Effects: The Real
+Story</h2>
+<p>To compare effects across models, we must look at <strong>marginal
+effects</strong>. Let’s evaluate each at the sample mean commute time
+difference (approximately 1.22 minutes):</p>
+<p><strong>LPM Marginal Effect:</strong> 0.007031 (constant for all)</p>
+<p><strong>Probit Marginal Effect at Mean:</strong> 0.0119</p>
+<p><strong>Logit Marginal Effect at Mean:</strong> 0.0130</p>
+<p>These are much more comparable! At the average commute time
+difference, a one-minute increase in the bus time advantage increases
+the probability of choosing transit by about 0.012 to 0.013 percentage
+points—much smaller than the LPM’s constant effect.</p>
+<p>The probit and logit marginal effects are similar but not identical.
+This is typical—they differ slightly because of the different
+distributional assumptions, but the differences usually matter less than
+we might think.</p>
+<h2 id="probit-or-logit-a-practical-perspective">Probit or Logit? A
+Practical Perspective</h2>
+<section id="choosing-between-probit-and-logit"
+class="callout-important">
+<h2>Choosing Between Probit and Logit</h2>
+<p><strong>For most applications, the choice between probit and logit is
+a matter of taste.</strong> Both models typically produce similar
+results and marginal effects. The differences are usually small compared
+to specification issues (like omitted variables or functional form
+choices).</p>
+<p><strong>Exceptions and conventions:</strong> - <strong>Probit is
+preferred</strong> when there’s reason to believe errors are normally
+distributed or when working with panel data where you want to control
+for unobserved heteroskedasticity - <strong>Logit is preferred</strong>
+in epidemiology because coefficients have a natural interpretation as
+log-odds ratios - <strong>Multinomial logit</strong> is the standard
+choice for multi-choice problems (more than two alternatives) -
+<strong>Ordered probit</strong> is conventional for ordinal outcomes
+(like survey responses on a scale)</p>
+</section>
+<h2 id="a-deeper-look-the-visualization">A Deeper Look: The
+Visualization</h2>
+<p>When we plot the fitted probabilities from our models against the
+commute time difference, we see a crucial difference from the LPM:</p>
+<ul>
+<li>The <strong>probit and logit curves</strong> are S-shaped (sigmoid),
+respecting the bounds of probability (0 to 1)</li>
+<li>They’re <strong>steepest in the middle</strong> where probability is
+around 50%, reflecting how information matters most when we’re
+uncertain</li>
+<li>They <strong>flatten at the extremes</strong>, where strongly
+positive or negative commute differences make the choice obvious</li>
+</ul>
+<p>The <strong>LPM line</strong> carelessly violates these bounds,
+predicting negative probabilities for large negative commute
+differences.</p>
+<h2 id="computing-marginal-effects-in-practice">Computing Marginal
+Effects in Practice</h2>
+<p>When estimating these models, most software packages can compute
+marginal effects automatically. In Stata, for example:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode stata"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">probit</span> choice <span class="fu">diff</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(<span class="fu">diff</span>)</span></code></pre></div>
+<p>This gives marginal effects at the sample means. You can also
+evaluate marginal effects at specific values:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode stata"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(<span class="fu">diff</span>) <span class="fu">at</span>(<span class="fu">diff</span>=30)</span></code></pre></div>
+<p>This would show the effect of the commute time difference when it
+equals 30 minutes.</p>
+<h2 id="threshold-analysis-the-break-even-point">Threshold Analysis: The
+Break-Even Point</h2>
+<p>Beyond average marginal effects, policy makers often want to know:
+<em>At what commute time difference would someone be indifferent between
+modes?</em></p>
+<p>In the probit model, this corresponds to where <span
+class="math inline">\beta_0 + \beta_1 \cdot \text{diff} = 0</span>
+(where the latent utility equals zero, giving 50% predicted
+probability).</p>
+<p>Solving: <span class="math inline">\text{diff}^* = -\beta_0 /
+\beta_1</span></p>
+<p>With our estimates: <span class="math inline">\text{diff}^* =
+-0.064434 / 0.030000 = -2.15</span> minutes</p>
+<p>This means a commuter is indifferent when the bus is about 2 minutes
+faster than driving. Making the bus even 1 minute faster shifts the
+probability toward transit; making it 1 minute slower shifts probability
+toward driving.</p>
+<p>This kind of threshold analysis is tremendously useful for policy
+evaluation: <em>How much faster does transit need to be to attract a
+meaningful share of riders?</em></p>
+<h2 id="extensions-and-related-models">Extensions and Related
+Models</h2>
+<p>The framework you’ve learned generalizes in several important
+directions:</p>
+<p><strong>Multinomial Logit</strong> extends to cases with more than
+two alternatives (e.g., car, bus, bike, carpool).</p>
+<p><strong>Ordered Probit</strong> handles ordinal outcomes (e.g.,
+survey responses: strongly disagree, disagree, neutral, agree, strongly
+agree).</p>
+<p><strong>Nested Logit</strong> models choice hierarchies (e.g., first
+decide public vs. private transport, then choose specific mode).</p>
+<p><strong>Mixed Logit</strong> allows parameter heterogeneity—different
+people have different preferences, not just different observed
+characteristics.</p>
+<p><strong>Conditional Logit</strong> handles choice-specific attributes
+(different modes have different costs and times, not just
+person-specific traits).</p>
+<p>Each of these respects the fundamental insight: when people make
+discrete choices, we need methods that account for the categorical
+nature of the outcome and the bounded nature of probability.</p>
+<h2 id="summary-from-boston-to-a-general-framework">Summary: From Boston
+to a General Framework</h2>
+<p>We started with a real problem: How many people would use a new
+transit system? A simple question about choice led to a revolution in
+econometric practice.</p>
+<p>Dan McFadden recognized that modeling discrete choices required
+fundamentally different statistical tools. The latent variable
+framework—where observed choices reflect thresholds of underlying
+continuous utilities—proved to be exactly the right abstraction.</p>
+<p>Today, when a company wants to predict product adoption, a city wants
+to forecast ridership, a researcher wants to understand voting behavior,
+or a policymaker wants to evaluate a program’s effects on people’s
+decisions, they use the tools McFadden developed.</p>
+<p>The methods you’ve learned—probit and logit, maximum likelihood
+estimation, marginal effect calculation—are the workhorses of modern
+applied economics. They appear in policy analysis, business strategy,
+epidemiology, political science, and marketing. Understanding them
+deeply, as you now do, opens doors to analyzing and understanding human
+choice across virtually every domain.</p>
+<h2 id="key-formulas-reference">Key Formulas Reference</h2>
+<p><strong>Probit Model:</strong> <span class="math display">p_i =
+\Phi(\beta_0 + \beta_1 X_i)</span></p>
+<p><strong>Logit Model:</strong> <span class="math display">p_i =
+\frac{e^{\beta_0 + \beta_1 X_i}}{1 + e^{\beta_0 + \beta_1
+X_i}}</span></p>
+<p><strong>Marginal Effect (Probit):</strong> <span
+class="math display">\frac{dp_i}{dX_i} = \phi(\beta_0 + \beta_1 X_i)
+\cdot \beta_1</span></p>
+<p><strong>Marginal Effect (Logit):</strong> <span
+class="math display">\frac{dp_i}{dX_i} = p_i(1-p_i) \cdot
+\beta_1</span></p>
+<p><strong>Log-Odds (Logit):</strong> <span
+class="math display">\ln\left(\frac{p_i}{1-p_i}\right) = \beta_0 +
+\beta_1 X_i</span></p>
+</div>
+</div>

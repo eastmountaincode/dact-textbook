@@ -1,0 +1,42 @@
+# Chapter organization for the textbook sidebar
+# Chapters are numbered sequentially across all sections (1, 2, 3...)
+# Add new chapters by including their slug (filename without .html)
+
+sections:
+  - name: "Theoretical Foundations"
+    chapters:
+      - intro-data-analytics
+      - probability-distributions
+      - parameters-statistics
+      - operators-properties
+      - bounding_outliers
+      - normal-distribution
+
+  - name: "Descriptive Statistics"
+    chapters:
+      - data
+      - summary-statistics
+      - graphing
+
+  - name: "Bayesian Inference"
+    chapters:
+      - bayesian-inference
+
+  - name: "Frequentist Inference"
+    chapters:
+      - foundations-frequentist
+      - estimating-mean
+      - estimating-variance
+      - testing-mean-large
+      - testing-mean-small
+      - testing-two-means
+      - testing-multiple-means
+
+  - name: "Advanced Modeling"
+    chapters:
+      - correlation
+      - bivariate-regression
+      - multivariate-regression
+      - panel-data
+      - propensity-score
+      - dichotomous-choice

@@ -1,0 +1,699 @@
+<h1 id="sec-hypothesis-testing">Testing a claim about a population
+mean</h1>
+<p>In this chapter, we’ll develop a comprehensive understanding of
+hypothesis testing through a detailed worked example. We’ll build the
+theoretical foundation step by step, introducing key concepts like
+standard error, test statistics, and p-values along the way. By the end
+of this chapter, you will understand how to conduct hypothesis tests for
+population means, interpret their results, and recognize the crucial
+differences between large and small sample tests.</p>
+<p><img src="/assets/testing-mean-large/images/slide_003.png" style="width:80.0%"
+data-fig-align="center" /></p>
+<h2 id="the-problem-evaluating-a-new-curriculum">The Problem: Evaluating
+a New Curriculum</h2>
+<p>Let’s begin with a concrete problem that will guide our exploration
+of hypothesis testing. Suppose we’re trying to improve the logical
+ability of students through a new curriculum. The old curriculum, which
+has been in use for many years, produces an average test score of 80
+points. We’ve developed a new curriculum and trained a large group of
+students using this approach.</p>
+<p>The central question we want to answer is: <strong>Is the new
+curriculum more effective at raising average test scores?</strong></p>
+<p>To investigate this question, we randomly sample 38 students from
+those trained under the new curriculum and record their test scores. Our
+sample yields a mean score of 83 points.</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_004.png" style="width:85.0%"
+data-fig-align="center"
+alt="Our data: Test scores from 38 randomly selected students" />
+<figcaption aria-hidden="true">Our data: Test scores from 38 randomly
+selected students</figcaption>
+</figure>
+<section id="initial-observation" class="callout-note"
+data-icon="false">
+<h2>🤔 Initial Observation</h2>
+<p>While our sample mean of 83 is higher than the old curriculum mean of
+80, we cannot immediately conclude that the population mean of all
+students trained under the new curriculum exceeds 80. Why not? Because
+our sample is just one of many possible samples we could have drawn, and
+sample means vary due to random sampling.</p>
+</section>
+<h3 id="the-logic-of-hypothesis-testing">The Logic of Hypothesis
+Testing</h3>
+<p>Frequentist hypothesis testing operates on a principle analogous to
+<strong>proof by contradiction</strong> in mathematics. We temporarily
+assume the opposite of what we hope to demonstrate, then show that this
+assumption leads to implausible results.</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_005.png" style="width:75.0%"
+data-fig-align="center"
+alt="The nature of hypothesis testing: the probabilistic equivalent of proof by contradiction" />
+<figcaption aria-hidden="true">The nature of hypothesis testing: the
+probabilistic equivalent of proof by contradiction</figcaption>
+</figure>
+<p>The intuition is straightforward: we set up a hypothesis about a
+population parameter, assume it’s correct, then calculate the
+conditional probability of observing our sample data. If this
+probability is sufficiently small, we reject the hypothesis.</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_006.png" style="width:85.0%"
+data-fig-align="center"
+alt="Intuition underlying frequentist hypothesis testing" />
+<figcaption aria-hidden="true">Intuition underlying frequentist
+hypothesis testing</figcaption>
+</figure>
+<h2 id="understanding-standard-error">Understanding Standard Error</h2>
+<p>Before we can conduct a proper hypothesis test, we need to understand
+a crucial concept: <strong>standard error</strong>.</p>
+<section id="what-is-standard-error" class="callout-important"
+data-icon="false">
+<h2>💡 What is Standard Error?</h2>
+<p>Standard error measures how far, <strong>on average</strong>, a
+sample mean deviates from the population mean across repeated samples.
+It quantifies the precision of our estimator.</p>
+<p>Mathematically, the standard error of the sample mean is: <span
+class="math display">
+SE = \frac{\sigma}{\sqrt{n}}
+</span> where <span class="math inline">\sigma</span> is the population
+standard deviation and <span class="math inline">n</span> is the sample
+size.</p>
+</section>
+<h3 id="the-concept-of-repeated-sampling">The Concept of Repeated
+Sampling</h3>
+<p>To truly understand standard error, we need to embrace a core
+principle of frequentist statistics: <strong>repeated sampling</strong>.
+Imagine we could draw not just one sample of 38 students, but millions
+of such samples from our population. Each sample would give us a
+different sample mean.</p>
+<p>Here’s the remarkable thing: if we computed all these sample means
+and calculated their average, that average would equal the true
+population mean. This property is called <strong>unbiasedness</strong>,
+and it’s why we use the sample mean as our estimator.</p>
+<p>But these individual sample means would vary around the population
+mean. The standard error tells us the typical size of this variation. In
+our example, with a sample size of 38 and a calculated standard error of
+1.64 points, we know that a typical sample mean deviates from the
+population mean by about 1.64 points.</p>
+<section id="key-insight" class="callout-note" data-icon="false">
+<h2>🎯 Key Insight</h2>
+<p><strong>Smaller standard error = More precision = Greater
+reliability</strong></p>
+<p>When the standard error is small, we can be more confident that our
+single observed sample mean is close to the true population mean. The
+standard error decreases as sample size increases, which is why larger
+samples give us more reliable estimates.</p>
+</section>
+<h3
+id="the-relationship-population-variance-to-sample-mean-variance">The
+Relationship: Population Variance to Sample Mean Variance</h3>
+<p>There’s a fundamental relationship connecting the population variance
+to the variance of the sample mean:</p>
+<p><span class="math display">
+\text{Var}(\bar{Y}) = \frac{\sigma^2}{n}
+</span></p>
+<p>Taking the square root of both sides gives us the standard error
+formula. This relationship tells us that:</p>
+<ol type="1">
+<li>The variance of sample means is smaller than the population
+variance</li>
+<li>This variance decreases as sample size increases</li>
+<li>The relationship is inverse with sample size (doubling <span
+class="math inline">n</span> doesn’t double precision)</li>
+</ol>
+<h2 id="the-three-stages-of-hypothesis-testing">The Three Stages of
+Hypothesis Testing</h2>
+<p>Now that we understand standard error, we can proceed with our
+hypothesis test. We’ll work through this systematically in three
+stages.</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_007.png" style="width:70.0%"
+data-fig-align="center"
+alt="We will follow a three-stage process to test hypotheses" />
+<figcaption aria-hidden="true">We will follow a three-stage process to
+test hypotheses</figcaption>
+</figure>
+<h3 id="stage-1-formulating-the-hypotheses">Stage 1: Formulating the
+Hypotheses</h3>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_008.png" style="width:70.0%"
+data-fig-align="center" alt="Stage I: Setup" />
+<figcaption aria-hidden="true">Stage I: Setup</figcaption>
+</figure>
+<p>The first step in any hypothesis test is to clearly state what we’re
+testing. We need two competing hypotheses.</p>
+<h4 id="expressing-our-claim-in-english">Expressing Our Claim in
+English</h4>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_012.png" style="width:85.0%"
+data-fig-align="center"
+alt="Elucidate claim and its complement in English" />
+<figcaption aria-hidden="true">Elucidate claim and its complement in
+English</figcaption>
+</figure>
+<p><strong>Claim:</strong> Students trained under the new curriculum
+will score, on average, higher than 80 on the test.</p>
+<p><strong>Complement:</strong> Students trained under the new
+curriculum will not score, on average, higher than 80 on the test.</p>
+<h4 id="the-law-of-the-excluded-middle">The Law of the Excluded
+Middle</h4>
+<p>In formulating our hypotheses, we’re invoking a fundamental principle
+of logic: the <strong>law of the excluded middle</strong>.</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_013.png" style="width:85.0%"
+data-fig-align="center" alt="The law of the excluded middle" />
+<figcaption aria-hidden="true">The law of the excluded
+middle</figcaption>
+</figure>
+<p>This law states that a statement is either true or false—there is no
+middle ground between truth and falsity. Either the new curriculum
+improves scores beyond 80, or it doesn’t. Our job is to determine which
+is more likely given our data.</p>
+<h4 id="symbolic-representation">Symbolic Representation</h4>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_014.png" style="width:75.0%"
+data-fig-align="center"
+alt="Express claim and its complement symbolically" />
+<figcaption aria-hidden="true">Express claim and its complement
+symbolically</figcaption>
+</figure>
+<p>Let the mean score of students trained under the new curriculum be
+<span class="math inline">\mu</span>.</p>
+<p><strong>Claim:</strong> <span class="math inline">\mu &gt;
+80</span></p>
+<p><strong>Complement:</strong> <span class="math inline">\mu \leq
+80</span></p>
+<h4 id="assigning-null-and-alternative-hypotheses">Assigning Null and
+Alternative Hypotheses</h4>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_015.png" style="width:85.0%"
+data-fig-align="center" alt="Specify null and alternative hypotheses" />
+<figcaption aria-hidden="true">Specify null and alternative
+hypotheses</figcaption>
+</figure>
+<p><strong>Null Hypothesis (<span
+class="math inline">H_0</span>):</strong> The population mean test score
+under the new curriculum is less than or equal to 80. <span
+class="math display">
+H_0: \mu \leq 80
+</span></p>
+<p><strong>Alternative Hypothesis (<span
+class="math inline">H_A</span>):</strong> The population mean test score
+under the new curriculum exceeds 80. <span class="math display">
+H_A: \mu &gt; 80
+</span></p>
+<p>The null hypothesis represents the status quo or the claim we’re
+trying to find evidence against. The alternative hypothesis represents
+what we hope to demonstrate with our data. By convention, we assign the
+complement of our claim to the null hypothesis—this is what we will
+attempt to falsify.</p>
+<p>We also need to choose a <strong>significance level</strong> <span
+class="math inline">\alpha</span>, which represents our tolerance for
+making a Type I error (rejecting a true null hypothesis). Let’s set
+<span class="math inline">\alpha = 0.04</span> or 4%.</p>
+<section id="why-this-setup" class="callout-note" data-icon="false">
+<h2>📊 Why This Setup?</h2>
+<p>Notice that our null hypothesis includes the equality. This is a
+one-sided test because we’re only interested in whether the new
+curriculum is <em>better</em>, not just different. If we cared about any
+difference (better or worse), we’d use a two-sided test.</p>
+</section>
+<h4 id="understanding-type-i-and-type-ii-errors">Understanding Type I
+and Type II Errors</h4>
+<p>Before proceeding, we must acknowledge that hypothesis testing
+involves the possibility of error. There are two types of errors we
+might make:</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_016.png" style="width:75.0%"
+data-fig-align="center" alt="Anticipating the possibility of erring" />
+<figcaption aria-hidden="true">Anticipating the possibility of
+erring</figcaption>
+</figure>
+<p><strong>Type I Error:</strong> Rejecting a true null hypothesis
+(false positive) <strong>Type II Error:</strong> Failing to reject a
+false null hypothesis (false negative)</p>
+<p>It’s crucial to understand that we cannot make both errors
+simultaneously:</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_017.png" style="width:75.0%"
+data-fig-align="center"
+alt="We cannot make both errors simultaneously" />
+<figcaption aria-hidden="true">We cannot make both errors
+simultaneously</figcaption>
+</figure>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_018.png" style="width:75.0%"
+data-fig-align="center"
+alt="Each error is associated with a unique decision" />
+<figcaption aria-hidden="true">Each error is associated with a unique
+decision</figcaption>
+</figure>
+<ul>
+<li>If we reject the null, we can make only a Type I error</li>
+<li>If we don’t reject the null, we can make only a Type II error</li>
+</ul>
+<h4 id="choosing-the-significance-level">Choosing the Significance
+Level</h4>
+<p>We also need to choose a <strong>significance level</strong> <span
+class="math inline">\alpha</span>, which represents our tolerance for
+making a Type I error (rejecting a true null hypothesis).</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_020.png" style="width:85.0%"
+data-fig-align="center"
+alt="The level of significance is the largest probability of making a Type I error that a researcher is willing to tolerate" />
+<figcaption aria-hidden="true">The level of significance is the largest
+probability of making a Type I error that a researcher is willing to
+tolerate</figcaption>
+</figure>
+<p>In many academic papers, the level of significance is set at either
+5% or 1%. But where do these specific values come from?</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_021.png" style="width:70.0%"
+data-fig-align="center"
+alt="Why are these specific values used commonly?" />
+<figcaption aria-hidden="true">Why are these specific values used
+commonly?</figcaption>
+</figure>
+<p>The answer involves both history and convention. The story begins
+with an afternoon tea party and R.A. Fischer.</p>
+<figure>
+<img src="/assets/testing-mean-large/images/slide_022.png" style="width:85.0%"
+data-fig-align="center" alt="The Lady Tasting Tea" />
+<figcaption aria-hidden="true">The Lady Tasting Tea</figcaption>
+</figure>
+<p>Fischer’s work on experimental design, inspired by a colleague who
+claimed she could tell whether milk was added before or after tea, led
+to the development of significance testing as we know it today.</p>
+<h3 id="stage-2-estimating-the-sampling-distribution">Stage 2:
+Estimating the Sampling Distribution</h3>
+<p>In this stage, we need to characterize the distribution of our test
+statistic under the assumption that the null hypothesis is true.</p>
+<p><strong>Step 1: Choose an Estimator</strong></p>
+<p>We use the sample mean <span class="math inline">\bar{Y}</span> as
+our estimator of the population mean <span
+class="math inline">\mu</span>. Our observed value is <span
+class="math inline">\bar{y} = 83</span>.</p>
+<p><strong>Step 2: Establish the Distribution</strong></p>
+<p>The sample mean is itself a random variable. With our large sample
+size (<span class="math inline">n = 38</span>), we can invoke the
+<strong>Central Limit Theorem (CLT)</strong>, which tells us that the
+sampling distribution of <span class="math inline">\bar{Y}</span> is
+approximately normal, regardless of the shape of the population
+distribution.</p>
+<p><span class="math display">
+\bar{Y} \sim N(\mu, \sigma^2/n)
+</span></p>
+<p><strong>Step 3: Estimate the Parameters</strong></p>
+<p>Under the null hypothesis, we assume <span class="math inline">\mu
+\leq 80</span>. For the purposes of constructing our test, we’ll use
+<span class="math inline">\mu = 80</span> as the boundary value (the
+null hypothesis “at its most extreme”).</p>
+<p>From our sample data, we calculate: - Sample standard deviation:
+<span class="math inline">s = 10.1</span> points - Standard error: <span
+class="math inline">SE = s/\sqrt{n} = 10.1/\sqrt{38} \approx 1.64</span>
+points</p>
+<section id="the-sampling-distribution" class="callout-important"
+data-icon="false">
+<h2>💡 The Sampling Distribution</h2>
+<p>We now have a complete picture of the sampling distribution under
+<span class="math inline">H_0</span>: <span class="math display">
+\bar{Y} \sim N(80, 1.64^2)
+</span></p>
+<p>This means if the null hypothesis is true, sample means from repeated
+samples would be normally distributed around 80 with a standard
+deviation of 1.64.</p>
+</section>
+<p><strong>Visualizing the Distribution</strong></p>
+<p>Imagine a bell curve centered at 80. This represents all possible
+sample means we could observe if the true population mean were 80. Some
+sample means would be less than 80, some greater, but they’d cluster
+around 80 with most values falling within a few standard errors of the
+center.</p>
+<p>Our observed sample mean of 83 lies to the right of this center. The
+question is: is it far enough to the right that we should doubt the null
+hypothesis?</p>
+<h3 id="stage-3-computing-the-test-statistic-and-p-value">Stage 3:
+Computing the Test Statistic and P-value</h3>
+<p>To answer our question, we need to standardize our observed value and
+determine how unusual it is.</p>
+<p><strong>The Test Statistic: Zeta (ζ)</strong></p>
+<p>We define a test statistic called zeta (ζ) as:</p>
+<p><span class="math display">
+\zeta = \frac{\bar{Y} - \mu_0}{SE}
+</span></p>
+<p>where <span class="math inline">\mu_0</span> is the hypothesized
+population mean under the null (80 in our case).</p>
+<p>This standardization accomplishes two things: 1. It converts our
+result to a <strong>unit-free measure</strong> 2. It tells us
+<strong>how many standard errors</strong> our observed mean is from the
+hypothesized mean</p>
+<section id="interpretation-of-ζ" class="callout-note"
+data-icon="false">
+<h2>🎯 Interpretation of ζ</h2>
+<p>The value of ζ represents the number of standard deviations (or
+standard errors) that the observed sample mean is from the hypothesized
+population mean.</p>
+<p>If our observed sample had a mean of 83 kg, the population mean were
+80 kg, and the standard error were 1.64 kg, then: <span
+class="math display">
+\zeta = \frac{83 - 80}{1.64} = 1.83
+</span></p>
+<p>The “kg” units cancel out, leaving us with a pure number: 1.83
+standard errors above the hypothesized mean.</p>
+</section>
+<p><strong>Calculating Our Test Statistic</strong></p>
+<p>For our problem: <span class="math display">
+\zeta = \frac{83 - 80}{1.64} = \frac{3}{1.64} \approx 1.83
+</span></p>
+<p>Our observed sample mean is 1.83 standard errors above the
+hypothesized mean of 80.</p>
+<p><strong>The Distribution of Zeta</strong></p>
+<p>When the sample size is large and we know (or can estimate) the
+population standard deviation, the test statistic ζ follows a
+<strong>standard normal distribution</strong> (also called a
+Z-distribution). This is the same as the Z-scores you may have
+encountered before.</p>
+<p><span class="math display">
+\zeta \sim N(0, 1)
+</span></p>
+<p><strong>Computing the P-value</strong></p>
+<p>The p-value answers the question: “If the null hypothesis were true,
+what is the probability of observing a test statistic as extreme as or
+more extreme than what we actually observed?”</p>
+<p>For our one-sided test: <span class="math display">
+p\text{-value} = P(\zeta \geq 1.83 \mid H_0 \text{ is true})
+</span></p>
+<p>Using a standard normal table or software, we find: <span
+class="math display">
+p\text{-value} \approx 0.034 \text{ or } 3.4\%
+</span></p>
+<p><strong>Making the Decision</strong></p>
+<p>We compare our p-value to our significance level: - p-value = 3.4% -
+<span class="math inline">\alpha</span> = 4%</p>
+<p>Since the p-value (3.4%) is less than our significance level (4%), we
+<strong>reject the null hypothesis</strong>.</p>
+<section id="conclusion" class="callout-important" data-icon="false">
+<h2>📊 Conclusion</h2>
+<p>We have sufficient evidence at the 4% significance level to conclude
+that the new curriculum improves average test scores beyond 80. The
+probability of observing a sample mean as high as 83 (or higher) purely
+by chance, if the true population mean were 80 or less, is only
+3.4%.</p>
+</section>
+<h2 id="visual-interpretation">Visual Interpretation</h2>
+<p>Let’s visualize what we’ve done. Picture the sampling distribution
+under the null hypothesis: a normal curve centered at 80 with standard
+deviation 1.64. Our observed sample mean of 83 falls in the right tail
+of this distribution.</p>
+<p>The p-value is the area under this curve to the right of 83—it
+represents how much of the distribution lies at or beyond our observed
+value. This area is relatively small (3.4%), indicating that our
+observation would be quite unusual if the null hypothesis were true.</p>
+<h2 id="the-small-sample-case-when-n-30">The Small Sample Case: When n
+&lt; 30</h2>
+<p>Everything we’ve done so far assumes a <strong>large sample</strong>
+(typically <span class="math inline">n \geq 30</span>). But what happens
+when we have a small sample? The mathematics changes in an important
+way.</p>
+<h3 id="the-problem-with-small-samples">The Problem with Small
+Samples</h3>
+<p>Consider the same problem, but now suppose we only have <span
+class="math inline">n = 24</span> students in our sample. The sample
+mean is still 83, and the sample standard deviation is still 10.1.</p>
+<p>The key difference: when we use the sample standard deviation <span
+class="math inline">s</span> to estimate the population standard
+deviation <span class="math inline">\sigma</span>, we introduce
+additional uncertainty. This uncertainty becomes problematic when the
+sample size is small.</p>
+<h3 id="william-gossets-t-distribution">William Gosset’s
+T-Distribution</h3>
+<p>In the early 1900s, William Sealy Gosset (writing under the pseudonym
+“Student” because his employer, Guinness Brewery, didn’t allow employees
+to publish) discovered that for small samples, the test statistic
+doesn’t follow a normal distribution—it follows a
+<strong>t-distribution</strong>.</p>
+<p>The test statistic is still calculated the same way: <span
+class="math display">
+\zeta = \frac{\bar{Y} - \mu_0}{s/\sqrt{n}}
+</span></p>
+<p>But now, instead of following a Z-distribution, ζ follows a
+<strong>t-distribution with <span class="math inline">\nu = n-1</span>
+degrees of freedom</strong>: <span class="math display">
+\zeta \sim t_{\nu}
+</span></p>
+<section id="why-degrees-of-freedom" class="callout-important"
+data-icon="false">
+<h2>💡 Why Degrees of Freedom?</h2>
+<p>We lose one degree of freedom because we used one piece of
+information from our sample to estimate the population standard
+deviation. We “expended” one observation to estimate the mean, which we
+then used to calculate the standard deviation.</p>
+<p>In our example with <span class="math inline">n = 24</span>, we have
+<span class="math inline">\nu = 23</span> degrees of freedom.</p>
+</section>
+<h3 id="properties-of-the-t-distribution">Properties of the
+T-Distribution</h3>
+<p>The t-distribution looks similar to the normal distribution—it’s
+symmetric and bell-shaped—but it has <strong>heavier tails</strong>.
+This reflects the additional uncertainty from estimating the standard
+deviation.</p>
+<p>Key properties: 1. As the degrees of freedom increase, the
+t-distribution approaches the normal distribution 2. For small degrees
+of freedom, the tails are much heavier than the normal 3. By <span
+class="math inline">\nu \approx 30</span>, the t-distribution is
+virtually indistinguishable from the normal</p>
+<h3 id="comparing-the-two-ratios">Comparing the Two Ratios</h3>
+<p>Let’s clarify the distinction between two similar-looking ratios:</p>
+<p><strong>Ratio A (with known σ):</strong> <span class="math display">
+\text{Andrew} = \frac{\bar{Y} - \mu_0}{\sigma/\sqrt{n}}
+</span></p>
+<p><strong>Ratio B (with estimated s):</strong> <span
+class="math display">
+\text{Ben} = \frac{\bar{Y} - \mu_0}{s/\sqrt{n}}
+</span></p>
+<section id="question" class="callout-note" data-icon="false">
+<h2>🤔 Question</h2>
+<p>Which ratio fluctuates more from sample to sample—Andrew or Ben?</p>
+<p><strong>Answer:</strong> Ben fluctuates more because both the
+numerator AND the denominator are random variables. In Andrew, only the
+numerator (<span class="math inline">\bar{Y}</span>) varies; the
+denominator (<span class="math inline">\sigma/\sqrt{n}</span>) is a
+known constant. In Ben, both <span class="math inline">\bar{Y}</span>
+and <span class="math inline">s</span> vary from sample to sample,
+creating additional volatility.</p>
+<p>This extra volatility is exactly what the t-distribution accounts
+for.</p>
+</section>
+<h3 id="small-sample-analysis-our-example">Small Sample Analysis: Our
+Example</h3>
+<p>Let’s return to our curriculum problem with the small sample of 24
+students:</p>
+<ul>
+<li><span class="math inline">n = 24</span></li>
+<li><span class="math inline">\bar{y} = 83</span></li>
+<li><span class="math inline">s = 10.1</span></li>
+<li><span class="math inline">SE = 10.1/\sqrt{24} \approx
+2.06</span></li>
+</ul>
+<p>Test statistic: <span class="math display">
+\zeta = \frac{83 - 80}{2.06} \approx 1.46
+</span></p>
+<p>This time, ζ follows a t-distribution with 23 degrees of freedom.
+Looking up this value in a t-table or using software:</p>
+<p><span class="math display">
+p\text{-value} \approx 0.08 \text{ or } 8\%
+</span></p>
+<p><strong>The Decision Changes</strong></p>
+<p>Now our p-value (8%) exceeds our significance level (4%). We
+<strong>fail to reject the null hypothesis</strong>.</p>
+<section id="critical-insight" class="callout-warning"
+data-icon="false">
+<h2>⚠️ Critical Insight</h2>
+<p>Notice what happened: With the same sample mean (83) and the same
+sample standard deviation (10.1), we reached opposite conclusions
+depending on our sample size!</p>
+<ul>
+<li>Large sample (<span class="math inline">n=38</span>): Reject <span
+class="math inline">H_0</span> (p = 3.4%)</li>
+<li>Small sample (<span class="math inline">n=24</span>): Fail to reject
+<span class="math inline">H_0</span> (p = 8%)</li>
+</ul>
+<p>The difference lies in the additional uncertainty from estimating σ
+with a small sample. The t-distribution’s heavier tails mean we need
+more extreme evidence to reject the null hypothesis.</p>
+</section>
+<h3 id="when-to-use-each-distribution">When to Use Each
+Distribution</h3>
+<p><strong>Use the Z-distribution (normal) when:</strong> - Sample size
+is large (<span class="math inline">n \geq 30</span>) - Population
+standard deviation σ is known (rare in practice)</p>
+<p><strong>Use the t-distribution when:</strong> - Sample size is small
+(<span class="math inline">n &lt; 30</span>) - Population standard
+deviation σ is unknown and must be estimated from the sample</p>
+<p>In practice, many statisticians use the t-distribution for all tests
+involving estimated standard deviations, regardless of sample size. As
+the degrees of freedom increase, the t-distribution becomes virtually
+identical to the normal, so using the t-distribution is a conservative
+choice that’s always appropriate.</p>
+<h2 id="summary-the-hypothesis-testing-framework">Summary: The
+Hypothesis Testing Framework</h2>
+<p>Let’s review the complete process we’ve developed:</p>
+<p><strong>Stage 1: Set Up</strong> 1. State the null and alternative
+hypotheses 2. Choose a significance level α 3. Identify the test type
+(one-sided or two-sided)</p>
+<p><strong>Stage 2: Characterize the Sampling Distribution</strong> 1.
+Select an appropriate estimator 2. Use theory (CLT) to establish its
+distribution 3. Estimate the parameters of this distribution 4.
+Visualize the distribution under <span
+class="math inline">H_0</span></p>
+<p><strong>Stage 3: Test and Decide</strong> 1. Calculate the test
+statistic (ζ) 2. Determine its distribution (Z or t) 3. Compute the
+p-value 4. Compare p-value to α and make a decision 5. State your
+conclusion in context</p>
+<section id="the-theoretical-foundation" class="callout-note"
+data-icon="false">
+<h2>🔄 The Theoretical Foundation</h2>
+<p>Notice how our hypothesis testing framework rests on a foundation of
+theoretical results:</p>
+<ul>
+<li><strong>Markov’s Inequality</strong> → proves Chebyshev’s
+Inequality</li>
+<li><strong>Chebyshev’s Inequality</strong> → proves the Law of Large
+Numbers</li>
+<li><strong>Law of Large Numbers</strong> → proves the Central Limit
+Theorem</li>
+<li><strong>Central Limit Theorem</strong> → justifies the normality of
+sampling distributions</li>
+<li><strong>Unbiasedness</strong> → tells us where distributions are
+centered</li>
+<li><strong>Standard Error Formula</strong> → quantifies sampling
+variability</li>
+</ul>
+<p>Each piece plays a crucial role in the edifice we’ve constructed.</p>
+</section>
+<h2 id="looking-ahead-two-sample-tests-and-causality">Looking Ahead:
+Two-Sample Tests and Causality</h2>
+<p>The hypothesis test we’ve developed compares a population mean to a
+known constant (80). While this is valuable for understanding the
+mechanics of hypothesis testing, it’s relatively rare in practice.</p>
+<p>More commonly, we want to compare <strong>two groups</strong>: a
+control group and a treatment group. This leads to two-sample tests,
+which will be our next topic.</p>
+<p>Two-sample tests look very similar mechanically to what we’ve done
+here, with a crucial philosophical difference: they allow us to
+investigate <strong>causality</strong>. By comparing a treatment group
+to a control group, we can begin to assess whether an intervention has a
+causal effect on an outcome.</p>
+<p>The foundation you’ve built here—understanding sampling
+distributions, standard errors, test statistics, and p-values—will carry
+forward directly to these more powerful tests. The transition is a
+relatively small mechanical extension, but it opens the door to
+answering causal questions.</p>
+<section id="key-takeaways" class="callout-tip" data-icon="false">
+<h2>🎯 Key Takeaways</h2>
+<ol type="1">
+<li><strong>Standard error</strong> measures the precision of an
+estimator across repeated samples</li>
+<li><strong>Hypothesis testing</strong> provides a formal framework for
+making decisions under uncertainty</li>
+<li>The <strong>Central Limit Theorem</strong> justifies using normal
+distributions for large samples</li>
+<li><strong>P-values</strong> quantify how unusual our observed data
+would be if <span class="math inline">H_0</span> were true</li>
+<li><strong>Small samples</strong> require the t-distribution to account
+for additional uncertainty</li>
+<li><strong>Larger samples</strong> provide more reliable estimates and
+more powerful tests</li>
+<li>Always <strong>visualize your distributions</strong> to develop
+intuition about your tests</li>
+</ol>
+</section>
+<h2 id="practice-questions">Practice Questions</h2>
+<section id="question-1-understanding-standard-error"
+class="callout-note" data-icon="false" data-collapse="true">
+<h2>Question 1: Understanding Standard Error</h2>
+<p>Suppose you have two samples from the same population: - Sample A:
+<span class="math inline">n = 25</span>, <span class="math inline">s =
+15</span> - Sample B: <span class="math inline">n = 100</span>, <span
+class="math inline">s = 15</span></p>
+<p>Which sample provides more precise estimates of the population mean?
+Calculate the standard error for each and explain the difference.</p>
+<p><strong>Answer:</strong> Sample B provides more precise
+estimates.</p>
+<p>For Sample A: <span class="math inline">SE_A = 15/\sqrt{25} = 15/5 =
+3</span></p>
+<p>For Sample B: <span class="math inline">SE_B = 15/\sqrt{100} = 15/10
+= 1.5</span></p>
+<p>Sample B has a standard error half the size of Sample A, even though
+they have the same sample standard deviation. The fourfold increase in
+sample size (from 25 to 100) results in a twofold increase in precision
+(standard error is halved). This demonstrates the principle that larger
+samples yield more reliable estimates.</p>
+</section>
+<section id="question-2-interpreting-test-statistics"
+class="callout-note" data-icon="false" data-collapse="true">
+<h2>Question 2: Interpreting Test Statistics</h2>
+<p>A researcher calculates a test statistic of ζ = 2.5 for a large
+sample test. Explain what this value means in plain language, and
+describe where this value would fall on a standard normal
+distribution.</p>
+<p><strong>Answer:</strong> A test statistic of ζ = 2.5 means that the
+observed sample mean is 2.5 standard errors above the hypothesized
+population mean under the null hypothesis.</p>
+<p>On a standard normal distribution (bell curve), this value falls in
+the right tail. Approximately 99.4% of the distribution lies to the left
+of 2.5 standard deviations from the mean, so only about 0.6% lies beyond
+this point. This suggests the observation would be quite unusual if the
+null hypothesis were true.</p>
+<p>For a one-sided test, the p-value would be approximately 0.006 or
+0.6%, which would lead to rejection of the null at common significance
+levels.</p>
+</section>
+<section id="question-3-large-vs.-small-sample-tests"
+class="callout-note" data-icon="false" data-collapse="true">
+<h2>Question 3: Large vs. Small Sample Tests</h2>
+<p>You conduct the same hypothesis test twice: once with a sample size
+of 100 and once with a sample size of 20. In both cases, you observe the
+same sample mean and sample standard deviation.</p>
+<p>Will the p-values be the same? Why or why not?</p>
+<p><strong>Answer:</strong> No, the p-values will not be the same, and
+the small sample will generally produce a larger p-value.</p>
+<p>With <span class="math inline">n = 100</span>, we use the
+Z-distribution (or t-distribution with 99 df, which is virtually
+identical). The standard error will be relatively small: <span
+class="math inline">SE = s/\sqrt{100} = s/10</span>.</p>
+<p>With <span class="math inline">n = 20</span>, we must use the
+t-distribution with 19 degrees of freedom, which has heavier tails than
+the normal. Additionally, the standard error will be larger: <span
+class="math inline">SE = s/\sqrt{20} \approx s/4.47</span>.</p>
+<p>Two effects compound: 1. The larger standard error makes the test
+statistic smaller 2. The t-distribution with few degrees of freedom
+makes any given test statistic less significant</p>
+<p>Both effects work against rejecting the null hypothesis, resulting in
+a larger p-value for the small sample test.</p>
+</section>
+<section id="question-4-choosing-significance-levels"
+class="callout-note" data-icon="false" data-collapse="true">
+<h2>Question 4: Choosing Significance Levels</h2>
+<p>Explain why a researcher might choose a more stringent significance
+level (say, α = 0.01) rather than a more lenient one (say, α = 0.10).
+What are the tradeoffs involved?</p>
+<p><strong>Answer:</strong> The choice of significance level involves a
+tradeoff between Type I and Type II errors:</p>
+<p><strong>Choosing a more stringent α (like 0.01):</strong> -
+<strong>Benefit:</strong> Lower risk of Type I error (falsely rejecting
+a true null hypothesis) - <strong>Cost:</strong> Higher risk of Type II
+error (failing to reject a false null hypothesis) - <strong>When
+appropriate:</strong> When the cost of a false positive is high (e.g.,
+approving an unsafe drug, implementing an expensive program that doesn’t
+work)</p>
+<p><strong>Choosing a more lenient α (like 0.10):</strong> -
+<strong>Benefit:</strong> Lower risk of Type II error (more power to
+detect real effects) - <strong>Cost:</strong> Higher risk of Type I
+error - <strong>When appropriate:</strong> When we want to detect
+potentially important effects for further investigation, or when the
+cost of a false negative is high</p>
+<p>In fields where the consequences of a Type I error are severe (like
+medical research or engineering safety), researchers typically use
+stricter significance levels. In exploratory research or preliminary
+studies, more lenient levels might be acceptable.</p>
+</section>

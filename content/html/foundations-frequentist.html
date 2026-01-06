@@ -1,0 +1,629 @@
+<h1 id="sec-frequentist-foundations">Foundations of Frequentist
+Statistics</h1>
+<p>In this chapter, we embark on a journey into the heart of frequentist
+statistical inference—a framework that dominates modern empirical
+research. At its core, frequentist statistics is about making
+observations from a sample and then drawing inferences about the broader
+population from which that sample was drawn. The fundamental question we
+seek to answer is: <em>How confident can we be that the patterns we
+observe in our limited sample reflect true patterns in the
+population?</em></p>
+<p>By the end of this chapter, you will understand the foundational
+concepts that underpin frequentist inference, including the philosophy
+of repeated sampling, the nature of estimators, and the mathematical
+criteria we use to distinguish good estimators from poor ones.</p>
+<h2 id="the-nature-of-inferential-statistics">The Nature of Inferential
+Statistics</h2>
+<section id="what-are-we-really-doing" class="callout-note"
+data-icon="false">
+<h2>What Are We Really Doing?</h2>
+<p>Inferential statistics is fundamentally about making observations in
+<strong>sample data</strong> and then attempting to extrapolate causal
+connections or patterns to the <strong>population data</strong>. When we
+successfully extrapolate these connections, we say our results are
+<strong>statistically significant</strong>. When we cannot extrapolate
+with confidence, we say our results are <strong>not statistically
+significant</strong>.</p>
+</section>
+<p>This distinction—between what we observe in our sample and what we
+can confidently claim about the population—lies at the heart of all
+inferential statistics. But what exactly are we making claims about when
+we talk about populations?</p>
+<h3 id="population-parameters-vs.-sample-statistics">Population
+Parameters vs. Sample Statistics</h3>
+<p>When we make claims about a population, we are not making claims
+about individual observations. After all, populations are conceptually
+infinite in size. Instead, we make claims about specific
+<strong>parameters</strong> of the population’s distribution. The two
+parameters we encounter most frequently are:</p>
+<ol type="1">
+<li><p><strong>The population mean</strong> (<span
+class="math inline">\mu</span>): This is by far the most common
+parameter we test hypotheses about in applied statistics.</p></li>
+<li><p><strong>The population variance</strong> (<span
+class="math inline">\sigma^2</span>): This parameter is crucial because
+tests for the population mean often depend on our ability to estimate
+the population variance.</p></li>
+</ol>
+<p>Because we never truly know the values of <span
+class="math inline">\mu</span> or <span
+class="math inline">\sigma^2</span>, we must estimate them using sample
+data. The corresponding quantities we calculate from our sample are:</p>
+<ul>
+<li><strong>Sample mean</strong> (<span
+class="math inline">\bar{y}</span>): The analog to the population
+mean</li>
+<li><strong>Sample variance</strong> (<span
+class="math inline">s^2</span>): The analog to the population
+variance</li>
+</ul>
+<section id="a-critical-distinction" class="callout-important"
+data-icon="false">
+<h2>A Critical Distinction</h2>
+<p>When we call the sample mean and sample variance “analogs” or
+“counterparts” to their population equivalents, we mean only that they
+correspond conceptually. We are <em>not</em> claiming they are equal or
+even necessarily good estimates. Establishing which sample statistics
+make good estimators of population parameters is precisely what this
+chapter is about.</p>
+</section>
+<h2 id="transformations-of-random-variables">Transformations of Random
+Variables</h2>
+<p>Before we dive into the philosophy of estimation, we need to develop
+some mathematical machinery. In statistics, we routinely transform
+data—we take numbers, apply formulas to them, and generate new numbers.
+Understanding how these transformations affect the mean and variance of
+our data is essential.</p>
+<h3 id="affine-transformations">Affine Transformations</h3>
+<p>Consider a simple but powerful type of transformation called an
+<strong>affine transformation</strong>. If we have a random variable
+<span class="math inline">X</span> with mean <span
+class="math inline">\bar{x}</span> and variance <span
+class="math inline">s^2</span>, we might create a new variable:</p>
+<p><span class="math display">Y = mX + c</span></p>
+<p>where <span class="math inline">m</span> is a multiplicative constant
+(the slope) and <span class="math inline">c</span> is an additive
+constant (the intercept). This is exactly the form of a linear equation
+you’ve seen since high school algebra.</p>
+<p>The question is: if we know the mean and variance of <span
+class="math inline">X</span>, what are the mean and variance of <span
+class="math inline">Y</span>?</p>
+<p>We can decompose this affine transformation into two simpler
+operations:</p>
+<ol type="1">
+<li><strong>Translation</strong>: <span class="math inline">X
+\rightarrow X + c</span> (adding a constant)</li>
+<li><strong>Linear transformation</strong>: <span class="math inline">X
+\rightarrow mX</span> (multiplying by a constant)</li>
+</ol>
+<h4 id="properties-of-translation">Properties of Translation</h4>
+<p>When you add a constant <span class="math inline">c</span> to every
+value in your dataset, creating <span class="math inline">Y = X +
+c</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+\text{Mean of } Y &amp;= \bar{x} + c \\
+\text{Variance of } Y &amp;= s^2
+\end{aligned}
+</span></p>
+<p>The mean shifts by exactly <span class="math inline">c</span>, but
+the variance remains unchanged. Why? Because variance measures the
+spread of data around the mean, and when you shift all values by the
+same amount, their relative positions don’t change.</p>
+<section id="connecting-to-earlier-concepts" class="callout-tip"
+data-icon="false">
+<h2>Connecting to Earlier Concepts</h2>
+<p>You’ve already encountered this idea when we discussed the <span
+class="math inline">z</span>-transformation. When we subtract the mean
+from a variable, we’re performing a translation that shifts the entire
+distribution to have mean zero. The shape and spread of the distribution
+remain the same.</p>
+</section>
+<h4 id="properties-of-linear-transformation">Properties of Linear
+Transformation</h4>
+<p>When you multiply every value by a constant <span
+class="math inline">m</span>, creating <span class="math inline">Y =
+mX</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+\text{Mean of } Y &amp;= m\bar{x} \\
+\text{Variance of } Y &amp;= m^2 s^2 \\
+\text{Standard deviation of } Y &amp;= |m| s
+\end{aligned}
+</span></p>
+<p>Notice that the variance is multiplied by <span
+class="math inline">m^2</span>, not <span class="math inline">m</span>.
+This occurs because variance involves squared deviations, so a
+multiplicative constant gets squared in the process.</p>
+<h4 id="combining-both-transformations">Combining Both
+Transformations</h4>
+<p>For the full affine transformation <span class="math inline">Y = mX +
+c</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+\text{Mean of } Y &amp;= m\bar{x} + c \\
+\text{Variance of } Y &amp;= m^2 s^2 \\
+\text{Standard deviation of } Y &amp;= |m| s
+\end{aligned}
+</span></p>
+<p>These formulas will prove invaluable as we develop more sophisticated
+statistical techniques.</p>
+<h2 id="the-frequentist-philosophy-repeated-sampling">The Frequentist
+Philosophy: Repeated Sampling</h2>
+<p>We now arrive at the conceptual heart of frequentist statistics. The
+entire edifice of frequentist inference rests on an imaginary exercise:
+<strong>repeated sampling</strong>.</p>
+<section id="the-thought-experiment" class="callout-note"
+data-icon="false">
+<h2>The Thought Experiment</h2>
+<p>Imagine that we could:</p>
+<ol type="1">
+<li>Draw a random sample from the population</li>
+<li>Calculate some statistic from that sample</li>
+<li>Return the sample to the population</li>
+<li>Draw another random sample</li>
+<li>Calculate the statistic again</li>
+<li>Repeat this process infinitely many times</li>
+</ol>
+<p>This thought experiment—sampling repeatedly from the same
+population—forms the foundation for how we evaluate estimators in
+frequentist statistics.</p>
+</section>
+<p>Here’s the crucial point: <em>in practice, we only sample once</em>.
+But theoretically, we imagine what would happen if we could sample
+infinitely many times. The behavior of our estimator across these
+hypothetical repeated samples tells us whether it’s a good estimator or
+not.</p>
+<h3 id="the-concept-of-an-estimator">The Concept of an Estimator</h3>
+<p>An <strong>estimator</strong> is simply a formula that we apply to
+sample data to estimate a population parameter. Importantly, there are
+infinitely many possible estimators for any given parameter.</p>
+<p>For example, suppose we want to estimate the population mean <span
+class="math inline">\mu</span>. Here are just a few of the infinitely
+many estimators we could choose:</p>
+<ul>
+<li>The first observation: <span class="math inline">\hat{\mu}_1 =
+y_1</span></li>
+<li>The sum of the first two observations: <span
+class="math inline">\hat{\mu}_2 = y_1 + y_2</span></li>
+<li>The cube of the first observation: <span
+class="math inline">\hat{\mu}_3 = y_1^3</span></li>
+<li>The fourth power of the seventh observation times the sine of the
+second: <span class="math inline">\hat{\mu}_4 = y_7^4 \times
+\sin(y_2)</span></li>
+<li>The sample mean: <span class="math inline">\hat{\mu}_5 = \bar{y} =
+\frac{1}{n}\sum_{i=1}^{n} y_i</span></li>
+</ul>
+<p>Most of these are obviously terrible estimators. But the point is
+that we can construct any formula we want, and each formula defines a
+different estimator. The set of all possible estimators is infinite.</p>
+<p>So how do we choose among them? How do we determine which estimators
+are “good” and which are “bad”?</p>
+<p>The answer lies in examining the <strong>sampling
+distribution</strong> of each estimator.</p>
+<h3 id="sampling-distributions">Sampling Distributions</h3>
+<p>For any estimator, we can imagine the repeated sampling process:</p>
+<ol type="1">
+<li>Draw a sample of size <span class="math inline">n</span></li>
+<li>Apply the estimator to get an estimate</li>
+<li>Record that estimate</li>
+<li>Repeat infinitely many times</li>
+</ol>
+<p>The distribution of all these estimates is called the
+<strong>sampling distribution</strong> of the estimator. Each different
+estimator has its own sampling distribution.</p>
+<section id="key-insight" class="callout-important" data-icon="false">
+<h2>Key Insight</h2>
+<p>The sampling distribution is a theoretical construct. We never
+actually observe it because we only sample once in practice. But by
+imagining what it would look like, we can develop mathematical criteria
+for judging the quality of different estimators.</p>
+</section>
+<h2 id="a-concrete-example-estimating-from-a-simple-population">A
+Concrete Example: Estimating from a Simple Population</h2>
+<p>To make these abstract ideas concrete, let’s work through a simple
+example. Consider a population with only three values: <span
+class="math inline">\{1, 2, 3\}</span>. Since there’s one of each value,
+each has probability <span class="math inline">1/3</span> of being
+selected if we draw randomly from this population.</p>
+<h3 id="the-true-population-parameters">The True Population
+Parameters</h3>
+<p>This is a discrete uniform distribution, and we can easily calculate
+the true population mean and variance:</p>
+<p><span class="math display">
+\mu = E[Y] = 1 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} + 3 \cdot
+\frac{1}{3} = 2
+</span></p>
+<p>For the variance, we first calculate the expected value of <span
+class="math inline">Y^2</span>:</p>
+<p><span class="math display">
+E[Y^2] = 1^2 \cdot \frac{1}{3} + 2^2 \cdot \frac{1}{3} + 3^2 \cdot
+\frac{1}{3} = \frac{14}{3}
+</span></p>
+<p>Then, using the formula <span class="math inline">\text{Var}(Y) =
+E[Y^2] - (E[Y])^2</span>:</p>
+<p><span class="math display">
+\sigma^2 = \frac{14}{3} - 2^2 = \frac{14}{3} - 4 = \frac{2}{3}
+</span></p>
+<p>We can also verify this directly by calculating the squared
+deviations:</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 32%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Value <span
+class="math inline">(y)</span></th>
+<th style="text-align: center;">Deviation <span class="math inline">(y -
+\mu)</span></th>
+<th style="text-align: center;">Squared Deviation <span
+class="math inline">(y - \mu)^2</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">-1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">
+\sigma^2 = \frac{1 + 0 + 1}{3} = \frac{2}{3}
+</span></p>
+<p>So we know that <span class="math inline">\mu = 2</span> and <span
+class="math inline">\sigma^2 = 2/3</span>.</p>
+<h3 id="the-frequentist-approach-pretending-we-dont-know">The
+Frequentist Approach: Pretending We Don’t Know</h3>
+<p>Now comes the frequentist thought experiment. <em>Imagine we don’t
+know these population parameters.</em> Our goal is to estimate <span
+class="math inline">\mu</span> using only sample data.</p>
+<p>We’ll draw samples of size <span class="math inline">n = 2</span>
+with replacement. Sampling with replacement means:</p>
+<ol type="1">
+<li>Draw an observation and record its value</li>
+<li>Return it to the population</li>
+<li>Draw a second observation</li>
+</ol>
+<p>This ensures that our two observations are independent—the value of
+the second observation doesn’t depend on the first.</p>
+<section id="why-sample-with-replacement" class="callout-note"
+data-icon="false">
+<h2>Why Sample With Replacement?</h2>
+<p>In real research, we don’t literally sample with replacement. But we
+make the assumption that our samples are small enough relative to the
+population that each observation is effectively independent of the
+others. Since populations are conceptually infinite, even a sample of
+5,000 is negligible compared to the population size, justifying the
+independence assumption.</p>
+</section>
+<h3 id="enumerating-all-possible-samples">Enumerating All Possible
+Samples</h3>
+<p>With a population of size 3 and sample size 2, how many possible
+samples can we draw (with replacement, where order matters)?</p>
+<ul>
+<li>First observation: 3 possibilities</li>
+<li>Second observation: 3 possibilities</li>
+<li>Total: <span class="math inline">3 \times 3 = 9</span> possible
+samples</li>
+</ul>
+<p>Here are all nine possible samples and their means:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Sample</th>
+<th style="text-align: center;">Values</th>
+<th style="text-align: center;">Sample Mean <span
+class="math inline">\bar{y}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">(1, 1)</td>
+<td style="text-align: center;">1.0</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">(1, 2)</td>
+<td style="text-align: center;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">(1, 3)</td>
+<td style="text-align: center;">2.0</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">(2, 1)</td>
+<td style="text-align: center;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">(2, 2)</td>
+<td style="text-align: center;">2.0</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">(2, 3)</td>
+<td style="text-align: center;">2.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">(3, 1)</td>
+<td style="text-align: center;">2.0</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">(3, 2)</td>
+<td style="text-align: center;">2.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">(3, 3)</td>
+<td style="text-align: center;">3.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-sampling-distribution-of-the-sample-mean">The Sampling
+Distribution of the Sample Mean</h3>
+<p>Now we can construct the sampling distribution of <span
+class="math inline">\bar{y}</span>. We have nine equally likely samples,
+so each sample mean has probability <span
+class="math inline">1/9</span>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Sample Mean <span
+class="math inline">\bar{y}</span></th>
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1/9</td>
+</tr>
+<tr>
+<td style="text-align: center;">1.5</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2/9</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">3/9</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.5</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2/9</td>
+</tr>
+<tr>
+<td style="text-align: center;">3.0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1/9</td>
+</tr>
+</tbody>
+</table>
+<p>The expected value of this sampling distribution is:</p>
+<p><span class="math display">
+E[\bar{y}] = 1.0 \cdot \frac{1}{9} + 1.5 \cdot \frac{2}{9} + 2.0 \cdot
+\frac{3}{9} + 2.5 \cdot \frac{2}{9} + 3.0 \cdot \frac{1}{9} = 2
+</span></p>
+<p>This equals the true population mean! This is our first glimpse of an
+important property: <strong>unbiasedness</strong>.</p>
+<h2 id="properties-of-good-estimators">Properties of Good
+Estimators</h2>
+<p>We began with infinitely many possible estimators. To choose among
+them, we need criteria for what makes an estimator “good.” Statisticians
+have identified many desirable properties, but we’ll focus on three
+fundamental ones:</p>
+<ol type="1">
+<li><strong>Unbiasedness</strong></li>
+<li><strong>Efficiency</strong></li>
+<li><strong>Consistency</strong></li>
+</ol>
+<h3 id="property-1-unbiasedness">Property 1: Unbiasedness</h3>
+<p>An estimator is <strong>unbiased</strong> if the expected value of
+its sampling distribution equals the true population parameter being
+estimated.</p>
+<section id="definition-unbiased-estimator" class="callout-note"
+data-icon="false">
+<h2>Definition: Unbiased Estimator</h2>
+<p>An estimator <span class="math inline">\hat{\theta}</span> of a
+population parameter <span class="math inline">\theta</span> is unbiased
+if:</p>
+<p><span class="math display">E[\hat{\theta}] = \theta</span></p>
+<p>In words: if we could sample repeatedly and average all our
+estimates, we would get the correct answer.</p>
+</section>
+<p>For the sample mean as an estimator of the population mean:</p>
+<p><span class="math display">E[\bar{y}] = \mu</span></p>
+<p>We can prove this generally. For a sample <span
+class="math inline">y_1, y_2, \ldots, y_n</span> drawn from a population
+with mean <span class="math inline">\mu</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+E[\bar{y}] &amp;= E\left[\frac{1}{n}\sum_{i=1}^{n} y_i\right] \\
+&amp;= \frac{1}{n}\sum_{i=1}^{n} E[y_i] \\
+&amp;= \frac{1}{n}\sum_{i=1}^{n} \mu \\
+&amp;= \frac{1}{n} \cdot n\mu \\
+&amp;= \mu
+\end{aligned}
+</span></p>
+<p>The sample mean is an unbiased estimator of the population mean. It
+gives us the correct answer “on average” across repeated samples.</p>
+<section id="a-crucial-point" class="callout-important"
+data-icon="false">
+<h2>A Crucial Point</h2>
+<p>We can prove unbiasedness without knowing the actual value of <span
+class="math inline">\mu</span>. We only need to know that the population
+<em>has</em> a well-defined mean. This is the power of mathematical
+proof—we can establish properties of estimators without knowing the
+specific parameters we’re estimating.</p>
+</section>
+<p>But here’s the challenge: <strong>infinitely many estimators are
+unbiased</strong>. Applying the filter of unbiasedness still leaves us
+with infinitely many candidates. We need additional criteria.</p>
+<h3 id="property-2-efficiency">Property 2: Efficiency</h3>
+<p>Among all unbiased estimators, we prefer the one with the smallest
+variance in its sampling distribution.</p>
+<section id="definition-efficiency" class="callout-note"
+data-icon="false">
+<h2>Definition: Efficiency</h2>
+<p>Among unbiased estimators, the most <strong>efficient</strong>
+estimator is the one with the smallest variance in its sampling
+distribution. An estimator with smaller variance produces estimates in a
+narrower band around the true parameter value.</p>
+</section>
+<p>Why do we care about efficiency? If two estimators are both unbiased
+(correct on average), but one has a tighter sampling distribution, we
+have more confidence in estimates from the tighter distribution. Each
+individual estimate is more likely to be close to the true parameter
+value.</p>
+<p>Imagine two unbiased estimators, A and B:</p>
+<ul>
+<li>Estimator A: <span class="math inline">E[\hat{\mu}_A] = \mu</span>
+and <span class="math inline">\text{Var}(\hat{\mu}_A) = 0.5</span></li>
+<li>Estimator B: <span class="math inline">E[\hat{\mu}_B] = \mu</span>
+and <span class="math inline">\text{Var}(\hat{\mu}_B) = 2.0</span></li>
+</ul>
+<p>Both are unbiased, but A is more efficient. Estimates from A will
+cluster more tightly around <span class="math inline">\mu</span> than
+estimates from B.</p>
+<p><strong>The remarkable result</strong>: Among all unbiased estimators
+of the population mean, the sample mean has the smallest variance. It is
+the most efficient unbiased estimator.</p>
+<section id="why-we-use-sample-means" class="callout-tip"
+data-icon="false">
+<h2>Why We Use Sample Means</h2>
+<p>This is why we routinely use sample averages to estimate population
+averages. It’s not arbitrary—it’s mathematically optimal. The sample
+mean is both unbiased and most efficient among unbiased estimators.</p>
+</section>
+<h3 id="variance-of-the-sample-mean">Variance of the Sample Mean</h3>
+<p>For a sample of size <span class="math inline">n</span> drawn from a
+population with variance <span class="math inline">\sigma^2</span>, the
+variance of the sampling distribution of <span
+class="math inline">\bar{y}</span> is:</p>
+<p><span class="math display">
+\text{Var}(\bar{y}) = \frac{\sigma^2}{n}
+</span></p>
+<p>We can derive this using our transformation rules:</p>
+<p><span class="math display">
+\begin{aligned}
+\text{Var}(\bar{y}) &amp;= \text{Var}\left(\frac{1}{n}\sum_{i=1}^{n}
+y_i\right) \\
+&amp;= \frac{1}{n^2} \text{Var}\left(\sum_{i=1}^{n} y_i\right) \\
+&amp;= \frac{1}{n^2} \sum_{i=1}^{n} \text{Var}(y_i) \quad
+\text{(assuming independence)} \\
+&amp;= \frac{1}{n^2} \cdot n\sigma^2 \\
+&amp;= \frac{\sigma^2}{n}
+\end{aligned}
+</span></p>
+<p>This formula will become crucial in our next property.</p>
+<h3 id="property-3-consistency">Property 3: Consistency</h3>
+<p>Both unbiasedness and efficiency are properties that hold for a
+<em>fixed</em> sample size <span class="math inline">n</span>. Our third
+property asks: what happens as <span class="math inline">n</span>
+increases?</p>
+<section id="definition-consistency" class="callout-note"
+data-icon="false">
+<h2>Definition: Consistency</h2>
+<p>An estimator is <strong>consistent</strong> if its sampling
+distribution becomes increasingly concentrated around the true parameter
+value as the sample size increases. In the limit as <span
+class="math inline">n \rightarrow \infty</span>, the distribution
+collapses to a point at the true parameter.</p>
+</section>
+<p>This property is formalized by the <strong>Law of Large
+Numbers</strong>, which states that as the sample size grows, the sample
+mean converges to the population mean.</p>
+<p>Looking at our variance formula:</p>
+<p><span class="math display">
+\text{Var}(\bar{y}) = \frac{\sigma^2}{n}
+</span></p>
+<p>As <span class="math inline">n</span> increases, the variance
+decreases. As <span class="math inline">n \rightarrow \infty</span>:</p>
+<p><span class="math display">
+\lim_{n \rightarrow \infty} \text{Var}(\bar{y}) = \lim_{n \rightarrow
+\infty} \frac{\sigma^2}{n} = 0
+</span></p>
+<p>The distribution collapses to a single point. When our sample size
+equals the entire population, every sample mean equals the population
+mean exactly. The sample mean is a consistent estimator.</p>
+<section id="interpreting-consistency" class="callout-important"
+data-icon="false">
+<h2>Interpreting Consistency</h2>
+<p>Consistency gives us confidence that more data leads to better
+estimates (assuming the data are properly collected). This is the
+mathematical justification for why researchers pursue larger sample
+sizes—not just for statistical power, but because larger samples yield
+more precise estimates.</p>
+</section>
+<h2 id="summary-why-the-sample-mean">Summary: Why the Sample Mean?</h2>
+<p>We can now answer definitively why we use the sample mean to estimate
+the population mean:</p>
+<ol type="1">
+<li><strong>Unbiasedness</strong>: The sample mean is correct on average
+across repeated samples</li>
+<li><strong>Efficiency</strong>: Among all unbiased estimators, it has
+the smallest variance</li>
+<li><strong>Consistency</strong>: As sample size increases, the sample
+mean converges to the population mean</li>
+</ol>
+<p>These three properties—proven mathematically, not assumed—make the
+sample mean the optimal choice for estimating population means in the
+frequentist framework.</p>
+<h2 id="interpretive-questions">Interpretive Questions</h2>
+<section id="question-1" class="callout-tip" data-icon="false">
+<h2>Question 1</h2>
+<p>Explain in your own words why we can establish that the sample mean
+is unbiased without knowing the actual value of <span
+class="math inline">\mu</span>. What does this tell us about the power
+of mathematical reasoning in statistics?</p>
+</section>
+<section id="question-2" class="callout-tip" data-icon="false">
+<h2>Question 2</h2>
+<p>Consider two researchers studying the same population. Researcher A
+collects a sample of size 50, while Researcher B collects a sample of
+size 200. Both use the sample mean as their estimator. How do their
+sampling distributions differ? Which researcher should have more
+confidence in their estimate, and why?</p>
+</section>
+<section id="question-3" class="callout-tip" data-icon="false">
+<h2>Question 3</h2>
+<p>The frequentist approach relies on imagining repeated sampling, even
+though we only sample once in practice. Does this make the approach
+purely theoretical, or does it provide practical value for real-world
+inference? Defend your answer.</p>
+</section>
+<h2 id="looking-ahead">Looking Ahead</h2>
+<p>In this chapter, we’ve established the fundamental philosophy of
+frequentist statistics and proven that the sample mean is an optimal
+estimator of the population mean. In the next chapter, we’ll turn our
+attention to estimating the population variance and develop the tools
+necessary for hypothesis testing—the framework that allows us to make
+formal claims about statistical significance.</p>
+<p>The journey from these theoretical foundations to practical
+hypothesis testing may seem long, but every step is essential.
+Statistical inference is not a collection of arbitrary formulas—it is a
+coherent mathematical framework built on rigorous principles.
+Understanding these principles will make you a more thoughtful and
+capable analyst.</p>

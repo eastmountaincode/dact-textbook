@@ -1,26 +1,581 @@
 @import "tailwindcss";
 
+/* ======================================================================
+   CSS VARIABLES
+   ====================================================================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base colors */
+  --background: #faf9f6;
+  --foreground: #1a1a1a;
+
+  /* Brand colors */
+  --berkeley-blue: #003262;
+  --california-gold: #FDB515;
+
+  /* Q/A/D box colors */
+  --question-color: #B71C1C;
+  --answer-color: #0A3050;
+  --definition-color: #B8860B;
+
+  /* Callout colors */
+  --callout-note-bg: #e8f4f8;
+  --callout-note-border: #0ea5e9;
+  --callout-important-bg: #fef3c7;
+  --callout-important-border: #f59e0b;
+  --callout-warning-bg: #fee2e2;
+  --callout-warning-border: #ef4444;
+
+  /* Component colors */
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e5e7eb;
+  --sidebar-section-bg: #f3f4f6;
+  --sidebar-hover: #f3f4f6;
+  --sidebar-active: #dbeafe;
+  --header-bg: #003262;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --muted-text: #6b7280;
+  --table-stripe: #f9f9f9;
+  --code-bg: #f3f4f6;
+  --code-block-bg: #1e1e1e;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ======================================================================
+   DARK MODE VARIABLES
+   ====================================================================== */
+.dark {
+  /* Base colors */
+  --background: #1a1a1a;
+  --foreground: #e5e5e5;
+
+  /* Brand colors - slightly adjusted for dark mode */
+  --berkeley-blue: #4a90c2;
+  --california-gold: #FDB515;
+
+  /* Q/A/D box colors - slightly brighter for dark mode */
+  --question-color: #ef5350;
+  --answer-color: #4fc3f7;
+  --definition-color: #ffd54f;
+
+  /* Callout colors - darker backgrounds */
+  --callout-note-bg: #1e3a4a;
+  --callout-note-border: #0ea5e9;
+  --callout-important-bg: #3d3020;
+  --callout-important-border: #f59e0b;
+  --callout-warning-bg: #3d2020;
+  --callout-warning-border: #ef4444;
+
+  /* Component colors */
+  --sidebar-bg: #242424;
+  --sidebar-border: #3a3a3a;
+  --sidebar-section-bg: #2d2d2d;
+  --sidebar-hover: #333333;
+  --sidebar-active: #1e3a50;
+  --header-bg: #003262;
+  --card-bg: #242424;
+  --card-border: #3a3a3a;
+  --input-bg: #2d2d2d;
+  --input-border: #4a4a4a;
+  --muted-text: #9ca3af;
+  --table-stripe: #242424;
+  --code-bg: #2d2d2d;
+  --code-block-bg: #0d0d0d;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ======================================================================
+   BASE STYLES
+   ====================================================================== */
+html, body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'EB Garamond', Georgia, serif;
+  line-height: 1.4;
+  overscroll-behavior-y: none;
+}
+
+/* ======================================================================
+   CHAPTER CONTENT - TYPOGRAPHY
+   ====================================================================== */
+.chapter-content h1 {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: var(--berkeley-blue);
+  border-bottom: 3px solid var(--berkeley-blue);
+  padding-bottom: 0.3em;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.chapter-content h2 {
+  font-size: 1.75em;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+}
+
+.chapter-content h3 {
+  font-size: 1.35em;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.chapter-content h4 {
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+.chapter-content h5 {
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--muted-text);
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+}
+
+.chapter-content p {
+  line-height: 1.8;
+  margin: 1em 0;
+}
+
+.chapter-content ul,
+.chapter-content ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+.chapter-content li {
+  margin: 0.5em 0;
+  line-height: 1.7;
+}
+
+/* ======================================================================
+   CHAPTER CONTENT - IMAGES & FIGURES
+   ====================================================================== */
+.chapter-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 1em 0;
+}
+
+.chapter-content figure {
+  margin: 2em 0;
+  text-align: center;
+}
+
+.chapter-content figcaption {
+  font-size: 0.9em;
+  color: var(--muted-text);
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+/* ======================================================================
+   CHAPTER CONTENT - TABLES
+   ====================================================================== */
+.chapter-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+
+.chapter-content th {
+  background-color: var(--answer-color);
+  color: white;
+  padding: 0.75em;
+  text-align: left;
+  font-weight: 600;
+}
+
+.chapter-content td {
+  padding: 0.75em;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.chapter-content tr:nth-child(even) {
+  background-color: var(--table-stripe);
+}
+
+/* ======================================================================
+   CHAPTER CONTENT - CODE BLOCKS
+   ====================================================================== */
+.chapter-content pre {
+  background-color: var(--code-block-bg);
+  color: #d4d4d4;
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9em;
+}
+
+.chapter-content code {
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+
+.chapter-content :not(pre) > code {
+  background-color: var(--code-bg);
+  color: var(--foreground);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* ======================================================================
+   Q/A/D BOXES
+   ====================================================================== */
+.question,
+.qmd-question {
+  margin: 1.5em 0;
+  padding: 1em 1em 1em 3em;
+  border-left: 4px solid var(--question-color);
+  background-color: rgba(183, 28, 28, 0.05);
+  border-radius: 4px;
+  position: relative;
+}
+
+.question::before,
+.qmd-question::before {
+  content: "Q";
+  position: absolute;
+  left: 0.5em;
+  top: 0.8em;
+  width: 24px;
+  height: 24px;
+  background-color: var(--question-color);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.answer,
+.qmd-answer {
+  margin: 1em 0 1.5em 0;
+  padding: 1em 1em 1em 3em;
+  border-left: 4px solid var(--answer-color);
+  background-color: rgba(10, 48, 80, 0.05);
+  border-radius: 4px;
+  position: relative;
+}
+
+.answer::before,
+.qmd-answer::before {
+  content: "A";
+  position: absolute;
+  left: 0.5em;
+  top: 0.8em;
+  width: 24px;
+  height: 24px;
+  background-color: var(--answer-color);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.definition,
+.qmd-definition {
+  margin: 1.5em 0;
+  padding: 1em 1em 1em 3em;
+  border-left: 4px solid var(--definition-color);
+  background-color: rgba(184, 134, 11, 0.05);
+  border-radius: 4px;
+  position: relative;
+}
+
+.definition::before,
+.qmd-definition::before {
+  content: "D";
+  position: absolute;
+  left: 0.5em;
+  top: 0.8em;
+  width: 24px;
+  height: 24px;
+  background-color: var(--definition-color);
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+/* ======================================================================
+   CALLOUT BOXES
+   ====================================================================== */
+.callout {
+  margin: 1.5em 0;
+  padding: 1.25em;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.callout-note {
+  background-color: var(--callout-note-bg);
+  border-color: var(--callout-note-border);
+}
+
+.callout-important {
+  background-color: var(--callout-important-bg);
+  border-color: var(--callout-important-border);
+}
+
+.callout-warning {
+  background-color: var(--callout-warning-bg);
+  border-color: var(--callout-warning-border);
+}
+
+.callout[data-title]::before {
+  content: attr(data-title);
+  display: block;
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 0.5em;
+  color: var(--foreground);
+}
+
+.callout[data-title=""]::before {
+  display: none;
+}
+
+/* ======================================================================
+   THEOREM / PROOF / IMPORTANTBOX
+   ====================================================================== */
+.importantbox,
+.qmd-importantbox {
+  margin: 1.5em 0;
+  padding: 1.25em;
+  background-color: var(--sidebar-section-bg);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid #6b7280;
+  border-radius: 4px;
+}
+
+.importantbox > p:first-child strong,
+.qmd-importantbox > p:first-child strong {
+  display: block;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: -1.25em -1.25em 1em -1.25em;
+  padding: 0.75em 1.25em;
+  background-color: transparent;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.theorem,
+.qmd-theorem {
+  margin: 1.5em 0;
+  padding: 1.25em;
+  background-color: var(--sidebar-section-bg);
+  border-left: 4px solid #6b7280;
+  border-radius: 4px;
+}
+
+.proof,
+.qmd-proof {
+  margin: 1em 0 1.5em 0;
+  padding: 1em 1.25em;
+  background-color: var(--card-bg);
+  border-left: 3px solid var(--card-border);
+  font-style: italic;
+}
+
+.proof::before,
+.qmd-proof::before {
+  content: "Proof.";
+  font-weight: 600;
+  font-style: normal;
+  margin-right: 0.5em;
+}
+
+.qmd-block {
+  margin: 1.5em 0;
+  padding: 1em;
+  background-color: var(--card-bg);
+  border-left: 3px solid var(--card-border);
+  border-radius: 4px;
+}
+
+/* ======================================================================
+   VIDEO CONTAINER
+   ====================================================================== */
+.video-container {
+  margin: 2em 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #000;
+}
+
+.video-container video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-caption {
+  padding: 1em;
+  background-color: var(--card-bg);
+  font-size: 0.95em;
+  color: var(--muted-text);
+  border-top: 1px solid var(--card-border);
+}
+
+.video-caption strong {
+  color: var(--foreground);
+}
+
+/* ======================================================================
+   MATH (KaTeX)
+   ====================================================================== */
+.math-display {
+  margin: 1.5em 0;
+  padding: 1em;
+  overflow-x: auto;
+}
+
+.katex-display {
+  margin: 1em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ======================================================================
+   SEARCH HIGHLIGHT
+   ====================================================================== */
+@keyframes search-pulse {
+  0%, 100% { background-color: #f97316; }
+  50% { background-color: #fb923c; }
+}
+
+.search-highlight {
+  animation: search-pulse 0.8s ease-in-out 3;
+}
+
+/* ======================================================================
+   RESPONSIVE
+   ====================================================================== */
+@media (max-width: 768px) {
+  .chapter-content h1 {
+    font-size: 1.75em;
+  }
+
+  .chapter-content h2 {
+    font-size: 1.35em;
+  }
+
+  .question,
+  .answer,
+  .definition,
+  .qmd-question,
+  .qmd-answer,
+  .qmd-definition {
+    padding-left: 2.5em;
+  }
+
+  .question::before,
+  .answer::before,
+  .definition::before,
+  .qmd-question::before,
+  .qmd-answer::before,
+  .qmd-definition::before {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 0.8em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ======================================================================
+   DEV MODE - Colored borders for layout debugging
+   Usage: Add devBorder('color') from useDevMode() hook
+   ====================================================================== */
+.dev-mode .dev-border-red { border: 2px solid #ef4444 !important; }
+.dev-mode .dev-border-blue { border: 2px solid #3b82f6 !important; }
+.dev-mode .dev-border-green { border: 2px solid #22c55e !important; }
+.dev-mode .dev-border-amber { border: 2px solid #f59e0b !important; }
+.dev-mode .dev-border-purple { border: 2px solid #8b5cf6 !important; }
+.dev-mode .dev-border-cyan { border: 2px solid #06b6d4 !important; }
+.dev-mode .dev-border-pink { border: 2px solid #ec4899 !important; }
+.dev-mode .dev-border-violet { border: 2px solid #a78bfa !important; }
+.dev-mode .dev-border-yellow { border: 2px solid #fbbf24 !important; }
+.dev-mode .dev-border-emerald { border: 2px solid #34d399 !important; }
+.dev-mode .dev-border-teal { border: 2px solid #2dd4bf !important; }
+.dev-mode .dev-border-orange { border: 2px solid #fb923c !important; }
+.dev-mode .dev-border-lime { border: 2px solid #a3e635 !important; }
+.dev-mode .dev-border-indigo { border: 2px solid #6366f1 !important; }
+.dev-mode .dev-border-rose { border: 2px solid #f43f5e !important; }
+.dev-mode .dev-border-sky { border: 2px solid #0ea5e9 !important; }
+.dev-mode .dev-border-fuchsia { border: 2px solid #d946ef !important; }
+.dev-mode .dev-border-slate { border: 2px solid #64748b !important; }
+
+/* DEV MODE - Chapter content elements (rendered via dangerouslySetInnerHTML)
+   These are auto-applied to HTML elements within .chapter-content */
+.dev-mode .chapter-content h1 { border: 2px solid #dc2626 !important; } /* red-600 */
+.dev-mode .chapter-content h2 { border: 2px solid #ea580c !important; } /* orange-600 */
+.dev-mode .chapter-content h3 { border: 2px solid #d97706 !important; } /* amber-600 */
+.dev-mode .chapter-content h4 { border: 2px solid #ca8a04 !important; } /* yellow-600 */
+.dev-mode .chapter-content h5 { border: 2px solid #65a30d !important; } /* lime-600 */
+.dev-mode .chapter-content p { border: 1px solid #16a34a !important; } /* green-600 */
+.dev-mode .chapter-content ul { border: 1px solid #0d9488 !important; } /* teal-600 */
+.dev-mode .chapter-content ol { border: 1px solid #0891b2 !important; } /* cyan-600 */
+.dev-mode .chapter-content li { border: 1px solid #0284c7 !important; } /* sky-600 */
+.dev-mode .chapter-content table { border: 2px solid #2563eb !important; } /* blue-600 */
+.dev-mode .chapter-content th { border: 1px solid #4f46e5 !important; } /* indigo-600 */
+.dev-mode .chapter-content td { border: 1px solid #7c3aed !important; } /* violet-600 */
+.dev-mode .chapter-content pre { border: 2px solid #9333ea !important; } /* purple-600 */
+.dev-mode .chapter-content code { border: 1px solid #c026d3 !important; } /* fuchsia-600 */
+.dev-mode .chapter-content blockquote { border: 2px solid #db2777 !important; } /* pink-600 */
+.dev-mode .chapter-content figure { border: 2px solid #e11d48 !important; } /* rose-600 */
+.dev-mode .chapter-content figcaption { border: 1px solid #64748b !important; } /* slate-500 */
+.dev-mode .chapter-content img { border: 2px solid #f97316 !important; } /* orange-500 */
+
+/* DEV MODE - Q/A/D boxes */
+.dev-mode .chapter-content .question,
+.dev-mode .chapter-content .qmd-question { border: 2px solid #b91c1c !important; } /* red-700 */
+.dev-mode .chapter-content .answer,
+.dev-mode .chapter-content .qmd-answer { border: 2px solid #1d4ed8 !important; } /* blue-700 */
+.dev-mode .chapter-content .definition,
+.dev-mode .chapter-content .qmd-definition { border: 2px solid #a16207 !important; } /* yellow-700 */
+
+/* DEV MODE - Callouts */
+.dev-mode .chapter-content .callout { border: 2px solid #059669 !important; } /* emerald-600 */
+.dev-mode .chapter-content .callout-note { border: 2px solid #0284c7 !important; } /* sky-600 */
+.dev-mode .chapter-content .callout-important { border: 2px solid #d97706 !important; } /* amber-600 */
+.dev-mode .chapter-content .callout-warning { border: 2px solid #dc2626 !important; } /* red-600 */
+
+/* DEV MODE - Theorem/Proof/ImportantBox */
+.dev-mode .chapter-content .theorem,
+.dev-mode .chapter-content .qmd-theorem { border: 2px solid #4f46e5 !important; } /* indigo-600 */
+.dev-mode .chapter-content .proof,
+.dev-mode .chapter-content .qmd-proof { border: 2px solid #7c3aed !important; } /* violet-600 */
+.dev-mode .chapter-content .importantbox,
+.dev-mode .chapter-content .qmd-importantbox { border: 2px solid #475569 !important; } /* slate-600 */
+
+/* DEV MODE - Video */
+.dev-mode .chapter-content .video-container { border: 2px solid #c026d3 !important; } /* fuchsia-600 */
+
+/* DEV MODE - Math */
+.dev-mode .chapter-content .math-display { border: 1px solid #8b5cf6 !important; } /* violet-500 */
+.dev-mode .chapter-content .katex-display { border: 1px solid #a78bfa !important; } /* violet-400 */
+
+/* ======================================================================
+   UTILITIES
+   ====================================================================== */
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }

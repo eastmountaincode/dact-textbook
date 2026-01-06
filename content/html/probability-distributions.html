@@ -1,0 +1,76 @@
+<h1 id="probability">Probability</h1>
+<p>In this chapter, we’ll introduce some fundamental concepts in
+probability theory. By the end of this chapter, you will be able to
+define the following:</p>
+<ul>
+<li>Sample space</li>
+<li>Outcome</li>
+<li>Event</li>
+<li>Probability</li>
+<li>Random variable</li>
+</ul>
+<h2 id="what-is-probability">What is probability?</h2>
+<div class="question">
+<p>What is probability?</p>
+</div>
+<div class="answer">
+<p>Probability is a mathematical framework for quantifying uncertainty.
+It assigns numerical values between 0 and 1 to events, where 0 indicates
+impossibility and 1 indicates certainty.</p>
+</div>
+<div class="callout-note" title="Important Definition">
+<p>The <strong>sample space</strong> is the set of all possible outcomes
+of an experiment. For a coin flip, the sample space is <span
+class="math inline">\{H, T\}</span>.</p>
+</div>
+<p>Let’s consider a simple example. Imagine you’re flipping a fair coin.
+The sample space consists of two possible outcomes: heads (H) and tails
+(T).</p>
+<p>The probability of getting heads is:</p>
+<p><span class="math display">P(H) = \frac{\text{Number of favorable
+outcomes}}{\text{Total number of possible outcomes}} = \frac{1}{2} =
+0.5</span></p>
+<h2 id="random-variables">Random Variables</h2>
+<p>A random variable is a function that assigns numerical values to the
+outcomes of a random experiment.</p>
+<div class="question">
+<p>Can you give an example of a random variable?</p>
+</div>
+<div class="answer">
+<p>Consider rolling a six-sided die. Let <span
+class="math inline">X</span> be the random variable representing the
+number that appears on the top face. Then <span
+class="math inline">X</span> can take values <span
+class="math inline">\{1, 2, 3, 4, 5, 6\}</span>, each with probability
+<span class="math inline">1/6</span> if the die is fair.</p>
+</div>
+<h2 id="relationship-between-pdfs-and-cdfs">Relationship between PDFs
+and CDFs</h2>
+<p>The probability density function (PDF) and cumulative distribution
+function (CDF) are two fundamental ways of describing a probability
+distribution. The interactive visualization below demonstrates how these
+functions relate to each other.</p>
+<p>Use the dropdown menu to explore different distributions (Normal,
+Lognormal, and Uniform), and drag the slider to see how the PDF height
+at a point relates to the CDF value at that same point.</p>
+<iframe src="interactives/pdf_cdf_interactive.html" width="100%" height="990px" frameborder="0" style="border: none;">
+</iframe>
+<p>As you move the slider, observe that: - The PDF (<em>f(Y)</em>) shows
+the <strong>height</strong> of the density at any given value - The CDF
+(<em>F(Y)</em>) shows the <strong>area under the PDF curve</strong> to
+the left of that value - The shaded region in the PDF panel corresponds
+exactly to the CDF value</p>
+<h2 id="embedding-videos">Embedding Videos</h2>
+<p>Here’s how to embed your Manim animations. Replace
+<code>your_video.mp4</code> with the actual filename.</p>
+<div class="video-container">
+<video controls style="width: 100%; height: auto; border-radius: 8px;">
+<source src="/assets/probability-distributions/animations/random_variable_intro.mp4" type="video/mp4">
+<p>Your browser does not support the video tag. </video></p>
+<div class="video-caption">
+<p><strong>Random Variables in Action:</strong> This animation
+demonstrates how a random variable maps outcomes from a sample space to
+numerical values.</p>
+</div>
+</div>
+</div>
