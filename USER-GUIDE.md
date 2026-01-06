@@ -4,12 +4,39 @@ This guide explains how to manage and update your textbook website.
 
 ## Table of Contents
 
-1. [Chapter Organization](#chapter-organization)
-2. [Adding New Chapters](#adding-new-chapters)
-3. [Reordering Chapters](#reordering-chapters)
-4. [Creating New Sections](#creating-new-sections)
-5. [Building the Site](#building-the-site)
-6. [Common Tasks](#common-tasks)
+1. [Important: Editing Workflow](#important-editing-workflow)
+2. [Chapter Organization](#chapter-organization)
+3. [Adding New Chapters](#adding-new-chapters)
+4. [Reordering Chapters](#reordering-chapters)
+5. [Creating New Sections](#creating-new-sections)
+6. [Building the Site](#building-the-site)
+7. [Common Tasks](#common-tasks)
+
+---
+
+## Important: Editing Workflow
+
+**The QMD files are the source of truth for all content.** The HTML files in `content/html/` are generated output and will be overwritten when you rebuild.
+
+### What to Edit Where
+
+| Type of Change | Where to Edit |
+|----------------|---------------|
+| Text content, equations, images | QMD source files (`untitled folder/dafct/chapters/`) |
+| Callouts (Key Question, Important Distinction, etc.) | QMD source files |
+| Adding/restructuring sections | QMD source files |
+| CSS styling (colors, fonts, spacing) | `src/app/globals.css` |
+| Layout and components | Next.js files in `src/` |
+| Navigation and sidebar | Next.js components |
+| Chapter order and sections | `content/chapters.yaml` |
+
+### Workflow for Content Changes
+
+1. Edit the `.qmd` file in the source directory
+2. Run the Pandoc build script to regenerate HTML
+3. Refresh the site to see changes
+
+**Never edit the HTML files directly** - those changes will be lost the next time you run the build script.
 
 ---
 

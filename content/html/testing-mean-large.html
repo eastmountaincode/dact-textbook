@@ -1,5 +1,5 @@
-<h1 id="sec-hypothesis-testing">Testing a claim about a population
-mean</h1>
+<h1 id="testing-a-claim-about-a-population-mean">Testing a claim about a
+population mean</h1>
 <p>In this chapter, we’ll develop a comprehensive understanding of
 hypothesis testing through a detailed worked example. We’ll build the
 theoretical foundation step by step, introducing key concepts like
@@ -73,7 +73,7 @@ sample mean deviates from the population mean across repeated samples.
 It quantifies the precision of our estimator.</p>
 <p>Mathematically, the standard error of the sample mean is: <span
 class="math display">
-SE = \frac{\sigma}{\sqrt{n}}
+SE = rac{\sigma}{\sqrt{n}}
 </span> where <span class="math inline">\sigma</span> is the population
 standard deviation and <span class="math inline">n</span> is the sample
 size.</p>
@@ -109,7 +109,7 @@ Relationship: Population Variance to Sample Mean Variance</h3>
 <p>There’s a fundamental relationship connecting the population variance
 to the variance of the sample mean:</p>
 <p><span class="math display">
-\text{Var}(\bar{Y}) = \frac{\sigma^2}{n}
+    ext{Var}(ar{Y}) = rac{\sigma^2}{n}
 </span></p>
 <p>Taking the square root of both sides gives us the standard error
 formula. This relationship tells us that:</p>
@@ -207,9 +207,9 @@ what we hope to demonstrate with our data. By convention, we assign the
 complement of our claim to the null hypothesis—this is what we will
 attempt to falsify.</p>
 <p>We also need to choose a <strong>significance level</strong> <span
-class="math inline">\alpha</span>, which represents our tolerance for
+class="math inline">lpha</span>, which represents our tolerance for
 making a Type I error (rejecting a true null hypothesis). Let’s set
-<span class="math inline">\alpha = 0.04</span> or 4%.</p>
+<span class="math inline">lpha = 0.04</span> or 4%.</p>
 <section id="why-this-setup" class="callout-note" data-icon="false">
 <h2>📊 Why This Setup?</h2>
 <p>Notice that our null hypothesis includes the equality. This is a
@@ -254,7 +254,7 @@ decision</figcaption>
 <h4 id="choosing-the-significance-level">Choosing the Significance
 Level</h4>
 <p>We also need to choose a <strong>significance level</strong> <span
-class="math inline">\alpha</span>, which represents our tolerance for
+class="math inline">lpha</span>, which represents our tolerance for
 making a Type I error (rejecting a true null hypothesis).</p>
 <figure>
 <img src="/assets/testing-mean-large/images/slide_020.png" style="width:85.0%"
@@ -288,19 +288,18 @@ Estimating the Sampling Distribution</h3>
 <p>In this stage, we need to characterize the distribution of our test
 statistic under the assumption that the null hypothesis is true.</p>
 <p><strong>Step 1: Choose an Estimator</strong></p>
-<p>We use the sample mean <span class="math inline">\bar{Y}</span> as
-our estimator of the population mean <span
-class="math inline">\mu</span>. Our observed value is <span
-class="math inline">\bar{y} = 83</span>.</p>
+<p>We use the sample mean <span class="math inline">ar{Y}</span> as our
+estimator of the population mean <span class="math inline">\mu</span>.
+Our observed value is <span class="math inline">ar{y} = 83</span>.</p>
 <p><strong>Step 2: Establish the Distribution</strong></p>
 <p>The sample mean is itself a random variable. With our large sample
 size (<span class="math inline">n = 38</span>), we can invoke the
 <strong>Central Limit Theorem (CLT)</strong>, which tells us that the
-sampling distribution of <span class="math inline">\bar{Y}</span> is
+sampling distribution of <span class="math inline">ar{Y}</span> is
 approximately normal, regardless of the shape of the population
 distribution.</p>
 <p><span class="math display">
-\bar{Y} \sim N(\mu, \sigma^2/n)
+ar{Y} \sim N(\mu, \sigma^2/n)
 </span></p>
 <p><strong>Step 3: Estimate the Parameters</strong></p>
 <p>Under the null hypothesis, we assume <span class="math inline">\mu
@@ -309,14 +308,14 @@ distribution.</p>
 null hypothesis “at its most extreme”).</p>
 <p>From our sample data, we calculate: - Sample standard deviation:
 <span class="math inline">s = 10.1</span> points - Standard error: <span
-class="math inline">SE = s/\sqrt{n} = 10.1/\sqrt{38} \approx 1.64</span>
+class="math inline">SE = s/\sqrt{n} = 10.1/\sqrt{38} pprox 1.64</span>
 points</p>
 <section id="the-sampling-distribution" class="callout-important"
 data-icon="false">
 <h2>💡 The Sampling Distribution</h2>
 <p>We now have a complete picture of the sampling distribution under
 <span class="math inline">H_0</span>: <span class="math display">
-\bar{Y} \sim N(80, 1.64^2)
+ar{Y} \sim N(80, 1.64^2)
 </span></p>
 <p>This means if the null hypothesis is true, sample means from repeated
 samples would be normally distributed around 80 with a standard
@@ -338,7 +337,7 @@ determine how unusual it is.</p>
 <p><strong>The Test Statistic: Zeta (ζ)</strong></p>
 <p>We define a test statistic called zeta (ζ) as:</p>
 <p><span class="math display">
-\zeta = \frac{\bar{Y} - \mu_0}{SE}
+\zeta = rac{ar{Y} - \mu_0}{SE}
 </span></p>
 <p>where <span class="math inline">\mu_0</span> is the hypothesized
 population mean under the null (80 in our case).</p>
@@ -355,14 +354,14 @@ population mean.</p>
 <p>If our observed sample had a mean of 83 kg, the population mean were
 80 kg, and the standard error were 1.64 kg, then: <span
 class="math display">
-\zeta = \frac{83 - 80}{1.64} = 1.83
+\zeta = rac{83 - 80}{1.64} = 1.83
 </span></p>
 <p>The “kg” units cancel out, leaving us with a pure number: 1.83
 standard errors above the hypothesized mean.</p>
 </section>
 <p><strong>Calculating Our Test Statistic</strong></p>
 <p>For our problem: <span class="math display">
-\zeta = \frac{83 - 80}{1.64} = \frac{3}{1.64} \approx 1.83
+\zeta = rac{83 - 80}{1.64} = rac{3}{1.64} pprox 1.83
 </span></p>
 <p>Our observed sample mean is 1.83 standard errors above the
 hypothesized mean of 80.</p>
@@ -380,15 +379,15 @@ encountered before.</p>
 what is the probability of observing a test statistic as extreme as or
 more extreme than what we actually observed?”</p>
 <p>For our one-sided test: <span class="math display">
-p\text{-value} = P(\zeta \geq 1.83 \mid H_0 \text{ is true})
+p   ext{-value} = P(\zeta \geq 1.83 \mid H_0    ext{ is true})
 </span></p>
 <p>Using a standard normal table or software, we find: <span
 class="math display">
-p\text{-value} \approx 0.034 \text{ or } 3.4\%
+p   ext{-value} pprox 0.034    ext{ or } 3.4\%
 </span></p>
 <p><strong>Making the Decision</strong></p>
 <p>We compare our p-value to our significance level: - p-value = 3.4% -
-<span class="math inline">\alpha</span> = 4%</p>
+<span class="math inline">lpha</span> = 4%</p>
 <p>Since the p-value (3.4%) is less than our significance level (4%), we
 <strong>reject the null hypothesis</strong>.</p>
 <section id="conclusion" class="callout-important" data-icon="false">
@@ -433,12 +432,13 @@ doesn’t follow a normal distribution—it follows a
 <strong>t-distribution</strong>.</p>
 <p>The test statistic is still calculated the same way: <span
 class="math display">
-\zeta = \frac{\bar{Y} - \mu_0}{s/\sqrt{n}}
+\zeta = rac{ar{Y} - \mu_0}{s/\sqrt{n}}
 </span></p>
 <p>But now, instead of following a Z-distribution, ζ follows a
-<strong>t-distribution with <span class="math inline">\nu = n-1</span>
-degrees of freedom</strong>: <span class="math display">
-\zeta \sim t_{\nu}
+<strong>t-distribution with $ u = n-1$ degrees of freedom</strong>:
+<span class="math display">
+\zeta \sim t_{
+u}
 </span></p>
 <section id="why-degrees-of-freedom" class="callout-important"
 data-icon="false">
@@ -448,7 +448,7 @@ information from our sample to estimate the population standard
 deviation. We “expended” one observation to estimate the mean, which we
 then used to calculate the standard deviation.</p>
 <p>In our example with <span class="math inline">n = 24</span>, we have
-<span class="math inline">\nu = 23</span> degrees of freedom.</p>
+$ u = 23$ degrees of freedom.</p>
 </section>
 <h3 id="properties-of-the-t-distribution">Properties of the
 T-Distribution</h3>
@@ -458,28 +458,28 @@ This reflects the additional uncertainty from estimating the standard
 deviation.</p>
 <p>Key properties: 1. As the degrees of freedom increase, the
 t-distribution approaches the normal distribution 2. For small degrees
-of freedom, the tails are much heavier than the normal 3. By <span
-class="math inline">\nu \approx 30</span>, the t-distribution is
-virtually indistinguishable from the normal</p>
+of freedom, the tails are much heavier than the normal 3. By $ u pprox
+30$, the t-distribution is virtually indistinguishable from the
+normal</p>
 <h3 id="comparing-the-two-ratios">Comparing the Two Ratios</h3>
 <p>Let’s clarify the distinction between two similar-looking ratios:</p>
 <p><strong>Ratio A (with known σ):</strong> <span class="math display">
-\text{Andrew} = \frac{\bar{Y} - \mu_0}{\sigma/\sqrt{n}}
+    ext{Andrew} = rac{ar{Y} - \mu_0}{\sigma/\sqrt{n}}
 </span></p>
 <p><strong>Ratio B (with estimated s):</strong> <span
 class="math display">
-\text{Ben} = \frac{\bar{Y} - \mu_0}{s/\sqrt{n}}
+    ext{Ben} = rac{ar{Y} - \mu_0}{s/\sqrt{n}}
 </span></p>
 <section id="question" class="callout-note" data-icon="false">
 <h2>🤔 Question</h2>
 <p>Which ratio fluctuates more from sample to sample—Andrew or Ben?</p>
 <p><strong>Answer:</strong> Ben fluctuates more because both the
 numerator AND the denominator are random variables. In Andrew, only the
-numerator (<span class="math inline">\bar{Y}</span>) varies; the
+numerator (<span class="math inline">ar{Y}</span>) varies; the
 denominator (<span class="math inline">\sigma/\sqrt{n}</span>) is a
-known constant. In Ben, both <span class="math inline">\bar{Y}</span>
-and <span class="math inline">s</span> vary from sample to sample,
-creating additional volatility.</p>
+known constant. In Ben, both <span class="math inline">ar{Y}</span> and
+<span class="math inline">s</span> vary from sample to sample, creating
+additional volatility.</p>
 <p>This extra volatility is exactly what the t-distribution accounts
 for.</p>
 </section>
@@ -489,18 +489,17 @@ Example</h3>
 students:</p>
 <ul>
 <li><span class="math inline">n = 24</span></li>
-<li><span class="math inline">\bar{y} = 83</span></li>
+<li><span class="math inline">ar{y} = 83</span></li>
 <li><span class="math inline">s = 10.1</span></li>
-<li><span class="math inline">SE = 10.1/\sqrt{24} \approx
-2.06</span></li>
+<li><span class="math inline">SE = 10.1/\sqrt{24} pprox 2.06</span></li>
 </ul>
 <p>Test statistic: <span class="math display">
-\zeta = \frac{83 - 80}{2.06} \approx 1.46
+\zeta = rac{83 - 80}{2.06} pprox 1.46
 </span></p>
 <p>This time, ζ follows a t-distribution with 23 degrees of freedom.
 Looking up this value in a t-table or using software:</p>
 <p><span class="math display">
-p\text{-value} \approx 0.08 \text{ or } 8\%
+p   ext{-value} pprox 0.08     ext{ or } 8\%
 </span></p>
 <p><strong>The Decision Changes</strong></p>
 <p>Now our p-value (8%) exceeds our significance level (4%). We
@@ -664,7 +663,7 @@ class="math inline">SE = s/\sqrt{100} = s/10</span>.</p>
 <p>With <span class="math inline">n = 20</span>, we must use the
 t-distribution with 19 degrees of freedom, which has heavier tails than
 the normal. Additionally, the standard error will be larger: <span
-class="math inline">SE = s/\sqrt{20} \approx s/4.47</span>.</p>
+class="math inline">SE = s/\sqrt{20} pprox s/4.47</span>.</p>
 <p>Two effects compound: 1. The larger standard error makes the test
 statistic smaller 2. The t-distribution with few degrees of freedom
 makes any given test statistic less significant</p>

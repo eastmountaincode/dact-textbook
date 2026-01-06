@@ -201,7 +201,34 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
         console.error('KaTeX error:', e);
       }
     });
+
+    // Initialize collapsible sections
+    const collapsibles = container.querySelectorAll('[data-collapse="true"]');
+    collapsibles.forEach((section) => {
+      // Start collapsed
+      section.classList.add('callout-collapsed');
+    });
   }, [html, chapterSlug]);
+
+  // Handle clicks on collapsible headers
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleCollapseClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const heading = target.closest('h2');
+      if (!heading) return;
+
+      const section = heading.closest('[data-collapse="true"]');
+      if (!section) return;
+
+      section.classList.toggle('callout-collapsed');
+    };
+
+    container.addEventListener('click', handleCollapseClick);
+    return () => container.removeEventListener('click', handleCollapseClick);
+  }, [html]);
 
   // Apply highlights to DOM when highlights change or after content initializes
   useEffect(() => {
@@ -547,6 +574,7 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
                 <path d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z" />
               </svg>
             </button>
+            {/* Notes feature disabled - uncomment to re-enable
             <button
               type="button"
               tabIndex={-1}
@@ -562,11 +590,12 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
             </button>
+            */}
           </div>
         </div>
       )}
 
-      {/* New Note Input */}
+      {/* Notes feature disabled - uncomment to re-enable
       {activeNoteId === 'new' && selection && selection.viewportRect && (
         <div
           data-note-input
@@ -612,6 +641,7 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
           </div>
         </div>
       )}
+      */}
 
       {/* Content with notes in flex layout */}
       <div className={`flex gap-6 ${devBorder('slate')}`}>
@@ -622,7 +652,7 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
           onDoubleClick={handleDoubleClick}
         />{/* Content set via ref in useEffect to prevent React from resetting it */}
 
-        {/* Notes Margin */}
+        {/* Notes Margin - disabled, uncomment to re-enable
         <div className={`w-48 flex-shrink-0 relative ${devBorder('lime')}`}>
           <button
             onClick={toggleNotesPanel}
@@ -708,6 +738,7 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
             </>
           )}
         </div>
+        */}
       </div>
     </div>
   );

@@ -1,0 +1,262 @@
+/* ======================================================================
+   CALLOUT STYLES
+   Extracted from globals.css for better organization
+   ====================================================================== */
+
+/* ======================================================================
+   CALLOUT BOXES - Base
+   ====================================================================== */
+.callout {
+  margin: var(--space-lg) 0;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+}
+
+/* ====================================================================
+   CALLOUT BASE STYLES (shared)
+   ==================================================================== */
+.callout-note,
+.callout-warning,
+.callout-tip,
+.callout-important {
+  border: 1px solid #dee2e6 !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  padding: var(--space-md) !important;
+  margin: var(--space-lg) 0 !important;
+  margin-left: 4px !important;
+  transform: none !important;
+  clip-path: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.callout-note::before,
+.callout-note::after,
+.callout-warning::before,
+.callout-warning::after,
+.callout-tip::before,
+.callout-tip::after,
+.callout-important::before,
+.callout-important::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+.callout-note h2,
+.callout-warning h2,
+.callout-tip h2,
+.callout-important h2,
+.chapter-content .callout-note h2,
+.chapter-content .callout-warning h2,
+.chapter-content .callout-tip h2,
+.chapter-content .callout-important h2 {
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+  border-bottom: none !important;
+}
+
+.callout-note p,
+.callout-warning p,
+.callout-tip p,
+.callout-important p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+  padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-md);
+}
+
+/* ====================================================================
+   KEY QUESTION / CONCEPTUAL QUESTION CALLOUT (callout-note)
+   Blue left strip, light gray background
+   ==================================================================== */
+.callout-note {
+  background-color: #f8f9fa !important;
+  box-shadow: -4px 0 0 0 #6ba3d6 !important;
+}
+
+.callout-note h2,
+.chapter-content .callout-note h2 {
+  color: #1a1a1a !important;
+  background-color: #eef4f8 !important;
+}
+
+.dark .callout-note {
+  background-color: #2d2d2d !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-note h2,
+.dark .chapter-content .callout-note h2 {
+  color: #e5e5e5 !important;
+  background-color: #3a4550 !important;
+}
+
+/* ====================================================================
+   IMPORTANT DISTINCTION CALLOUT (callout-warning)
+   Orange left strip, light cream background
+   ==================================================================== */
+.callout-warning {
+  background-color: #fdf8f0 !important;
+  border-color: #e8e0d5 !important;
+  box-shadow: -4px 0 0 0 #e67e22 !important;
+}
+
+.callout-warning h2,
+.chapter-content .callout-warning h2 {
+  color: #d35400 !important;
+  background-color: #fdf0e0 !important;
+}
+
+.dark .callout-warning {
+  background-color: #3d2d1d !important;
+  border-color: #5a4a3a !important;
+}
+
+.dark .callout-warning h2,
+.dark .chapter-content .callout-warning h2 {
+  color: #f5a623 !important;
+  background-color: #4a3a2a !important;
+}
+
+/* ====================================================================
+   ANSWER CALLOUT (callout-tip) - Collapsible
+   Green left strip, light green background
+   ==================================================================== */
+.callout-tip {
+  background-color: #f8faf8 !important;
+  border-color: #d4e6d4 !important;
+  box-shadow: -4px 0 0 0 #5cb85c !important;
+}
+
+.callout-tip h2,
+.chapter-content .callout-tip h2 {
+  color: #2d5a2d !important;
+  background-color: #e8f5e8 !important;
+}
+
+.dark .callout-tip {
+  background-color: #1d2d1d !important;
+  border-color: #3a4a3a !important;
+}
+
+.dark .callout-tip h2,
+.dark .chapter-content .callout-tip h2 {
+  color: #8fdf8f !important;
+  background-color: #2a3a2a !important;
+}
+
+/* ====================================================================
+   DEFINITIONS CALLOUT (callout-important)
+   Red left strip, light pink background
+   ==================================================================== */
+.callout-important {
+  background-color: #fdf8f8 !important;
+  border-color: #e8d5d5 !important;
+  box-shadow: -4px 0 0 0 #cc5c5c !important;
+}
+
+.callout-important h2,
+.chapter-content .callout-important h2 {
+  color: #8b1c1c !important;
+  background-color: #fce8e8 !important;
+}
+
+.dark .callout-important {
+  background-color: #3d1d1d !important;
+  border-color: #5a3a3a !important;
+}
+
+.dark .callout-important h2,
+.dark .chapter-content .callout-important h2 {
+  color: #f58f8f !important;
+  background-color: #4a2a2a !important;
+}
+
+/* ====================================================================
+   COLLAPSIBLE CALLOUT STYLES
+   Used for Answer callouts with data-collapse="true"
+   ==================================================================== */
+
+/* Target h2 inside any collapsible callout */
+[data-collapse="true"] > h2,
+.callout-collapse-header {
+  cursor: pointer;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  user-select: none;
+}
+
+[data-collapse="true"] > h2:hover,
+.callout-collapse-header:hover {
+  filter: brightness(0.95);
+}
+
+/* Chevron icon using CSS */
+[data-collapse="true"] > h2::after,
+.callout-collapse-header::after {
+  content: "" !important;
+  display: block !important;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  margin-left: auto;
+  opacity: 0.6;
+}
+
+/* Collapsed state - chevron points right */
+.callout-collapsed > h2::after,
+.callout-collapsed .callout-collapse-header::after {
+  transform: rotate(-45deg);
+}
+
+/* Expanded state - chevron points down (default) */
+[data-collapse="true"]:not(.callout-collapsed) > h2::after {
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.callout-collapse-content {
+  max-height: 2000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+  opacity: 1;
+}
+
+.callout-collapsed .callout-collapse-content {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Fallback: Hide content directly if no wrapper exists */
+.callout-collapsed > p,
+.callout-collapsed > ul,
+.callout-collapsed > ol,
+.callout-collapsed > div:not(.callout-collapse-content) {
+  display: none;
+}
+
+/* Generic callout with data-title attribute */
+.callout[data-title]::before {
+  content: attr(data-title);
+  display: block;
+  font-weight: 700;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-sm);
+  color: var(--foreground);
+}
+
+.callout[data-title=""]::before {
+  display: none;
+}

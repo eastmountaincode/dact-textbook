@@ -38,9 +38,9 @@ export async function loadChapter(slug: string): Promise<Chapter | null> {
   try {
     const html = await fs.readFile(htmlPath, 'utf-8');
 
-    // Extract title from first h1
+    // Extract title from first h1 (chapters must start with # Title in QMD)
     const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/);
-    const title = titleMatch?.[1] || slug.replace(/-/g, ' ');
+    const title = titleMatch?.[1] || '';
 
     return {
       html,

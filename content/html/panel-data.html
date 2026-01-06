@@ -1,4 +1,10 @@
-<h1 class="unnumbered" id="panel-data-methods">Panel Data Methods</h1>
+<h1 id="panel-data-methods">Panel Data Methods</h1>
+<pre><code>css: styles.css
+toc: true
+toc-depth: 3
+number-sections: true</code></pre>
+<hr />
+<h1 class="unnumbered" id="panel-data-methods-1">Panel Data Methods</h1>
 <p>Panel data—repeated observations on the same individuals over
 time—offers researchers a powerful tool for addressing one of the most
 vexing problems in observational research: unobserved heterogeneity. In
@@ -78,31 +84,33 @@ This creates a two-dimensional structure: we observe variation both *across* ind
 Let&#39;s start by understanding exactly what problem panel data helps us solve. Suppose we&#39;re interested in estimating the causal effect of education on log wages. We might write down a simple model:
 
 $$
-\log(wage_{it}) = \beta_0 + \beta_1 educ_i + u_{it}
+\log(wage_{it}) = eta_0 + eta_1 educ_i + u_{it}
 $$
 
-where $i$ indexes individuals and $t$ indexes time periods. The parameter $\beta_1$ represents the return to education—the percentage increase in wages associated with one additional year of schooling.
+where $i$ indexes individuals and $t$ indexes time periods. The parameter $eta_1$ represents the return to education—the percentage increase in wages associated with one additional year of schooling.
 
 But this specification has a critical flaw. The error term $u_{it}$ likely contains many unobserved factors that affect wages:
 
 $$
-u_{it} = \alpha_i + \varepsilon_{it}
+u_{it} = lpha_i + arepsilon_{it}
 $$
 
-Here, $\alpha_i$ represents all time-invariant characteristics of individual $i$ (ability, family background, motivation, etc.), while $\varepsilon_{it}$ captures time-varying shocks to wages.
+Here, $lpha_i$ represents all time-invariant characteristics of individual $i$ (ability, family background, motivation, etc.), while $arepsilon_{it}$ captures time-varying shocks to wages.
 
 ::: {.question}
-Under what conditions will OLS estimation of the simple model above produce unbiased estimates of $\beta_1$?
+Under what conditions will OLS estimation of the simple model above produce unbiased estimates of $eta_1$?
 :::
 
 ::: {.answer}
-OLS will be unbiased if and only if $E[u_{it} | educ_i] = 0$. But this fails if unobserved ability $\alpha_i$ is correlated with education. Smart, motivated individuals likely get more education *and* earn higher wages even conditional on education. This means:
+OLS will be unbiased if and only if $E[u_{it} | educ_i] = 0$. But this fails if unobserved ability $lpha_i$ is correlated with education. Smart, motivated individuals likely get more education *and* earn higher wages even conditional on education. This means:
 
 $$
-E[\alpha_i | educ_i] \neq 0
+E[lpha_i | educ_i] 
+eq 0
 $$
 
-which implies $E[u_{it} | educ_i] \neq 0$, violating the key OLS assumption. Our estimate of $\beta_1$ will be biased upward—it captures both the true effect of education and the effect of correlated unobserved ability.
+which implies $E[u_{it} | educ_i] 
+eq 0$, violating the key OLS assumption. Our estimate of $eta_1$ will be biased upward—it captures both the true effect of education and the effect of correlated unobserved ability.
 :::
 
 ### A Naive Cross-Sectional Approach
@@ -149,10 +157,10 @@ it by looking at <em>changes</em> within individuals.</p>
 <p>We start with a more explicit model that separates time-invariant
 from time-varying factors:</p>
 <p><span class="math display">
-\log(wage_{it}) = \beta_0 + \beta_1 educ_{it} + \beta_2 experience_{it}
-+ \beta_3 experience_{it}^2 + \alpha_i + \varepsilon_{it}
+\log(wage_{it}) = eta_0 + eta_1 educ_{it} + eta_2 experience_{it} +
+eta_3 experience_{it}^2 + lpha_i + arepsilon_{it}
 </span></p>
-<p>The key addition is <span class="math inline">\alpha_i</span>—an
+<p>The key addition is <span class="math inline">lpha_i</span>—an
 individual-specific intercept that captures all time-invariant
 characteristics of person <span class="math inline">i</span>. This
 includes:</p>
@@ -165,53 +173,53 @@ includes:</p>
 doesn’t change over our observation period</li>
 </ul>
 <div class="question">
-<p>If <span class="math inline">\alpha_i</span> is unobserved and
+<p>If <span class="math inline">lpha_i</span> is unobserved and
 correlated with education, why doesn’t this cause omitted variable bias
 just like before?</p>
 </div>
 <div class="answer">
 <p>The crucial difference is that <span
-class="math inline">\alpha_i</span> doesn’t vary over time. This allows
-us to eliminate it through a clever transformation. If we take the time
+class="math inline">lpha_i</span> doesn’t vary over time. This allows us
+to eliminate it through a clever transformation. If we take the time
 average of our equation for each individual:</p>
 <p><span class="math display">
-\overline{\log(wage_i)} = \beta_0 + \beta_1 \overline{educ_i} + \beta_2
-\overline{experience_i} + \beta_3 \overline{experience_i^2} + \alpha_i +
-\overline{\varepsilon_i}
+\overline{\log(wage_i)} = eta_0 + eta_1 \overline{educ_i} + eta_2
+\overline{experience_i} + eta_3 \overline{experience_i^2} + lpha_i +
+\overline{arepsilon_i}
 </span></p>
 <p>and subtract this from the original equation, <span
-class="math inline">\alpha_i</span> disappears completely. This is
-called the <strong>within transformation</strong> or
+class="math inline">lpha_i</span> disappears completely. This is called
+the <strong>within transformation</strong> or
 <strong>time-demeaning</strong>.</p>
 </div>
 <h3 id="the-within-transformation">The Within Transformation</h3>
 <p>Let’s see this transformation explicitly. For each individual <span
 class="math inline">i</span>, we compute the time averages:</p>
 <p><span class="math display">
-\begin{aligned}
-\overline{\log(wage_i)} &amp;= \frac{1}{T_i} \sum_{t=1}^{T_i}
-\log(wage_{it}) \\
-\overline{educ_i} &amp;= \frac{1}{T_i} \sum_{t=1}^{T_i} educ_{it}
-\end{aligned}
+egin{aligned}
+\overline{\log(wage_i)} &amp;= rac{1}{T_i} \sum_{t=1}^{T_i}
+\log(wage_{it}) \
+\overline{educ_i} &amp;= rac{1}{T_i} \sum_{t=1}^{T_i} educ_{it}
+nd{aligned}
 </span></p>
 <p>where <span class="math inline">T_i</span> is the number of time
 periods we observe individual <span class="math inline">i</span>.</p>
 <p>Now subtract these averages from the original equation:</p>
 <p><span class="math display">
-\log(wage_{it}) - \overline{\log(wage_i)} = \beta_1(educ_{it} -
-\overline{educ_i}) + \beta_2(experience_{it} - \overline{experience_i})
-+ ... + (\varepsilon_{it} - \overline{\varepsilon_i})
+\log(wage_{it}) - \overline{\log(wage_i)} = eta_1(educ_{it} -
+\overline{educ_i}) + eta_2(experience_{it} - \overline{experience_i}) +
+... + (arepsilon_{it} - \overline{arepsilon_i})
 </span></p>
-<p>Notice what’s missing: <span class="math inline">\alpha_i</span> has
+<p>Notice what’s missing: <span class="math inline">lpha_i</span> has
 completely disappeared! We can write this more compactly using
 “double-dot” notation for time-demeaned variables:</p>
 <p><span class="math display">
-\ddot{\log(wage_{it})} = \beta_1 \ddot{educ_{it}} + \beta_2
-\ddot{experience_{it}} + \beta_3 \ddot{experience_{it}^2} +
-\ddot{\varepsilon_{it}}
+\ddot{\log(wage_{it})} = eta_1 \ddot{educ_{it}} + eta_2
+\ddot{experience_{it}} + eta_3 \ddot{experience_{it}^2} +
+\ddot{arepsilon_{it}}
 </span></p>
 <p>where <span class="math inline">\ddot{x_{it}} = x_{it} -
-\bar{x_i}</span> denotes the deviation from the individual-specific
+ar{x_i}</span> denotes the deviation from the individual-specific
 mean.</p>
 <div class="question">
 <p>What does the time-demeaned education variable <span
@@ -225,7 +233,7 @@ all years. For someone who completes schooling before entering our
 sample, education never changes, so <span
 class="math inline">\ddot{educ_{it}} = 0</span> in every period. These
 individuals contribute nothing to identifying <span
-class="math inline">\beta_1</span> in a fixed effects regression!</p>
+class="math inline">eta_1</span> in a fixed effects regression!</p>
 <p>Fixed effects estimation identifies the effect of education <em>only
 from people whose education changes</em> during our observation period.
 In the NLSY79, this primarily means individuals who complete additional
@@ -258,10 +266,10 @@ Why can&#39;t we include time-invariant variables like race or gender in a fixed
 :::
 
 ::: {.answer}
-Time-invariant variables are perfectly collinear with the individual fixed effects $\alpha_i$. When we apply the within transformation, these variables have zero variation:
+Time-invariant variables are perfectly collinear with the individual fixed effects $lpha_i$. When we apply the within transformation, these variables have zero variation:
 
 $$
-\ddot{x_i} = x_i - \bar{x_i} = x_i - x_i = 0
+\ddot{x_i} = x_i - ar{x_i} = x_i - x_i = 0
 $$
 
 For example, if person $i$ is male in every period, then $male_i = 1$ in every period, so $\overline{male_i} = 1$, and $\ddot{male_i} = 0$. There&#39;s no within-person variation to exploit. This is not a limitation of the method—it&#39;s fundamental to the approach. Fixed effects eliminates all time-invariant heterogeneity, which means we can&#39;t estimate coefficients on time-invariant variables.
@@ -269,7 +277,7 @@ For example, if person $i$ is male in every period, then $male_i = 1$ in every p
 
 ### What Gets Absorbed by Fixed Effects?
 
-It&#39;s worth being explicit about what the individual fixed effects $\alpha_i$ capture in our NLSY application:
+It&#39;s worth being explicit about what the individual fixed effects $lpha_i$ capture in our NLSY application:
 
 - **Ability**: Measured and unmeasured cognitive skills
 - **Family background**: Parents&#39; education, income, connections
@@ -302,28 +310,28 @@ This is an example of the broader principle in causal inference: **the treatment
 
 ## Random Effects: A Different Approach
 
-Fixed effects estimation is wonderfully robust—it requires no assumptions about the relationship between $\alpha_i$ and our regressors. But this robustness comes at a cost: we lose the ability to estimate coefficients on time-invariant variables, and we only use within-person variation to identify our coefficients.
+Fixed effects estimation is wonderfully robust—it requires no assumptions about the relationship between $lpha_i$ and our regressors. But this robustness comes at a cost: we lose the ability to estimate coefficients on time-invariant variables, and we only use within-person variation to identify our coefficients.
 
 Random effects estimation offers an alternative approach that uses both within- and between-person variation. The trade-off? We need stronger assumptions.
 
 ### The Random Effects Model
 
-The random effects model makes a crucial assumption: the individual effects $\alpha_i$ are uncorrelated with all regressors:
+The random effects model makes a crucial assumption: the individual effects $lpha_i$ are uncorrelated with all regressors:
 
 $$
-E[\alpha_i | X_{i1}, X_{i2}, ..., X_{iT}] = 0
+E[lpha_i | X_{i1}, X_{i2}, ..., X_{iT}] = 0
 $$
 
 where $X_{it}$ denotes all regressors in period $t$.
 
 ::: {.question}
-Why is this called &quot;random effects&quot; if we still have an individual-specific term $\alpha_i$?
+Why is this called &quot;random effects&quot; if we still have an individual-specific term $lpha_i$?
 :::
 
 ::: {.answer}
-The term &quot;random effects&quot; can be misleading. It doesn&#39;t mean that $\alpha_i$ varies randomly—it&#39;s still a fixed characteristic of individual $i$. Rather, it means that we treat $\alpha_i$ as random *from the econometrician&#39;s perspective*, drawn from a distribution that&#39;s uncorrelated with our regressors.
+The term &quot;random effects&quot; can be misleading. It doesn&#39;t mean that $lpha_i$ varies randomly—it&#39;s still a fixed characteristic of individual $i$. Rather, it means that we treat $lpha_i$ as random *from the econometrician&#39;s perspective*, drawn from a distribution that&#39;s uncorrelated with our regressors.
 
-This is fundamentally an assumption about selection: are individuals with different values of $\alpha_i$ randomly sorted into different levels of education? Fixed effects says &quot;no, we can&#39;t assume that.&quot; Random effects says &quot;yes, we&#39;re willing to assume that.&quot;
+This is fundamentally an assumption about selection: are individuals with different values of $lpha_i$ randomly sorted into different levels of education? Fixed effects says &quot;no, we can&#39;t assume that.&quot; Random effects says &quot;yes, we&#39;re willing to assume that.&quot;
 :::
 
 ### The GLS Transformation
@@ -333,21 +341,21 @@ If the random effects assumption holds, we can do better than fixed effects by u
 The random effects estimator takes the form:
 
 $$
-\ddot{y_{it}}^{RE} = y_{it} - \theta \bar{y_i}
+\ddot{y_{it}}^{RE} = y_{it} -   heta ar{y_i}
 $$
 
-where the weight $\theta$ depends on the relative variance of $\alpha_i$ and $\varepsilon_{it}$:
+where the weight $  heta$ depends on the relative variance of $lpha_i$ and $arepsilon_{it}$:
 
 $$
-\theta = 1 - \sqrt{\frac{\sigma_\varepsilon^2}{\sigma_\varepsilon^2 + T\sigma_\alpha^2}}
+    heta = 1 - \sqrt{rac{\sigma_arepsilon^2}{\sigma_arepsilon^2 + T\sigma_lpha^2}}
 $$
 
 Notice two extreme cases:
 
-1. If $\sigma_\alpha^2 = 0$ (no individual heterogeneity), then $\theta = 0$ and we get pooled OLS
-2. If $\sigma_\alpha^2 \to \infty$ (huge individual heterogeneity), then $\theta \to 1$ and we get fixed effects
+1. If $\sigma_lpha^2 = 0$ (no individual heterogeneity), then $    heta = 0$ and we get pooled OLS
+2. If $\sigma_lpha^2   o \infty$ (huge individual heterogeneity), then $   heta    o 1$ and we get fixed effects
 
-In practice, $\theta$ is typically between 0.5 and 0.9, meaning random effects uses mostly within-person variation but also incorporates some between-person variation.
+In practice, $  heta$ is typically between 0.5 and 0.9, meaning random effects uses mostly within-person variation but also incorporates some between-person variation.
 
 ### Implementing Random Effects in R
 
@@ -389,10 +397,9 @@ variables?</p>
 <div class="answer">
 <p>Only if we believe the random effects assumption! The higher
 efficiency and ability to estimate time-invariant effects come at the
-cost of assuming <span class="math inline">\alpha_i</span> is
-uncorrelated with education. If this assumption fails—if smarter
-individuals get more education—then the random effects estimator is
-biased.</p>
+cost of assuming <span class="math inline">lpha_i</span> is uncorrelated
+with education. If this assumption fails—if smarter individuals get more
+education—then the random effects estimator is biased.</p>
 <p>In our NLSY application, the assumption almost certainly fails. We
 have strong theoretical reasons to believe ability is correlated with
 education. This makes fixed effects the more credible approach, despite
@@ -420,32 +427,32 @@ assumption by comparing the two estimates:</p>
 = 5.987e-08</p>
 <p>alternative hypothesis: one model is inconsistent</p>
 <pre><code>
-The strongly significant p-value indicates we should reject the random effects assumption. The fixed and random effects estimates differ systematically, suggesting that $\alpha_i$ is indeed correlated with our regressors. Fixed effects is the appropriate choice for this application.
+The strongly significant p-value indicates we should reject the random effects assumption. The fixed and random effects estimates differ systematically, suggesting that $lpha_i$ is indeed correlated with our regressors. Fixed effects is the appropriate choice for this application.
 
 ## First-Differencing: An Alternative to Fixed Effects
 
 First-differencing offers another way to eliminate individual fixed effects. Instead of subtracting individual-specific means, we subtract the previous period&#39;s values:
 
 $$
-\Delta \log(wage_{it}) = \log(wage_{it}) - \log(wage_{i,t-1}) = \beta_1 \Delta educ_{it} + \beta_2 \Delta experience_{it} + ... + \Delta \varepsilon_{it}
+\Delta \log(wage_{it}) = \log(wage_{it}) - \log(wage_{i,t-1}) = eta_1 \Delta educ_{it} + eta_2 \Delta experience_{it} + ... + \Delta arepsilon_{it}
 $$
 
-The individual effect $\alpha_i$ disappears because it&#39;s constant over time:
+The individual effect $lpha_i$ disappears because it&#39;s constant over time:
 
 $$
-\alpha_i - \alpha_i = 0
+lpha_i - lpha_i = 0
 $$
 
 ::: {.question}
-If first-differencing and fixed effects both eliminate $\alpha_i$, why would we ever prefer one over the other?
+If first-differencing and fixed effects both eliminate $lpha_i$, why would we ever prefer one over the other?
 :::
 
 ::: {.answer}
-The two methods are asymptotically equivalent (they give the same answer as $T \to \infty$), but they differ in small samples and under different assumptions about the error structure:
+The two methods are asymptotically equivalent (they give the same answer as $T  o \infty$), but they differ in small samples and under different assumptions about the error structure:
 
-1. **Efficiency**: If $\varepsilon_{it}$ is serially uncorrelated, fixed effects is more efficient because it uses all available time periods. First-differencing uses only adjacent pairs.
+1. **Efficiency**: If $arepsilon_{it}$ is serially uncorrelated, fixed effects is more efficient because it uses all available time periods. First-differencing uses only adjacent pairs.
 
-2. **Serial correlation**: If $\varepsilon_{it}$ follows a random walk, first-differencing is actually more efficient than fixed effects.
+2. **Serial correlation**: If $arepsilon_{it}$ follows a random walk, first-differencing is actually more efficient than fixed effects.
 
 3. **Measurement error**: First-differencing can exacerbate attenuation bias from measurement error because it amplifies the noise-to-signal ratio.
 
@@ -515,10 +522,8 @@ first-differencing:</p>
 <tbody>
 <tr>
 <td>Serial correlation</td>
-<td>Preferred if <span class="math inline">\varepsilon_{it}</span> is
-serially uncorrelated</td>
-<td>Preferred if <span class="math inline">\varepsilon_{it}</span>
-follows random walk</td>
+<td>Preferred if $arepsilon_{it}$ is serially uncorrelated</td>
+<td>Preferred if $arepsilon_{it}$ follows random walk</td>
 </tr>
 <tr>
 <td>Number of time periods</td>
@@ -552,10 +557,9 @@ Considerations and Robustness</h2>
 <h3 id="clustered-standard-errors">Clustered Standard Errors</h3>
 <p>A critical issue in panel data analysis is that observations for the
 same individual are unlikely to be independent. Wage shocks might
-persist over time, leading to serial correlation in <span
-class="math inline">\varepsilon_{it}</span>. This violates the standard
-OLS assumption and causes our standard errors to understate
-uncertainty.</p>
+persist over time, leading to serial correlation in $arepsilon_{it}$.
+This violates the standard OLS assumption and causes our standard errors
+to understate uncertainty.</p>
 <p>The solution is to compute <strong>cluster-robust standard
 errors</strong>, clustering at the individual level:</p>
 <p>```{r} #| echo: true #| eval: false</p>
@@ -591,7 +595,7 @@ Our model so far has assumed that there are no aggregate time effects—that is,
 We can add **time fixed effects** (year dummies) to control for these aggregate shocks:
 
 $$
-\log(wage_{it}) = \beta_1 educ_{it} + \beta_2 experience_{it} + \beta_3 experience_{it}^2 + \alpha_i + \lambda_t + \varepsilon_{it}
+\log(wage_{it}) = eta_1 educ_{it} + eta_2 experience_{it} + eta_3 experience_{it}^2 + lpha_i + \lambda_t + arepsilon_{it}
 $$
 
 where $\lambda_t$ is a year-specific intercept.
@@ -640,15 +644,14 @@ dependence</strong>—where having high wages in the past directly causes
 high wages today?</p>
 <p>We could add a lagged dependent variable:</p>
 <p><span class="math display">
-\log(wage_{it}) = \rho \log(wage_{i,t-1}) + \beta_1 educ_{it} + ... +
-\alpha_i + \varepsilon_{it}
+\log(wage_{it}) = ho \log(wage_{i,t-1}) + eta_1 educ_{it} + ... + lpha_i
++ arepsilon_{it}
 </span></p>
 <p>This creates serious econometric challenges. The within
 transformation produces bias because <span
 class="math inline">\ddot{\log(wage_{i,t-1})}</span> is correlated with
-<span class="math inline">\ddot{\varepsilon_{it}}</span> by
-construction. Special methods like the Arellano-Bond GMM estimator are
-needed.</p>
+<span class="math inline">\ddot{arepsilon_{it}}</span> by construction.
+Special methods like the Arellano-Bond GMM estimator are needed.</p>
 <h3 id="unbalanced-panels">Unbalanced Panels</h3>
 <p>Our discussion assumed a balanced panel—the same individuals observed
 in all periods. Real panel datasets are typically unbalanced, with
@@ -666,7 +669,7 @@ question?</li>
 <li>What assumptions are required for a causal interpretation?</li>
 </ul>
 <p>For the NLSY education returns, we’re identifying <span
-class="math inline">\beta_1</span> from individuals whose education
+class="math inline">eta_1</span> from individuals whose education
 changes while working. This raises questions:</p>
 <ol type="1">
 <li>Are these returns generalizable to traditional students?</li>
@@ -688,12 +691,12 @@ individuals. Here are the key takeaways:</p>
 <li><p><strong>Fixed effects</strong> eliminates time-invariant
 unobserved heterogeneity by using within-person variation. It requires
 no assumptions about the relationship between <span
-class="math inline">\alpha_i</span> and regressors, but sacrifices the
+class="math inline">lpha_i</span> and regressors, but sacrifices the
 ability to estimate effects of time-invariant variables.</p></li>
 <li><p><strong>Random effects</strong> uses both within- and
 between-person variation, gaining efficiency and allowing estimation of
 time-invariant effects. But it requires the strong assumption that <span
-class="math inline">\alpha_i</span> is uncorrelated with all
+class="math inline">lpha_i</span> is uncorrelated with all
 regressors.</p></li>
 <li><p><strong>First-differencing</strong> is an alternative to fixed
 effects that may be preferred when errors follow a random walk or when

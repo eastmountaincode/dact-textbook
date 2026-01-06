@@ -132,8 +132,9 @@ df_nsw[df_nsw[‘treat’]==1][var].mean() control_val =
 df_nsw[df_nsw[‘treat’]==0][var].mean() diff = treated_val - control_val
 balance_data.append({ ‘Variable’: var, ‘Treated’: f’{treated_val:.2f}‘,
 ’Control’: f’{control_val:.2f}‘, ’Difference’: f’{diff:.2f}’ })</p>
-<p>balance_df = pd.DataFrame(balance_data) print(“Table: Pre-treatment
-Characteristics”) print(balance_df.to_string(index=False))</p>
+<p>balance_df = pd.DataFrame(balance_data) print(” Balance Table:
+Pre-treatment Characteristics”)
+print(balance_df.to_string(index=False))</p>
 <pre><code>
 ::: {.question}
 Looking at this balance table, what do you notice about the treated and control groups?
@@ -179,7 +180,8 @@ treated_mean_obs = df_obs[df_obs[&#39;treat&#39;]==1][&#39;re78&#39;].mean()
 psid_mean = df_obs[df_obs[&#39;treat&#39;]==0][&#39;re78&#39;].mean()
 naive_effect_obs = treated_mean_obs - psid_mean
 
-print(f&quot;\nComparison with PSID controls:&quot;)
+print(f&quot;
+Comparison with PSID controls:&quot;)
 print(f&quot;Average earnings (NSW treated):  ${treated_mean_obs:,.2f}&quot;)
 print(f&quot;Average earnings (PSID controls): ${psid_mean:,.2f}&quot;)
 print(f&quot;Naive treatment effect:           ${naive_effect_obs:,.2f}&quot;)</code></pre>
@@ -197,8 +199,8 @@ df_obs[df_obs[‘treat’]==0][var].mean() diff = treated_val - control_val
 balance_data_obs.append({ ‘Variable’: var, ‘NSW Treated’:
 f’{treated_val:.2f}‘, ’PSID Controls’: f’{control_val:.2f}‘,
 ’Difference’: f’{diff:.2f}’ })</p>
-<p>balance_df_obs = pd.DataFrame(balance_data_obs) print(“Table: NSW
-Treated vs. PSID Controls”)
+<p>balance_df_obs = pd.DataFrame(balance_data_obs) print(” Balance
+Table: NSW Treated vs. PSID Controls”)
 print(balance_df_obs.to_string(index=False))</p>
 <pre><code>
 The problem is clear: NSW participants and PSID respondents are dramatically different. PSID respondents are older, more educated, more likely to be married, more likely to have a high school degree, and had much higher earnings before 1978. Comparing these two groups is like comparing apples to oranges—any difference in 1978 earnings could reflect these pre-existing differences rather than the effect of the program.
@@ -218,7 +220,7 @@ This is where the propensity score comes in. Rather than trying to match on all 
 Formally, the **propensity score** for individual $i$ is:
 
 $$
-e(X_i) = P(\text{Treat}_i = 1 \mid X_i)
+e(X_i) = P( ext{Treat}_i = 1 \mid X_i)
 $$
 
 where $X_i$ represents all of the individual&#39;s observed pre-treatment characteristics.
@@ -248,7 +250,8 @@ ps_model = LogisticRegression(max_iter=1000, random_state=42)
 ps_model.fit(X, y)
 df_obs[&#39;propensity_score&#39;] = ps_model.predict_proba(X)[:, 1]
 
-print(&quot;\nPropensity Score Summary Statistics:&quot;)
+print(&quot;
+Propensity Score Summary Statistics:&quot;)
 print(df_obs.groupby(&#39;treat&#39;)[&#39;propensity_score&#39;].describe())</code></pre>
 <p>Let’s visualize the distribution of propensity scores for treated and
 control units:</p>
@@ -320,7 +323,8 @@ def match_with_caliper(df, caliper=0.1):
 
 # Perform matching
 matches = match_with_caliper(df_obs, caliper=0.1)
-print(f&quot;\nMatched {len(matches)} out of {df_obs[&#39;treat&#39;].sum()} treated units&quot;)
+print(f&quot;
+Matched {len(matches)} out of {df_obs[&#39;treat&#39;].sum()} treated units&quot;)
 print(f&quot;Match rate: {100*len(matches)/df_obs[&#39;treat&#39;].sum():.1f}%&quot;)</code></pre>
 <p>Not all treated individuals can be matched if we enforce a caliper.
 This is actually a good thing—it prevents us from making poor
@@ -339,7 +343,7 @@ matched_treated_idx = matches[‘treated_idx’].values matched_control_idx
 df_obs.loc[matched_control_idx]</p>
 <h1 id="balance-table-for-matched-sample">Balance table for matched
 sample</h1>
-<p>print(“After Matching:”) balance_data_matched = []</p>
+<p>print(” Balance After Matching:“) balance_data_matched = []</p>
 <p>for var in covariates: treated_val = matched_treated[var].mean()
 control_val = matched_control[var].mean() diff = treated_val -
 control_val</p>
@@ -430,7 +434,7 @@ outcomes between the matched treated and control groups:</p>
 sample matched_treated_outcome = matched_treated[‘re78’].mean()
 matched_control_outcome = matched_control[‘re78’].mean() matched_effect
 = matched_treated_outcome - matched_control_outcome</p>
-<p>print(f”Effect Estimates:“) print(f”{‘Method’:&lt;30}
+<p>print(f” Treatment Effect Estimates:“) print(f”{‘Method’:&lt;30}
 {‘Estimate’:&gt;12}“) print(f”{‘-’*42}“) print(f”{‘Experimental
 benchmark’:&lt;30} ${naive_effect:&gt;11,.2f}“) print(f”{‘Naive (PSID
 controls)’:&lt;30} ${naive_effect_obs:&gt;11,.2f}“) print(f”{‘Propensity
@@ -462,7 +466,7 @@ observables</strong>. This assumption states that, conditional on the
 observed covariates <span class="math inline">X</span>, treatment
 assignment is independent of potential outcomes:</p>
 <p><span class="math display">
-(Y_1, Y_0) \perp \text{Treat} \mid X
+(Y_1, Y_0) \perp    ext{Treat} \mid X
 </span></p>
 <p>In plain English: once we account for all the observed
 characteristics, there are no remaining systematic differences between
