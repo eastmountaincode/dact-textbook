@@ -145,3 +145,19 @@ export async function getOrderedChapterSlugs(): Promise<string[]> {
 
   return config.sections.flatMap(section => section.chapters);
 }
+
+// Get previous and next chapter info for navigation
+export async function getChapterNavigation(currentSlug: string): Promise<{
+  prev: ChapterInfo | null;
+  next: ChapterInfo | null;
+}> {
+  const sections = await getChaptersBySection();
+  const allChapters = sections.flatMap(section => section.chapters);
+
+  const currentIndex = allChapters.findIndex(ch => ch.slug === currentSlug);
+
+  return {
+    prev: currentIndex > 0 ? allChapters[currentIndex - 1] : null,
+    next: currentIndex < allChapters.length - 1 ? allChapters[currentIndex + 1] : null,
+  };
+}

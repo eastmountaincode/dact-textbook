@@ -8,7 +8,8 @@
     "build:content": "./scripts/build-qmd.sh",
     "generate-search": "node scripts/generate-search-index.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "snapshots": "playwright test -c playwright.config.ts"
   },
   "dependencies": {
     "fuse.js": "^7.1.0",
@@ -27,6 +28,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",

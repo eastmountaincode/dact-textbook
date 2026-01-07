@@ -40,10 +40,10 @@ the population mean is finite.</p>
 <h3 id="understanding-unbiasedness">Understanding Unbiasedness</h3>
 <p>An estimator is <strong>unbiased</strong> if its expected value
 equals the parameter it’s trying to estimate. For the sample mean <span
-class="math inline">ar{Y}</span> estimating the population mean <span
+class="math inline">\bar{Y}</span> estimating the population mean <span
 class="math inline">\mu</span>, we want to show:</p>
 <p><span class="math display">
-E[ar{Y}] = \mu
+E[\bar{Y}] = \mu
 </span></p>
 <p>This is a powerful property because it guarantees that our estimator
 has no systematic tendency to overestimate or underestimate the true
@@ -54,4 +54,6 @@ infinitely many samples—we hit the target exactly.</p>
 <p>The proof is remarkably elegant. Let’s work through it step by
 step.</p>
 <p>We start with the definition of the sample mean:</p>
-<p>$$ ar{Y} = rac{Y_1 + Y_2 +</p>
+<p><span class="math display">
+\bar{Y} = \frac{Y_1 + Y_2 + \cdots + Y_n}{n}
+</span></p>

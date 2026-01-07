@@ -1,5 +1,6 @@
-import { loadChapter, getOrderedChapterSlugs, getChaptersBySection } from '@/lib/latex-loader';
+import { loadChapter, getOrderedChapterSlugs, getChaptersBySection, getChapterNavigation } from '@/lib/latex-loader';
 import HighlightableContent from '@/components/HighlightableContent';
+import ChapterNavigation from '@/components/ChapterNavigation';
 import TextbookLayout from '@/components/TextbookLayout';
 import { notFound } from 'next/navigation';
 
@@ -15,9 +16,10 @@ export async function generateStaticParams() {
 
 export default async function ChapterPage({ params }: PageProps) {
   const { slug } = await params;
-  const [chapter, sections] = await Promise.all([
+  const [chapter, sections, navigation] = await Promise.all([
     loadChapter(slug),
     getChaptersBySection(),
+    getChapterNavigation(slug),
   ]);
 
   if (!chapter) {
@@ -27,6 +29,7 @@ export default async function ChapterPage({ params }: PageProps) {
   return (
     <TextbookLayout sections={sections} currentSlug={slug}>
       <HighlightableContent html={chapter.html} chapterSlug={slug} />
+      <ChapterNavigation prev={navigation.prev} next={navigation.next} />
     </TextbookLayout>
   );
 }

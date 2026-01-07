@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive PDF and CDF Visualization</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/latin-modern-roman" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'EB Garamond', serif;
+            background-color: #FEFDF8;
+            padding: 0;
+            color: #333;
+        }
+        
+        #root {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: #FEFDF8;
+            padding: 20px;
+            width: 700px;
+            transform-origin: top left;
+            /* Scale will be set by JS based on container width */
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .charts-row {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .control-group:first-child {
+            gap: 15px;
+        }
+        
+        .control-label {
+            font-size: 1em;
+            font-weight: 500;
+            color: #003262;
+        }
+        
+        select {
+            font-family: 'EB Garamond', serif;
+            font-size: 0.95em;
+            padding: 6px 12px;
+            border: 2px solid #006298;
+            border-radius: 4px;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            min-width: 180px;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #006298;
+        }
+        
+        .slider-container {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .slider-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #000000;
+            text-align: center;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #000000;
+            cursor: pointer;
+            border: none;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #000000;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .chart-container {
+            background-color: #FEFDF8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 10px 20px 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-caption {
+            text-align: center;
+            font-family: 'EB Garamond', serif;
+            font-size: 18px;
+            color: #555;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+        
+        .chart-caption i {
+            font-style: italic;
+        }
+        
+        .chart-caption .normal {
+            font-style: normal;
+        }
+        
+        .chart-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #003262;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .chart-title.stadium-blue {
+            color: #006298;
+        }
+        
+        .value-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+        
+        .value-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .value-label {
+            font-style: italic;
+            color: #555;
+        }
+        
+        .value-number {
+            font-weight: 600;
+            color: #003262;
+            font-style: normal;
+        }
+        
+        .pdf-value-label {
+            font-style: italic;
+            color: #003262;
+        }
+        
+        .pdf-value-number {
+            font-weight: 600;
+            color: #003262;
+            font-style: normal;
+        }
+        
+        .cdf-value-label {
+            font-style: italic;
+            color: #FDB515;
+        }
+        
+        .cdf-value-number {
+            font-weight: 600;
+            color: #FDB515;
+            font-style: normal;
+        }
+        
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .axis-label {
+            font-family: 'EB Garamond', serif;
+            font-size: 14px;
+            fill: #333;
+        }
+        
+        .axis-label-italic {
+            font-family: 'EB Garamond', serif;
+            font-size: 14px;
+            font-style: italic;
+            fill: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .chart-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        // Mathematical functions for distributions
+        const distributions = {
+            normal: {
+                name: "Normal Distribution",
+                params: { mu: 0, sigma: 1 },
+                range: [-4, 4],
+                pdf: (x, params) => {
+                    const { mu, sigma } = params;
+                    return (1 / (sigma * Math.sqrt(2 * Math.PI))) * 
+                           Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
+                },
+                cdf: (x, params) => {
+                    const { mu, sigma } = params;
+                    return 0.5 * (1 + erf((x - mu) / (sigma * Math.sqrt(2))));
+                }
+            },
+            lognormal: {
+                name: "Log-Normal Distribution",
+                params: { mu: 0, sigma: 0.5 },
+                range: [0.01, 5],
+                pdf: (x, params) => {
+                    if (x <= 0) return 0;
+                    const { mu, sigma } = params;
+                    return (1 / (x * sigma * Math.sqrt(2 * Math.PI))) * 
+                           Math.exp(-Math.pow(Math.log(x) - mu, 2) / (2 * sigma * sigma));
+                },
+                cdf: (x, params) => {
+                    if (x <= 0) return 0;
+                    const { mu, sigma } = params;
+                    return 0.5 * (1 + erf((Math.log(x) - mu) / (sigma * Math.sqrt(2))));
+                }
+            },
+            uniform: {
+                name: "Uniform Distribution",
+                params: { a: 0, b: 10 },
+                range: [-0.5, 10.5],
+                pdf: (x, params) => {
+                    const { a, b } = params;
+                    return (x >= a && x <= b) ? 1 / (b - a) : 0;
+                },
+                cdf: (x, params) => {
+                    const { a, b } = params;
+                    if (x < a) return 0;
+                    if (x > b) return 1;
+                    return (x - a) / (b - a);
+                }
+            }
+        };
+        
+        // Error function approximation
+        function erf(x) {
+            const sign = x >= 0 ? 1 : -1;
+            x = Math.abs(x);
+            const a1 = 0.254829592;
+            const a2 = -0.284496736;
+            const a3 = 1.421413741;
+            const a4 = -1.453152027;
+            const a5 = 1.061405429;
+            const p = 0.3275911;
+            const t = 1.0 / (1.0 + p * x);
+            const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+            return sign * y;
+        }
+        
+        function PDFChart({ distribution, yValue, width, height }) {
+            const svgRef = useRef();
+            const margin = { top: 40, right: 50, bottom: 55, left: 100 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+            
+            useEffect(() => {
+                if (!svgRef.current) return;
+                
+                const svg = d3.select(svgRef.current);
+                svg.selectAll("*").remove();
+                
+                const g = svg.append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+                
+                const dist = distributions[distribution];
+                const [xMin, xMax] = dist.range;
+                
+                // Scales
+                const xScale = d3.scaleLinear()
+                    .domain([xMin, xMax])
+                    .range([0, chartWidth]);
+                
+                // Calculate max y for PDF
+                const points = d3.range(xMin, xMax, (xMax - xMin) / 200);
+                const yValues = points.map(x => dist.pdf(x, dist.params));
+                const yMax = d3.max(yValues) * 1.1;
+                
+                const yScale = d3.scaleLinear()
+                    .domain([0, yMax])
+                    .range([chartHeight, 0]);
+                
+                // X axis - make black
+                const xAxis = g.append("g")
+                    .attr("transform", `translate(0,${chartHeight})`)
+                    .call(d3.axisBottom(xScale).ticks(8))
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "16px");
+                
+                xAxis.selectAll("line").style("stroke", "#000000");
+                xAxis.selectAll("path").style("stroke", "#000000");
+                xAxis.selectAll("text").style("fill", "#000000");
+                
+                // Y axis - make black
+                const yAxis = g.append("g")
+                    .call(d3.axisLeft(yScale).ticks(6))
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "16px");
+                
+                yAxis.selectAll("line").style("stroke", "#000000");
+                yAxis.selectAll("path").style("stroke", "#000000");
+                yAxis.selectAll("text").style("fill", "#000000");
+                
+                // X axis label - make black
+                g.append("text")
+                    .attr("class", "axis-label-italic")
+                    .attr("x", chartWidth / 2)
+                    .attr("y", chartHeight + 45)
+                    .style("text-anchor", "middle")
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "18px")
+                    .style("fill", "#000000")
+                    .text("Y");
+                
+                // Y axis label - horizontal f(Y) centered above y-axis - make dark blue
+                g.append("text")
+                    .attr("x", 0)
+                    .attr("y", -20)
+                    .attr("text-anchor", "middle")
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "18px")
+                    .style("fill", "#003262")
+                    .each(function() {
+                        const text = d3.select(this);
+                        text.append("tspan")
+                            .style("font-style", "italic")
+                            .text("f");
+                        text.append("tspan")
+                            .style("font-style", "normal")
+                            .text("(");
+                        text.append("tspan")
+                            .style("font-style", "italic")
+                            .text("Y");
+                        text.append("tspan")
+                            .style("font-style", "normal")
+                            .text(")");
+                    });
+                
+                // Generate curve data
+                const curveData = d3.range(xMin, xMax, (xMax - xMin) / 1000)
+                    .map(x => ({ x, y: dist.pdf(x, dist.params) }));
+                
+                // Line generator
+                const line = d3.line()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(d.y))
+                    .curve(d3.curveBasis);
+                
+                // Draw PDF curve
+                g.append("path")
+                    .datum(curveData)
+                    .attr("fill", "none")
+                    .attr("stroke", "#003262")
+                    .attr("stroke-width", 2.5)
+                    .attr("d", line);
+                
+                // Shaded area to the left of yValue
+                const shadedData = curveData.filter(d => d.x <= yValue);
+                if (shadedData.length > 0) {
+                    const areaData = [
+                        { x: xMin, y: 0 },
+                        ...shadedData,
+                        { x: yValue, y: 0 }
+                    ];
+                    
+                    g.append("path")
+                        .datum(areaData)
+                        .attr("fill", "#006298")
+                        .attr("fill-opacity", 1.0)
+                        .attr("d", d3.line()
+                            .x(d => xScale(d.x))
+                            .y(d => yScale(d.y))
+                        );
+                }
+                
+                // Get PDF value for current Y
+                const pdfValue = dist.pdf(yValue, dist.params);
+                
+                // Horizontal dashed line from y-axis to the vertical line (in blue) - at correct height
+                g.append("line")
+                    .attr("x1", 0)
+                    .attr("x2", xScale(yValue))
+                    .attr("y1", yScale(pdfValue))
+                    .attr("y2", yScale(pdfValue))
+                    .attr("stroke", "#003262")
+                    .attr("stroke-width", 1.5)
+                    .attr("stroke-dasharray", "4,4");
+                
+                // Vertical line at yValue - make black
+                g.append("line")
+                    .attr("x1", xScale(yValue))
+                    .attr("x2", xScale(yValue))
+                    .attr("y1", chartHeight)
+                    .attr("y2", yScale(pdfValue))
+                    .attr("stroke", "#000000")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", "4,4");
+                
+                // Blue circle at intersection on curve
+                g.append("circle")
+                    .attr("cx", xScale(yValue))
+                    .attr("cy", yScale(pdfValue))
+                    .attr("r", 5)
+                    .attr("fill", "#003262")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 2);
+                
+                // Black circle on x-axis
+                g.append("circle")
+                    .attr("cx", xScale(yValue))
+                    .attr("cy", chartHeight)
+                    .attr("r", 5)
+                    .attr("fill", "#000000")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 2);
+                
+                // Moving PDF value label on the left side of the y-axis (in blue)
+                g.append("text")
+                    .attr("x", -45)
+                    .attr("y", yScale(pdfValue) + 5)
+                    .attr("text-anchor", "end")
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "16px")
+                    .style("fill", "#003262")
+                    .style("font-weight", "normal")
+                    .style("font-style", "normal")
+                    .text(pdfValue.toFixed(4));
+                
+            }, [distribution, yValue, width, height]);
+            
+            return <svg ref={svgRef} width={width} height={height}></svg>;
+        }
+        
+        function CDFChart({ distribution, yValue, width, height }) {
+            const svgRef = useRef();
+            const margin = { top: 40, right: 50, bottom: 55, left: 100 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+            
+            useEffect(() => {
+                if (!svgRef.current) return;
+                
+                const svg = d3.select(svgRef.current);
+                svg.selectAll("*").remove();
+                
+                const g = svg.append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+                
+                const dist = distributions[distribution];
+                const [xMin, xMax] = dist.range;
+                
+                // Scales
+                const xScale = d3.scaleLinear()
+                    .domain([xMin, xMax])
+                    .range([0, chartWidth]);
+                
+                const yScale = d3.scaleLinear()
+                    .domain([0, 1])
+                    .range([chartHeight, 0]);
+                
+                // X axis - make black
+                const xAxis = g.append("g")
+                    .attr("transform", `translate(0,${chartHeight})`)
+                    .call(d3.axisBottom(xScale).ticks(8))
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "16px");
+                
+                xAxis.selectAll("line").style("stroke", "#000000");
+                xAxis.selectAll("path").style("stroke", "#000000");
+                xAxis.selectAll("text").style("fill", "#000000");
+                
+                // Y axis - make black
+                const yAxis = g.append("g")
+                    .call(d3.axisLeft(yScale).ticks(6).tickFormat(d3.format(".2f")))
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "16px");
+                
+                yAxis.selectAll("line").style("stroke", "#000000");
+                yAxis.selectAll("path").style("stroke", "#000000");
+                yAxis.selectAll("text").style("fill", "#000000");
+                
+                // X axis label - make black
+                g.append("text")
+                    .attr("class", "axis-label-italic")
+                    .attr("x", chartWidth / 2)
+                    .attr("y", chartHeight + 45)
+                    .style("text-anchor", "middle")
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "18px")
+                    .style("fill", "#000000")
+                    .text("Y");
+                
+                // Y axis label - horizontal F(Y) centered above y-axis - make Stadium Blue
+                g.append("text")
+                    .attr("x", 0)
+                    .attr("y", -20)
+                    .attr("text-anchor", "middle")
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "18px")
+                    .style("fill", "#006298")
+                    .each(function() {
+                        const text = d3.select(this);
+                        text.append("tspan")
+                            .style("font-style", "italic")
+                            .text("F");
+                        text.append("tspan")
+                            .style("font-style", "normal")
+                            .text("(");
+                        text.append("tspan")
+                            .style("font-style", "italic")
+                            .text("Y");
+                        text.append("tspan")
+                            .style("font-style", "normal")
+                            .text(")");
+                    });
+                
+                // Generate curve data
+                const curveData = d3.range(xMin, xMax, (xMax - xMin) / 1000)
+                    .map(x => ({ x, y: dist.cdf(x, dist.params) }));
+                
+                // Line generator
+                const line = d3.line()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(d.y))
+                    .curve(d3.curveBasis);
+                
+                // Draw CDF curve in Stadium Blue
+                g.append("path")
+                    .datum(curveData)
+                    .attr("fill", "none")
+                    .attr("stroke", "#006298")
+                    .attr("stroke-width", 2.5)
+                    .attr("d", line);
+                
+                // Current CDF value
+                const cdfValue = dist.cdf(yValue, dist.params);
+                
+                // Horizontal dashed line from y-axis to curve (in Stadium Blue)
+                g.append("line")
+                    .attr("x1", 0)
+                    .attr("x2", xScale(yValue))
+                    .attr("y1", yScale(cdfValue))
+                    .attr("y2", yScale(cdfValue))
+                    .attr("stroke", "#006298")
+                    .attr("stroke-width", 1.5)
+                    .attr("stroke-dasharray", "4,4");
+                
+                // Vertical line from x-axis to curve - make black
+                g.append("line")
+                    .attr("x1", xScale(yValue))
+                    .attr("x2", xScale(yValue))
+                    .attr("y1", chartHeight)
+                    .attr("y2", yScale(cdfValue))
+                    .attr("stroke", "#000000")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", "4,4");
+                
+                // Stadium Blue circle at intersection on CDF curve
+                g.append("circle")
+                    .attr("cx", xScale(yValue))
+                    .attr("cy", yScale(cdfValue))
+                    .attr("r", 5)
+                    .attr("fill", "#006298")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 2);
+                
+                // Black circle on x-axis
+                g.append("circle")
+                    .attr("cx", xScale(yValue))
+                    .attr("cy", chartHeight)
+                    .attr("r", 5)
+                    .attr("fill", "#000000")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 2);
+                
+                // Moving CDF value label on the left side of the y-axis (in Stadium Blue)
+                g.append("text")
+                    .attr("x", -45)
+                    .attr("y", yScale(cdfValue) + 5)
+                    .attr("text-anchor", "end")
+                    .style("font-family", "Latin Modern Roman, serif")
+                    .style("font-size", "16px")
+                    .style("fill", "#006298")
+                    .style("font-weight", "normal")
+                    .style("font-style", "normal")
+                    .text(cdfValue.toFixed(4));
+                
+            }, [distribution, yValue, width, height]);
+            
+            return <svg ref={svgRef} width={width} height={height}></svg>;
+        }
+        
+        function App() {
+            const [distribution, setDistribution] = useState('normal');
+            const [yValue, setYValue] = useState(0);
+            const [scale, setScale] = useState(1);
+            const [containerHeight, setContainerHeight] = useState(1000);
+            const [wrapperWidth, setWrapperWidth] = useState(700);
+            const wrapperRef = useRef(null);
+            const containerRef = useRef(null);
+
+            const dist = distributions[distribution];
+            const [minY, maxY] = dist.range;
+
+            // Design dimensions (fixed)
+            const designWidth = 700;
+            const chartWidth = 660; // 700 - 40 padding
+            const chartHeight = 306;
+
+            // Track wrapper width and calculate scale
+            useEffect(() => {
+                if (!wrapperRef.current) return;
+
+                const updateDimensions = () => {
+                    const width = wrapperRef.current.offsetWidth;
+                    setWrapperWidth(width);
+                    setScale(Math.min(1, width / designWidth));
+                };
+
+                updateDimensions();
+                window.addEventListener('resize', updateDimensions);
+                return () => window.removeEventListener('resize', updateDimensions);
+            }, []);
+
+            // Track container height
+            useEffect(() => {
+                if (!containerRef.current) return;
+                setContainerHeight(containerRef.current.offsetHeight);
+            });
+
+            // Reset yValue when distribution changes
+            useEffect(() => {
+                const [min, max] = dist.range;
+                setYValue((min + max) / 2);
+            }, [distribution]);
+
+            const pdfValue = dist.pdf(yValue, dist.params);
+            const cdfValue = dist.cdf(yValue, dist.params);
+
+            // Calculate scaled height for wrapper
+            const scaledHeight = containerHeight * scale;
+
+            // Calculate horizontal offset to center the scaled content
+            const scaledWidth = designWidth * scale;
+            const leftOffset = Math.max(0, (wrapperWidth - scaledWidth) / 2);
+
+            return (
+                <div ref={wrapperRef} style={{ width: '100%', height: scaledHeight, overflow: 'hidden', position: 'relative' }}>
+                    <div
+                        className="container"
+                        ref={containerRef}
+                        style={{
+                            transform: `scale(${scale})`,
+                            transformOrigin: 'top left',
+                            marginLeft: leftOffset
+                        }}
+                    >
+                        <div className="controls">
+                        <div className="control-group">
+                            <label className="control-label">Pick a distribution</label>
+                            <select 
+                                value={distribution} 
+                                onChange={(e) => setDistribution(e.target.value)}
+                            >
+                                <option value="normal">Normal distribution</option>
+                                <option value="lognormal">Lognormal distribution</option>
+                                <option value="uniform">Uniform distribution</option>
+                            </select>
+                        </div>
+                        
+                        <div className="control-group">
+                            <div className="slider-container">
+                                <label className="control-label">Choose the value of the random variable <i>Y</i></label>
+                                <input 
+                                    type="range"
+                                    min={minY}
+                                    max={maxY}
+                                    step={(maxY - minY) / 200}
+                                    value={yValue}
+                                    onChange={(e) => setYValue(parseFloat(e.target.value))}
+                                />
+                                <div className="slider-value">{yValue.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="charts-row">
+                        <div className="chart-container">
+                            <div className="chart-title">Probability density function (PDF)</div>
+                            <PDFChart 
+                                distribution={distribution}
+                                yValue={yValue}
+                                width={chartWidth}
+                                height={chartHeight}
+                            />
+                            <div className="chart-caption">
+                                <i>f</i><span className="normal">(</span><i>Y</i><span className="normal">)</span> measures the height of the density function at <i>Y</i>.
+                            </div>
+                        </div>
+                        
+                        <div className="chart-container">
+                            <div className="chart-title stadium-blue">Cumulative distribution function (CDF)</div>
+                            <CDFChart 
+                                distribution={distribution}
+                                yValue={yValue}
+                                width={chartWidth}
+                                height={chartHeight}
+                            />
+                            <div className="chart-caption">
+                                <i>F</i><span className="normal">(</span><i>Y</i><span className="normal">)</span> measures the area under the density function to the left of <i>Y</i>.
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            );
+        }
+        
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

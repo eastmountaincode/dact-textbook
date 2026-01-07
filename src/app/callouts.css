@@ -30,19 +30,39 @@
   clip-path: none !important;
   position: relative !important;
   overflow: hidden !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-.callout-note::before,
-.callout-note::after,
-.callout-warning::before,
-.callout-warning::after,
-.callout-tip::before,
-.callout-tip::after,
-.callout-important::before,
-.callout-important::after {
+/* Hide ::before/::after ONLY when there's no title attribute */
+.callout-note:not([title])::before,
+.callout-note:not([title])::after,
+.callout-note[title=""]::before,
+.callout-note[title=""]::after,
+.callout-warning:not([title])::before,
+.callout-warning:not([title])::after,
+.callout-warning[title=""]::before,
+.callout-warning[title=""]::after,
+.callout-tip:not([title])::before,
+.callout-tip:not([title])::after,
+.callout-tip[title=""]::before,
+.callout-tip[title=""]::after,
+.callout-important:not([title])::before,
+.callout-important:not([title])::after,
+.callout-important[title=""]::before,
+.callout-important[title=""]::after {
   display: none !important;
   content: none !important;
   background: none !important;
+}
+
+/* Hide ::after on callouts with title (only need ::before for title) */
+.callout-note[title]::after,
+.callout-warning[title]::after,
+.callout-tip[title]::after,
+.callout-important[title]::after {
+  display: none !important;
+  content: none !important;
 }
 
 .callout-note h2,
@@ -56,7 +76,7 @@
   font-size: var(--text-base) !important;
   font-weight: 600 !important;
   margin: 0 !important;
-  padding: var(--space-sm) var(--space-md) !important;
+  padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-md) !important;
   border: none !important;
   border-bottom: none !important;
 }
@@ -67,8 +87,66 @@
 .callout-important p {
   font-size: var(--text-base);
   line-height: var(--leading-relaxed);
-  margin: 0;
   padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-md);
+}
+
+/* Display title from title attribute - match h2 styling */
+.callout-note[title]:not([title=""])::before,
+.callout-warning[title]:not([title=""])::before,
+.callout-tip[title]:not([title=""])::before,
+.callout-important[title]:not([title=""])::before {
+  content: attr(title) !important;
+  display: block !important;
+  font-weight: 600;
+  font-size: var(--text-base);
+  padding: var(--space-sm) var(--space-md);
+  margin: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.callout-note[title]:not([title=""])::before {
+  content: "ⓘ " attr(title) !important;
+  color: #1a1a1a;
+  background-color: #eef4f8;
+}
+
+.callout-warning[title]:not([title=""])::before {
+  content: "⚠ " attr(title) !important;
+  color: #d35400;
+  background-color: #fdf0e0;
+}
+
+.callout-tip[title]:not([title=""])::before {
+  content: "☑ " attr(title) !important;
+  color: #2d5a2d;
+  background-color: #e8f5e8;
+}
+
+.callout-important[title]:not([title=""])::before {
+  content: "❗ " attr(title) !important;
+  color: #8b1c1c;
+  background-color: #fce8e8;
+}
+
+/* Dark mode title colors */
+.dark .callout-note[title]:not([title=""])::before {
+  color: #e5e5e5;
+  background-color: #3a4550;
+}
+
+.dark .callout-warning[title]:not([title=""])::before {
+  color: #f5a623;
+  background-color: #4a3a2a;
+}
+
+.dark .callout-tip[title]:not([title=""])::before {
+  color: #8fdf8f;
+  background-color: #2a3a2a;
+}
+
+.dark .callout-important[title]:not([title=""])::before {
+  color: #f58f8f;
+  background-color: #4a2a2a;
 }
 
 /* ====================================================================
@@ -208,7 +286,7 @@
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg) translateY(-2px);
-  transition: transform 0.2s ease;
+  /* transition: transform 0.2s ease; */
   flex-shrink: 0;
   margin-left: auto;
   opacity: 0.6;

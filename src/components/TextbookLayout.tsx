@@ -30,10 +30,11 @@ export default function TextbookLayout({
   const { devMode, devBorder } = useDevMode();
   const MIN_FONT_SIZE = 14;
   const MAX_FONT_SIZE = 22;
-  const DEFAULT_FONT_SIZE = 18;
+  const DEFAULT_FONT_SIZE = 16;
 
   const [fontSize, setFontSize] = useState<number>(DEFAULT_FONT_SIZE);
   const [fontFamily, setFontFamily] = useState<'serif' | 'sans'>('serif');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Load preferences from localStorage
   useEffect(() => {
@@ -76,6 +77,10 @@ export default function TextbookLayout({
     localStorage.setItem('fontFamily', family);
   };
 
+  const handleSidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   const fontFamilyClass = fontFamily === 'serif' ? 'font-serif' : 'font-sans';
   const canIncrease = fontSize < MAX_FONT_SIZE;
   const canDecrease = fontSize > MIN_FONT_SIZE;
@@ -94,14 +99,19 @@ export default function TextbookLayout({
         canDecrease={canDecrease}
       />
 
-      <Sidebar sections={sections} currentSlug={currentSlug} />
+      <Sidebar
+        sections={sections}
+        currentSlug={currentSlug}
+        isOpen={sidebarOpen}
+        onToggle={handleSidebarToggle}
+      />
 
       {/* Main Content Area */}
       <main
-        className={`ml-64 pt-14 min-h-screen overflow-x-hidden overscroll-contain ${devBorder('green')}`}
+        className={`ml-0 md:ml-72 pt-14 min-h-screen overflow-x-hidden overscroll-contain ${devBorder('green')}`}
         style={{ fontSize: `${fontSize}px` }}
       >
-        <div className="max-w-4xl mx-auto px-8 py-12">
+        <div className="max-w-4xl mx-auto px-8 md:px-8 py-8">
           {children}
         </div>
       </main>

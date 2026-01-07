@@ -3,7 +3,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-QMD_DIR="/Volumes/T9/everything/business/freelance/sethi_textbook/untitled folder/dafct/chapters"
+QMD_DIR="/Volumes/T9/everything/business/freelance/sethi_textbook/original-code/dafct/chapters"
 HTML_DIR="$PROJECT_ROOT/content/html"
 ASSETS_DIR="$PROJECT_ROOT/public/assets"
 
@@ -38,8 +38,8 @@ find "$QMD_DIR" -name "index.qmd" -type f | while read -r qmd_file; do
     if [ $? -eq 0 ]; then
         echo "    ✓ Created: $slug.html"
 
-        # Copy assets (images, figures, animations) if they exist
-        for asset_folder in images figures animations assets; do
+        # Copy assets (images, figures, animations, interactives) if they exist
+        for asset_folder in images figures animations assets interactives; do
             if [ -d "$chapter_dir/$asset_folder" ]; then
                 mkdir -p "$ASSETS_DIR/$slug/$asset_folder"
                 cp -r "$chapter_dir/$asset_folder/"* "$ASSETS_DIR/$slug/$asset_folder/" 2>/dev/null
@@ -53,6 +53,7 @@ find "$QMD_DIR" -name "index.qmd" -type f | while read -r qmd_file; do
         sed -i '' "s|src=\"figures/|src=\"/assets/$slug/figures/|g" "$HTML_DIR/$slug.html"
         sed -i '' "s|src=\"animations/|src=\"/assets/$slug/animations/|g" "$HTML_DIR/$slug.html"
         sed -i '' "s|src=\"assets/|src=\"/assets/$slug/assets/|g" "$HTML_DIR/$slug.html"
+        sed -i '' "s|src=\"interactives/|src=\"/assets/$slug/interactives/|g" "$HTML_DIR/$slug.html"
 
     else
         echo "    ✗ Failed: $slug"

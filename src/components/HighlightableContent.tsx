@@ -257,8 +257,27 @@ export default function HighlightableContent({ html, chapterSlug }: Highlightabl
     const timer = setTimeout(() => {
       if (!containerRef.current) return;
 
+      // Check if there's a hash/anchor to narrow down the search area
+      const hash = window.location.hash.slice(1); // Remove the #
+      let searchContainer: HTMLElement = containerRef.current;
+
+      if (hash) {
+        // Try to find the target section by ID
+        const targetElement = document.getElementById(hash);
+        if (targetElement) {
+          // Find the parent section or use the element itself as the search boundary
+          // Look for a containing section, article, or use the element's parent
+          const section = targetElement.closest('section') ||
+                         targetElement.closest('article') ||
+                         targetElement.parentElement;
+          if (section && containerRef.current.contains(section)) {
+            searchContainer = section as HTMLElement;
+          }
+        }
+      }
+
       const walker = document.createTreeWalker(
-        containerRef.current,
+        searchContainer,
         NodeFilter.SHOW_TEXT,
         null
       );
