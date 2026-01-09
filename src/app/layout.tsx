@@ -4,6 +4,7 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import { DevModeProvider } from "@/providers/DevModeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const garamond = EB_Garamond({
   variable: "--font-garamond",
@@ -24,9 +25,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${garamond.variable} font-serif antialiased bg-stone-50`}>
         <ThemeProvider>
-          <DevModeProvider>
-            {children}
-          </DevModeProvider>
+          <AuthProvider>
+            <DevModeProvider>
+              {children}
+            </DevModeProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -29,6 +29,7 @@ export function DevModeProvider({ children }: { children: ReactNode }) {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only toggle if not typing in an input/textarea
       if (
+        e.key &&
         e.key.toLowerCase() === 'b' &&
         !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)
       ) {

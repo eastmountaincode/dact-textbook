@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useDevMode } from '@/providers/DevModeProvider';
 import { useTheme } from '@/providers/ThemeProvider';
+import { useAuth } from '@/providers/AuthProvider';
 
 interface HeaderProps {
   onFontSizeIncrease: () => void;
@@ -25,17 +27,19 @@ export default function Header({
   fontSize,
   defaultFontSize,
   canIncrease,
-  canDecrease
+  canDecrease,
 }: HeaderProps) {
   const [showFontMenu, setShowFontMenu] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
   const { devBorder } = useDevMode();
   const { isDark, toggleTheme } = useTheme();
+  const { user, profile, signOut } = useAuth();
 
   return (
     <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
       {/* Logo / Title */}
       <div className={`flex items-center gap-4 ${devBorder('amber')}`}>
-        <a href="/" className={`text-[#FDB515] font-semibold text-lg hover:opacity-80 ${devBorder('emerald')}`}>
+        <a href="/chapter/welcome" className={`text-[#FDB515] font-semibold text-lg hover:opacity-80 ${devBorder('emerald')}`}>
           The Philomath
         </a>
         <span className={`text-white/60 text-sm hidden sm:inline ${devBorder('lime')}`}>
@@ -45,15 +49,14 @@ export default function Header({
 
       {/* Controls */}
       <div className={`flex items-center gap-4 ${devBorder('cyan')}`}>
-        {/* Font Controls */}
-        <div className="relative">
-          {/* Font settings (open/close menu) */}
+        {/* Font Controls - hidden on small screens */}
+        <div className="relative hidden md:block">
           <button
             onClick={() => setShowFontMenu(!showFontMenu)}
             className={`p-2 hover:bg-white/10 rounded-lg cursor-pointer ${devBorder('violet')}`}
             title="Font settings"
           >
-            <span className="w-5 h-5 flex items-center justify-center text-lg font-serif">A</span>
+            <span className={`w-5 h-5 flex items-center justify-center text-lg font-serif ${devBorder('fuchsia')}`}>A</span>
           </button>
 
           {showFontMenu && (
@@ -64,7 +67,6 @@ export default function Header({
                   <span className="text-xs font-medium" style={{ color: 'var(--foreground)' }}>{fontSize}px</span>
                 </div>
                 <div className="flex gap-2 items-center">
-                  {/* Font size: decrease */}
                   <button
                     onClick={onFontSizeDecrease}
                     disabled={!canDecrease}
@@ -77,7 +79,6 @@ export default function Header({
                   >
                     <span className="text-xs font-serif">A</span>
                   </button>
-                  {/* Font size: increase */}
                   <button
                     onClick={onFontSizeIncrease}
                     disabled={!canIncrease}
@@ -90,7 +91,6 @@ export default function Header({
                   >
                     <span className="text-base font-serif">A</span>
                   </button>
-                  {/* Font size: reset to default */}
                   <button
                     onClick={onFontSizeReset}
                     disabled={fontSize === defaultFontSize}
@@ -105,7 +105,6 @@ export default function Header({
               <div>
                 <p className="text-xs mb-2" style={{ color: 'var(--muted-text)' }}>Style</p>
                 <div className="flex gap-2">
-                  {/* Font family: serif */}
                   <button
                     onClick={() => onFontFamilyChange('serif')}
                     className="px-3 py-1 rounded text-sm font-serif cursor-pointer"
@@ -116,7 +115,6 @@ export default function Header({
                   >
                     Serif
                   </button>
-                  {/* Font family: sans */}
                   <button
                     onClick={() => onFontFamilyChange('sans')}
                     className="px-3 py-1 rounded text-sm font-sans cursor-pointer"
@@ -133,32 +131,90 @@ export default function Header({
           )}
         </div>
 
-        {/* Theme Toggle */}
+        {/* Theme Toggle - hidden on small screens */}
         <button
           onClick={toggleTheme}
-          className={`p-2 hover:bg-white/10 rounded-lg cursor-pointer ${devBorder('indigo')}`}
+          className={`p-2 hover:bg-white/10 rounded-lg cursor-pointer hidden md:block ${devBorder('indigo')}`}
           title={isDark ? "Switch to light mode" : "Switch to dark mode"}
         >
           {isDark ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${devBorder('sky')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           ) : (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-5 h-5 ${devBorder('sky')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           )}
         </button>
 
         {/* Account */}
-        <button
-          className={`p-2 hover:bg-white/10 rounded-lg cursor-pointer ${devBorder('rose')}`}
-          title="Account"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-        </button>
+        <div className="relative">
+          {user ? (
+            <>
+              <button
+                onClick={() => setShowAccountMenu(!showAccountMenu)}
+                className={`p-2 hover:bg-white/10 rounded-lg cursor-pointer flex items-center gap-2 ${devBorder('rose')}`}
+                title="Account"
+              >
+                <svg className={`w-5 h-5 ${devBorder('orange')}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                {/* Show the user's name if it exists, otherwise show the email (before the @) */}
+                <span className={`text-sm hidden sm:inline ${devBorder('yellow')}`}>
+                  {profile?.first_name || user.email?.split('@')[0]}
+                </span>
+              </button>
+
+              {showAccountMenu && (
+                <div className="absolute right-0 top-10 rounded-lg shadow-xl p-4 w-56 z-50" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--foreground)' }}>
+                  <div className="mb-3 pb-3" style={{ borderBottom: '1px solid var(--card-border)' }}>
+                    <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+                      {profile?.first_name || user.email?.split('@')[0]}
+                    </p>
+                    <p className="text-xs" style={{ color: 'var(--muted-text)' }}>
+                      {user.email}
+                    </p>
+                  </div>
+                  <Link
+                    href="/account"
+                    onClick={() => setShowAccountMenu(false)}
+                    className="block w-full text-left px-2 py-1 rounded text-sm hover:bg-[var(--sidebar-hover)] cursor-pointer"
+                    style={{ color: 'var(--foreground)' }}
+                  >
+                    Account
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setShowAccountMenu(false);
+                    }}
+                    className="w-full text-left px-2 py-1 rounded text-sm hover:bg-[var(--sidebar-hover)] cursor-pointer"
+                    style={{ color: 'var(--foreground)' }}
+                  >
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className={`flex items-center gap-2 ${devBorder('rose')}`}>
+              <Link
+                href="/login"
+                className={`px-3 py-1.5 text-sm rounded-lg cursor-pointer hover:bg-white/10 ${devBorder('orange')}`}
+              >
+                Log In
+              </Link>
+              <Link
+                href="/signup"
+                className={`px-3 py-1.5 text-sm rounded-lg cursor-pointer text-[var(--header-bg)] ${devBorder('yellow')}`}
+                style={{ backgroundColor: '#FDB515' }}
+              >
+                Create Account
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

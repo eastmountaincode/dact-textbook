@@ -11,17 +11,19 @@ export interface Chapter {
 export interface ChapterInfo {
   slug: string;
   title: string;
-  chapterNumber: number;
+  chapterNumber: number | null;  // null for preface items
 }
 
 export interface Section {
   name: string;
   chapters: ChapterInfo[];
+  isPreface?: boolean;
 }
 
 interface ChaptersConfig {
   sections: {
     name: string;
+    preface?: boolean;
     chapters: string[];
   }[];
 }
@@ -116,19 +118,21 @@ export async function getChaptersBySection(): Promise<Section[]> {
 
   for (const section of config.sections) {
     const sectionChapters: ChapterInfo[] = [];
+    const isPreface = section.preface === true;
 
     for (const slug of section.chapters) {
       const chapter = await loadChapter(slug);
       sectionChapters.push({
         slug,
         title: chapter?.title || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-        chapterNumber: chapterNumber++,
+        chapterNumber: isPreface ? null : chapterNumber++,
       });
     }
 
     sections.push({
       name: section.name,
       chapters: sectionChapters,
+      isPreface,
     });
   }
 

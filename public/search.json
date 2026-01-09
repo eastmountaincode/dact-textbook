@@ -1,5 +1,33 @@
 [
   {
+    "objectID": "about-the-author#section-1",
+    "href": "/chapter/about-the-author",
+    "title": "about the author",
+    "section": "Gautam Sethi",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  },
+  {
+    "objectID": "about-the-author#section-2",
+    "href": "/chapter/about-the-author",
+    "title": "about the author",
+    "section": "Noor Sethi",
+    "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis."
+  },
+  {
+    "objectID": "about-the-author#section-3",
+    "href": "/chapter/about-the-author",
+    "title": "about the author",
+    "section": "Contact",
+    "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
+  },
+  {
+    "objectID": "about-the-author#section-4",
+    "href": "/chapter/about-the-author",
+    "title": "about the author",
+    "section": "Acknowledgments",
+    "text": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."
+  },
+  {
     "objectID": "bayesian-inference",
     "href": "/chapter/bayesian-inference",
     "title": "Bayesian inference",
@@ -172,7 +200,7 @@
     "href": "/chapter/estimating-mean",
     "title": "Estimating the population mean",
     "section": "Answer",
-    "text": "The sample mean is unbiased , meaning that if we could take infinitely many samples and calculate the mean for each one, the average of all those sample means would exactly equal the population mean. This property holds regardless of sample size or the shape of the population distribution—it’s assumption-free except for requiring that the population mean is finite. Understanding Unbiasedness An estimator is unbiased if its expected value equals the parameter it’s trying to estimate. For the sample mean \bar{Y} estimating the population mean \\mu , we want to show: E[\bar{Y}] = \\mu This is a powerful property because it guarantees that our estimator has no systematic tendency to overestimate or underestimate the true parameter. Some samples will give us values above \\mu , others below, but on average—across infinitely many samples—we hit the target exactly. The Proof The proof is remarkably elegant. Let’s work through it step by step. We start with the definition of the sample mean: $$ \bar{Y} = rac{Y_1 + Y_2 +"
+    "text": "The sample mean is unbiased , meaning that if we could take infinitely many samples and calculate the mean for each one, the average of all those sample means would exactly equal the population mean. This property holds regardless of sample size or the shape of the population distribution—it’s assumption-free except for requiring that the population mean is finite. Understanding Unbiasedness An estimator is unbiased if its expected value equals the parameter it’s trying to estimate. For the sample mean \\bar{Y} estimating the population mean \\mu , we want to show: E[\\bar{Y}] = \\mu This is a powerful property because it guarantees that our estimator has no systematic tendency to overestimate or underestimate the true parameter. Some samples will give us values above \\mu , others below, but on average—across infinitely many samples—we hit the target exactly. The Proof The proof is remarkably elegant. Let’s work through it step by step. We start with the definition of the sample mean: \\bar{Y} = \\frac{Y_1 + Y_2 + \\cdots + Y_n}{n}"
   },
   {
     "objectID": "estimating-variance",
@@ -193,7 +221,7 @@
     "href": "/chapter/foundations-frequentist",
     "title": "Foundations of Frequentist Statistics",
     "section": "What Are We Really Doing?",
-    "text": "Inferential statistics is fundamentally about making observations in sample data and then attempting to extrapolate causal connections or patterns to the population data . When we successfully extrapolate these connections, we say our results are statistically significant . When we cannot extrapolate with confidence, we say our results are not statistically significant . This distinction—between what we observe in our sample and what we can confidently claim about the population—lies at the heart of all inferential statistics. But what exactly are we making claims about when we talk about populations? Population Parameters vs. Sample Statistics When we make claims about a population, we are not making claims about individual observations. After all, populations are conceptually infinite in size. Instead, we make claims about specific parameters of the population’s distribution. The two parameters we encounter most frequently are: The population mean ( \\mu ): This is by far the most common parameter we test hypotheses about in applied statistics. The population variance ( \\sigma^2 ): This parameter is crucial because tests for the population mean often depend on our ability to estimate the population variance. Because we never truly know the values of \\mu or \\sigma^2 , we must estimate them using sample data. The corresponding quantities we calculate from our sample are: Sample mean ( \bar{y} ): The analog to the population mean Sample variance ( s^2 ): The analog to the population variance"
+    "text": "Inferential statistics is fundamentally about making observations in sample data and then attempting to extrapolate causal connections or patterns to the population data . When we successfully extrapolate these connections, we say our results are statistically significant . When we cannot extrapolate with confidence, we say our results are not statistically significant . This distinction—between what we observe in our sample and what we can confidently claim about the population—lies at the heart of all inferential statistics. But what exactly are we making claims about when we talk about populations? Population Parameters vs. Sample Statistics When we make claims about a population, we are not making claims about individual observations. After all, populations are conceptually infinite in size. Instead, we make claims about specific parameters of the population’s distribution. The two parameters we encounter most frequently are: The population mean ( \\mu ): This is by far the most common parameter we test hypotheses about in applied statistics. The population variance ( \\sigma^2 ): This parameter is crucial because tests for the population mean often depend on our ability to estimate the population variance. Because we never truly know the values of \\mu or \\sigma^2 , we must estimate them using sample data. The corresponding quantities we calculate from our sample are: Sample mean ( \\bar{y} ): The analog to the population mean Sample variance ( s^2 ): The analog to the population variance"
   },
   {
     "objectID": "foundations-frequentist#section-3",
@@ -207,14 +235,14 @@
     "href": "/chapter/foundations-frequentist#transformations-of-random-variables",
     "title": "Foundations of Frequentist Statistics",
     "section": "Transformations of Random Variables",
-    "text": "Before we dive into the philosophy of estimation, we need to develop some mathematical machinery. In statistics, we routinely transform data—we take numbers, apply formulas to them, and generate new numbers. Understanding how these transformations affect the mean and variance of our data is essential. Affine Transformations Consider a simple but powerful type of transformation called an affine transformation . If we have a random variable X with mean \bar{x} and variance s^2 , we might create a new variable: Y = mX + c where m is a multiplicative constant (the slope) and c is an additive constant (the intercept). This is exactly the form of a linear equation you’ve seen since high school algebra. The question is: if we know the mean and variance of X , what are the mean and variance of Y ? We can decompose this affine transformation into two simpler operations: Translation : X ightarrow X + c (adding a constant) Linear transformation : X ightarrow mX (multiplying by a constant) Properties of Translation When you add a constant c to every value in your dataset, creating Y = X + c : \begin{aligned} ext{Mean of } Y &= \bar{x} + c \\ ext{Variance of } Y &= s^2 \u001bnd{aligned} The mean shifts by exactly c , but the variance remains unchanged. Why? Because variance measures the spread of data around the mean, and when you shift all values by the same amount, their relative positions don’t change."
+    "text": "Before we dive into the philosophy of estimation, we need to develop some mathematical machinery. In statistics, we routinely transform data—we take numbers, apply formulas to them, and generate new numbers. Understanding how these transformations affect the mean and variance of our data is essential. Affine Transformations Consider a simple but powerful type of transformation called an affine transformation . If we have a random variable X with mean \\bar{x} and variance s^2 , we might create a new variable: Y = mX + c where m is a multiplicative constant (the slope) and c is an additive constant (the intercept). This is exactly the form of a linear equation you’ve seen since high school algebra. The question is: if we know the mean and variance of X , what are the mean and variance of Y ? We can decompose this affine transformation into two simpler operations: Translation : X \\rightarrow X + c (adding a constant) Linear transformation : X \\rightarrow mX (multiplying by a constant) Properties of Translation When you add a constant c to every value in your dataset, creating Y = X + c : \\begin{aligned} \\text{Mean of } Y &= \\bar{x} + c \\\\ \\text{Variance of } Y &= s^2 \\end{aligned} The mean shifts by exactly c , but the variance remains unchanged. Why? Because variance measures the spread of data around the mean, and when you shift all values by the same amount, their relative positions don’t change."
   },
   {
     "objectID": "foundations-frequentist#section-5",
     "href": "/chapter/foundations-frequentist",
     "title": "Foundations of Frequentist Statistics",
     "section": "Connecting to Earlier Concepts",
-    "text": "You’ve already encountered this idea when we discussed the z -transformation. When we subtract the mean from a variable, we’re performing a translation that shifts the entire distribution to have mean zero. The shape and spread of the distribution remain the same. Properties of Linear Transformation When you multiply every value by a constant m , creating Y = mX : \begin{aligned} ext{Mean of } Y &= m\bar{x} \\ ext{Variance of } Y &= m^2 s^2 \\ ext{Standard deviation of } Y &= |m| s \u001bnd{aligned} Notice that the variance is multiplied by m^2 , not m . This occurs because variance involves squared deviations, so a multiplicative constant gets squared in the process. Combining Both Transformations For the full affine transformation Y = mX + c : \begin{aligned} ext{Mean of } Y &= m\bar{x} + c \\ ext{Variance of } Y &= m^2 s^2 \\ ext{Standard deviation of } Y &= |m| s \u001bnd{aligned} These formulas will prove invaluable as we develop more sophisticated statistical techniques."
+    "text": "You’ve already encountered this idea when we discussed the z -transformation. When we subtract the mean from a variable, we’re performing a translation that shifts the entire distribution to have mean zero. The shape and spread of the distribution remain the same. Properties of Linear Transformation When you multiply every value by a constant m , creating Y = mX : \\begin{aligned} \\text{Mean of } Y &= m\\bar{x} \\\\ \\text{Variance of } Y &= m^2 s^2 \\\\ \\text{Standard deviation of } Y &= |m| s \\end{aligned} Notice that the variance is multiplied by m^2 , not m . This occurs because variance involves squared deviations, so a multiplicative constant gets squared in the process. Combining Both Transformations For the full affine transformation Y = mX + c : \\begin{aligned} \\text{Mean of } Y &= m\\bar{x} + c \\\\ \\text{Variance of } Y &= m^2 s^2 \\\\ \\text{Standard deviation of } Y &= |m| s \\end{aligned} These formulas will prove invaluable as we develop more sophisticated statistical techniques."
   },
   {
     "objectID": "foundations-frequentist#the-frequentist-philosophy-repeated-sampling",
@@ -228,7 +256,7 @@
     "href": "/chapter/foundations-frequentist",
     "title": "Foundations of Frequentist Statistics",
     "section": "The Thought Experiment",
-    "text": "Imagine that we could: Draw a random sample from the population Calculate some statistic from that sample Return the sample to the population Draw another random sample Calculate the statistic again Repeat this process infinitely many times This thought experiment—sampling repeatedly from the same population—forms the foundation for how we evaluate estimators in frequentist statistics. Here’s the crucial point: in practice, we only sample once . But theoretically, we imagine what would happen if we could sample infinitely many times. The behavior of our estimator across these hypothetical repeated samples tells us whether it’s a good estimator or not. The Concept of an Estimator An estimator is simply a formula that we apply to sample data to estimate a population parameter. Importantly, there are infinitely many possible estimators for any given parameter. For example, suppose we want to estimate the population mean \\mu . Here are just a few of the infinitely many estimators we could choose: The first observation: \\hat{\\mu}_1 = y_1 The sum of the first two observations: \\hat{\\mu}_2 = y_1 + y_2 The cube of the first observation: \\hat{\\mu}_3 = y_1^3 The fourth power of the seventh observation times the sine of the second: \\hat{\\mu}_4 = y_7^4 imes \\sin(y_2) The sample mean: \\hat{\\mu}_5 = \bar{y} = rac{1}{n}\\sum_{i=1}^{n} y_i Most of these are obviously terrible estimators. But the point is that we can construct any formula we want, and each formula defines a different estimator. The set of all possible estimators is infinite. So how do we choose among them? How do we determine which estimators are “good” and which are “bad”? The answer lies in examining the sampling distribution of each estimator. Sampling Distributions For any estimator, we can imagine the repeated sampling process: Draw a sample of size n Apply the estimator to get an estimate Record that estimate Repeat infinitely many times The distribution of all these estimates is called the sampling distribution"
+    "text": "Imagine that we could: Draw a random sample from the population Calculate some statistic from that sample Return the sample to the population Draw another random sample Calculate the statistic again Repeat this process infinitely many times This thought experiment—sampling repeatedly from the same population—forms the foundation for how we evaluate estimators in frequentist statistics. Here’s the crucial point: in practice, we only sample once . But theoretically, we imagine what would happen if we could sample infinitely many times. The behavior of our estimator across these hypothetical repeated samples tells us whether it’s a good estimator or not. The Concept of an Estimator An estimator is simply a formula that we apply to sample data to estimate a population parameter. Importantly, there are infinitely many possible estimators for any given parameter. For example, suppose we want to estimate the population mean \\mu . Here are just a few of the infinitely many estimators we could choose: The first observation: \\hat{\\mu}_1 = y_1 The sum of the first two observations: \\hat{\\mu}_2 = y_1 + y_2 The cube of the first observation: \\hat{\\mu}_3 = y_1^3 The fourth power of the seventh observation times the sine of the second: \\hat{\\mu}_4 = y_7^4 \\times \\sin(y_2) The sample mean: \\hat{\\mu}_5 = \\bar{y} = \\frac{1}{n}\\sum_{i=1}^{n} y_i Most of these are obviously terrible estimators. But the point is that we can construct any formula we want, and each formula defines a different estimator. The set of all possible estimators is infinite. So how do we choose among them? How do we determine which estimators are “good” and which are “bad”? The answer lies in examining the sampling distribution of each estimator. Sampling Distributions For any estimator, we can imagine the repeated sampling process: Draw a sample of size n Apply the estimator to get an estimate Record that estimate Repeat infinitely many times The distribution of all these estimates is called the sampling distrib"
   },
   {
     "objectID": "foundations-frequentist#section-8",
@@ -242,7 +270,84 @@
     "href": "/chapter/foundations-frequentist#a-concrete-example-estimating-from-a-simple-population",
     "title": "Foundations of Frequentist Statistics",
     "section": "A Concrete Example: Estimating from a Simple Population",
-    "text": "To make these abstract ideas concrete, let’s work through a simple example. Consider a population with only three values: \\{1, 2, 3\\} . Since there’s one of each value, each has probability 1/3 of being selected if we draw randomly from this population. The True Population Parameters This is a discrete uniform distribution, and we can easily calculate the true population mean and variance: $$ = E[Y] = 1"
+    "text": "To make these abstract ideas concrete, let’s work through a simple example. Consider a population with only three values: \\{1, 2, 3\\} . Since there’s one of each value, each has probability 1/3 of being selected if we draw randomly from this population. The True Population Parameters This is a discrete uniform distribution, and we can easily calculate the true population mean and variance: \\mu = \\mathbb{E}[Y] = 1 \\cdot \\frac{1}{3} + 2 \\cdot \\frac{1}{3} + 3 \\cdot \\frac{1}{3} = 2 For the variance, we first calculate the expected value of Y^2 : \\mathbb{E}[Y^2] = 1^2 \\cdot \\frac{1}{3} + 2^2 \\cdot \\frac{1}{3} + 3^2 \\cdot \\frac{1}{3} = \\frac{14}{3} Then, using the formula \\mathrm{Var}(Y) = \\mathbb{E}[Y^2] - (\\mathbb{E}[Y])^2 : \\sigma^2 = \\frac{14}{3} - 2^2 = \\frac{14}{3} - 4 = \\frac{2}{3} We can also verify this directly by calculating the squared deviations: Value ( y ) Deviation ( y - \\mu ) Squared Deviation ( y - \\mu )² 1 -1 1 2 0 0 3 1 1 \\sigma^2 = \\frac{1 + 0 + 1}{3} = \\frac{2}{3} So we know that \\mu = 2 and \\sigma^2 = 2/3 . In practice, we wouldn’t know these values—we’d have to estimate them from sample data. But in this pedagogical example, knowing them allows us to evaluate how well different estimators perform. Using a Single Observation as an Estimator Suppose we draw a single observation from this population. Can we use it to estimate the population mean? According to frequentist thinking, the surprising answer is yes—at least by one important criterion. Consider the estimator \\hat{\\mu} = Y_1 , where Y_1 is our single observation. To evaluate this estimator, we imagine drawing infinitely many samples (each of size 1) and recording each estimate. What would the sampling distribution look like? Since each draw yields 1, 2, or 3 with equal probability, our estimates would be: - \\hat{\\mu} = 1 one-third of the time - \\hat{\\mu} = 2 one-third of the time - \\hat{\\mu} = 3 one-third of the time The mean of this sampling distribution is: \\mathbb{E}[\\hat{\\mu}] = 1 \\cdot \\"
+  },
+  {
+    "objectID": "foundations-frequentist#properties-of-estimators",
+    "href": "/chapter/foundations-frequentist#properties-of-estimators",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Properties of Estimators",
+    "text": "We’ve just discovered our first desirable property of estimators: unbiasedness . Let’s now systematically examine the key properties that statisticians use to evaluate estimators. Unbiasedness: Accuracy on Average"
+  },
+  {
+    "objectID": "foundations-frequentist#section-11",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Definition: Unbiasedness",
+    "text": "An estimator \\hat{\\theta} is unbiased for a parameter \\theta if its expected value equals the parameter: \\mathbb{E}[\\hat{\\theta}] = \\theta In words: on average across all possible samples, an unbiased estimator gets the right answer. Any single estimate from an unbiased estimator might be far from the truth. But the errors balance out—sometimes we overestimate, sometimes we underestimate, and on average we hit the bullseye."
+  },
+  {
+    "objectID": "foundations-frequentist#section-12",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Question: Is the sample mean unbiased?",
+    "text": "Yes! The sample mean \\bar{Y} = \\frac{1}{n}\\sum_{i=1}^{n} Y_i is an unbiased estimator of the population mean \\mu . Here’s the proof: \\mathbb{E}[\\bar{Y}] = \\mathbb{E}\\left[\\frac{1}{n}\\sum_{i=1}^{n} Y_i\\right] = \\frac{1}{n}\\sum_{i=1}^{n} \\mathbb{E}[Y_i] = \\frac{1}{n} \\cdot n\\mu = \\mu Each Y_i is drawn from the population, so \\mathbb{E}[Y_i] = \\mu for all i . The Abundance of Unbiased Estimators Here’s something remarkable: for a sample of size 2, there are infinitely many unbiased estimators of the population mean! Any weighted average of the form: \\hat{\\mu} = w_1 Y_1 + w_2 Y_2 \\quad \\text{where } w_1 + w_2 = 1 is an unbiased estimator. For example: - 0.5 Y_1 + 0.5 Y_2 (the sample mean) - 0.1 Y_1 + 0.9 Y_2 - 0.8 Y_1 + 0.2 Y_2 All of these are unbiased! So if unbiasedness is all we care about, we could pick any of these weighted averages. But surely some are better than others. This leads us to our second criterion. Efficiency: Achieving Precision Look carefully at the sampling distributions of different unbiased estimators. You’ll notice something important: some have smaller variance than others. An estimator with smaller variance gives us more precise estimates—they cluster more tightly around the parameter value."
+  },
+  {
+    "objectID": "foundations-frequentist#section-13",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Definition: Efficiency",
+    "text": "Among all unbiased estimators of a parameter, the most efficient estimator is the one with the smallest variance in its sampling distribution. Consider our sample of size 2 from the population \\{1, 2, 3\\} . The variances of different unbiased estimators are: Estimator Variance Y_1 (first observation only) \\sigma^2 = 2/3 Y_2 (second observation only) \\sigma^2 = 2/3 0.1Y_1 + 0.9Y_2 0.82\\sigma^2 0.8Y_1 + 0.2Y_2 0.68\\sigma^2 \\bar{Y} = \\frac{Y_1 + Y_2}{2} \\frac{\\sigma^2}{2} = 1/3 The sample mean has the smallest variance! It turns out that among all unbiased estimators of the population mean, the sample mean is the most efficient—it has the minimum possible variance. This remarkable result is known as the Gauss-Markov theorem . Consistency: Convergence with More Data Both unbiasedness and efficiency are properties that hold for a fixed sample size. But what happens as we gather more data? This brings us to our third fundamental property."
+  },
+  {
+    "objectID": "foundations-frequentist#section-14",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Definition: Consistency",
+    "text": "An estimator \\hat{\\theta} is consistent if it converges in probability to the parameter value as the sample size approaches infinity. Formally, for any \\epsilon > 0 : \\lim_{n \\to \\infty} P(|\\hat{\\theta} - \\theta| > \\epsilon) = 0 In plain language: as we gather more data, the probability that our estimate is far from the parameter approaches zero. For the sample mean, we can see consistency directly from its variance: \\mathrm{Var}(\\bar{Y}) = \\frac{\\sigma^2}{n} As n increases, the variance shrinks toward zero. The sampling distribution collapses to a spike at \\mu . This is the Law of Large Numbers —one of the most fundamental theorems in probability and statistics."
+  },
+  {
+    "objectID": "foundations-frequentist#section-15",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "The Law of Large Numbers",
+    "text": "As the sample size n approaches infinity, the sample mean \\bar{Y} converges to the population mean \\mu . Formally: \\bar{Y} \\xrightarrow{P} \\mu \\quad \\text{as } n \\to \\infty This theorem is what makes empirical knowledge possible. It tells us that our effort in collecting more data is worthwhile—more data leads to better estimates."
+  },
+  {
+    "objectID": "foundations-frequentist#section-16",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "The Gambler’s Fallacy",
+    "text": "The Law of Large Numbers is often misunderstood. Consider flipping a fair coin ten times and getting heads all ten times. Many people reason: “The coin should come up heads 50% of the time in the long run. I’ve gotten too many heads, so tails are ‘due’—the next flip is more likely to be tails.” This reasoning is completely wrong ! Each flip is independent. The probability of heads on the eleventh flip is still exactly 50%. The coin has no memory and no desire for balance. The Law of Large Numbers says that as n grows large, the probability that the proportion deviates far from 50% becomes small. It does not say that outcomes will “even out” in any deterministic way."
+  },
+  {
+    "objectID": "foundations-frequentist#the-broader-landscape-of-estimator-properties",
+    "href": "/chapter/foundations-frequentist#the-broader-landscape-of-estimator-properties",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "The Broader Landscape of Estimator Properties",
+    "text": "Unbiasedness, efficiency, and consistency are the “big three” properties, but statisticians have identified many others. Sufficiency An estimator is sufficient if it captures all the information in the sample relevant to the parameter. Once you know the value of a sufficient statistic, the individual observations provide no additional information about the parameter. For estimating the mean of a normal distribution, the sample mean is sufficient. If I tell you \\bar{Y} = 10 , knowing that the individual observations were 8, 9, 10, 11, 12 tells you nothing more about \\mu . Robustness An estimator is robust if it performs well even when distributional assumptions are violated. The sample mean is sensitive to outliers—a single extreme value can drastically shift it. The sample median, by contrast, is highly robust to outliers. Properties Are Distinct It’s crucial to understand that these properties are distinct—an estimator can possess one without possessing another. Consistent but biased : Consider estimating population variance using: \\hat{\\sigma}^2 = \\frac{1}{n}\\sum_{i=1}^{n}(Y_i - \\bar{Y})^2 This is consistent (converges to \\sigma^2 as n \\to \\infty ) but biased—its expected value is \\frac{n-1}{n}\\sigma^2 , which underestimates the variance. The unbiased version divides by n-1 instead of n . Unbiased but inefficient : Using just the first observation \\hat{\\mu} = Y_1 is unbiased but spectacularly inefficient. Its variance is \\sigma^2 , compared to \\sigma^2/n for the sample mean. You’re throwing away all but one observation!"
+  },
+  {
+    "objectID": "foundations-frequentist#navigating-tradeoffs",
+    "href": "/chapter/foundations-frequentist#navigating-tradeoffs",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Navigating Tradeoffs",
+    "text": "When properties conflict, statisticians must choose which to prioritize. The Classical Approach: Prioritizing Unbiasedness Traditional frequentist statistics often prioritizes unbiasedness. The reasoning: if our method is systematically biased, we’re building error into our procedure from the start. Better to be right on average with high variance than systematically wrong with low variance. Modern Approaches: The Bias-Variance Tradeoff Sometimes we might accept a small amount of bias to achieve a large reduction in variance. This insight drives modern techniques like ridge regression and regularization methods."
+  },
+  {
+    "objectID": "foundations-frequentist#section-19",
+    "href": "/chapter/foundations-frequentist",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Mean Squared Error",
+    "text": "The mean squared error (MSE) combines bias and variance into a single measure: \\text{MSE}(\\hat{\\theta}) = \\mathbb{E}[(\\hat{\\theta} - \\theta)^2] = \\text{Bias}(\\hat{\\theta})^2 + \\mathrm{Var}(\\hat{\\theta}) An estimator with small MSE might have some bias but sufficiently low variance that its overall performance is superior to an unbiased but high-variance alternative. The bias-variance tradeoff, quantified through MSE, has become one of the central organizing principles of modern statistical learning."
+  },
+  {
+    "objectID": "foundations-frequentist#summary",
+    "href": "/chapter/foundations-frequentist#summary",
+    "title": "Foundations of Frequentist Statistics",
+    "section": "Summary",
+    "text": "We’ve established that the sample mean possesses three fundamental and universally valued properties: Unbiasedness : On average, across all possible samples, it equals the population mean Efficiency : Among unbiased estimators, it has the smallest variance Consistency : As sample size grows, it converges to the population mean These properties make the sample mean a natural and powerful choice for estimating population means. But the landscape of estimator properties is rich—different problems call for different priorities, and understanding the tradeoffs among properties is essential for becoming a sophisticated statistical thinker."
   },
   {
     "objectID": "graphing",
@@ -326,7 +431,7 @@
     "href": "/chapter/intro-data-analytics",
     "title": "The Purpose of Data Analytics",
     "section": "Definitions",
-    "text": "Population : All possible data points that exist in the world for a given phenomenon. This includes data that has been collected, data that could be collected, and data that will exist in the future. Sample : A subset of the population that we have actually collected and can analyze. The sample is always smaller—often infinitesimally smaller—than the population. Consider studying human height. The population would include the heights of all humans who have ever lived, are living now, and will live in the future. That’s an enormous—indeed, infinite—amount of data. Your sample might be the heights of 1,000 people surveyed in a particular city during a particular year. No matter how large your sample, it remains tiny compared to the population. Even if you collect data on millions of individuals, that’s still just a tiny fraction of the theoretical population. As a mathematical principle: \\lim_{n o \\infty} ext{Sample} = ext{Population} As the sample size approaches infinity, it approaches the population. But in practice, our samples are always finite and small relative to the population."
+    "text": "Population : All possible data points that exist in the world for a given phenomenon. This includes data that has been collected, data that could be collected, and data that will exist in the future. Sample : A subset of the population that we have actually collected and can analyze. The sample is always smaller—often infinitesimally smaller—than the population. Consider studying human height. The population would include the heights of all humans who have ever lived, are living now, and will live in the future. That’s an enormous—indeed, infinite—amount of data. Your sample might be the heights of 1,000 people surveyed in a particular city during a particular year. No matter how large your sample, it remains tiny compared to the population. Even if you collect data on millions of individuals, that’s still just a tiny fraction of the theoretical population. As a mathematical principle: \\lim_{n \\to \\infty} \\text{Sample} = \\text{Population} As the sample size approaches infinity, it approaches the population. But in practice, our samples are always finite and small relative to the population."
   },
   {
     "objectID": "intro-data-analytics#two-goals-of-statistical-analysis",
@@ -487,7 +592,140 @@
     "href": "/chapter/operators-properties",
     "title": "Expectation and Variance Operators",
     "section": "Question: Can you give a concrete example of computing an expected value?",
-    "text": "Consider a simple game where you flip a fair coin. If it lands heads, you win $10; if it lands tails, you lose $5. What are your expected winnings? Let X represent your winnings. Then: $$ [X] = 10"
+    "text": "Consider a simple game where you flip a fair coin. If it lands heads, you win $10; if it lands tails, you lose $5. What are your expected winnings? Let X represent your winnings. Then: \\mathbb{E}[X] = 10 \\cdot \\mathrm{P}(H) + (-5) \\cdot \\mathrm{P}(T) = 10 \\cdot \\frac{1}{2} + (-5) \\cdot \\frac{1}{2} = \\$2.50 On average, you expect to win $2.50 per game. This doesn’t mean you’ll ever actually win $2.50 in any single game—you’ll either win $10 or lose $5. But over many games, your average winnings will approach $2.50 per game. Properties of the Expectation Operator The expectation operator has several important properties that make it remarkably useful for statistical analysis. These properties allow us to simplify complex calculations and derive important results. Property 1: Non-negativity If X is a random variable such that \\mathrm{P}(X \\geq 0) = 1 (that is, X is always non-negative), then \\mathbb{E}[X] \\geq 0 ."
+  },
+  {
+    "objectID": "operators-properties#section-7",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "If \\mathrm{P}(X \\geq 0) = 1 , then the probability mass function satisfies p_X(x) = 0 for all x < 0 . Therefore: \\mathbb{E}[X] = \\sum_x x p_X(x) = \\sum_{x: x \\geq 0} x p_X(x) \\geq 0 since we’re summing only non-negative terms ( x \\geq 0 and p_X(x) \\geq 0 ). This property formalizes an intuitive idea: if a random variable can only take non-negative values, its average must also be non-negative. Property 2: Expectation of a Constant If X is a random variable such that \\mathrm{P}(X = r) = 1 for some fixed number r , then \\mathbb{E}[X] = r . In other words, the expectation of a constant equals that constant."
+  },
+  {
+    "objectID": "operators-properties#section-8",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "If \\mathrm{P}(X = r) = 1 , then p_X(r) = 1 and p_X(x) = 0 for all x \\neq r . Therefore: \\mathbb{E}[X] = \\sum_x x p_X(x) = r \\cdot 1 = r This property tells us that constants behave exactly as we’d expect under the expectation operator—their “average” value is simply themselves. Property 3: Linearity The expectation operator is linear . Given two random variables X and Y and two real constants a and b : \\mathbb{E}[aX + bY] = a\\mathbb{E}[X] + b\\mathbb{E}[Y]"
+  },
+  {
+    "objectID": "operators-properties#section-9",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "For discrete random variables with joint probability mass function p_{X,Y}(x,y) : \\begin{aligned} \\mathbb{E}[aX + bY] &= \\sum_{x,y}(ax+by)p_{X,Y}(x,y) \\\\ &= a\\sum_x x \\sum_y p_{X,Y}(x,y) + b\\sum_y y \\sum_x p_{X,Y}(x,y) \\\\ &= a\\sum_x x \\, p_{X}(x) + b\\sum_y y \\, p_{Y}(y) \\\\ &= a\\mathbb{E}[X] + b\\mathbb{E}[Y] \\end{aligned} where in the third line we used the fact that \\sum_y p_{X,Y}(x,y) = p_X(x) (the marginal distribution)."
+  },
+  {
+    "objectID": "operators-properties#section-10",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Why Linearity Matters",
+    "text": "Linearity is perhaps the most important property of expectation. It allows us to break complex random variables into simpler parts, compute expectations of the parts separately, and combine them. Moreover, linearity holds regardless of whether the random variables are independent —a remarkable and powerful feature."
+  },
+  {
+    "objectID": "operators-properties#section-11",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Question: How can we use linearity in practice?",
+    "text": "Suppose you’re analyzing a portfolio with investments in three different assets. Let X_1, X_2, X_3 represent the returns on these assets, and suppose you invest amounts w_1, w_2, w_3 in each. Your total return is R = w_1 X_1 + w_2 X_2 + w_3 X_3 . By linearity: \\mathbb{E}[R] = w_1 \\mathbb{E}[X_1] + w_2 \\mathbb{E}[X_2] + w_3 \\mathbb{E}[X_3] This means you can calculate your expected portfolio return simply by taking a weighted average of the expected returns of the individual assets—no need to work out the entire joint distribution of all three assets together. Additional properties that follow from linearity include: \\begin{aligned} \\mathbb{E}[kY] &= k\\mathbb{E}[Y] \\quad \\text{(scaling)} \\\\ \\mathbb{E}[X + Y] &= \\mathbb{E}[X] + \\mathbb{E}[Y] \\quad \\text{(additivity)} \\end{aligned}"
+  },
+  {
+    "objectID": "operators-properties#the-variance-operator",
+    "href": "/chapter/operators-properties#the-variance-operator",
+    "title": "Expectation and Variance Operators",
+    "section": "The Variance Operator",
+    "text": "Intuition and Definition While the expected value tells us about the center of a distribution, it says nothing about the spread. Consider two random variables: one that always equals 10, and one that equals 0 half the time and 20 half the time. Both have an expected value of 10, but they behave very differently. The variance operator captures this difference. Variance measures how far a set of random values typically lie from their expected value. A small variance indicates that values cluster tightly around the mean; a large variance indicates that values are more dispersed."
+  },
+  {
+    "objectID": "operators-properties#section-13",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Definition: Variance",
+    "text": "The variance of a random variable X is the expected value of the squared deviation from the mean: \\mathrm{Var}(X) = \\mathbb{E}[(X - \\mu)^2] where \\mu = \\mathbb{E}[X] is the mean of X . We often denote variance as \\sigma^2 (sigma squared). For a discrete random variable, we can write this explicitly as: \\mathrm{Var}(Y) = \\sum_{i=1}^n p_i (Y_i - \\mu)^2 = \\sigma^2"
+  },
+  {
+    "objectID": "operators-properties#section-14",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Question: Why do we square the deviations? Why not just take the absolute value?",
+    "text": "Squaring serves several purposes. First, it ensures that positive and negative deviations don’t cancel out (which would happen if we just summed the deviations directly). Second, squaring gives more weight to extreme deviations, making variance sensitive to outliers. Third, the squared form has beautiful mathematical properties that simplify many derivations. While we could use absolute deviations instead (this gives the “mean absolute deviation”), the squared form is more tractable mathematically and appears naturally in many statistical contexts. An Alternative Formula The definition of variance can be algebraically rearranged into a form that’s often more convenient for computation: \\begin{aligned} \\mathrm{Var}(X) &= \\mathbb{E}[(X - \\mathbb{E}[X])^2] \\\\ &= \\mathbb{E}[X^2 - 2X\\mathbb{E}[X] + \\mathbb{E}[X]^2] \\\\ &= \\mathbb{E}[X^2] - 2\\mathbb{E}[X]\\mathbb{E}[X] + \\mathbb{E}[X]^2 \\\\ &= \\mathbb{E}[X^2] - \\mathbb{E}[X]^2 \\end{aligned} This gives us the memorable formula: \\mathrm{Var}(X) = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2 In words: the variance equals the expected value of the square minus the square of the expected value. This computational formula is often easier to work with than the definitional formula. Properties of the Variance Operator Property 1: Non-negativity Variance is always non-negative: \\mathrm{Var}(X) \\geq 0 ."
+  },
+  {
+    "objectID": "operators-properties#section-15",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "Since (X - \\mu)^2 \\geq 0 for all values of X , we have: \\mathrm{Var}(X) = \\mathbb{E}[(X - \\mu)^2] \\geq 0 by the non-negativity property of expectation. Property 2: Variance of a Constant The variance of a constant is zero: \\mathrm{Var}(a) = 0 ."
+  },
+  {
+    "objectID": "operators-properties#section-16",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "\\begin{aligned} \\mathrm{Var}(a) &= \\mathbb{E}[(a - \\mathbb{E}[a])^2] \\\\ &= \\mathbb{E}[(a - a)^2] \\\\ &= \\mathbb{E}[0^2] \\\\ &= 0 \\end{aligned} This makes intuitive sense: if a variable doesn’t vary (it’s constant), its variance should be zero. Property 3: Zero Variance Implies Constant If the variance of a random variable is zero, then the variable must be constant with probability 1: \\mathrm{Var}(X) = 0 \\Rightarrow \\mathrm{P}(X = a) = 1 for some constant a ."
+  },
+  {
+    "objectID": "operators-properties#section-17",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "Let \\mathbb{E}[X] = a for some constant a . Then: \\begin{aligned} \\mathrm{Var}(X) = 0 &\\Rightarrow \\mathbb{E}[(X - a)^2] = 0 \\\\ &\\Rightarrow (X - a)^2 = 0 \\quad \\text{(since $(X-a)^2$ cannot be negative)} \\\\ &\\Rightarrow X - a = 0 \\\\ &\\Rightarrow X = a \\end{aligned} Together, Properties 2 and 3 tell us that constants are precisely the random variables with zero variance—and vice versa. Property 4: Variance of a Sum The variance of a sum of two random variables is: \\mathrm{Var}(X + Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) + 2\\mathrm{Cov}(X,Y) where \\mathrm{Cov}(X,Y) = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y] is the covariance between X and Y ."
+  },
+  {
+    "objectID": "operators-properties#section-18",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "\\begin{aligned} \\mathrm{Var}(X+Y) &= \\mathbb{E}[(X+Y - \\mathbb{E}[X+Y])^2] \\\\ &= \\mathbb{E}[(X+Y)^2 - 2(X+Y)\\mathbb{E}[X+Y] + (\\mathbb{E}[X+Y])^2] \\\\ &= \\mathbb{E}[(X+Y)^2] - \\mathbb{E}[X+Y]^2 \\\\ &= \\mathbb{E}[X^2] + 2\\mathbb{E}[XY] + \\mathbb{E}[Y^2] - (\\mathbb{E}[X] + \\mathbb{E}[Y])^2 \\\\ &= \\mathbb{E}[X^2] + 2\\mathbb{E}[XY] + \\mathbb{E}[Y^2] - \\mathbb{E}[X]^2 - 2\\mathbb{E}[X]\\mathbb{E}[Y] - \\mathbb{E}[Y]^2 \\\\ &= (\\mathbb{E}[X^2] - \\mathbb{E}[X]^2) + (\\mathbb{E}[Y^2] - \\mathbb{E}[Y]^2) + 2(\\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y]) \\\\ &= \\mathrm{Var}(X) + \\mathrm{Var}(Y) + 2\\mathrm{Cov}(X,Y) \\end{aligned}"
+  },
+  {
+    "objectID": "operators-properties#section-19",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Special Case: Independent Variables",
+    "text": "If X and Y are independent random variables, then \\mathrm{Cov}(X,Y) = 0 , and the formula simplifies to: \\mathrm{Var}(X + Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) Similarly, for the difference of independent variables: \\mathrm{Var}(X - Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) . Property 5: Variance is Invariant to Location Shifts If a constant is added to all values of a variable, the variance is unchanged: \\mathrm{Var}(X + a) = \\mathrm{Var}(X)"
+  },
+  {
+    "objectID": "operators-properties#section-20",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "\\begin{aligned} \\mathrm{Var}(X + a) &= \\mathrm{Var}(X) + \\mathrm{Var}(a) + 2\\mathrm{Cov}(X, a) \\\\ &= \\mathrm{Var}(X) \\end{aligned} since \\mathrm{Var}(a) = 0 and \\mathrm{Cov}(X, a) = 0 (a constant has zero covariance with any variable). This property reflects the fact that variance measures spread, not location. Shifting all values by the same amount doesn’t change how spread out they are. Property 6: Variance Under Scaling If all values are scaled by a constant, the variance is scaled by the square of that constant: \\mathrm{Var}(aX) = a^2 \\mathrm{Var}(X)"
+  },
+  {
+    "objectID": "operators-properties#section-21",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Proof",
+    "text": "\\begin{aligned} \\mathrm{Var}(aX) &= \\mathbb{E}[(aX - \\mathbb{E}[aX])^2] \\\\ &= \\mathbb{E}[(aX - a\\mathbb{E}[X])^2] \\\\ &= \\mathbb{E}[(a(X - \\mathbb{E}[X]))^2] \\\\ &= \\mathbb{E}[a^2(X - \\mathbb{E}[X])^2] \\\\ &= a^2\\mathbb{E}[(X - \\mathbb{E}[X])^2] \\\\ &= a^2 \\mathrm{Var}(X) \\end{aligned}"
+  },
+  {
+    "objectID": "operators-properties#section-22",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Question: Why does variance scale with the square of the constant rather than just the constant itself?",
+    "text": "Remember that variance involves squared deviations: \\mathrm{Var}(X) = \\mathbb{E}[(X-\\mu)^2] . When we scale X by a , we also scale the deviations by a : (aX - a\\mu) = a(X - \\mu) . When we square this, we get a^2(X-\\mu)^2 , which explains the a^2 factor. This property is why the standard deviation (the square root of variance) scales linearly with a : if we double all values, we double the standard deviation but quadruple the variance. Property 7: Variance of a Sum of Independent Identically Distributed Variables If Y_1, Y_2, \\ldots, Y_n are independent and identically distributed random variables, then: \\mathrm{Var}\\left(\\sum_{i=1}^n Y_i\\right) = \\sum_{i=1}^n \\mathrm{Var}(Y_i) = n\\mathrm{Var}(Y) where the last equality uses the fact that all the Y_i have the same variance. This property is fundamental to understanding sampling distributions and the behavior of sample means."
+  },
+  {
+    "objectID": "operators-properties#putting-it-all-together",
+    "href": "/chapter/operators-properties#putting-it-all-together",
+    "title": "Expectation and Variance Operators",
+    "section": "Putting It All Together",
+    "text": "Let’s work through a comprehensive example that uses both operators and their properties."
+  },
+  {
+    "objectID": "operators-properties#section-24",
+    "href": "/chapter/operators-properties",
+    "title": "Expectation and Variance Operators",
+    "section": "Question: Quality Control Example",
+    "text": "Suppose you’re managing quality control for a manufacturing process. Each item has a production cost that’s normally distributed with mean $50 and variance $25. If an item passes inspection (which happens 90% of the time), you can sell it for $100. If it fails inspection, you must sell it at a loss for $30. You produce 100 items. What are the expected total profit and the variance of total profit? Solution: Let’s define our random variables carefully. For item i : Let C_i be the production cost (mean $50, variance $25) Let R_i be the revenue, which is $100 with probability 0.9 and $30 with probability 0.1 The profit for item i is P_i = R_i - C_i First, let’s find \\mathbb{E}[R_i] : \\mathbb{E}[R_i] = 100(0.9) + 30(0.1) = 90 + 3 = \\$93 For the expected profit on one item: \\mathbb{E}[P_i] = \\mathbb{E}[R_i - C_i] = \\mathbb{E}[R_i] - \\mathbb{E}[C_i] = 93 - 50 = \\$43 For 100 items, by linearity of expectation: \\mathbb{E}\\left[\\sum_{i=1}^{100} P_i\\right] = \\sum_{i=1}^{100} \\mathbb{E}[P_i] = 100 \\times 43 = \\$4,300 Now for the variance. First, we need \\mathrm{Var}(R_i) : \\begin{aligned} \\mathrm{Var}(R_i) &= \\mathbb{E}[R_i^2] - (\\mathbb{E}[R_i])^2 \\\\ &= [100^2(0.9) + 30^2(0.1)] - 93^2 \\\\ &= [9000 + 90] - 8649 \\\\ &= 441 \\end{aligned} For the variance of profit on one item, assuming cost and revenue are independent: \\mathrm{Var}(P_i) = \\mathrm{Var}(R_i - C_i) = \\mathrm{Var}(R_i) + \\mathrm{Var}(C_i) = 441 + 25 = 466 Finally, if items are produced independently: \\mathrm{Var}\\left(\\sum_{i=1}^{100} P_i\\right) = \\sum_{i=1}^{100} \\mathrm{Var}(P_i) = 100 \\times 466 = 46,600 Therefore, expected total profit is $4,300 with variance $46,600 (standard deviation of approximately $216)."
+  },
+  {
+    "objectID": "operators-properties#summary",
+    "href": "/chapter/operators-properties#summary",
+    "title": "Expectation and Variance Operators",
+    "section": "Summary",
+    "text": "The expectation and variance operators are fundamental tools in probability and statistics. The expectation operator \\mathbb{E}[\\cdot] captures the center or average of a distribution, while the variance operator \\mathrm{Var}(\\cdot) captures its spread. Key takeaways: Expectation is linear: \\mathbb{E}[aX + bY] = a\\mathbb{E}[X] + b\\mathbb{E}[Y] , regardless of dependence Variance is not linear: \\mathrm{Var}(X + Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) only when X and Y are independent Adding constants doesn’t change variance: \\mathrm{Var}(X + a) = \\mathrm{Var}(X) Scaling affects variance quadratically: \\mathrm{Var}(aX) = a^2\\mathrm{Var}(X) These operators and their properties will appear repeatedly throughout your study of statistics. Mastering them now will make everything that follows much more intuitive."
   },
   {
     "objectID": "panel-data",
@@ -564,7 +802,7 @@
     "href": "/chapter/probability-distributions#what-is-probability",
     "title": "Probability",
     "section": "What is probability?",
-    "text": "What is probability? Probability is a mathematical framework for quantifying uncertainty. It assigns numerical values between 0 and 1 to events, where 0 indicates impossibility and 1 indicates certainty. The sample space is the set of all possible outcomes of an experiment. For a coin flip, the sample space is \\{H, T\\} . Let’s consider a simple example. Imagine you’re flipping a fair coin. The sample space consists of two possible outcomes: heads (H) and tails (T). The probability of getting heads is: P(H) = rac{ ext{Number of favorable outcomes}}{ ext{Total number of possible outcomes}} = rac{1}{2} = 0.5"
+    "text": "What is probability? Probability is a mathematical framework for quantifying uncertainty. It assigns numerical values between 0 and 1 to events, where 0 indicates impossibility and 1 indicates certainty. The sample space is the set of all possible outcomes of an experiment. For a coin flip, the sample space is \\{H, T\\} . Let’s consider a simple example. Imagine you’re flipping a fair coin. The sample space consists of two possible outcomes: heads (H) and tails (T). The probability of getting heads is: P(H) = \\frac{\\text{Number of favorable outcomes}}{\\text{Total number of possible outcomes}} = \\frac{1}{2} = 0.5"
   },
   {
     "objectID": "probability-distributions#random-variables",
@@ -578,14 +816,7 @@
     "href": "/chapter/probability-distributions#relationship-between-pdfs-and-cdfs",
     "title": "Probability",
     "section": "Relationship between PDFs and CDFs",
-    "text": "The probability density function (PDF) and cumulative distribution function (CDF) are two fundamental ways of describing a probability distribution. The interactive visualization below demonstrates how these functions relate to each other. Use the dropdown menu to explore different distributions (Normal, Lognormal, and Uniform), and drag the slider to see how the PDF height at a point relates to the CDF value at that same point. As you move the slider, observe that: - The PDF ( f(Y) ) shows the height of the density at any given value - The CDF ( F(Y) ) shows the area under the PDF curve to the left of that value - The shaded region in the PDF panel corresponds exactly to the CDF value"
-  },
-  {
-    "objectID": "probability-distributions#embedding-videos",
-    "href": "/chapter/probability-distributions#embedding-videos",
-    "title": "Probability",
-    "section": "Embedding Videos",
-    "text": "Here’s how to embed your Manim animations. Replace your_video.mp4 with the actual filename. Your browser does not support the video tag. Random Variables in Action: This animation demonstrates how a random variable maps outcomes from a sample space to numerical values."
+    "text": "The probability density function (PDF) and cumulative distribution function (CDF) are two fundamental ways of describing a probability distribution. The interactive visualization below demonstrates how these functions relate to each other. Use the dropdown menu to explore different distributions (Normal, Lognormal, and Uniform), and drag the slider to see how the PDF height at a point relates to the CDF value at that same point. As you move the slider, observe that: The PDF ( f(Y) ) shows the height of the density at any given value The CDF ( F(Y) ) shows the area under the PDF curve to the left of that value The shaded region in the PDF panel corresponds exactly to the CDF value"
   },
   {
     "objectID": "propensity-score",
@@ -704,42 +935,42 @@
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "💡 What is Standard Error?",
-    "text": "Standard error measures how far, on average , a sample mean deviates from the population mean across repeated samples. It quantifies the precision of our estimator. Mathematically, the standard error of the sample mean is: SE = rac{\\sigma}{\\sqrt{n}} where \\sigma is the population standard deviation and n is the sample size. The Concept of Repeated Sampling To truly understand standard error, we need to embrace a core principle of frequentist statistics: repeated sampling . Imagine we could draw not just one sample of 38 students, but millions of such samples from our population. Each sample would give us a different sample mean. Here’s the remarkable thing: if we computed all these sample means and calculated their average, that average would equal the true population mean. This property is called unbiasedness , and it’s why we use the sample mean as our estimator. But these individual sample means would vary around the population mean. The standard error tells us the typical size of this variation. In our example, with a sample size of 38 and a calculated standard error of 1.64 points, we know that a typical sample mean deviates from the population mean by about 1.64 points."
+    "text": "Standard error measures how far, on average , a sample mean deviates from the population mean across repeated samples. It quantifies the precision of our estimator. Mathematically, the standard error of the sample mean is: SE = \\frac{\\sigma}{\\sqrt{n}} where \\sigma is the population standard deviation and n is the sample size. The Concept of Repeated Sampling To truly understand standard error, we need to embrace a core principle of frequentist statistics: repeated sampling . Imagine we could draw not just one sample of 38 students, but millions of such samples from our population. Each sample would give us a different sample mean. Here’s the remarkable thing: if we computed all these sample means and calculated their average, that average would equal the true population mean. This property is called unbiasedness , and it’s why we use the sample mean as our estimator. But these individual sample means would vary around the population mean. The standard error tells us the typical size of this variation. In our example, with a sample size of 38 and a calculated standard error of 1.64 points, we know that a typical sample mean deviates from the population mean by about 1.64 points."
   },
   {
     "objectID": "testing-mean-large#section-5",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "🎯 Key Insight",
-    "text": "Smaller standard error = More precision = Greater reliability When the standard error is small, we can be more confident that our single observed sample mean is close to the true population mean. The standard error decreases as sample size increases, which is why larger samples give us more reliable estimates. The Relationship: Population Variance to Sample Mean Variance There’s a fundamental relationship connecting the population variance to the variance of the sample mean: ext{Var}(\bar{Y}) = rac{\\sigma^2}{n} Taking the square root of both sides gives us the standard error formula. This relationship tells us that: The variance of sample means is smaller than the population variance This variance decreases as sample size increases The relationship is inverse with sample size (doubling n doesn’t double precision)"
+    "text": "Smaller standard error = More precision = Greater reliability When the standard error is small, we can be more confident that our single observed sample mean is close to the true population mean. The standard error decreases as sample size increases, which is why larger samples give us more reliable estimates. The Relationship: Population Variance to Sample Mean Variance There’s a fundamental relationship connecting the population variance to the variance of the sample mean: \\text{Var}(\\bar{Y}) = \\frac{\\sigma^2}{n} Taking the square root of both sides gives us the standard error formula. This relationship tells us that: The variance of sample means is smaller than the population variance This variance decreases as sample size increases The relationship is inverse with sample size (doubling n doesn’t double precision)"
   },
   {
     "objectID": "testing-mean-large#the-three-stages-of-hypothesis-testing",
     "href": "/chapter/testing-mean-large#the-three-stages-of-hypothesis-testing",
     "title": "Testing a claim about a population mean",
     "section": "The Three Stages of Hypothesis Testing",
-    "text": "Now that we understand standard error, we can proceed with our hypothesis test. We’ll work through this systematically in three stages. We will follow a three-stage process to test hypotheses Stage 1: Formulating the Hypotheses Stage I: Setup The first step in any hypothesis test is to clearly state what we’re testing. We need two competing hypotheses. Expressing Our Claim in English Elucidate claim and its complement in English Claim: Students trained under the new curriculum will score, on average, higher than 80 on the test. Complement: Students trained under the new curriculum will not score, on average, higher than 80 on the test. The Law of the Excluded Middle In formulating our hypotheses, we’re invoking a fundamental principle of logic: the law of the excluded middle . The law of the excluded middle This law states that a statement is either true or false—there is no middle ground between truth and falsity. Either the new curriculum improves scores beyond 80, or it doesn’t. Our job is to determine which is more likely given our data. Symbolic Representation Express claim and its complement symbolically Let the mean score of students trained under the new curriculum be \\mu . Claim: \\mu > 80 Complement: \\mu \\leq 80 Assigning Null and Alternative Hypotheses Specify null and alternative hypotheses Null Hypothesis ( H_0 ): The population mean test score under the new curriculum is less than or equal to 80. H_0: \\mu \\leq 80 Alternative Hypothesis ( H_A ): The population mean test score under the new curriculum exceeds 80. H_A: \\mu > 80 The null hypothesis represents the status quo or the claim we’re trying to find evidence against. The alternative hypothesis represents what we hope to demonstrate with our data. By convention, we assign the complement of our claim to the null hypothesis—this is what we will attempt to falsify. We also need to choose a significance level \u0007lpha , which represents our tolerance for making a Type I error (rejecting a true null hypothes"
+    "text": "Now that we understand standard error, we can proceed with our hypothesis test. We’ll work through this systematically in three stages. We will follow a three-stage process to test hypotheses Stage 1: Formulating the Hypotheses Stage I: Setup The first step in any hypothesis test is to clearly state what we’re testing. We need two competing hypotheses. Expressing Our Claim in English Elucidate claim and its complement in English Claim: Students trained under the new curriculum will score, on average, higher than 80 on the test. Complement: Students trained under the new curriculum will not score, on average, higher than 80 on the test. The Law of the Excluded Middle In formulating our hypotheses, we’re invoking a fundamental principle of logic: the law of the excluded middle . The law of the excluded middle This law states that a statement is either true or false—there is no middle ground between truth and falsity. Either the new curriculum improves scores beyond 80, or it doesn’t. Our job is to determine which is more likely given our data. Symbolic Representation Express claim and its complement symbolically Let the mean score of students trained under the new curriculum be \\mu . Claim: \\mu > 80 Complement: \\mu \\leq 80 Assigning Null and Alternative Hypotheses Specify null and alternative hypotheses Null Hypothesis ( H_0 ): The population mean test score under the new curriculum is less than or equal to 80. H_0: \\mu \\leq 80 Alternative Hypothesis ( H_A ): The population mean test score under the new curriculum exceeds 80. H_A: \\mu > 80 The null hypothesis represents the status quo or the claim we’re trying to find evidence against. The alternative hypothesis represents what we hope to demonstrate with our data. By convention, we assign the complement of our claim to the null hypothesis—this is what we will attempt to falsify. We also need to choose a significance level \\alpha , which represents our tolerance for making a Type I error (rejecting a true null hypothe"
   },
   {
     "objectID": "testing-mean-large#section-7",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "📊 Why This Setup?",
-    "text": "Notice that our null hypothesis includes the equality. This is a one-sided test because we’re only interested in whether the new curriculum is better , not just different. If we cared about any difference (better or worse), we’d use a two-sided test. Understanding Type I and Type II Errors Before proceeding, we must acknowledge that hypothesis testing involves the possibility of error. There are two types of errors we might make: Anticipating the possibility of erring Type I Error: Rejecting a true null hypothesis (false positive) Type II Error: Failing to reject a false null hypothesis (false negative) It’s crucial to understand that we cannot make both errors simultaneously: We cannot make both errors simultaneously Each error is associated with a unique decision If we reject the null, we can make only a Type I error If we don’t reject the null, we can make only a Type II error Choosing the Significance Level We also need to choose a significance level \u0007lpha , which represents our tolerance for making a Type I error (rejecting a true null hypothesis). The level of significance is the largest probability of making a Type I error that a researcher is willing to tolerate In many academic papers, the level of significance is set at either 5% or 1%. But where do these specific values come from? Why are these specific values used commonly? The answer involves both history and convention. The story begins with an afternoon tea party and R.A. Fischer. The Lady Tasting Tea Fischer’s work on experimental design, inspired by a colleague who claimed she could tell whether milk was added before or after tea, led to the development of significance testing as we know it today. Stage 2: Estimating the Sampling Distribution In this stage, we need to characterize the distribution of our test statistic under the assumption that the null hypothesis is true. Step 1: Choose an Estimator We use the sample mean \bar{Y} as our estimator of the population mean \\mu . Our observed value is \ba"
+    "text": "Notice that our null hypothesis includes the equality. This is a one-sided test because we’re only interested in whether the new curriculum is better , not just different. If we cared about any difference (better or worse), we’d use a two-sided test. Understanding Type I and Type II Errors Before proceeding, we must acknowledge that hypothesis testing involves the possibility of error. There are two types of errors we might make: Anticipating the possibility of erring Type I Error: Rejecting a true null hypothesis (false positive) Type II Error: Failing to reject a false null hypothesis (false negative) It’s crucial to understand that we cannot make both errors simultaneously: We cannot make both errors simultaneously Each error is associated with a unique decision If we reject the null, we can make only a Type I error If we don’t reject the null, we can make only a Type II error Choosing the Significance Level We also need to choose a significance level \\alpha , which represents our tolerance for making a Type I error (rejecting a true null hypothesis). The level of significance is the largest probability of making a Type I error that a researcher is willing to tolerate In many academic papers, the level of significance is set at either 5% or 1%. But where do these specific values come from? Why are these specific values used commonly? The answer involves both history and convention. The story begins with an afternoon tea party and R.A. Fischer. The Lady Tasting Tea Fischer’s work on experimental design, inspired by a colleague who claimed she could tell whether milk was added before or after tea, led to the development of significance testing as we know it today. Stage 2: Estimating the Sampling Distribution In this stage, we need to characterize the distribution of our test statistic under the assumption that the null hypothesis is true. Step 1: Choose an Estimator We use the sample mean \\bar{Y} as our estimator of the population mean \\mu . Our observed value is "
   },
   {
     "objectID": "testing-mean-large#section-8",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "💡 The Sampling Distribution",
-    "text": "We now have a complete picture of the sampling distribution under H_0 : \bar{Y} \\sim N(80, 1.64^2) This means if the null hypothesis is true, sample means from repeated samples would be normally distributed around 80 with a standard deviation of 1.64. Visualizing the Distribution Imagine a bell curve centered at 80. This represents all possible sample means we could observe if the true population mean were 80. Some sample means would be less than 80, some greater, but they’d cluster around 80 with most values falling within a few standard errors of the center. Our observed sample mean of 83 lies to the right of this center. The question is: is it far enough to the right that we should doubt the null hypothesis? Stage 3: Computing the Test Statistic and P-value To answer our question, we need to standardize our observed value and determine how unusual it is. The Test Statistic: Zeta (ζ) We define a test statistic called zeta (ζ) as: \\zeta = rac{\bar{Y} - \\mu_0}{SE} where \\mu_0 is the hypothesized population mean under the null (80 in our case). This standardization accomplishes two things: 1. It converts our result to a unit-free measure 2. It tells us how many standard errors our observed mean is from the hypothesized mean"
+    "text": "We now have a complete picture of the sampling distribution under H_0 : \\bar{Y} \\sim N(80, 1.64^2) This means if the null hypothesis is true, sample means from repeated samples would be normally distributed around 80 with a standard deviation of 1.64. Visualizing the Distribution Imagine a bell curve centered at 80. This represents all possible sample means we could observe if the true population mean were 80. Some sample means would be less than 80, some greater, but they’d cluster around 80 with most values falling within a few standard errors of the center. Our observed sample mean of 83 lies to the right of this center. The question is: is it far enough to the right that we should doubt the null hypothesis? Stage 3: Computing the Test Statistic and P-value To answer our question, we need to standardize our observed value and determine how unusual it is. The Test Statistic: Zeta (ζ) We define a test statistic called zeta (ζ) as: \\zeta = \\frac{\\bar{Y} - \\mu_0}{SE} where \\mu_0 is the hypothesized population mean under the null (80 in our case). This standardization accomplishes two things: 1. It converts our result to a unit-free measure 2. It tells us how many standard errors our observed mean is from the hypothesized mean"
   },
   {
     "objectID": "testing-mean-large#section-9",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "🎯 Interpretation of ζ",
-    "text": "The value of ζ represents the number of standard deviations (or standard errors) that the observed sample mean is from the hypothesized population mean. If our observed sample had a mean of 83 kg, the population mean were 80 kg, and the standard error were 1.64 kg, then: \\zeta = rac{83 - 80}{1.64} = 1.83 The “kg” units cancel out, leaving us with a pure number: 1.83 standard errors above the hypothesized mean. Calculating Our Test Statistic For our problem: \\zeta = rac{83 - 80}{1.64} = rac{3}{1.64} \u0007pprox 1.83 Our observed sample mean is 1.83 standard errors above the hypothesized mean of 80. The Distribution of Zeta When the sample size is large and we know (or can estimate) the population standard deviation, the test statistic ζ follows a standard normal distribution (also called a Z-distribution). This is the same as the Z-scores you may have encountered before. \\zeta \\sim N(0, 1) Computing the P-value The p-value answers the question: “If the null hypothesis were true, what is the probability of observing a test statistic as extreme as or more extreme than what we actually observed?” For our one-sided test: p ext{-value} = P(\\zeta \\geq 1.83 \\mid H_0 ext{ is true}) Using a standard normal table or software, we find: p ext{-value} \u0007pprox 0.034 ext{ or } 3.4\\% Making the Decision We compare our p-value to our significance level: - p-value = 3.4% - \u0007lpha = 4% Since the p-value (3.4%) is less than our significance level (4%), we reject the null hypothesis ."
+    "text": "The value of ζ represents the number of standard deviations (or standard errors) that the observed sample mean is from the hypothesized population mean. If our observed sample had a mean of 83 kg, the population mean were 80 kg, and the standard error were 1.64 kg, then: \\zeta = \\frac{83 - 80}{1.64} = 1.83 The “kg” units cancel out, leaving us with a pure number: 1.83 standard errors above the hypothesized mean. Calculating Our Test Statistic For our problem: \\zeta = \\frac{83 - 80}{1.64} = \\frac{3}{1.64} \\approx 1.83 Our observed sample mean is 1.83 standard errors above the hypothesized mean of 80. The Distribution of Zeta When the sample size is large and we know (or can estimate) the population standard deviation, the test statistic ζ follows a standard normal distribution (also called a Z-distribution). This is the same as the Z-scores you may have encountered before. \\zeta \\sim N(0, 1) Computing the P-value The p-value answers the question: “If the null hypothesis were true, what is the probability of observing a test statistic as extreme as or more extreme than what we actually observed?” For our one-sided test: p \\text{-value} = P(\\zeta \\geq 1.83 \\mid H_0 \\text{ is true}) Using a standard normal table or software, we find: p \\text{-value} \\approx 0.034 \\text{ or } 3.4\\% Making the Decision We compare our p-value to our significance level: - p-value = 3.4% - \\alpha = 4% Since the p-value (3.4%) is less than our significance level (4%), we reject the null hypothesis ."
   },
   {
     "objectID": "testing-mean-large#section-10",
@@ -760,21 +991,21 @@
     "href": "/chapter/testing-mean-large#the-small-sample-case-when-n-30",
     "title": "Testing a claim about a population mean",
     "section": "The Small Sample Case: When n < 30",
-    "text": "Everything we’ve done so far assumes a large sample (typically n \\geq 30 ). But what happens when we have a small sample? The mathematics changes in an important way. The Problem with Small Samples Consider the same problem, but now suppose we only have n = 24 students in our sample. The sample mean is still 83, and the sample standard deviation is still 10.1. The key difference: when we use the sample standard deviation s to estimate the population standard deviation \\sigma , we introduce additional uncertainty. This uncertainty becomes problematic when the sample size is small. William Gosset’s T-Distribution In the early 1900s, William Sealy Gosset (writing under the pseudonym “Student” because his employer, Guinness Brewery, didn’t allow employees to publish) discovered that for small samples, the test statistic doesn’t follow a normal distribution—it follows a t-distribution . The test statistic is still calculated the same way: \\zeta = rac{\bar{Y} - \\mu_0}{s/\\sqrt{n}} But now, instead of following a Z-distribution, ζ follows a t-distribution with $ u = n-1$ degrees of freedom : \\zeta \\sim t_{ u}"
+    "text": "Everything we’ve done so far assumes a large sample (typically n \\geq 30 ). But what happens when we have a small sample? The mathematics changes in an important way. The Problem with Small Samples Consider the same problem, but now suppose we only have n = 24 students in our sample. The sample mean is still 83, and the sample standard deviation is still 10.1. The key difference: when we use the sample standard deviation s to estimate the population standard deviation \\sigma , we introduce additional uncertainty. This uncertainty becomes problematic when the sample size is small. William Gosset’s T-Distribution In the early 1900s, William Sealy Gosset (writing under the pseudonym “Student” because his employer, Guinness Brewery, didn’t allow employees to publish) discovered that for small samples, the test statistic doesn’t follow a normal distribution—it follows a t-distribution . The test statistic is still calculated the same way: \\zeta = \\frac{\\bar{Y} - \\mu_0}{s/\\sqrt{n}} But now, instead of following a Z-distribution, ζ follows a t-distribution with \\nu = n-1 degrees of freedom : \\zeta \\sim t_{\\nu}"
   },
   {
     "objectID": "testing-mean-large#section-13",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "💡 Why Degrees of Freedom?",
-    "text": "We lose one degree of freedom because we used one piece of information from our sample to estimate the population standard deviation. We “expended” one observation to estimate the mean, which we then used to calculate the standard deviation. In our example with n = 24 , we have $ u = 23$ degrees of freedom. Properties of the T-Distribution The t-distribution looks similar to the normal distribution—it’s symmetric and bell-shaped—but it has heavier tails . This reflects the additional uncertainty from estimating the standard deviation. Key properties: 1. As the degrees of freedom increase, the t-distribution approaches the normal distribution 2. For small degrees of freedom, the tails are much heavier than the normal 3. By $ u \u0007pprox 30$, the t-distribution is virtually indistinguishable from the normal Comparing the Two Ratios Let’s clarify the distinction between two similar-looking ratios: Ratio A (with known σ): ext{Andrew} = rac{\bar{Y} - \\mu_0}{\\sigma/\\sqrt{n}} Ratio B (with estimated s): ext{Ben} = rac{\bar{Y} - \\mu_0}{s/\\sqrt{n}}"
+    "text": "We lose one degree of freedom because we used one piece of information from our sample to estimate the population standard deviation. We “expended” one observation to estimate the mean, which we then used to calculate the standard deviation. In our example with n = 24 , we have \\nu = n-1 = 23 degrees of freedom. Properties of the T-Distribution The t-distribution looks similar to the normal distribution—it’s symmetric and bell-shaped—but it has heavier tails . This reflects the additional uncertainty from estimating the standard deviation. Key properties: As the degrees of freedom increase, the t-distribution approaches the normal distribution For small degrees of freedom, the tails are much heavier than the normal By \\nu \\approx 30 , the t-distribution is virtually indistinguishable from the normal Comparing the Two Ratios Let’s clarify the distinction between two similar-looking ratios: Ratio A (with known σ): \\text{Andrew} = \\frac{\\bar{Y} - \\mu_0}{\\sigma/\\sqrt{n}} Ratio B (with estimated s): \\text{Ben} = \\frac{\\bar{Y} - \\mu_0}{s/\\sqrt{n}}"
   },
   {
     "objectID": "testing-mean-large#section-14",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "🤔 Question",
-    "text": "Which ratio fluctuates more from sample to sample—Andrew or Ben? Answer: Ben fluctuates more because both the numerator AND the denominator are random variables. In Andrew, only the numerator ( \bar{Y} ) varies; the denominator ( \\sigma/\\sqrt{n} ) is a known constant. In Ben, both \bar{Y} and s vary from sample to sample, creating additional volatility. This extra volatility is exactly what the t-distribution accounts for. Small Sample Analysis: Our Example Let’s return to our curriculum problem with the small sample of 24 students: n = 24 \bar{y} = 83 s = 10.1 SE = 10.1/\\sqrt{24} \u0007pprox 2.06 Test statistic: \\zeta = rac{83 - 80}{2.06} \u0007pprox 1.46 This time, ζ follows a t-distribution with 23 degrees of freedom. Looking up this value in a t-table or using software: p ext{-value} \u0007pprox 0.08 ext{ or } 8\\% The Decision Changes Now our p-value (8%) exceeds our significance level (4%). We fail to reject the null hypothesis ."
+    "text": "Which ratio fluctuates more from sample to sample—Andrew or Ben? Answer: Ben fluctuates more because both the numerator AND the denominator are random variables. In Andrew, only the numerator ( \\bar{Y} ) varies; the denominator ( \\sigma/\\sqrt{n} ) is a known constant. In Ben, both \\bar{Y} and s vary from sample to sample, creating additional volatility. This extra volatility is exactly what the t-distribution accounts for. Small Sample Analysis: Our Example Let’s return to our curriculum problem with the small sample of 24 students: n = 24 \\bar{y} = 83 s = 10.1 SE = 10.1/\\sqrt{24} \\approx 2.06 Test statistic: \\zeta = \\frac{83 - 80}{2.06} \\approx 1.46 This time, ζ follows a t-distribution with 23 degrees of freedom. Looking up this value in a t-table or using software: p \\text{-value} \\approx 0.08 \\text{ or } 8\\% The Decision Changes Now our p-value (8%) exceeds our significance level (4%). We fail to reject the null hypothesis ."
   },
   {
     "objectID": "testing-mean-large#section-15",
@@ -788,7 +1019,7 @@
     "href": "/chapter/testing-mean-large#summary-the-hypothesis-testing-framework",
     "title": "Testing a claim about a population mean",
     "section": "Summary: The Hypothesis Testing Framework",
-    "text": "Let’s review the complete process we’ve developed: Stage 1: Set Up 1. State the null and alternative hypotheses 2. Choose a significance level α 3. Identify the test type (one-sided or two-sided) Stage 2: Characterize the Sampling Distribution 1. Select an appropriate estimator 2. Use theory (CLT) to establish its distribution 3. Estimate the parameters of this distribution 4. Visualize the distribution under H_0 Stage 3: Test and Decide 1. Calculate the test statistic (ζ) 2. Determine its distribution (Z or t) 3. Compute the p-value 4. Compare p-value to α and make a decision 5. State your conclusion in context"
+    "text": "Let’s review the complete process we’ve developed: Stage 1: Set Up State the null and alternative hypotheses Choose a significance level α Identify the test type (one-sided or two-sided) Stage 2: Characterize the Sampling Distribution Select an appropriate estimator Use theory (CLT) to establish its distribution Estimate the parameters of this distribution Visualize the distribution under H_0 Stage 3: Test and Decide Calculate the test statistic (ζ) Determine its distribution (Z or t) Compute the p-value Compare p-value to α and make a decision State your conclusion in context"
   },
   {
     "objectID": "testing-mean-large#section-17",
@@ -816,7 +1047,7 @@
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "Question 1: Understanding Standard Error",
-    "text": "Suppose you have two samples from the same population: - Sample A: n = 25 , s = 15 - Sample B: n = 100 , s = 15 Which sample provides more precise estimates of the population mean? Calculate the standard error for each and explain the difference. Answer: Sample B provides more precise estimates. For Sample A: SE_A = 15/\\sqrt{25} = 15/5 = 3 For Sample B: SE_B = 15/\\sqrt{100} = 15/10 = 1.5 Sample B has a standard error half the size of Sample A, even though they have the same sample standard deviation. The fourfold increase in sample size (from 25 to 100) results in a twofold increase in precision (standard error is halved). This demonstrates the principle that larger samples yield more reliable estimates."
+    "text": "Suppose you have two samples from the same population: Sample A: n = 25 , s = 15 Sample B: n = 100 , s = 15 Which sample provides more precise estimates of the population mean? Calculate the standard error for each and explain the difference. Answer: Sample B provides more precise estimates. For Sample A: SE_A = 15/\\sqrt{25} = 15/5 = 3 For Sample B: SE_B = 15/\\sqrt{100} = 15/10 = 1.5 Sample B has a standard error half the size of Sample A, even though they have the same sample standard deviation. The fourfold increase in sample size (from 25 to 100) results in a twofold increase in precision (standard error is halved). This demonstrates the principle that larger samples yield more reliable estimates."
   },
   {
     "objectID": "testing-mean-large#section-22",
@@ -830,14 +1061,14 @@
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "Question 3: Large vs. Small Sample Tests",
-    "text": "You conduct the same hypothesis test twice: once with a sample size of 100 and once with a sample size of 20. In both cases, you observe the same sample mean and sample standard deviation. Will the p-values be the same? Why or why not? Answer: No, the p-values will not be the same, and the small sample will generally produce a larger p-value. With n = 100 , we use the Z-distribution (or t-distribution with 99 df, which is virtually identical). The standard error will be relatively small: SE = s/\\sqrt{100} = s/10 . With n = 20 , we must use the t-distribution with 19 degrees of freedom, which has heavier tails than the normal. Additionally, the standard error will be larger: SE = s/\\sqrt{20} \u0007pprox s/4.47 . Two effects compound: 1. The larger standard error makes the test statistic smaller 2. The t-distribution with few degrees of freedom makes any given test statistic less significant Both effects work against rejecting the null hypothesis, resulting in a larger p-value for the small sample test."
+    "text": "You conduct the same hypothesis test twice: once with a sample size of 100 and once with a sample size of 20. In both cases, you observe the same sample mean and sample standard deviation. Will the p-values be the same? Why or why not? Answer: No, the p-values will not be the same, and the small sample will generally produce a larger p-value. With n = 100 , we use the Z-distribution (or t-distribution with 99 df, which is virtually identical). The standard error will be relatively small: SE = s/\\sqrt{100} = s/10 . With n = 20 , we must use the t-distribution with 19 degrees of freedom, which has heavier tails than the normal. Additionally, the standard error will be larger: SE = s/\\sqrt{20} \\approx s/4.47 . Two effects compound: 1. The larger standard error makes the test statistic smaller 2. The t-distribution with few degrees of freedom makes any given test statistic less significant Both effects work against rejecting the null hypothesis, resulting in a larger p-value for the small sample test."
   },
   {
     "objectID": "testing-mean-large#section-24",
     "href": "/chapter/testing-mean-large",
     "title": "Testing a claim about a population mean",
     "section": "Question 4: Choosing Significance Levels",
-    "text": "Explain why a researcher might choose a more stringent significance level (say, α = 0.01) rather than a more lenient one (say, α = 0.10). What are the tradeoffs involved? Answer: The choice of significance level involves a tradeoff between Type I and Type II errors: Choosing a more stringent α (like 0.01): - Benefit: Lower risk of Type I error (falsely rejecting a true null hypothesis) - Cost: Higher risk of Type II error (failing to reject a false null hypothesis) - When appropriate: When the cost of a false positive is high (e.g., approving an unsafe drug, implementing an expensive program that doesn’t work) Choosing a more lenient α (like 0.10): - Benefit: Lower risk of Type II error (more power to detect real effects) - Cost: Higher risk of Type I error - When appropriate: When we want to detect potentially important effects for further investigation, or when the cost of a false negative is high In fields where the consequences of a Type I error are severe (like medical research or engineering safety), researchers typically use stricter significance levels. In exploratory research or preliminary studies, more lenient levels might be acceptable."
+    "text": "Explain why a researcher might choose a more stringent significance level (say, α = 0.01) rather than a more lenient one (say, α = 0.10). What are the tradeoffs involved? Answer: The choice of significance level involves a tradeoff between Type I and Type II errors: Choosing a more stringent α (like 0.01): Benefit: Lower risk of Type I error (falsely rejecting a true null hypothesis) Cost: Higher risk of Type II error (failing to reject a false null hypothesis) When appropriate: When the cost of a false positive is high (e.g., approving an unsafe drug, implementing an expensive program that doesn’t work) Choosing a more lenient α (like 0.10): Benefit: Lower risk of Type II error (more power to detect real effects) Cost: Higher risk of Type I error When appropriate: When we want to detect potentially important effects for further investigation, or when the cost of a false negative is high In fields where the consequences of a Type I error are severe (like medical research or engineering safety), researchers typically use stricter significance levels. In exploratory research or preliminary studies, more lenient levels might be acceptable."
   },
   {
     "objectID": "testing-mean-small",
@@ -859,5 +1090,33 @@
     "title": "Claims about two population means",
     "section": "",
     "text": "Claims about two population means This chapter is currently under development. Content coming soon."
+  },
+  {
+    "objectID": "welcome",
+    "href": "/chapter/welcome",
+    "title": "welcome",
+    "section": "",
+    "text": "Welcome Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  },
+  {
+    "objectID": "welcome#section-1",
+    "href": "/chapter/welcome",
+    "title": "welcome",
+    "section": "What You'll Learn",
+    "text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur: Lorem Ipsum — Excepteur sint occaecat cupidatat non proident Dolor Sit Amet — Sunt in culpa qui officia deserunt mollit anim id est laborum Consectetur Adipiscing — Sed ut perspiciatis unde omnis iste natus error sit voluptatem Tempor Incididunt — Accusantium doloremque laudantium totam rem aperiam Magna Aliqua — Eaque ipsa quae ab illo inventore veritatis et quasi architecto"
+  },
+  {
+    "objectID": "welcome#section-2",
+    "href": "/chapter/welcome",
+    "title": "welcome",
+    "section": "How to Use This Textbook",
+    "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit: Neque Porro — Quisquam est qui dolorem ipsum quia dolor sit amet Consectetur — Adipisci velit sed quia non numquam eius modi tempora Incidunt — Ut labore et dolore magnam aliquam quaerat voluptatem Quis Autem — Vel eum iure reprehenderit qui in ea voluptate velit Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur."
+  },
+  {
+    "objectID": "welcome#section-3",
+    "href": "/chapter/welcome",
+    "title": "welcome",
+    "section": "Getting Started",
+    "text": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur. Chapter 1: Introduction to Data Analytics , vel illum qui dolorem eum fugiat quo voluptas nulla pariatur."
   }
 ]

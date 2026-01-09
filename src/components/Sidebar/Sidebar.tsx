@@ -8,12 +8,13 @@ import SidebarSearch from './SidebarSearch';
 interface ChapterInfo {
   slug: string;
   title: string;
-  chapterNumber: number;
+  chapterNumber: number | null;
 }
 
 interface Section {
   name: string;
   chapters: ChapterInfo[];
+  isPreface?: boolean;
 }
 
 interface SidebarProps {
@@ -109,17 +110,20 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
                   <ul className={`${devBorder('teal')}`}>
                     {section.chapters.map((chapter) => {
                       const isActive = chapter.slug === currentSlug;
+                      const hasNumber = chapter.chapterNumber !== null;
                       return (
                         <li key={chapter.slug} className={`${devBorder('violet')}`}>
                           <Link
                             href={`/chapter/${chapter.slug}`}
-                            className={`flex items-baseline py-2.5 pl-2 pr-5 text-sm ${isActive ? 'bg-[var(--berkeley-blue)] text-white' : 'text-[var(--foreground)] hover:bg-[var(--sidebar-hover)]'}`}
+                            className={`flex items-baseline py-2.5 ${hasNumber ? 'pl-2' : 'pl-4'} pr-5 text-sm ${isActive ? 'bg-[var(--berkeley-blue)] text-white' : 'text-[var(--foreground)] hover:bg-[var(--sidebar-hover)]'}`}
                           >
-                            <span
-                              className={`inline-block w-6 flex-shrink-0 text-xs text-right pr-2 -translate-y-0.5 ${isActive ? 'text-white/60' : 'text-[var(--muted-text)]'} ${devBorder('red')}`}
-                            >
-                              {chapter.chapterNumber}
-                            </span>
+                            {hasNumber && (
+                              <span
+                                className={`inline-block w-6 flex-shrink-0 text-xs text-right pr-2 -translate-y-0.5 ${isActive ? 'text-white/60' : 'text-[var(--muted-text)]'} ${devBorder('red')}`}
+                              >
+                                {chapter.chapterNumber}
+                              </span>
+                            )}
                             <span className={`${devBorder('green')}`}>
                               {chapter.title}
                             </span>

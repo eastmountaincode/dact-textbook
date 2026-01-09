@@ -8,17 +8,19 @@ import { useDevMode } from '@/providers/DevModeProvider';
 interface ChapterInfo {
   slug: string;
   title: string;
-  chapterNumber: number;
+  chapterNumber: number | null;
 }
 
 interface Section {
   name: string;
   chapters: ChapterInfo[];
+  isPreface?: boolean;
 }
 
 interface TextbookLayoutProps {
   children: React.ReactNode;
-  sections: Section[];
+  // When sections is provided, sidebar is shown
+  sections?: Section[];
   currentSlug?: string;
 }
 
@@ -35,6 +37,8 @@ export default function TextbookLayout({
   const [fontSize, setFontSize] = useState<number>(DEFAULT_FONT_SIZE);
   const [fontFamily, setFontFamily] = useState<'serif' | 'sans'>('serif');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const showSidebar = !!sections;
 
   // Load preferences from localStorage
   useEffect(() => {
@@ -99,19 +103,21 @@ export default function TextbookLayout({
         canDecrease={canDecrease}
       />
 
-      <Sidebar
-        sections={sections}
-        currentSlug={currentSlug}
-        isOpen={sidebarOpen}
-        onToggle={handleSidebarToggle}
-      />
+      {showSidebar && (
+        <Sidebar
+          sections={sections}
+          currentSlug={currentSlug}
+          isOpen={sidebarOpen}
+          onToggle={handleSidebarToggle}
+        />
+      )}
 
       {/* Main Content Area */}
       <main
-        className={`ml-0 md:ml-72 pt-14 min-h-screen overflow-x-hidden overscroll-contain ${devBorder('green')}`}
+        className={`${showSidebar ? 'ml-0 md:ml-72' : ''} pt-14 min-h-screen overflow-x-hidden overscroll-contain ${devBorder('green')}`}
         style={{ fontSize: `${fontSize}px` }}
       >
-        <div className="max-w-4xl mx-auto px-8 md:px-8 py-8">
+        <div className={showSidebar ? 'max-w-4xl mx-auto px-8 md:px-8 py-8' : ''}>
           {children}
         </div>
       </main>

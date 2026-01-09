@@ -12,6 +12,8 @@
     "snapshots": "playwright test -c playwright.config.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.90.1",
     "fuse.js": "^7.1.0",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.1",

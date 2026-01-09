@@ -1,8 +1,15 @@
 # Chapter organization for the textbook sidebar
 # Chapters are numbered sequentially across all sections (1, 2, 3...)
 # Add new chapters by including their slug (filename without .html)
+# Preface sections use "preface: true" to hide chapter numbers
 
 sections:
+  - name: "Preface"
+    preface: true
+    chapters:
+      - welcome
+      - about-the-author
+
   - name: "Theoretical Foundations"
     chapters:
       - intro-data-analytics

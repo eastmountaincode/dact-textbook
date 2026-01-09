@@ -2,6 +2,8 @@ import { loadChapter, getOrderedChapterSlugs, getChaptersBySection, getChapterNa
 import HighlightableContent from '@/components/HighlightableContent';
 import ChapterNavigation from '@/components/ChapterNavigation';
 import TextbookLayout from '@/components/TextbookLayout';
+import GatedContent from '@/components/GatedContent';
+import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
 interface PageProps {
@@ -14,6 +16,18 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+// Check if a slug belongs to a preface section
+function isPreface(sections: Awaited<ReturnType<typeof getChaptersBySection>>, slug: string): boolean {
+  for (const section of sections) {
+    if (section.isPreface) {
+      if (section.chapters.some(ch => ch.slug === slug)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 export default async function ChapterPage({ params }: PageProps) {
   const { slug } = await params;
   const [chapter, sections, navigation] = await Promise.all([
@@ -24,6 +38,26 @@ export default async function ChapterPage({ params }: PageProps) {
 
   if (!chapter) {
     notFound();
+  }
+
+  // Check if this is a preface page (always accessible)
+  const isPrefacePage = isPreface(sections, slug);
+
+  // Check authentication for non-preface pages
+  let isAuthenticated = false;
+  if (!isPrefacePage) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    isAuthenticated = !!user;
+  }
+
+  // Show gated content for non-preface pages when not authenticated
+  if (!isPrefacePage && !isAuthenticated) {
+    return (
+      <TextbookLayout sections={sections} currentSlug={slug}>
+        <GatedContent chapterTitle={chapter.title} />
+      </TextbookLayout>
+    );
   }
 
   return (
