@@ -1,0 +1,454 @@
+# Expectation and Variance Operators
+
+Statistical operators are powerful tools that transform random variables in systematic ways. In this chapter, we'll explore two fundamental operators: the expectation operator and the variance operator. These operators will appear throughout the rest of this book, so understanding their properties deeply will pay dividends as we tackle more complex statistical concepts.
+
+By the end of this chapter, you will be able to:
+
+- Define what an operator is in the statistical context
+- Calculate and interpret expected values
+- Calculate and interpret variances
+- Apply the properties of expectation and variance to simplify complex expressions
+- Understand how these operators behave under linear transformations
+
+## What is an Operator?
+
+::: {.callout-note icon="false"}
+## Definition
+
+An **operator** is a mapping that takes elements from one space and produces elements in another space (which may be the same space). In statistics, operators act on random variables to produce new quantities.
+:::
+
+Think of an operator as a special kind of function that acts on random variables rather than on simple numbers. Just as the square root function takes a number and returns another number, statistical operators take random variables and return quantities that summarize key features of those variables.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Question: Why do we call them "operators" instead of just "functions"?
+
+The term "operator" emphasizes that these mappings act on objects (random variables) that are themselves functions. This distinguishes them from ordinary functions that act on numbers. The expectation operator, for instance, takes an entire probability distribution and distills it down to a single number representing its center.
+:::
+
+## The Expectation Operator
+
+### Intuition and Definition
+
+Intuitively, a random variable's expected value represents the average we would see if we observed many independent realizations of that variable. For example, if we roll a fair six-sided die thousands of times and compute the average of all the outcomes, that average will converge to 3.5. This value---3.5---is the expected value of the die roll.
+
+::: {.callout-important icon="false"}
+## Definition: Expected Value
+
+The **expected value** (or **expectation**) of a discrete random variable $X$ is the probability-weighted average of all its possible values:
+
+$$
+\mathbb{E}[X] = \sum_{i=1}^n x_i p_i
+$$
+
+where $x_i$ are the possible values and $p_i = \mathrm{P}(X = x_i)$ are their respective probabilities.
+:::
+
+More generally, we can write this as:
+
+$$
+\mathbb{E}[X] = \sum_{i=1}^n p_i X_i = \mu
+$$
+
+where we often use the Greek letter $\mu$ (mu) to denote the expected value.
+
+For continuous random variables, the sum becomes an integral:
+
+$$
+\mathbb{E}[X] = \int_{\mathbb{R}} x f(x) \, dx
+$$
+
+where $f(x)$ is the probability density function of $X$.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Question: Can you give a concrete example of computing an expected value?
+
+Consider a simple game where you flip a fair coin. If it lands heads, you win \$10; if it lands tails, you lose \$5. What are your expected winnings?
+
+Let $X$ represent your winnings. Then:
+
+$$
+\mathbb{E}[X] = 10 \cdot \mathrm{P}(H) + (-5) \cdot \mathrm{P}(T) = 10 \cdot \frac{1}{2} + (-5) \cdot \frac{1}{2} = \$2.50
+$$
+
+On average, you expect to win \$2.50 per game. This doesn't mean you'll ever actually win \$2.50 in any single game---you'll either win \$10 or lose \$5. But over many games, your average winnings will approach \$2.50 per game.
+:::
+
+### Properties of the Expectation Operator
+
+The expectation operator has several important properties that make it remarkably useful for statistical analysis. These properties allow us to simplify complex calculations and derive important results.
+
+#### Property 1: Non-negativity
+
+If $X$ is a random variable such that $\mathrm{P}(X \geq 0) = 1$ (that is, $X$ is always non-negative), then $\mathbb{E}[X] \geq 0$.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+If $\mathrm{P}(X \geq 0) = 1$, then the probability mass function satisfies $p_X(x) = 0$ for all $x < 0$. Therefore:
+
+$$
+\mathbb{E}[X] = \sum_x x p_X(x) = \sum_{x: x \geq 0} x p_X(x) \geq 0
+$$
+
+since we're summing only non-negative terms ($x \geq 0$ and $p_X(x) \geq 0$).
+:::
+
+This property formalizes an intuitive idea: if a random variable can only take non-negative values, its average must also be non-negative.
+
+#### Property 2: Expectation of a Constant
+
+If $X$ is a random variable such that $\mathrm{P}(X = r) = 1$ for some fixed number $r$, then $\mathbb{E}[X] = r$. In other words, the expectation of a constant equals that constant.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+If $\mathrm{P}(X = r) = 1$, then $p_X(r) = 1$ and $p_X(x) = 0$ for all $x \neq r$. Therefore:
+
+$$
+\mathbb{E}[X] = \sum_x x p_X(x) = r \cdot 1 = r
+$$
+:::
+
+This property tells us that constants behave exactly as we'd expect under the expectation operator---their "average" value is simply themselves.
+
+#### Property 3: Linearity
+
+The expectation operator is **linear**. Given two random variables $X$ and $Y$ and two real constants $a$ and $b$:
+
+$$
+\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]
+$$
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+For discrete random variables with joint probability mass function $p_{X,Y}(x,y)$:
+
+$$
+\begin{aligned}
+\mathbb{E}[aX + bY] &= \sum_{x,y}(ax+by)p_{X,Y}(x,y) \\
+&= a\sum_x x \sum_y p_{X,Y}(x,y) + b\sum_y y \sum_x p_{X,Y}(x,y) \\
+&= a\sum_x x \, p_{X}(x) + b\sum_y y \, p_{Y}(y) \\
+&= a\mathbb{E}[X] + b\mathbb{E}[Y]
+\end{aligned}
+$$
+
+where in the third line we used the fact that $\sum_y p_{X,Y}(x,y) = p_X(x)$ (the marginal distribution).
+:::
+
+::: {.callout-important icon="false"}
+## Why Linearity Matters
+
+Linearity is perhaps the most important property of expectation. It allows us to break complex random variables into simpler parts, compute expectations of the parts separately, and combine them. Moreover, linearity holds *regardless of whether the random variables are independent*---a remarkable and powerful feature.
+:::
+
+::: {.callout-tip icon="false" collapse="true"}
+## Question: How can we use linearity in practice?
+
+Suppose you're analyzing a portfolio with investments in three different assets. Let $X_1, X_2, X_3$ represent the returns on these assets, and suppose you invest amounts $w_1, w_2, w_3$ in each. Your total return is $R = w_1 X_1 + w_2 X_2 + w_3 X_3$. By linearity:
+
+$$
+\mathbb{E}[R] = w_1 \mathbb{E}[X_1] + w_2 \mathbb{E}[X_2] + w_3 \mathbb{E}[X_3]
+$$
+
+This means you can calculate your expected portfolio return simply by taking a weighted average of the expected returns of the individual assets---no need to work out the entire joint distribution of all three assets together.
+:::
+
+Additional properties that follow from linearity include:
+
+$$
+\begin{aligned}
+\mathbb{E}[kY] &= k\mathbb{E}[Y] \quad \text{(scaling)} \\
+\mathbb{E}[X + Y] &= \mathbb{E}[X] + \mathbb{E}[Y] \quad \text{(additivity)}
+\end{aligned}
+$$
+
+## The Variance Operator
+
+### Intuition and Definition
+
+While the expected value tells us about the center of a distribution, it says nothing about the spread. Consider two random variables: one that always equals 10, and one that equals 0 half the time and 20 half the time. Both have an expected value of 10, but they behave very differently. The variance operator captures this difference.
+
+Variance measures how far a set of random values typically lie from their expected value. A small variance indicates that values cluster tightly around the mean; a large variance indicates that values are more dispersed.
+
+::: {.callout-important icon="false"}
+## Definition: Variance
+
+The **variance** of a random variable $X$ is the expected value of the squared deviation from the mean:
+
+$$
+\mathrm{Var}(X) = \mathbb{E}[(X - \mu)^2]
+$$
+
+where $\mu = \mathbb{E}[X]$ is the mean of $X$. We often denote variance as $\sigma^2$ (sigma squared).
+:::
+
+For a discrete random variable, we can write this explicitly as:
+
+$$
+\mathrm{Var}(Y) = \sum_{i=1}^n p_i (Y_i - \mu)^2 = \sigma^2
+$$
+
+::: {.callout-tip icon="false" collapse="true"}
+## Question: Why do we square the deviations? Why not just take the absolute value?
+
+Squaring serves several purposes. First, it ensures that positive and negative deviations don't cancel out (which would happen if we just summed the deviations directly). Second, squaring gives more weight to extreme deviations, making variance sensitive to outliers. Third, the squared form has beautiful mathematical properties that simplify many derivations. While we could use absolute deviations instead (this gives the "mean absolute deviation"), the squared form is more tractable mathematically and appears naturally in many statistical contexts.
+:::
+
+### An Alternative Formula
+
+The definition of variance can be algebraically rearranged into a form that's often more convenient for computation:
+
+$$
+\begin{aligned}
+\mathrm{Var}(X) &= \mathbb{E}[(X - \mathbb{E}[X])^2] \\
+&= \mathbb{E}[X^2 - 2X\mathbb{E}[X] + \mathbb{E}[X]^2] \\
+&= \mathbb{E}[X^2] - 2\mathbb{E}[X]\mathbb{E}[X] + \mathbb{E}[X]^2 \\
+&= \mathbb{E}[X^2] - \mathbb{E}[X]^2
+\end{aligned}
+$$
+
+This gives us the memorable formula:
+
+$$
+\mathrm{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
+$$
+
+In words: the variance equals the expected value of the square minus the square of the expected value. This computational formula is often easier to work with than the definitional formula.
+
+### Properties of the Variance Operator
+
+#### Property 1: Non-negativity
+
+Variance is always non-negative: $\mathrm{Var}(X) \geq 0$.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+Since $(X - \mu)^2 \geq 0$ for all values of $X$, we have:
+
+$$
+\mathrm{Var}(X) = \mathbb{E}[(X - \mu)^2] \geq 0
+$$
+
+by the non-negativity property of expectation.
+:::
+
+#### Property 2: Variance of a Constant
+
+The variance of a constant is zero: $\mathrm{Var}(a) = 0$.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+$$
+\begin{aligned}
+\mathrm{Var}(a) &= \mathbb{E}[(a - \mathbb{E}[a])^2] \\
+&= \mathbb{E}[(a - a)^2] \\
+&= \mathbb{E}[0^2] \\
+&= 0
+\end{aligned}
+$$
+:::
+
+This makes intuitive sense: if a variable doesn't vary (it's constant), its variance should be zero.
+
+#### Property 3: Zero Variance Implies Constant
+
+If the variance of a random variable is zero, then the variable must be constant with probability 1: $\mathrm{Var}(X) = 0 \Rightarrow \mathrm{P}(X = a) = 1$ for some constant $a$.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+Let $\mathbb{E}[X] = a$ for some constant $a$. Then:
+
+$$
+\begin{aligned}
+\mathrm{Var}(X) = 0 &\Rightarrow \mathbb{E}[(X - a)^2] = 0 \\
+&\Rightarrow (X - a)^2 = 0 \quad \text{(since $(X-a)^2$ cannot be negative)} \\
+&\Rightarrow X - a = 0 \\
+&\Rightarrow X = a
+\end{aligned}
+$$
+:::
+
+Together, Properties 2 and 3 tell us that constants are precisely the random variables with zero variance---and vice versa.
+
+#### Property 4: Variance of a Sum
+
+The variance of a sum of two random variables is:
+
+$$
+\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\mathrm{Cov}(X,Y)
+$$
+
+where $\mathrm{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$ is the covariance between $X$ and $Y$.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+$$
+\begin{aligned}
+\mathrm{Var}(X+Y) &= \mathbb{E}[(X+Y - \mathbb{E}[X+Y])^2] \\
+&= \mathbb{E}[(X+Y)^2 - 2(X+Y)\mathbb{E}[X+Y] + (\mathbb{E}[X+Y])^2] \\
+&= \mathbb{E}[(X+Y)^2] - \mathbb{E}[X+Y]^2 \\
+&= \mathbb{E}[X^2] + 2\mathbb{E}[XY] + \mathbb{E}[Y^2] - (\mathbb{E}[X] + \mathbb{E}[Y])^2 \\
+&= \mathbb{E}[X^2] + 2\mathbb{E}[XY] + \mathbb{E}[Y^2] - \mathbb{E}[X]^2 - 2\mathbb{E}[X]\mathbb{E}[Y] - \mathbb{E}[Y]^2 \\
+&= (\mathbb{E}[X^2] - \mathbb{E}[X]^2) + (\mathbb{E}[Y^2] - \mathbb{E}[Y]^2) + 2(\mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]) \\
+&= \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\mathrm{Cov}(X,Y)
+\end{aligned}
+$$
+:::
+
+::: {.callout-important icon="false"}
+## Special Case: Independent Variables
+
+If $X$ and $Y$ are independent random variables, then $\mathrm{Cov}(X,Y) = 0$, and the formula simplifies to:
+
+$$
+\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)
+$$
+
+Similarly, for the difference of independent variables: $\mathrm{Var}(X - Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$.
+:::
+
+#### Property 5: Variance is Invariant to Location Shifts
+
+If a constant is added to all values of a variable, the variance is unchanged:
+
+$$
+\mathrm{Var}(X + a) = \mathrm{Var}(X)
+$$
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+$$
+\begin{aligned}
+\mathrm{Var}(X + a) &= \mathrm{Var}(X) + \mathrm{Var}(a) + 2\mathrm{Cov}(X, a) \\
+&= \mathrm{Var}(X)
+\end{aligned}
+$$
+
+since $\mathrm{Var}(a) = 0$ and $\mathrm{Cov}(X, a) = 0$ (a constant has zero covariance with any variable).
+:::
+
+This property reflects the fact that variance measures spread, not location. Shifting all values by the same amount doesn't change how spread out they are.
+
+#### Property 6: Variance Under Scaling
+
+If all values are scaled by a constant, the variance is scaled by the square of that constant:
+
+$$
+\mathrm{Var}(aX) = a^2 \mathrm{Var}(X)
+$$
+
+::: {.callout-tip icon="false" collapse="true"}
+## Proof
+
+$$
+\begin{aligned}
+\mathrm{Var}(aX) &= \mathbb{E}[(aX - \mathbb{E}[aX])^2] \\
+&= \mathbb{E}[(aX - a\mathbb{E}[X])^2] \\
+&= \mathbb{E}[(a(X - \mathbb{E}[X]))^2] \\
+&= \mathbb{E}[a^2(X - \mathbb{E}[X])^2] \\
+&= a^2\mathbb{E}[(X - \mathbb{E}[X])^2] \\
+&= a^2 \mathrm{Var}(X)
+\end{aligned}
+$$
+:::
+
+::: {.callout-tip icon="false" collapse="true"}
+## Question: Why does variance scale with the square of the constant rather than just the constant itself?
+
+Remember that variance involves squared deviations: $\mathrm{Var}(X) = \mathbb{E}[(X-\mu)^2]$. When we scale $X$ by $a$, we also scale the deviations by $a$: $(aX - a\mu) = a(X - \mu)$. When we square this, we get $a^2(X-\mu)^2$, which explains the $a^2$ factor.
+
+This property is why the standard deviation (the square root of variance) scales linearly with $a$: if we double all values, we double the standard deviation but quadruple the variance.
+:::
+
+#### Property 7: Variance of a Sum of Independent Identically Distributed Variables
+
+If $Y_1, Y_2, \ldots, Y_n$ are independent and identically distributed random variables, then:
+
+$$
+\mathrm{Var}\left(\sum_{i=1}^n Y_i\right) = \sum_{i=1}^n \mathrm{Var}(Y_i) = n\mathrm{Var}(Y)
+$$
+
+where the last equality uses the fact that all the $Y_i$ have the same variance.
+
+This property is fundamental to understanding sampling distributions and the behavior of sample means.
+
+## Putting It All Together
+
+Let's work through a comprehensive example that uses both operators and their properties.
+
+::: {.callout-tip icon="false" collapse="true"}
+## Question: Quality Control Example
+
+Suppose you're managing quality control for a manufacturing process. Each item has a production cost that's normally distributed with mean \$50 and variance \$25. If an item passes inspection (which happens 90% of the time), you can sell it for \$100. If it fails inspection, you must sell it at a loss for \$30. You produce 100 items. What are the expected total profit and the variance of total profit?
+
+**Solution:**
+
+Let's define our random variables carefully. For item $i$:
+
+- Let $C_i$ be the production cost (mean \$50, variance \$25)
+- Let $R_i$ be the revenue, which is \$100 with probability 0.9 and \$30 with probability 0.1
+- The profit for item $i$ is $P_i = R_i - C_i$
+
+First, let's find $\mathbb{E}[R_i]$:
+
+$$
+\mathbb{E}[R_i] = 100(0.9) + 30(0.1) = 90 + 3 = \$93
+$$
+
+For the expected profit on one item:
+
+$$
+\mathbb{E}[P_i] = \mathbb{E}[R_i - C_i] = \mathbb{E}[R_i] - \mathbb{E}[C_i] = 93 - 50 = \$43
+$$
+
+For 100 items, by linearity of expectation:
+
+$$
+\mathbb{E}\left[\sum_{i=1}^{100} P_i\right] = \sum_{i=1}^{100} \mathbb{E}[P_i] = 100 \times 43 = \$4,300
+$$
+
+Now for the variance. First, we need $\mathrm{Var}(R_i)$:
+
+$$
+\begin{aligned}
+\mathrm{Var}(R_i) &= \mathbb{E}[R_i^2] - (\mathbb{E}[R_i])^2 \\
+&= [100^2(0.9) + 30^2(0.1)] - 93^2 \\
+&= [9000 + 90] - 8649 \\
+&= 441
+\end{aligned}
+$$
+
+For the variance of profit on one item, assuming cost and revenue are independent:
+
+$$
+\mathrm{Var}(P_i) = \mathrm{Var}(R_i - C_i) = \mathrm{Var}(R_i) + \mathrm{Var}(C_i) = 441 + 25 = 466
+$$
+
+Finally, if items are produced independently:
+
+$$
+\mathrm{Var}\left(\sum_{i=1}^{100} P_i\right) = \sum_{i=1}^{100} \mathrm{Var}(P_i) = 100 \times 466 = 46,600
+$$
+
+Therefore, expected total profit is \$4,300 with variance \$46,600 (standard deviation of approximately \$216).
+:::
+
+## Summary
+
+The expectation and variance operators are fundamental tools in probability and statistics. The expectation operator $\mathbb{E}[\cdot]$ captures the center or average of a distribution, while the variance operator $\mathrm{Var}(\cdot)$ captures its spread.
+
+Key takeaways:
+
+- Expectation is linear: $\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]$, regardless of dependence
+- Variance is not linear: $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$ only when $X$ and $Y$ are independent
+- Adding constants doesn't change variance: $\mathrm{Var}(X + a) = \mathrm{Var}(X)$
+- Scaling affects variance quadratically: $\mathrm{Var}(aX) = a^2\mathrm{Var}(X)$
+
+These operators and their properties will appear repeatedly throughout your study of statistics. Mastering them now will make everything that follows much more intuitive.

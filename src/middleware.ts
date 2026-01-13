@@ -1,7 +1,20 @@
-import { type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
+  const url = request.nextUrl;
+
+  // If there's a code parameter at the root, redirect to /auth/callback
+  // This handles the case where Supabase redirects to site_url instead of site_url/auth/callback
+  if (url.pathname === '/' && url.searchParams.has('code')) {
+    const callbackUrl = new URL('/auth/callback', request.url);
+    // Copy all search params to the callback URL
+    url.searchParams.forEach((value, key) => {
+      callbackUrl.searchParams.set(key, value);
+    });
+    return NextResponse.redirect(callbackUrl);
+  }
+
   // Update the session (refresh tokens if needed)
   const { supabaseResponse } = await updateSession(request);
 

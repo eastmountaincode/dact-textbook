@@ -22,9 +22,9 @@ This guide explains how to manage and update your textbook website.
 
 | Type of Change | Where to Edit |
 |----------------|---------------|
-| Text content, equations, images | QMD source files (`untitled folder/dafct/chapters/`) |
+| Text content, equations, images | QMD source files in `content/chapters/[chapter]/index.qmd` |
 | Callouts (Key Question, Important Distinction, etc.) | QMD source files |
-| Adding/restructuring sections | QMD source files |
+| Adding images to a chapter | Add to `content/chapters/[chapter]/images/` |
 | CSS styling (colors, fonts, spacing) | `src/app/globals.css` |
 | Layout and components | Next.js files in `src/` |
 | Navigation and sidebar | Next.js components |
@@ -77,19 +77,45 @@ Each section has:
 
 ## Adding New Chapters
 
-### Step 1: Create the Chapter Content
+### Step 1: Create the Chapter Folder
 
-1. Write your chapter as a Quarto (`.qmd`) file
-2. Place it in your source chapters directory
-3. Run the build script to convert it to HTML:
+Create a new folder in `content/chapters/` with your chapter slug:
+
+```
+content/chapters/my-new-chapter/
+└── index.qmd
+```
+
+### Step 2: Write Your Content
+
+Write your chapter in `index.qmd`. If you have images:
+
+```
+content/chapters/my-new-chapter/
+├── index.qmd
+└── images/
+    ├── diagram.png
+    └── example.png
+```
+
+Reference images in your QMD with relative paths:
+```markdown
+![My diagram](images/diagram.png)
+```
+
+### Step 3: Build the Content
+
+Run the build script to convert QMD to HTML and copy assets:
 
 ```bash
 npm run build:content
 ```
 
-This creates an HTML file in `content/html/` with the same name as your `.qmd` file.
+This:
+- Creates `content/html/my-new-chapter.html`
+- Copies images to `public/assets/my-new-chapter/images/`
 
-### Step 2: Add to Configuration
+### Step 4: Add to Configuration
 
 Edit `content/chapters.yaml` and add your chapter slug to the appropriate section:
 
@@ -103,7 +129,7 @@ sections:
       - your-new-chapter    # Add here
 ```
 
-### Step 3: Rebuild Search Index
+### Step 5: Rebuild Search Index
 
 ```bash
 npm run generate-search
@@ -231,22 +257,76 @@ sections:
 
 ---
 
+## Content Structure
+
+All chapter content lives in `content/chapters/`. Each chapter has its own folder containing the QMD source file and any associated assets (images, figures, etc.).
+
+```
+content/chapters/
+├── welcome/
+│   └── index.qmd
+├── intro-data-analytics/
+│   ├── index.qmd
+│   └── images/
+│       ├── slide_001.png
+│       └── slide_002.png
+├── testing-mean-large/
+│   ├── index.qmd
+│   └── images/
+│       ├── slide_001.png
+│       ├── slide_002.png
+│       └── ...
+└── ...
+```
+
+### How Images Work
+
+1. **Place images** in an `images/` folder inside your chapter folder
+2. **Reference images** in your QMD using relative paths: `![Caption](images/my-image.png)`
+3. **Run the build** with `npm run build:content`
+4. The build script:
+   - Converts QMD → HTML in `content/html/`
+   - Copies images → `public/assets/[chapter]/images/`
+   - Rewrites image paths in HTML to `/assets/[chapter]/images/...`
+
+### Supported Asset Folders
+
+The build script copies these folders if they exist in your chapter:
+- `images/` - Screenshots, diagrams, photos
+- `figures/` - Generated figures, charts
+- `animations/` - Animated content
+- `interactives/` - Interactive elements
+
+---
+
 ## File Structure Reference
 
 ```
-nextjs-test/
+nextjs-dafct-working/
 ├── content/
-│   ├── chapters.yaml      # Chapter organization config
-│   └── html/              # Built HTML chapter files
+│   ├── chapters.yaml      # Chapter order and sections
+│   ├── chapters/          # SOURCE: QMD files + assets
+│   │   ├── welcome/
+│   │   │   └── index.qmd
+│   │   ├── intro-data-analytics/
+│   │   │   ├── index.qmd
+│   │   │   └── images/
+│   │   └── ...
+│   └── html/              # GENERATED: HTML files (don't edit!)
+│       ├── welcome.html
 │       ├── intro-data-analytics.html
-│       ├── probability-distributions.html
 │       └── ...
 ├── public/
 │   ├── search.json        # Search index (auto-generated)
-│   └── assets/            # Images and figures
+│   └── assets/            # GENERATED: Copied images (don't edit!)
+│       ├── intro-data-analytics/
+│       │   └── images/
+│       └── ...
 └── src/
     └── ...                # Application code
 ```
+
+**Important:** Only edit files in `content/chapters/`. The `content/html/` and `public/assets/` folders are generated and will be overwritten on build.
 
 ---
 

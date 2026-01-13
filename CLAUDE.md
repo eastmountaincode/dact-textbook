@@ -3,6 +3,7 @@
 ## UI/UX
 
 - Always use `cursor-pointer` on interactive elements (buttons, clickable icons, toggles, etc.)
+- For button hover effects, use `hover:opacity-90` for a subtle fade effect
 
 ## Dev Mode Borders
 

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useDevMode } from '@/providers/DevModeProvider';
 import { useTheme } from '@/providers/ThemeProvider';
 import { useAuth } from '@/providers/AuthProvider';
@@ -31,9 +32,16 @@ export default function Header({
 }: HeaderProps) {
   const [showFontMenu, setShowFontMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const router = useRouter();
   const { devBorder } = useDevMode();
   const { isDark, toggleTheme } = useTheme();
   const { user, profile, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    setShowAccountMenu(false);
+    await signOut();
+    router.push('/login');
+  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
@@ -185,10 +193,7 @@ export default function Header({
                     Account
                   </Link>
                   <button
-                    onClick={() => {
-                      signOut();
-                      setShowAccountMenu(false);
-                    }}
+                    onClick={handleLogout}
                     className="w-full text-left px-2 py-1 rounded text-sm hover:bg-[var(--sidebar-hover)] cursor-pointer"
                     style={{ color: 'var(--foreground)' }}
                   >

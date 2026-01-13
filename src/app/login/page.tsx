@@ -61,7 +61,7 @@ export default function LoginPage() {
   const [resendSuccess, setResendSuccess] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { signIn } = useAuth();
+  const { signIn, signOut, user } = useAuth();
   const { devBorder } = useDevMode();
 
   // Check for error in URL (e.g., from expired confirmation link)
@@ -80,13 +80,19 @@ export default function LoginPage() {
     setResendSuccess(false);
     setIsLoading(true);
 
+    // If already logged in, sign out first before signing in with new credentials
+    if (user) {
+      await signOut();
+    }
+
     const { error } = await signIn(email, password);
 
     if (error) {
       setError(parseLoginError(error.message));
       setIsLoading(false);
     } else {
-      router.push('/chapter/welcome');
+      // Use window.location for more reliable redirect after login
+      window.location.href = '/chapter/welcome';
     }
   };
 

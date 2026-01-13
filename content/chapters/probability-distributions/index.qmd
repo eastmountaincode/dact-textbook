@@ -1,0 +1,60 @@
+# Probability
+
+
+In this chapter, we'll introduce some fundamental concepts in probability theory. By the end of this chapter, you will be able to define the following:
+
+- Sample space
+- Outcome
+- Event
+- Probability
+- Random variable
+
+## What is probability?
+
+::: {.question}
+What is probability?
+:::
+
+::: {.answer}
+Probability is a mathematical framework for quantifying uncertainty. It assigns numerical values between 0 and 1 to events, where 0 indicates impossibility and 1 indicates certainty.
+:::
+
+::: {.callout-note title="Important Definition"}
+The **sample space** is the set of all possible outcomes of an experiment. For a coin flip, the sample space is $\{H, T\}$.
+:::
+
+Let's consider a simple example. Imagine you're flipping a fair coin. The sample space consists of two possible outcomes: heads (H) and tails (T).
+
+The probability of getting heads is:
+
+$$P(H) = \frac{\text{Number of favorable outcomes}}{\text{Total number of possible outcomes}} = \frac{1}{2} = 0.5$$
+
+## Random Variables
+
+A random variable is a function that assigns numerical values to the outcomes of a random experiment.
+
+::: {.question}
+Can you give an example of a random variable?
+:::
+
+::: {.answer}
+Consider rolling a six-sided die. Let $X$ be the random variable representing the number that appears on the top face. Then $X$ can take values $\{1, 2, 3, 4, 5, 6\}$, each with probability $1/6$ if the die is fair.
+:::
+
+
+## Relationship between PDFs and CDFs
+
+The probability density function (PDF) and cumulative distribution function (CDF) are two fundamental ways of describing a probability distribution. The interactive visualization below demonstrates how these functions relate to each other.
+
+Use the dropdown menu to explore different distributions (Normal, Lognormal, and Uniform), and drag the slider to see how the PDF height at a point relates to the CDF value at that same point.
+
+<iframe src="interactives/pdf_cdf_interactive.html" width="100%" height="990px" 
+        frameborder="0" style="border: none;"></iframe>
+
+As you move the slider, observe that:
+
+- The PDF (*f(Y)*) shows the **height** of the density at any given value
+- The CDF (*F(Y)*) shows the **area under the PDF curve** to the left of that value
+- The shaded region in the PDF panel corresponds exactly to the CDF value
+
+

@@ -16,7 +16,7 @@ sections:
       - probability-distributions
       - parameters-statistics
       - operators-properties
-      - bounding_outliers
+      - bounds-outliers
       - normal-distribution
 
   - name: "Descriptive Statistics"

@@ -1,0 +1,57 @@
+# Bounding Outliers
+
+
+Understanding the behavior of extreme values, or outliers, is crucial in statistical analysis. In real-world data, we often encounter observations that lie far from the center of a distribution. While we may not know the exact probability of such extreme events, probability inequalities allow us to establish upper bounds on how likely they are to occur. This chapter introduces two fundamental inequalities—Markov's inequality and Chebyshev's inequality—that help us bound the probability of outliers using only basic distributional properties.
+
+## Why Bounding Outliers Matters
+
+::: {.question}
+Why do we need mathematical tools to bound the probability of outliers?
+:::
+
+::: {.answer}
+In many practical situations, we don't know the complete probability distribution of a random variable. However, we often know simpler properties like the mean or variance. Probability inequalities allow us to make rigorous statements about tail probabilities (the likelihood of extreme values) using only this limited information. This is invaluable for risk assessment, quality control, and understanding the reliability of statistical estimates.
+:::
+
+Consider a manufacturing process where you're monitoring the weight of products. You know the average weight is 500 grams, but you don't know the full distribution of weights. If a product weighs 1000 grams or more, it might indicate a defect. How can you bound the probability of such an outlier? This is precisely the type of question that Markov's inequality addresses.
+
+## Markov's Inequality
+
+Markov's inequality provides a remarkably simple bound on tail probabilities for non-negative random variables, requiring only knowledge of the mean.
+
+::: {.importantbox}
+**Markov's Inequality**
+
+Let $Y$ be a random variable defined over the positive subspace of $\mathbb{R}^1$. Then for any positive constant $a > 0$,
+
+$$
+\mathrm{P}(Y \geq a) \leq rac{\mathbb{E}(Y)}{a}
+$$ {#eq-markov}
+:::
+
+This inequality tells us that the probability of a non-negative random variable exceeding some value $a$ is at most the mean divided by $a$. The larger the value of $a$ relative to the mean, the smaller this upper bound becomes.
+
+::: {.question}
+What does Markov's inequality tell us intuitively?
+:::
+
+::: {.answer}
+Markov's inequality formalizes the intuition that if a non-negative random variable has a small mean, it's unlikely to take on very large values. For instance, if the average value is 10, the probability of seeing a value of 100 or more cannot exceed 10/100 = 0.1, or 10%.
+:::
+
+### Example: Manufacturing Quality Control
+
+Let's return to our manufacturing example. Suppose the average product weight is $\mathbb{E}(Y) = 500$ grams, and all products have non-negative weight. We want to know: what's the maximum probability that a randomly selected product weighs 1000 grams or more?
+
+Using Markov's inequality with $a = 1000$:
+
+$$
+\mathrm{P}(Y \geq 1000) \leq rac{500}{1000} = 0.5
+$$
+
+This tells us that at most 50% of products can weigh 1000 grams or more. While this bound might seem loose, remember that we derived it using only the mean—no other information about the distribution!
+
+We can also ask: what's the probability of a product weighing at least twice the average?
+
+$$
+\mathrm{P}(Y \geq 1000) = \mathrm{P}(Y \geq 2 

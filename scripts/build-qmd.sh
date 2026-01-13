@@ -3,7 +3,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-QMD_DIR="/Volumes/T9/everything/business/freelance/sethi_textbook/original-code/dafct/chapters"
+QMD_DIR="$PROJECT_ROOT/content/chapters"
 HTML_DIR="$PROJECT_ROOT/content/html"
 ASSETS_DIR="$PROJECT_ROOT/public/assets"
 

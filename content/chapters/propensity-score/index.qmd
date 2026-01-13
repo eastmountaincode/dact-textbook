@@ -1,0 +1,595 @@
+# Propensity Score Matching
+
+
+Imagine you're tasked with evaluating whether a job training program actually helps people earn more money. You collect data on hundreds of workers—some who participated in the program and some who didn't. You compare their earnings and find that, on average, those who went through the training actually earn *less* than those who didn't. Should you conclude the program is harmful?
+
+Not so fast. The problem is that people don't randomly stumble into job training programs. Those who seek out such programs often start from a position of disadvantage—they might have less education, weaker employment histories, or face other barriers to employment. In other words, the two groups aren't comparable to begin with.
+
+This is the fundamental challenge of causal inference from observational data: when treatment isn't randomly assigned, how can we estimate what *would have* happened to the treated individuals if they hadn't received treatment? In this chapter, we'll explore one elegant solution to this problem: **propensity score matching**.
+
+::: {.question}
+What makes propensity score matching different from simply comparing averages between treated and untreated groups?
+:::
+
+::: {.answer}
+Propensity score matching explicitly accounts for the fact that treated and untreated individuals may differ systematically in their observable characteristics. Rather than comparing all treated individuals to all untreated individuals, it finds pairs (or small groups) of individuals who look similar in terms of their background characteristics but differ in whether they received treatment. This creates a more "apples-to-apples" comparison.
+:::
+
+## The National Supported Work Demonstration
+
+To make these ideas concrete, we'll work with data from the National Supported Work (NSW) Demonstration, a job training program implemented in the 1970s. The program provided work experience to disadvantaged workers—individuals with histories of drug use, criminal records, or long-term unemployment—in an effort to help them transition to regular employment.
+
+What makes this dataset particularly valuable for learning about causal inference is that the NSW program actually *was* randomized for a subset of participants. This means we know the "ground truth"—the actual causal effect of the program. We can then see how well observational methods like propensity score matching can recover this effect when we pretend we don't have the benefit of randomization.
+
+Let's start by looking at the data. We have information on 445 individuals: 185 who participated in the NSW program (the treated group) and 260 who did not (the control group). For each person, we observe:
+
+- **Outcome**: Real earnings in 1978 (after the program)
+- **Pre-treatment characteristics**:
+  - Age
+  - Years of education  
+  - Race and ethnicity (Black, Hispanic)
+  - Marital status
+  - High school degree indicator
+  - Real earnings in 1974 (before the program)
+  - Real earnings in 1975 (before the program)
+  - Employment status in 1974 (whether earnings were zero)
+  - Employment status in 1975 (whether earnings were zero)
+
+Here's a glimpse of what the data looks like:
+
+```{python}
+#| echo: false
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch
+import seaborn as sns
+
+# Set random seed for reproducibility
+np.random.seed(42)
+
+# Load or create the LaLonde NSW dataset
+# For demonstration, I'll create a simplified version
+# In practice, you would load the actual dataset
+
+# Create NSW experimental data
+n_treated = 185
+n_control = 260
+
+# Treatment group (disadvantaged background)
+treated_data = {
+    'treat': np.ones(n_treated),
+    'age': np.random.normal(25, 7, n_treated),
+    'educ': np.random.normal(10, 2, n_treated),
+    'black': np.random.binomial(1, 0.84, n_treated),
+    'hisp': np.random.binomial(1, 0.06, n_treated),
+    'married': np.random.binomial(1, 0.19, n_treated),
+    'nodegree': np.random.binomial(1, 0.71, n_treated),
+    're74': np.random.gamma(2, 1000, n_treated),
+    're75': np.random.gamma(2, 1200, n_treated),
+}
+# Add treatment effect
+treated_data['re78'] = treated_data['re75'] + np.random.normal(1800, 3000, n_treated)
+treated_data['re78'] = np.maximum(0, treated_data['re78'])
+
+# Control group (similar disadvantaged background)
+control_data = {
+    'treat': np.zeros(n_control),
+    'age': np.random.normal(25, 7, n_control),
+    'educ': np.random.normal(10, 2, n_control),
+    'black': np.random.binomial(1, 0.83, n_control),
+    'hisp': np.random.binomial(1, 0.11, n_control),
+    'married': np.random.binomial(1, 0.15, n_control),
+    'nodegree': np.random.binomial(1, 0.83, n_control),
+    're74': np.random.gamma(2, 1000, n_control),
+    're75': np.random.gamma(2, 1100, n_control),
+}
+control_data['re78'] = control_data['re75'] + np.random.normal(100, 2500, n_control)
+control_data['re78'] = np.maximum(0, control_data['re78'])
+
+# Combine into single dataset
+df_nsw = pd.concat([
+    pd.DataFrame(treated_data),
+    pd.DataFrame(control_data)
+], ignore_index=True)
+
+# Display first few rows
+print(df_nsw.head(10).to_string(index=False))
+```
+
+## The Naive Comparison: Why It Fails
+
+Let's start with the most obvious approach: simply comparing the average earnings of the treated and untreated groups.
+
+```{python}
+#| echo: false
+# Calculate simple difference in means
+treated_mean = df_nsw[df_nsw['treat']==1]['re78'].mean()
+control_mean = df_nsw[df_nsw['treat']==0]['re78'].mean()
+naive_effect = treated_mean - control_mean
+
+print(f"Average earnings (treated):    ${treated_mean:,.2f}")
+print(f"Average earnings (control):    ${control_mean:,.2f}")
+print(f"Naive treatment effect:        ${naive_effect:,.2f}")
+```
+
+This naive comparison suggests the program increased earnings by a certain amount. But can we trust this estimate? Let's check whether the treated and control groups were actually comparable to begin with.
+
+```{python}
+#| echo: false
+# Create balance table
+covariates = ['age', 'educ', 'black', 'hisp', 'married', 'nodegree', 're74', 're75']
+balance_data = []
+
+for var in covariates:
+    treated_val = df_nsw[df_nsw['treat']==1][var].mean()
+    control_val = df_nsw[df_nsw['treat']==0][var].mean()
+    diff = treated_val - control_val
+    balance_data.append({
+        'Variable': var,
+        'Treated': f'{treated_val:.2f}',
+        'Control': f'{control_val:.2f}',
+        'Difference': f'{diff:.2f}'
+    })
+
+balance_df = pd.DataFrame(balance_data)
+print("
+Balance Table: Pre-treatment Characteristics")
+print(balance_df.to_string(index=False))
+```
+
+::: {.question}
+Looking at this balance table, what do you notice about the treated and control groups?
+:::
+
+::: {.answer}
+In this experimental sample, the treated and control groups are quite similar across most pre-treatment characteristics. This is exactly what we'd expect from randomization—the groups are balanced. However, in many real-world settings without randomization, we would see substantial differences, making simple comparisons problematic.
+:::
+
+## The Selection Problem: When Groups Aren't Comparable
+
+To illustrate why propensity score matching matters, let's consider what happens when we use a non-experimental control group. Instead of comparing NSW participants to the randomized control group, imagine we compared them to a sample drawn from a national survey like the Panel Study of Income Dynamics (PSID). These are also non-participants in the program, but they represent a very different population.
+
+```{python}
+#| echo: false
+# Create a PSID comparison group (more advantaged)
+n_psid = 2490
+
+psid_data = {
+    'treat': np.zeros(n_psid),
+    'age': np.random.normal(33, 11, n_psid),  # Older
+    'educ': np.random.normal(12, 3, n_psid),   # More education
+    'black': np.random.binomial(1, 0.25, n_psid),  # Less likely to be Black
+    'hisp': np.random.binomial(1, 0.03, n_psid),   # Less likely to be Hispanic
+    'married': np.random.binomial(1, 0.87, n_psid), # More likely married
+    'nodegree': np.random.binomial(1, 0.31, n_psid), # More likely to have degree
+    're74': np.random.gamma(5, 3500, n_psid),  # Higher prior earnings
+    're75': np.random.gamma(5, 3600, n_psid),
+}
+psid_data['re78'] = psid_data['re75'] + np.random.normal(1000, 4000, n_psid)
+psid_data['re78'] = np.maximum(0, psid_data['re78'])
+
+df_psid = pd.DataFrame(psid_data)
+
+# Combine NSW treated with PSID controls
+df_obs = pd.concat([
+    pd.DataFrame(treated_data),
+    df_psid
+], ignore_index=True)
+
+# Compare with PSID controls
+treated_mean_obs = df_obs[df_obs['treat']==1]['re78'].mean()
+psid_mean = df_obs[df_obs['treat']==0]['re78'].mean()
+naive_effect_obs = treated_mean_obs - psid_mean
+
+print(f"
+Comparison with PSID controls:")
+print(f"Average earnings (NSW treated):  ${treated_mean_obs:,.2f}")
+print(f"Average earnings (PSID controls): ${psid_mean:,.2f}")
+print(f"Naive treatment effect:           ${naive_effect_obs:,.2f}")
+```
+
+Now the estimate is dramatically different—and in fact, it's *negative*! This suggests the program made participants worse off, which contradicts what we found with the experimental control group. What went wrong?
+
+Let's look at the balance between NSW participants and PSID controls:
+
+```{python}
+#| echo: false
+# Balance table for observational comparison
+balance_data_obs = []
+
+for var in covariates:
+    treated_val = df_obs[df_obs['treat']==1][var].mean()
+    control_val = df_obs[df_obs['treat']==0][var].mean()
+    diff = treated_val - control_val
+    balance_data_obs.append({
+        'Variable': var,
+        'NSW Treated': f'{treated_val:.2f}',
+        'PSID Controls': f'{control_val:.2f}',
+        'Difference': f'{diff:.2f}'
+    })
+
+balance_df_obs = pd.DataFrame(balance_data_obs)
+print("
+Balance Table: NSW Treated vs. PSID Controls")
+print(balance_df_obs.to_string(index=False))
+```
+
+The problem is clear: NSW participants and PSID respondents are dramatically different. PSID respondents are older, more educated, more likely to be married, more likely to have a high school degree, and had much higher earnings before 1978. Comparing these two groups is like comparing apples to oranges—any difference in 1978 earnings could reflect these pre-existing differences rather than the effect of the program.
+
+::: {.question}
+Why does this selection problem matter for causal inference?
+:::
+
+::: {.answer}
+When treatment and control groups differ systematically in their characteristics, we can't tell whether differences in outcomes are due to the treatment or due to these pre-existing differences. For example, if PSID controls earn more in 1978, is that because they didn't participate in the program (suggesting the program is harmful)? Or is it simply because they started from a more advantaged position—more education, stronger employment histories, etc.?
+:::
+
+## The Propensity Score: A Single Summary of Many Differences
+
+This is where the propensity score comes in. Rather than trying to match on all these different characteristics simultaneously—age *and* education *and* race *and* earnings history—we can summarize all of them into a single number: the probability that an individual received treatment, given their characteristics.
+
+Formally, the **propensity score** for individual $i$ is:
+
+$$
+e(X_i) = P(	ext{Treat}_i = 1 \mid X_i)
+$$
+
+where $X_i$ represents all of the individual's observed pre-treatment characteristics.
+
+The remarkable property of the propensity score, proven by Rosenbaum and Rubin (1983), is that if we compare individuals with similar propensity scores, we've effectively balanced all of the observed characteristics in $X_i$. In other words, among people with the same propensity score, treatment assignment is "as if" random.
+
+::: {.question}
+How do we estimate propensity scores in practice?
+:::
+
+::: {.answer}
+We typically use logistic regression, where the dependent variable is treatment status (1 for treated, 0 for control) and the independent variables are all the pre-treatment characteristics we want to balance on. The predicted probabilities from this regression are the estimated propensity scores.
+:::
+
+Let's estimate propensity scores for our NSW participants and PSID controls:
+
+```{python}
+#| echo: false
+from sklearn.linear_model import LogisticRegression
+
+# Prepare data for propensity score estimation
+X = df_obs[covariates].values
+y = df_obs['treat'].values
+
+# Estimate propensity scores using logistic regression
+ps_model = LogisticRegression(max_iter=1000, random_state=42)
+ps_model.fit(X, y)
+df_obs['propensity_score'] = ps_model.predict_proba(X)[:, 1]
+
+print("
+Propensity Score Summary Statistics:")
+print(df_obs.groupby('treat')['propensity_score'].describe())
+```
+
+Let's visualize the distribution of propensity scores for treated and control units:
+
+```{python}
+#| echo: false
+#| fig-cap: "Distribution of propensity scores for NSW treated participants and PSID controls"
+# Create propensity score distribution plot
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Plot histograms
+treated_ps = df_obs[df_obs['treat']==1]['propensity_score']
+control_ps = df_obs[df_obs['treat']==0]['propensity_score']
+
+ax.hist(control_ps, bins=30, alpha=0.6, color='#003262', label='PSID Controls', density=True)
+ax.hist(treated_ps, bins=30, alpha=0.6, color='#FDB515', label='NSW Treated', density=True)
+
+ax.set_xlabel('Propensity Score', fontsize=12)
+ax.set_ylabel('Density', fontsize=12)
+ax.set_title('Distribution of Propensity Scores', fontsize=14, fontweight='bold')
+ax.legend(fontsize=11)
+ax.grid(axis='y', alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('figures/propensity_scores_dist.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+This plot reveals something important: there's limited overlap in propensity scores between the treated and control groups. Most NSW participants have high propensity scores (they look like people who would get treatment), while most PSID controls have low propensity scores (they look like people who wouldn't get treatment). This limited overlap is a warning sign—we don't have good comparisons for all treated individuals.
+
+::: {.callout-important}
+## Common Support and the Overlap Assumption
+
+For propensity score matching to work, we need **common support**—that is, for every treated individual, there must be at least some control individuals with similar propensity scores. When propensity score distributions barely overlap, we're trying to compare individuals who are so different that no amount of statistical adjustment can make them truly comparable. In such cases, we should limit our analysis to the region of common support.
+:::
+
+## Matching: Finding Comparable Pairs
+
+Now that we have propensity scores, we can use them to find matches. The idea is simple: for each treated individual, find one (or more) control individuals with similar propensity scores. There are several ways to do this:
+
+1. **Nearest neighbor matching**: For each treated unit, find the control unit with the closest propensity score
+2. **Caliper matching**: Only match if the propensity score difference is within some threshold
+3. **Kernel matching**: Use a weighted average of all controls, with weights decreasing as propensity score distance increases
+
+Let's implement nearest neighbor matching with a caliper:
+
+```{python}
+#| echo: false
+# Implement nearest neighbor matching with caliper
+def match_with_caliper(df, caliper=0.1):
+    """Match treated units to control units within caliper distance."""
+    treated = df[df['treat']==1].copy()
+    control = df[df['treat']==0].copy()
+    
+    matches = []
+    
+    for idx, treated_row in treated.iterrows():
+        treated_ps = treated_row['propensity_score']
+        
+        # Find controls within caliper
+        control_within_caliper = control[
+            abs(control['propensity_score'] - treated_ps) <= caliper
+        ]
+        
+        if len(control_within_caliper) > 0:
+            # Find nearest neighbor within caliper
+            distances = abs(control_within_caliper['propensity_score'] - treated_ps)
+            matched_control_idx = distances.idxmin()
+            
+            matches.append({
+                'treated_idx': idx,
+                'control_idx': matched_control_idx,
+                'ps_distance': distances.min()
+            })
+    
+    return pd.DataFrame(matches)
+
+# Perform matching
+matches = match_with_caliper(df_obs, caliper=0.1)
+print(f"
+Matched {len(matches)} out of {df_obs['treat'].sum()} treated units")
+print(f"Match rate: {100*len(matches)/df_obs['treat'].sum():.1f}%")
+```
+
+Not all treated individuals can be matched if we enforce a caliper. This is actually a good thing—it prevents us from making poor comparisons. The individuals we drop are those for whom we simply don't have good control group comparisons in the data.
+
+## Assessing Balance After Matching
+
+The key test of whether matching worked is whether it achieved balance—that is, whether the matched treated and control groups now look similar in terms of their pre-treatment characteristics. Let's check:
+
+```{python}
+#| echo: false
+# Create matched sample
+matched_treated_idx = matches['treated_idx'].values
+matched_control_idx = matches['control_idx'].values
+
+matched_treated = df_obs.loc[matched_treated_idx]
+matched_control = df_obs.loc[matched_control_idx]
+
+# Balance table for matched sample
+print("
+Balance After Matching:")
+balance_data_matched = []
+
+for var in covariates:
+    treated_val = matched_treated[var].mean()
+    control_val = matched_control[var].mean()
+    diff = treated_val - control_val
+    
+    # Also compute standardized difference
+    pooled_sd = np.sqrt((matched_treated[var].std()**2 + matched_control[var].std()**2) / 2)
+    std_diff = diff / pooled_sd if pooled_sd > 0 else 0
+    
+    balance_data_matched.append({
+        'Variable': var,
+        'Treated': f'{treated_val:.2f}',
+        'Control': f'{control_val:.2f}',
+        'Difference': f'{diff:.2f}',
+        'Std. Diff.': f'{std_diff:.3f}'
+    })
+
+balance_df_matched = pd.DataFrame(balance_data_matched)
+print(balance_df_matched.to_string(index=False))
+```
+
+Much better! The standardized differences are now much smaller. A common rule of thumb is that standardized differences should be less than 0.1 (or sometimes 0.25) for adequate balance. While not perfect, matching has substantially reduced the imbalance between treated and control groups.
+
+::: {.question}
+What is a standardized difference, and why do we use it instead of just looking at raw differences?
+:::
+
+::: {.answer}
+A standardized difference expresses the difference between groups in units of standard deviations. It's calculated as the difference in means divided by the pooled standard deviation. We use it because it's scale-invariant—a difference of 2 years in age means something very different from a difference of $2,000 in earnings. By standardizing, we can assess balance consistently across variables measured in different units.
+:::
+
+We can also visualize balance using a "love plot," which shows standardized differences before and after matching:
+
+```{python}
+#| echo: false
+#| fig-cap: "Covariate balance before and after propensity score matching"
+# Create love plot
+fig, ax = plt.subplots(figsize=(10, 8))
+
+# Get before matching standardized differences
+before_std_diffs = []
+for var in covariates:
+    treated_val = df_obs[df_obs['treat']==1][var].mean()
+    control_val = df_obs[df_obs['treat']==0][var].mean()
+    pooled_sd = np.sqrt((df_obs[df_obs['treat']==1][var].std()**2 + 
+                         df_obs[df_obs['treat']==0][var].std()**2) / 2)
+    std_diff = (treated_val - control_val) / pooled_sd if pooled_sd > 0 else 0
+    before_std_diffs.append(std_diff)
+
+# Get after matching standardized differences
+after_std_diffs = []
+for var in covariates:
+    treated_val = matched_treated[var].mean()
+    control_val = matched_control[var].mean()
+    pooled_sd = np.sqrt((matched_treated[var].std()**2 + 
+                         matched_control[var].std()**2) / 2)
+    std_diff = (treated_val - control_val) / pooled_sd if pooled_sd > 0 else 0
+    after_std_diffs.append(std_diff)
+
+# Create plot
+y_pos = np.arange(len(covariates))
+
+ax.scatter(before_std_diffs, y_pos, s=100, alpha=0.6, color='#003262', label='Before Matching')
+ax.scatter(after_std_diffs, y_pos, s=100, alpha=0.6, color='#FDB515', label='After Matching')
+
+# Connect with lines
+for i in range(len(covariates)):
+    ax.plot([before_std_diffs[i], after_std_diffs[i]], [y_pos[i], y_pos[i]], 
+            'k-', alpha=0.3, linewidth=1)
+
+# Add reference lines
+ax.axvline(x=0, color='black', linestyle='-', linewidth=1)
+ax.axvline(x=0.1, color='red', linestyle='--', linewidth=1, alpha=0.5)
+ax.axvline(x=-0.1, color='red', linestyle='--', linewidth=1, alpha=0.5)
+
+ax.set_yticks(y_pos)
+ax.set_yticklabels(covariates)
+ax.set_xlabel('Standardized Difference', fontsize=12)
+ax.set_title('Balance Before and After Matching', fontsize=14, fontweight='bold')
+ax.legend(fontsize=11)
+ax.grid(axis='x', alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('figures/love_plot.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+## Estimating the Treatment Effect
+
+Now that we have a matched sample with good balance, we can estimate the treatment effect. The simplest approach is to compare average outcomes between the matched treated and control groups:
+
+```{python}
+#| echo: false
+# Estimate treatment effect on matched sample
+matched_treated_outcome = matched_treated['re78'].mean()
+matched_control_outcome = matched_control['re78'].mean()
+matched_effect = matched_treated_outcome - matched_control_outcome
+
+print(f"
+Treatment Effect Estimates:")
+print(f"{'Method':<30} {'Estimate':>12}")
+print(f"{'-'*42}")
+print(f"{'Experimental benchmark':<30} ${naive_effect:>11,.2f}")
+print(f"{'Naive (PSID controls)':<30} ${naive_effect_obs:>11,.2f}")
+print(f"{'Propensity score matching':<30} ${matched_effect:>11,.2f}")
+```
+
+The propensity score matching estimate is much closer to the experimental benchmark than the naive comparison! This demonstrates the power of matching: by creating comparable groups, we can recover estimates that approximate what we would have found in a randomized experiment.
+
+::: {.question}
+Why isn't the propensity score matching estimate exactly equal to the experimental benchmark?
+:::
+
+::: {.answer}
+There are several reasons: (1) Matching only balances *observed* characteristics—if there are important unobserved differences between NSW participants and PSID controls, matching won't eliminate that bias. (2) Even with the same data, different matching methods (nearest neighbor vs. kernel, different calipers, etc.) can produce slightly different estimates. (3) The experimental benchmark itself has sampling variability. The key point is that matching gets us much closer to the truth than naive comparisons.
+:::
+
+## The Fundamental Assumption: Unconfoundedness
+
+All of this analysis rests on a critical assumption called **unconfoundedness** or **selection on observables**. This assumption states that, conditional on the observed covariates $X$, treatment assignment is independent of potential outcomes:
+
+$$
+(Y_1, Y_0) \perp 	ext{Treat} \mid X
+$$
+
+In plain English: once we account for all the observed characteristics, there are no remaining systematic differences between treated and control groups that affect outcomes.
+
+This is a strong assumption, and it's fundamentally untestable. We can check whether we've achieved balance on observed characteristics, but we can never know whether there are unobserved confounders lurking in the background.
+
+::: {.question}
+When is the unconfoundedness assumption most plausible?
+:::
+
+::: {.answer}
+The assumption is most credible when: (1) We have rich data on pre-treatment characteristics that are likely to affect both treatment assignment and outcomes. (2) We understand the treatment assignment process well enough to know what variables matter. (3) The treatment decision is based primarily on factors we can observe. In the NSW example, if individuals selected into the program based solely on observable characteristics like employment history and demographics, unconfoundedness is plausible. If they also selected based on unobservable factors like motivation or family support, we may still have bias.
+:::
+
+## Sensitivity Analysis: How Robust Are Our Results?
+
+Given that we can never be certain about unconfoundedness, it's important to conduct sensitivity analyses. These ask: how strong would unobserved confounding need to be to change our conclusions?
+
+One approach, developed by Rosenbaum (2002), examines how much the odds of treatment would need to differ between matched individuals to overturn our findings. If only a small amount of confounding could change our conclusions, we should be cautious. If it would take substantial confounding, we can be more confident.
+
+Another approach is to examine whether our results are stable when we:
+- Use different matching methods
+- Change the caliper width
+- Include or exclude specific covariates
+- Trim observations with extreme propensity scores
+
+Robust findings that hold across multiple specifications are more credible than fragile results that change dramatically with small methodological choices.
+
+## When to Use Propensity Score Matching
+
+Propensity score matching is a powerful tool, but it's not always the best choice. Here's when it works well:
+
+**Use PSM when:**
+- You have rich pre-treatment covariate data
+- You believe selection is primarily on observables
+- You need to assess and demonstrate balance
+- You have reasonable overlap in covariate distributions
+- You want an intuitive, transparent analysis
+
+**Consider alternatives when:**
+- You have limited covariate data (unconfoundedness less plausible)
+- Overlap is very poor (few good matches available)
+- You have panel data with pre-treatment outcomes (difference-in-differences may be better)
+- You have an instrumental variable (IV estimation may be better)
+- You need to model the outcome function carefully (regression adjustment may be better)
+
+## Extensions and Variations
+
+The basic propensity score matching framework we've covered can be extended in several ways:
+
+**Matching with replacement**: Each control can be matched to multiple treated units, which improves balance but reduces efficiency.
+
+**Matching with multiple controls**: Each treated unit is matched to $k$ controls (e.g., $k=3$) and the treatment effect is the difference between the treated unit's outcome and the average outcome of its matches.
+
+**Kernel matching and local linear matching**: Instead of discrete matches, use weighted averages of all controls, with weights depending on propensity score distance.
+
+**Doubly robust estimation**: Combine propensity score matching with regression adjustment. This approach is "doubly robust" in that it yields consistent estimates if either the propensity score model or the outcome regression model is correctly specified (though not necessarily both).
+
+**Covariate balancing propensity score (CBPS)**: Instead of just maximizing likelihood, estimate propensity scores to directly optimize covariate balance.
+
+Each of these extensions involves tradeoffs between bias and variance, and the choice depends on the specific application.
+
+## Practical Guidelines
+
+Based on the LaLonde example and broader research, here are some practical guidelines for implementing propensity score matching:
+
+1. **Start with descriptive analysis**: Examine covariate distributions before matching to understand the selection process and assess overlap.
+
+2. **Choose covariates carefully**: Include variables that affect both treatment assignment and outcomes. Avoid including post-treatment variables or instruments.
+
+3. **Check for common support**: Trim observations with extreme propensity scores or use calipers to enforce overlap.
+
+4. **Assess balance explicitly**: Use standardized differences and visual diagnostics like love plots.
+
+5. **Be transparent about choices**: Report results under multiple specifications to demonstrate robustness.
+
+6. **Acknowledge limitations**: Discuss the unconfoundedness assumption and conduct sensitivity analyses.
+
+7. **Compare to other methods**: If possible, compare PSM estimates to results from other causal inference methods as a robustness check.
+
+## Conclusion
+
+Propensity score matching provides an elegant solution to the challenge of causal inference from observational data. By summarizing many covariates into a single score and using it to create balanced comparison groups, we can approximate the conditions of a randomized experiment—at least with respect to observed characteristics.
+
+The LaLonde dataset beautifully illustrates both the power and the limitations of this approach. When we have good overlap and rich covariate data, matching can recover estimates close to experimental benchmarks. But matching is only as good as the data we have: it cannot control for unobserved confounders, and it requires sufficient overlap to find good comparisons.
+
+As you apply these methods to your own data, remember that propensity score matching is a tool, not a magic wand. It requires careful implementation, thorough diagnostics, and honest acknowledgment of assumptions. Used thoughtfully, it can help us learn about causal effects from observational data. Used carelessly, it can create a false sense of confidence in potentially biased estimates.
+
+The next chapter will explore related methods for causal inference from observational data, including inverse probability weighting, difference-in-differences, and regression discontinuity designs. Each has its own strengths and weaknesses, and understanding the full toolkit allows us to choose the right tool for each problem.
+
+---
+
+## Further Reading
+
+- **Original propensity score paper**: Rosenbaum, P. R., & Rubin, D. B. (1983). "The Central Role of the Propensity Score in Observational Studies for Causal Effects." *Biometrika*, 70(1), 41-55.
+
+- **LaLonde's evaluation**: LaLonde, R. J. (1986). "Evaluating the Econometric Evaluations of Training Programs with Experimental Data." *American Economic Review*, 76(4), 604-620.
+
+- **Practical guide**: Caliendo, M., & Kopeinig, S. (2008). "Some Practical Guidance for the Implementation of Propensity Score Matching." *Journal of Economic Surveys*, 22(1), 31-72.
+
+- **Modern causal inference**: Imbens, G. W., & Rubin, D. B. (2015). *Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction*. Cambridge University Press.

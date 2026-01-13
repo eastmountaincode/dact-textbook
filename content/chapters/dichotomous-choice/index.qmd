@@ -1,0 +1,149 @@
+# Dichotomous Choice Modeling
+
+
+## Introduction
+
+In the 1980s, researchers Ben-Akiva and Lerman interviewed commuters in Boston about their transportation choices. Their specific research question was simple but important: *Does the difference in commute time between car and bus affect people's mode choice?*
+
+To answer this, they surveyed huundreds of commuters, collecting data on:
+- Their actual commute times by car and by bus
+- Their actual commuting choice (0 = drove to work, 1 = took the bus)
+
+Here's a table showing these data for 21 of the commuters surveyed. While the authors collected data on a whole range of variables, we will just ignore them for the purpose of this chapter.  In our model, we will not include any controls to keep things simple. In real life, of course, a person's commuting choice will depend of many, many factors.
+
+| ID | Commute Time (minutes) |     | Choice |
+|:--:|:----------------------:|:---:|:------:|
+|    | Auto | Bus |   |
+|:--:|:----:|:---:|:------:|
+| 1  | 51.0 | 85.0 |   0    |
+| 2  | 95.0 | 43.5 |   1    |
+| 3  | 18.5 | 84.0 |   0    |
+| 4  | 62.0 | 4.4  |   1    |
+| 5  | 41.5 | 24.5 |   1    |
+| 6  | 2.0  | 91.2 |   0    |
+| 7  | 82.0 | 38.0 |   1    |
+| 8  | 27.6 | 79.7 |   0    |
+| 9  | 99.1 | 2.2  |   1    |
+| 10 | 51.4 | 83.8 |   0    |
+| 11 | 8.6  | 1.6  |   1    |
+| 12 | 22.5 | 74.1 |   0    |
+| 13 | 51.8 | 20.2 |   1    |
+| 14 | 4.1  | 86.9 |   0    |
+| 15 | 62.2 | 90.1 |   0    |
+| 16 | 89.9 | 2.2  |   1    |
+| 17 | 41.6 | 91.5 |   0    |
+| 18 | 56.2 | 31.6 |   1    |
+| 19 | 4.1  | 28.5 |   1    |
+| 20 | 95.1 | 22.5 |   1    |
+| 21 | 81.0 | 19.2 |   1    |
+
+Some of the values in the table are very odd. And no, I double-checked, I transcribed them here correctly. 
+
+The variable choice is coded as either 0 or 1, where 0 is the code for commuters who drove to work and 1 for those that took the bus. We can now sort these by this variable and calculate the difference in commute times. We will further assume that a person's commuting choice depends *only* on the difference in commute time between the two options they have. Here's the modified table.
+
+<table>
+<thead>
+  <tr>
+    <th rowspan="2" style="text-align: center;">ID</th>
+    <th colspan="2" style="text-align: center;">Commute Time (minutes)</th>
+    <th rowspan="2" style="text-align: center;">Choice</th>
+  </tr>
+  <tr>
+    <th style="text-align: center;">Auto</th>
+    <th style="text-align: center;">Bus</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td style="text-align: center;">1</td><td style="text-align: center;">51.0</td><td style="text-align: center;">85.0</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">2</td><td style="text-align: center;">95.0</td><td style="text-align: center;">43.5</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">3</td><td style="text-align: center;">18.5</td><td style="text-align: center;">84.0</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">4</td><td style="text-align: center;">62.0</td><td style="text-align: center;">4.4</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">5</td><td style="text-align: center;">41.5</td><td style="text-align: center;">24.5</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">6</td><td style="text-align: center;">2.0</td><td style="text-align: center;">91.2</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">7</td><td style="text-align: center;">82.0</td><td style="text-align: center;">38.0</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">8</td><td style="text-align: center;">27.6</td><td style="text-align: center;">79.7</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">9</td><td style="text-align: center;">99.1</td><td style="text-align: center;">2.2</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">10</td><td style="text-align: center;">51.4</td><td style="text-align: center;">83.8</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">11</td><td style="text-align: center;">8.6</td><td style="text-align: center;">1.6</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">12</td><td style="text-align: center;">22.5</td><td style="text-align: center;">74.1</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">13</td><td style="text-align: center;">51.8</td><td style="text-align: center;">20.2</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">14</td><td style="text-align: center;">4.1</td><td style="text-align: center;">86.9</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">15</td><td style="text-align: center;">62.2</td><td style="text-align: center;">90.1</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">16</td><td style="text-align: center;">89.9</td><td style="text-align: center;">2.2</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">17</td><td style="text-align: center;">41.6</td><td style="text-align: center;">91.5</td><td style="text-align: center;">0</td></tr>
+  <tr><td style="text-align: center;">18</td><td style="text-align: center;">56.2</td><td style="text-align: center;">31.6</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">19</td><td style="text-align: center;">4.1</td><td style="text-align: center;">28.5</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">20</td><td style="text-align: center;">95.1</td><td style="text-align: center;">22.5</td><td style="text-align: center;">1</td></tr>
+  <tr><td style="text-align: center;">21</td><td style="text-align: center;">81.0</td><td style="text-align: center;">19.2</td><td style="text-align: center;">1</td></tr>
+</tbody>
+</table>
+
+We can now make a scatter plot of the last two columns, with difference in commute times on the X-axis and the commuters' choices on the Y-axis.
+
+![Scatter plot showing the relationship between commute time differences and mode choice. When driving takes longer than the bus (positive differences), commuters tend to choose the bus. When the bus takes longer (negative differences), commuters tend to drive.](figures/commute_scatter.png){#fig-commute-scatter fig-align="center" width="85%"}
+
+Our task is to model this relationship: to understand how the difference in commute time influences the probability that someone will choose transit. To do this, I want to bring you on a brief historical journey.
+
+## A Problem of Transportation Planning
+
+In the mid-1960s, traffic congestion in the Bay Area had reached a critical juncture. The California Highway Commission faced a fundamental decision: should they continue investing in freeway expansion, or could a new mass transit system offer a better path forward? They proposed an ambitious solution—a network of buses and rail that would connect the region, fundamentally reshaping how people commuted.
+
+But there was a problem. Before committing billions in public resources, the Commission needed to answer a deceptively simple question: *How many people would actually use this system?*
+
+In 1969, with the first BART station under construction, the Commission faced a pilot phase evaluation. They needed to estimate ridership—not based on hunches or optimistic projections, but on actual data about people's choices. So they conducted an extensive survey of Bay Area residents, asking a seemingly straightforward question: *Would you take the bus instead of driving?* 
+
+Yes or no.
+
+This binary question—a dichotomous choice—would unlock something far more significant than transit planning. It would lead to the discovery of a new statistical framework that would transform how economists, marketers, and policymakers understand decision-making itself.
+
+## The Birth of a Framework: Dan McFadden's Insight
+
+The Commission's first instinct was to use standard regression—treating the yes/no responses as if they were continuous measurements. Using this linear probability model, they estimated that about 15% of Bay Area residents would use the new transit system.
+
+But then they hired a young economist named Dan McFadden, recently arrived at UC Berkeley. McFadden looked at the problem differently. He recognized something fundamental: when people make discrete choices—yes or no, use transit or drive, buy or don't buy—the standard tools of regression analysis were fundamentally mismatched to the problem.
+
+McFadden developed a new approach using what he called *latent variable models*. The insight was elegant: behind every observed choice lies an unobserved psychological disposition. When someone decides whether to take the bus, they're processing information about commute time, cost, convenience, and comfort—all of which feed into a latent evaluation of the option. When that latent evaluation exceeds some threshold, they choose to use transit.
+
+Using this framework, McFadden predicted that only about 6.3% of residents would use BART. His colleagues dismissed this as too pessimistic. Yet when BART opened and ridership was measured, it came in at 6.2%—remarkably close to McFadden's prediction.
+
+This work on discrete choice modeling was so significant that in 2000—more than three decades later—McFadden was awarded the Nobel Prize in Economics. The Nobel citation recognized his contribution: *"he showed how to statistically handle fundamental aspects of microdata, namely data on the most important decisions we make in life: the choice of education, occupation, place of residence, marital status, number of children, so called discrete choices."*
+
+Today, the methods McFadden pioneered are used everywhere: predicting consumer behavior, understanding labor market decisions, analyzing election outcomes, and evaluating policy interventions.
+
+## Back to Boston: Understanding Commuting Choices
+
+The data we plotted above tell a clear visual story. When the difference in commute time favors driving (negative values), people drive. When the difference favors the bus (positive values), people take transit. Yet there's variation even within these patterns—some people take the bus despite longer commute times, and others drive even when the bus would be faster.
+
+So let's get on with our task. We will build a model that answers the following question: If the commute time by transit could be reduce, by how much would the probability that someone will choose transit increase?
+
+## The Binary Probability Function
+
+To begin, let's establish some basic foundations. When people make dichotomous (two-choice) decisions, we can describe the outcome using the **Bernoulli distribution**.
+
+::: {.callout-important}
+## The Bernoulli Distribution
+
+For a dichotomous outcome $Y$ that takes the value 1 with probability $p$ and the value 0 with probability $(1-p)$, the probability function is:
+
+$$f(y) = p^y(1-p)^{1-y}$$
+
+The expected value of $Y$ is simply:
+
+$$E(Y) = (1-p) 	imes 0 + p 	imes 1 = p$$
+:::
+
+In our commuting example, $Y = 1$ represents choosing transit and $Y = 0$ represents choosing a car. The probability $p$ represents the probability that an individual will choose transit, given their specific circumstances.
+
+Following standard econometric practice, we decompose the observed outcome into a deterministic part (what we can predict) and a stochastic part (random variation):
+
+$$Y_i = p_i + psilon_i$$
+
+where $p_i$ is the predicted probability for individual $i$ and $psilon_i$ is the error term.
+
+The key question becomes: **How does the difference in commute times relate to $p$?**
+
+## The Linear Probability Model: A First Attempt
+
+The most straightforward approach is the **Linear Probability Model (LPM)**, which assumes a linear relationship between the commute time difference and the probability of choosing transit:
+
+$$p_i = eta_0 + eta_1 

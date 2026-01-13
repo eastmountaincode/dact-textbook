@@ -87,10 +87,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        const profileData = await fetchProfile(session.user.id);
-        setProfile(profileData);
-        const role = await fetchUserRole(session.user.id);
-        setUserRole(role);
+        try {
+          const profileData = await fetchProfile(session.user.id);
+          setProfile(profileData);
+          const role = await fetchUserRole(session.user.id);
+          setUserRole(role);
+        } catch (err) {
+          console.error('Error fetching profile/role:', err);
+        }
       }
 
       setIsLoading(false);
@@ -105,14 +109,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          // On sign in, sync profile data from user metadata (for new users after email confirmation)
-          if (event === 'SIGNED_IN') {
-            await syncProfileFromMetadata(session.user);
+          try {
+            // On sign in, sync profile data from user metadata (for new users after email confirmation)
+            if (event === 'SIGNED_IN') {
+              await syncProfileFromMetadata(session.user);
+            }
+            const profileData = await fetchProfile(session.user.id);
+            setProfile(profileData);
+            const role = await fetchUserRole(session.user.id);
+            setUserRole(role);
+          } catch (err) {
+            console.error('Error in auth state change:', err);
           }
-          const profileData = await fetchProfile(session.user.id);
-          setProfile(profileData);
-          const role = await fetchUserRole(session.user.id);
-          setUserRole(role);
         } else {
           setProfile(null);
           setUserRole(null);

@@ -29,14 +29,14 @@ export default function GatedContent({ chapterTitle }: GatedContentProps) {
         <div className="flex gap-4 flex-wrap">
           <Link
             href="/login"
-            className="px-6 py-3 rounded-lg font-medium text-white"
+            className="px-6 py-3 rounded-lg font-medium text-white hover:opacity-90"
             style={{ backgroundColor: 'var(--berkeley-blue)' }}
           >
             Log In
           </Link>
           <Link
             href="/signup"
-            className="px-6 py-3 rounded-lg font-medium"
+            className="px-6 py-3 rounded-lg font-medium hover:opacity-90"
             style={{
               backgroundColor: 'var(--california-gold)',
               color: 'var(--berkeley-blue)'

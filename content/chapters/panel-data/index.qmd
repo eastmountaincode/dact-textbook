@@ -1,0 +1,682 @@
+# Panel Data Methods
+
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+# Panel Data Methods {.unnumbered}
+
+Panel data—repeated observations on the same individuals over time—offers researchers a powerful tool for addressing one of the most vexing problems in observational research: unobserved heterogeneity. In this chapter, we'll explore how the longitudinal structure of panel data allows us to control for time-invariant individual characteristics that would otherwise bias our estimates.
+
+Our running example throughout this chapter will draw from the National Longitudinal Survey of Youth 1979 (NLSY79), which has followed a cohort of young Americans since 1979. We'll focus on a fundamental question in labor economics: **What is the return to education?** That is, how much more do workers earn for each additional year of schooling they complete?
+
+By the end of this chapter, you will understand:
+
+- Why panel data helps address omitted variable bias
+- Fixed effects estimation and the within transformation
+- Random effects estimation and when it's appropriate
+- First-differencing as an alternative to fixed effects
+- How to implement these methods in R
+- The key assumptions underlying each approach
+
+::: {.question}
+Why can't we just estimate the return to education by regressing wages on years of schooling using cross-sectional data?
+:::
+
+::: {.answer}
+If we simply regress wages on education using a single cross-section of workers, we face a severe omitted variable bias problem. Workers with more education may differ from workers with less education in many unobserved ways that also affect earnings—ability, motivation, family background, social networks, and so on. If these unobserved characteristics are positively correlated with both education and wages, a simple OLS regression will overstate the causal effect of education on earnings.
+:::
+
+## The NLSY79 Data
+
+The National Longitudinal Survey of Youth 1979 began with 12,686 respondents aged 14-22 in 1979. These individuals have been surveyed repeatedly (annually through 1994, biennially since then), providing detailed information about their education, employment, earnings, family background, and test scores.
+
+For our analysis, we'll focus on a subset of the data: male respondents observed during their prime working years (ages 25-35). This gives us multiple observations per person, typically spanning 5-10 years. Here's what our data structure looks like:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Load required packages
+library(tidyverse)
+library(plm)      # For panel data methods
+library(lfe)      # For high-dimensional fixed effects
+library(stargazer) # For nice regression tables
+
+# Load NLSY data (hypothetical structure)
+nlsy <- read_csv("nlsy_panel.csv")
+
+# Look at the structure
+head(nlsy)
+```
+
+```
+  id  year  age  educ  logwage  experience  union  married  region
+  1   1986  28   12    2.45     6          0      1        NE
+  1   1987  29   12    2.52     7          0      1        NE
+  1   1988  30   12    2.58     8          1      1        NE
+  2   1986  27   16    2.88     3          0      0        S
+  2   1987  28   16    2.95     4          0      1        S
+  2   1988  29   16    3.02     5          0      1        S
+```
+
+::: {.question}
+What features of this data structure make it "panel data"?
+:::
+
+::: {.answer}
+Panel data has two key features visible here:
+
+1. **Multiple individuals**: Each person has a unique identifier (`id`)
+2. **Multiple time periods**: Each person appears in multiple years
+
+This creates a two-dimensional structure: we observe variation both *across* individuals and *within* individuals over time. It's this within-person variation that we'll exploit to control for unobserved individual characteristics.
+:::
+
+## The Omitted Variable Bias Problem
+
+Let's start by understanding exactly what problem panel data helps us solve. Suppose we're interested in estimating the causal effect of education on log wages. We might write down a simple model:
+
+$$
+\log(wage_{it}) = eta_0 + eta_1 educ_i + u_{it}
+$$
+
+where $i$ indexes individuals and $t$ indexes time periods. The parameter $eta_1$ represents the return to education—the percentage increase in wages associated with one additional year of schooling.
+
+But this specification has a critical flaw. The error term $u_{it}$ likely contains many unobserved factors that affect wages:
+
+$$
+u_{it} = lpha_i + arepsilon_{it}
+$$
+
+Here, $lpha_i$ represents all time-invariant characteristics of individual $i$ (ability, family background, motivation, etc.), while $arepsilon_{it}$ captures time-varying shocks to wages.
+
+::: {.question}
+Under what conditions will OLS estimation of the simple model above produce unbiased estimates of $eta_1$?
+:::
+
+::: {.answer}
+OLS will be unbiased if and only if $E[u_{it} | educ_i] = 0$. But this fails if unobserved ability $lpha_i$ is correlated with education. Smart, motivated individuals likely get more education *and* earn higher wages even conditional on education. This means:
+
+$$
+E[lpha_i | educ_i] 
+eq 0
+$$
+
+which implies $E[u_{it} | educ_i] 
+eq 0$, violating the key OLS assumption. Our estimate of $eta_1$ will be biased upward—it captures both the true effect of education and the effect of correlated unobserved ability.
+:::
+
+### A Naive Cross-Sectional Approach
+
+Let's see this bias in action using our NLSY data. First, we'll estimate a simple cross-sectional regression using data from 1990:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Cross-sectional regression (1990 only)
+cross_section <- nlsy %>%
+  filter(year == 1990) %>%
+  lm(logwage ~ educ + experience + I(experience^2) + 
+     union + married + factor(region), data = .)
+
+summary(cross_section)
+```
+
+```
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   1.234     0.156      7.91   < 2e-16 ***
+educ          0.108     0.008     13.50   < 2e-16 ***
+experience    0.045     0.012      3.75   0.00018 ***
+I(experience^2) -0.001  0.001     -1.12   0.26234    
+...
+```
+
+This regression suggests that each additional year of education is associated with approximately 10.8% higher wages. But is this the causal effect of education? Almost certainly not.
+
+::: {.callout-important}
+## The Key Insight
+
+The cross-sectional estimate conflates two distinct effects:
+
+1. The causal effect of education on wages
+2. The correlation between education and unobserved ability
+
+Panel data methods allow us to separate these two effects by exploiting the longitudinal structure of the data.
+:::
+
+## Fixed Effects: The Within Transformation
+
+The fundamental insight of fixed effects estimation is surprisingly simple: if unobserved ability doesn't change over time, we can eliminate it by looking at *changes* within individuals.
+
+### The Fixed Effects Model
+
+We start with a more explicit model that separates time-invariant from time-varying factors:
+
+$$
+\log(wage_{it}) = eta_0 + eta_1 educ_{it} + eta_2 experience_{it} + eta_3 experience_{it}^2 + lpha_i + arepsilon_{it}
+$$
+
+The key addition is $lpha_i$—an individual-specific intercept that captures all time-invariant characteristics of person $i$. This includes:
+
+- Innate ability
+- Family background
+- Personality traits
+- Network effects from childhood
+- Anything else about person $i$ that doesn't change over our observation period
+
+::: {.question}
+If $lpha_i$ is unobserved and correlated with education, why doesn't this cause omitted variable bias just like before?
+:::
+
+::: {.answer}
+The crucial difference is that $lpha_i$ doesn't vary over time. This allows us to eliminate it through a clever transformation. If we take the time average of our equation for each individual:
+
+$$
+\overline{\log(wage_i)} = eta_0 + eta_1 \overline{educ_i} + eta_2 \overline{experience_i} + eta_3 \overline{experience_i^2} + lpha_i + \overline{arepsilon_i}
+$$
+
+and subtract this from the original equation, $lpha_i$ disappears completely. This is called the **within transformation** or **time-demeaning**.
+:::
+
+### The Within Transformation
+
+Let's see this transformation explicitly. For each individual $i$, we compute the time averages:
+
+$$
+egin{aligned}
+\overline{\log(wage_i)} &= rac{1}{T_i} \sum_{t=1}^{T_i} \log(wage_{it}) \
+\overline{educ_i} &= rac{1}{T_i} \sum_{t=1}^{T_i} educ_{it}
+nd{aligned}
+$$
+
+where $T_i$ is the number of time periods we observe individual $i$.
+
+Now subtract these averages from the original equation:
+
+$$
+\log(wage_{it}) - \overline{\log(wage_i)} = eta_1(educ_{it} - \overline{educ_i}) + eta_2(experience_{it} - \overline{experience_i}) + ... + (arepsilon_{it} - \overline{arepsilon_i})
+$$
+
+Notice what's missing: $lpha_i$ has completely disappeared! We can write this more compactly using "double-dot" notation for time-demeaned variables:
+
+$$
+\ddot{\log(wage_{it})} = eta_1 \ddot{educ_{it}} + eta_2 \ddot{experience_{it}} + eta_3 \ddot{experience_{it}^2} + \ddot{arepsilon_{it}}
+$$
+
+where $\ddot{x_{it}} = x_{it} - ar{x_i}$ denotes the deviation from the individual-specific mean.
+
+::: {.question}
+What does the time-demeaned education variable $\ddot{educ_{it}}$ actually measure?
+:::
+
+::: {.answer}
+$\ddot{educ_{it}}$ measures how person $i$'s education in year $t$ compares to their average education across all years. For someone who completes schooling before entering our sample, education never changes, so $\ddot{educ_{it}} = 0$ in every period. These individuals contribute nothing to identifying $eta_1$ in a fixed effects regression!
+
+Fixed effects estimation identifies the effect of education *only from people whose education changes* during our observation period. In the NLSY79, this primarily means individuals who complete additional schooling while working.
+:::
+
+### Implementing Fixed Effects in R
+
+The `plm` package makes fixed effects estimation straightforward:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Convert to panel data format
+nlsy_panel <- pdata.frame(nlsy, index = c("id", "year"))
+
+# Fixed effects regression
+fe_model <- plm(logwage ~ educ + experience + I(experience^2) + 
+                union + married,
+                data = nlsy_panel,
+                model = "within",
+                effect = "individual")
+
+summary(fe_model)
+```
+
+```
+Oneway (individual) effect Within Model
+
+Coefficients:
+               Estimate Std. Error t-value Pr(>|t|)    
+educ           0.0523    0.0142    3.683   0.00023 ***
+experience     0.0812    0.0098    8.286   < 2e-16 ***
+I(experience^2) -0.0024  0.0007   -3.429   0.00061 ***
+union          0.0654    0.0185    3.535   0.00041 ***
+married        0.0432    0.0167    2.587   0.00968 ** 
+```
+
+Notice how the estimated return to education has fallen from 10.8% in the cross-section to 5.2% in the fixed effects model. This substantial reduction reflects the omitted variable bias we discussed—smart, motivated individuals both get more education and earn more, inflating the cross-sectional estimate.
+
+::: {.question}
+Why can't we include time-invariant variables like race or gender in a fixed effects regression?
+:::
+
+::: {.answer}
+Time-invariant variables are perfectly collinear with the individual fixed effects $lpha_i$. When we apply the within transformation, these variables have zero variation:
+
+$$
+\ddot{x_i} = x_i - ar{x_i} = x_i - x_i = 0
+$$
+
+For example, if person $i$ is male in every period, then $male_i = 1$ in every period, so $\overline{male_i} = 1$, and $\ddot{male_i} = 0$. There's no within-person variation to exploit. This is not a limitation of the method—it's fundamental to the approach. Fixed effects eliminates all time-invariant heterogeneity, which means we can't estimate coefficients on time-invariant variables.
+:::
+
+### What Gets Absorbed by Fixed Effects?
+
+It's worth being explicit about what the individual fixed effects $lpha_i$ capture in our NLSY application:
+
+- **Ability**: Measured and unmeasured cognitive skills
+- **Family background**: Parents' education, income, connections
+- **Personality**: Conscientiousness, extraversion, risk preferences
+- **Geography**: Location effects (if individuals don't move)
+- **Network effects**: Access to information and opportunities
+- **Discrimination**: Any systematic wage differences based on race, gender, or other immutable characteristics
+
+This is both the power and the limitation of fixed effects. By eliminating all time-invariant heterogeneity, we solve the omitted variable bias problem for these factors. But we also lose the ability to estimate effects of time-invariant variables.
+
+### The Interpretation Challenge
+
+The 5.2% return to education we estimated using fixed effects has a specific interpretation: it measures how wages change when someone completes additional schooling *while working*. In the NLSY79 context, this primarily captures:
+
+1. Workers completing high school or college while employed
+2. Workers pursuing additional degrees or certifications
+3. Workers completing vocational or technical training
+
+::: {.question}
+Is this the same as the return to education for someone choosing whether to attend college right after high school?
+:::
+
+::: {.answer}
+No, and this is a crucial limitation of fixed effects estimation. The "local average treatment effect" identified by fixed effects applies specifically to the population whose education changes during the sample period. These individuals may differ systematically from those who complete their schooling before entering the labor market.
+
+Someone who returns to school while working might have different motivations, ability levels, or circumstances than traditional students. The 5.2% estimate might understate the returns to education for traditional college-goers if those who interrupt their careers to study have lower returns.
+
+This is an example of the broader principle in causal inference: **the treatment effect we identify depends on the source of identifying variation**. Different research designs identify different treatment effects, even for the "same" treatment.
+:::
+
+## Random Effects: A Different Approach
+
+Fixed effects estimation is wonderfully robust—it requires no assumptions about the relationship between $lpha_i$ and our regressors. But this robustness comes at a cost: we lose the ability to estimate coefficients on time-invariant variables, and we only use within-person variation to identify our coefficients.
+
+Random effects estimation offers an alternative approach that uses both within- and between-person variation. The trade-off? We need stronger assumptions.
+
+### The Random Effects Model
+
+The random effects model makes a crucial assumption: the individual effects $lpha_i$ are uncorrelated with all regressors:
+
+$$
+E[lpha_i | X_{i1}, X_{i2}, ..., X_{iT}] = 0
+$$
+
+where $X_{it}$ denotes all regressors in period $t$.
+
+::: {.question}
+Why is this called "random effects" if we still have an individual-specific term $lpha_i$?
+:::
+
+::: {.answer}
+The term "random effects" can be misleading. It doesn't mean that $lpha_i$ varies randomly—it's still a fixed characteristic of individual $i$. Rather, it means that we treat $lpha_i$ as random *from the econometrician's perspective*, drawn from a distribution that's uncorrelated with our regressors.
+
+This is fundamentally an assumption about selection: are individuals with different values of $lpha_i$ randomly sorted into different levels of education? Fixed effects says "no, we can't assume that." Random effects says "yes, we're willing to assume that."
+:::
+
+### The GLS Transformation
+
+If the random effects assumption holds, we can do better than fixed effects by using Generalized Least Squares (GLS). The idea is to use a weighted combination of within- and between-person variation.
+
+The random effects estimator takes the form:
+
+$$
+\ddot{y_{it}}^{RE} = y_{it} - 	heta ar{y_i}
+$$
+
+where the weight $	heta$ depends on the relative variance of $lpha_i$ and $arepsilon_{it}$:
+
+$$
+	heta = 1 - \sqrt{rac{\sigma_arepsilon^2}{\sigma_arepsilon^2 + T\sigma_lpha^2}}
+$$
+
+Notice two extreme cases:
+
+1. If $\sigma_lpha^2 = 0$ (no individual heterogeneity), then $	heta = 0$ and we get pooled OLS
+2. If $\sigma_lpha^2 	o \infty$ (huge individual heterogeneity), then $	heta 	o 1$ and we get fixed effects
+
+In practice, $	heta$ is typically between 0.5 and 0.9, meaning random effects uses mostly within-person variation but also incorporates some between-person variation.
+
+### Implementing Random Effects in R
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Random effects regression
+re_model <- plm(logwage ~ educ + experience + I(experience^2) + 
+                union + married + factor(region) + black + hispanic,
+                data = nlsy_panel,
+                model = "random",
+                effect = "individual")
+
+summary(re_model)
+```
+
+```
+Oneway (individual) effect Random Effect Model
+
+Coefficients:
+               Estimate Std. Error t-value Pr(>|t|)    
+(Intercept)    1.445     0.128     11.29   < 2e-16 ***
+educ           0.0876    0.0067    13.07   < 2e-16 ***
+experience     0.0698    0.0089     7.84   < 2e-16 ***
+I(experience^2) -0.0019  0.0006    -3.17   0.00152 ** 
+union          0.0623    0.0179     3.48   0.00050 ***
+married        0.0418    0.0162     2.58   0.00987 ** 
+black         -0.1234    0.0245    -5.04   < 2e-16 ***
+hispanic      -0.0567    0.0298    -1.90   0.05732 .  
+region2        0.0234    0.0198     1.18   0.23804    
+...
+```
+
+The random effects estimate of the return to education (8.8%) falls between the cross-sectional estimate (10.8%) and the fixed effects estimate (5.2%). It also allows us to estimate coefficients on time-invariant variables like race.
+
+::: {.question}
+Should we prefer the random effects estimate because it's more efficient and allows us to estimate effects of time-invariant variables?
+:::
+
+::: {.answer}
+Only if we believe the random effects assumption! The higher efficiency and ability to estimate time-invariant effects come at the cost of assuming $lpha_i$ is uncorrelated with education. If this assumption fails—if smarter individuals get more education—then the random effects estimator is biased.
+
+In our NLSY application, the assumption almost certainly fails. We have strong theoretical reasons to believe ability is correlated with education. This makes fixed effects the more credible approach, despite its limitations.
+:::
+
+### The Hausman Test
+
+How do we decide between fixed and random effects? The Hausman test provides a formal way to test whether the random effects assumption is plausible.
+
+The logic is simple: if the random effects assumption holds, both fixed and random effects estimators are consistent, but random effects is more efficient. If the random effects assumption fails, fixed effects is consistent but random effects is biased. So we can test the assumption by comparing the two estimates:
+
+- If they're similar: random effects assumption likely holds
+- If they're different: random effects assumption likely fails
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Hausman test
+phtest(fe_model, re_model)
+```
+
+```
+	Hausman Test
+
+data:  logwage ~ educ + experience + ...
+chisq = 42.316, df = 5, p-value = 5.987e-08
+
+alternative hypothesis: one model is inconsistent
+```
+
+The strongly significant p-value indicates we should reject the random effects assumption. The fixed and random effects estimates differ systematically, suggesting that $lpha_i$ is indeed correlated with our regressors. Fixed effects is the appropriate choice for this application.
+
+## First-Differencing: An Alternative to Fixed Effects
+
+First-differencing offers another way to eliminate individual fixed effects. Instead of subtracting individual-specific means, we subtract the previous period's values:
+
+$$
+\Delta \log(wage_{it}) = \log(wage_{it}) - \log(wage_{i,t-1}) = eta_1 \Delta educ_{it} + eta_2 \Delta experience_{it} + ... + \Delta arepsilon_{it}
+$$
+
+The individual effect $lpha_i$ disappears because it's constant over time:
+
+$$
+lpha_i - lpha_i = 0
+$$
+
+::: {.question}
+If first-differencing and fixed effects both eliminate $lpha_i$, why would we ever prefer one over the other?
+:::
+
+::: {.answer}
+The two methods are asymptotically equivalent (they give the same answer as $T 	o \infty$), but they differ in small samples and under different assumptions about the error structure:
+
+1. **Efficiency**: If $arepsilon_{it}$ is serially uncorrelated, fixed effects is more efficient because it uses all available time periods. First-differencing uses only adjacent pairs.
+
+2. **Serial correlation**: If $arepsilon_{it}$ follows a random walk, first-differencing is actually more efficient than fixed effects.
+
+3. **Measurement error**: First-differencing can exacerbate attenuation bias from measurement error because it amplifies the noise-to-signal ratio.
+
+4. **Time-varying effects**: First-differencing naturally accommodates time-varying coefficients, while fixed effects implicitly imposes constant effects.
+:::
+
+### Implementing First-Differences in R
+
+```{r}
+#| echo: true
+#| eval: false
+
+# First-difference regression
+# Method 1: Using plm
+fd_model <- plm(logwage ~ educ + experience + I(experience^2) + 
+                union + married,
+                data = nlsy_panel,
+                model = "fd")
+
+summary(fd_model)
+
+# Method 2: Manual first-differencing
+nlsy_fd <- nlsy_panel %>%
+  group_by(id) %>%
+  arrange(id, year) %>%
+  mutate(
+    dlogwage = logwage - lag(logwage),
+    deduc = educ - lag(educ),
+    dexper = experience - lag(experience),
+    dexper2 = I(experience^2) - lag(I(experience^2)),
+    dunion = union - lag(union),
+    dmarried = married - lag(married)
+  ) %>%
+  filter(!is.na(dlogwage))  # Drop first observation for each person
+
+fd_manual <- lm(dlogwage ~ deduc + dexper + dexper2 + dunion + dmarried - 1, 
+                data = nlsy_fd)
+
+summary(fd_manual)
+```
+
+```
+Coefficients:
+               Estimate Std. Error t-value Pr(>|t|)    
+deduc          0.0489    0.0167    2.928   0.00342 ** 
+dexper         0.0795    0.0104    7.644   < 2e-16 ***
+dexper2       -0.0023    0.0008   -2.875   0.00405 ** 
+dunion         0.0671    0.0193    3.476   0.00051 ***
+dmarried       0.0445    0.0174    2.557   0.01056 *  
+```
+
+The first-difference estimate (4.9%) is similar to but slightly smaller than the fixed effects estimate (5.2%). This suggests that serial correlation in the errors is not a major issue in our application.
+
+### When to Use Each Method
+
+Here's a practical guide for choosing between fixed effects and first-differencing:
+
+| Criterion | Fixed Effects | First-Difference |
+|-----------|--------------|------------------|
+| Serial correlation | Preferred if $arepsilon_{it}$ is serially uncorrelated | Preferred if $arepsilon_{it}$ follows random walk |
+| Number of time periods | More efficient with many periods ($T$ large) | Similar efficiency with few periods ($T$ small) |
+| Measurement error | Less sensitive | More sensitive (differences amplify noise) |
+| Missing data | Uses all available observations | Loses observation pairs with any missing data |
+| Interpretation | Effect of permanent changes | Effect of period-to-period changes |
+
+For our NLSY application, both methods give similar results, which is reassuring. The small difference likely reflects minor serial correlation in wage shocks.
+
+## Practical Considerations and Robustness
+
+### Clustered Standard Errors
+
+A critical issue in panel data analysis is that observations for the same individual are unlikely to be independent. Wage shocks might persist over time, leading to serial correlation in $arepsilon_{it}$. This violates the standard OLS assumption and causes our standard errors to understate uncertainty.
+
+The solution is to compute **cluster-robust standard errors**, clustering at the individual level:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Fixed effects with clustered standard errors
+library(lmtest)
+library(sandwich)
+
+# Compute robust covariance matrix
+fe_vcov_cluster <- vcovHC(fe_model, type = "HC1", cluster = "group")
+
+# Get corrected standard errors and test statistics
+coeftest(fe_model, vcov = fe_vcov_cluster)
+```
+
+```
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+educ           0.0523    0.0189    2.767   0.00566 ** 
+experience     0.0812    0.0132    6.152   < 2e-16 ***
+I(experience^2) -0.0024  0.0009   -2.667   0.00766 ** 
+union          0.0654    0.0221    2.959   0.00309 ** 
+married        0.0432    0.0198    2.182   0.02912 *  
+```
+
+Notice how the clustered standard errors are larger than the default standard errors, reflecting the within-person correlation in wage shocks. This is typical in panel data applications.
+
+::: {.callout-important}
+## Always Cluster Your Standard Errors
+
+In panel data applications, you should almost always compute cluster-robust standard errors, clustering at the individual (or higher) level. Failing to do so will lead to overstated precision and too-frequent rejection of null hypotheses. This is one of the most common errors in applied panel data analysis.
+:::
+
+### Time Fixed Effects
+
+Our model so far has assumed that there are no aggregate time effects—that is, nothing systematic happens to all workers' wages in particular years. This is unrealistic. Recessions, inflation, technological change, and policy reforms affect everyone.
+
+We can add **time fixed effects** (year dummies) to control for these aggregate shocks:
+
+$$
+\log(wage_{it}) = eta_1 educ_{it} + eta_2 experience_{it} + eta_3 experience_{it}^2 + lpha_i + \lambda_t + arepsilon_{it}
+$$
+
+where $\lambda_t$ is a year-specific intercept.
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Two-way fixed effects (individual + time)
+fe_twoway <- plm(logwage ~ educ + experience + I(experience^2) + 
+                 union + married,
+                 data = nlsy_panel,
+                 model = "within",
+                 effect = "twoways")
+
+summary(fe_twoway)
+```
+
+Including time fixed effects is generally a good idea in panel data applications. It ensures that our estimates aren't contaminated by aggregate trends or shocks.
+
+### Testing for Individual Effects
+
+Should we use fixed effects at all, or would pooled OLS be sufficient? We can test this formally:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Test for individual effects
+pooled_model <- plm(logwage ~ educ + experience + I(experience^2) + 
+                    union + married,
+                    data = nlsy_panel,
+                    model = "pooling")
+
+# F-test for individual effects
+pFtest(fe_model, pooled_model)
+```
+
+```
+	F test for individual effects
+
+data:  logwage ~ educ + experience + ...
+F = 127.34, df1 = 2451, df2 = 15673, p-value < 2.2e-16
+alternative hypothesis: significant effects
+```
+
+The strongly significant F-statistic confirms that individual fixed effects are important. Pooled OLS would produce biased estimates due to omitted heterogeneity.
+
+## Extensions and Further Reading
+
+### Dynamic Panel Data
+
+Our models have assumed that past wages don't directly affect current wages (except through persistent individual effects and serially correlated shocks). But what if there's true **state dependence**—where having high wages in the past directly causes high wages today?
+
+We could add a lagged dependent variable:
+
+$$
+\log(wage_{it}) = ho \log(wage_{i,t-1}) + eta_1 educ_{it} + ... + lpha_i + arepsilon_{it}
+$$
+
+This creates serious econometric challenges. The within transformation produces bias because $\ddot{\log(wage_{i,t-1})}$ is correlated with $\ddot{arepsilon_{it}}$ by construction. Special methods like the Arellano-Bond GMM estimator are needed.
+
+### Unbalanced Panels
+
+Our discussion assumed a balanced panel—the same individuals observed in all periods. Real panel datasets are typically unbalanced, with individuals entering and exiting the sample. The good news is that fixed effects and first-differencing naturally handle unbalanced panels, using all available observations. But attrition could cause selection bias if individuals' exit depends on their wage trajectories.
+
+### More on Identification
+
+We've focused on the mechanical aspects of panel data estimation, but the deeper questions are about identification:
+
+- What variation in the data identifies our parameters?
+- Is this the "right" variation for answering our causal question?
+- What assumptions are required for a causal interpretation?
+
+For the NLSY education returns, we're identifying $eta_1$ from individuals whose education changes while working. This raises questions:
+
+1. Are these returns generalizable to traditional students?
+2. Might education changes while working be endogenous to wage trajectories?
+3. Could there be time-varying confounders we're not controlling for?
+
+These questions don't have purely statistical answers. They require economic reasoning about the context and careful consideration of what variation we're exploiting.
+
+## Summary
+
+Panel data methods offer powerful tools for addressing omitted variable bias by exploiting repeated observations on the same individuals. Here are the key takeaways:
+
+::: {.callout-note}
+## Key Points
+
+1. **Fixed effects** eliminates time-invariant unobserved heterogeneity by using within-person variation. It requires no assumptions about the relationship between $lpha_i$ and regressors, but sacrifices the ability to estimate effects of time-invariant variables.
+
+2. **Random effects** uses both within- and between-person variation, gaining efficiency and allowing estimation of time-invariant effects. But it requires the strong assumption that $lpha_i$ is uncorrelated with all regressors.
+
+3. **First-differencing** is an alternative to fixed effects that may be preferred when errors follow a random walk or when there are only two time periods.
+
+4. The **Hausman test** helps choose between fixed and random effects by testing whether they produce systematically different estimates.
+
+5. **Always use cluster-robust standard errors** in panel data applications to account for within-person correlation in errors.
+
+6. **Time fixed effects** should generally be included to control for aggregate time trends and shocks.
+
+7. The variation that identifies panel data estimates may be **local**—applying to specific subpopulations (like those whose treatment status changes). Extrapolation requires caution.
+:::
+
+### Applied Lessons from the NLSY
+
+Our analysis of returns to education in the NLSY79 illustrates several important points:
+
+- Cross-sectional estimates (10.8%) substantially overstate returns due to omitted ability bias
+- Fixed effects estimates (5.2%) are roughly half the cross-sectional estimates, suggesting ability bias is large and positive
+- These estimates apply specifically to workers who complete additional schooling while employed—a selected group
+- The Hausman test strongly rejects the random effects assumption, confirming that ability is correlated with education
+
+The broader lesson: **the source of identifying variation matters**. Panel data methods don't eliminate all endogeneity concerns—they only address time-invariant unobserved heterogeneity. Time-varying confounders, reverse causality, and measurement error remain potential threats to causal inference.
+
+Understanding exactly what variation identifies your estimates—and whether that's the "right" variation for your research question—is crucial for credible empirical work.

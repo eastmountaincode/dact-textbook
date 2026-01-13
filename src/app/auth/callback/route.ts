@@ -10,8 +10,32 @@ export async function GET(request: Request) {
   const errorDescription = requestUrl.searchParams.get('error_description');
   const origin = requestUrl.origin;
 
+  const cookieStore = await cookies();
+
+  // Create supabase client to check session
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll() {
+          // Read-only for checking session
+        },
+      },
+    }
+  );
+
   // Handle errors from Supabase (e.g., expired link)
   if (error) {
+    // Check if user is already logged in - if so, just redirect them
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      return NextResponse.redirect(`${origin}/chapter/welcome`);
+    }
+
     const errorMessage = errorDescription || error;
     return NextResponse.redirect(
       `${origin}/login?error=${encodeURIComponent(errorMessage)}`
@@ -19,17 +43,16 @@ export async function GET(request: Request) {
   }
 
   if (code) {
-    const cookieStore = await cookies();
+    // For password recovery, we need to set cookies so user can reset password
+    // For email confirmation (signup), we just confirm the email but don't log them in
+    const isRecovery = type === 'recovery';
 
-    // Create a response object to capture cookies
     const response = NextResponse.redirect(
-      type === 'recovery'
-        ? `${origin}/reset-password`
-        : `${origin}/auth/confirmed`
+      isRecovery ? `${origin}/reset-password` : `${origin}/auth/confirmed`
     );
 
-    // Create supabase client that sets cookies on the response
-    const supabase = createServerClient(
+    // Create supabase client - only set cookies for recovery flow
+    const supabaseWithCookies = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
@@ -38,18 +61,39 @@ export async function GET(request: Request) {
             return cookieStore.getAll();
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              response.cookies.set(name, value, options);
-            });
+            // Only set cookies for password recovery, not for signup confirmation
+            if (isRecovery) {
+              cookiesToSet.forEach(({ name, value, options }) => {
+                response.cookies.set(name, value, options);
+              });
+            }
           },
         },
       }
     );
 
-    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+    const { error: exchangeError } = await supabaseWithCookies.auth.exchangeCodeForSession(code);
 
-    // If token expired, exchangeError.message = "Token has expired" or similar
+    // If exchange failed (e.g., link already used), handle appropriately
     if (exchangeError) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Already logged in - just redirect them
+        return NextResponse.redirect(`${origin}/chapter/welcome`);
+      }
+
+      // Check if this is an "already used" or "expired" link error for signup confirmation
+      // These errors indicate the email was likely already confirmed
+      const errorLower = exchangeError.message.toLowerCase();
+      const isLinkUsedOrExpired = errorLower.includes('expired') ||
+                                   errorLower.includes('invalid') ||
+                                   errorLower.includes('already');
+
+      if (!isRecovery && isLinkUsedOrExpired) {
+        // For signup confirmation, show a friendly "already confirmed" message
+        return NextResponse.redirect(`${origin}/auth/confirmed?already=true`);
+      }
+
       return NextResponse.redirect(
         `${origin}/login?error=${encodeURIComponent(exchangeError.message)}`
       );
@@ -58,11 +102,12 @@ export async function GET(request: Request) {
     return response;
   }
 
-  // No code provided - redirect based on type
-  if (type === 'recovery') {
-    return NextResponse.redirect(`${origin}/reset-password`);
+  // No code provided - check if already logged in
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    return NextResponse.redirect(`${origin}/chapter/welcome`);
   }
 
-  // Default: redirect to confirmed page
-  return NextResponse.redirect(`${origin}/auth/confirmed`);
+  // Not logged in and no code - redirect to login
+  return NextResponse.redirect(`${origin}/login`);
 }

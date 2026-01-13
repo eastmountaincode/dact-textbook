@@ -5,6 +5,7 @@ import "katex/dist/katex.min.css";
 import { DevModeProvider } from "@/providers/DevModeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { AuthErrorHandler } from "@/components/AuthErrorHandler";
 
 const garamond = EB_Garamond({
   variable: "--font-garamond",
@@ -27,6 +28,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <DevModeProvider>
+              <AuthErrorHandler />
               {children}
             </DevModeProvider>
           </AuthProvider>

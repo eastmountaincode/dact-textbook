@@ -117,6 +117,30 @@ test.describe('Login Page', () => {
     await page.click('text=Create account');
     await expect(page).toHaveURL('/signup');
   });
+
+  test('logging in while already logged in switches to new account', async ({ page }) => {
+    // 1. Log in as student
+    await page.goto('/login');
+    await page.fill('input[type="email"]', TEST_USERS.student.email);
+    await page.fill('input[type="password"]', TEST_USERS.student.password);
+    await page.click('button[type="submit"]');
+    await expect(page).toHaveURL('/chapter/welcome', { timeout: 15000 });
+
+    // Verify logged in as student (check header shows first name)
+    await expect(page.locator(`text=${TEST_USERS.student.firstName}`)).toBeVisible();
+
+    // 2. Go to login page while logged in
+    await page.goto('/login');
+
+    // 3. Log in as admin
+    await page.fill('input[type="email"]', TEST_USERS.admin.email);
+    await page.fill('input[type="password"]', TEST_USERS.admin.password);
+    await page.click('button[type="submit"]');
+
+    // 4. Should be redirected to welcome and logged in as admin
+    await expect(page).toHaveURL('/chapter/welcome', { timeout: 15000 });
+    await expect(page.locator(`text=${TEST_USERS.admin.firstName}`)).toBeVisible();
+  });
 });
 
 // each test gets a fresh browser context

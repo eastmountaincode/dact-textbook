@@ -1,0 +1,8 @@
+# Bivariate regression
+
+
+This chapter is coming soon. Add your content here.
+
+::: {.callout-tip}
+You can add question/answer pairs, important boxes, videos, and other content following the same format as Chapter 1.
+:::

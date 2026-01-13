@@ -42,55 +42,6 @@
     "text": "Bivariate regression This chapter is coming soon. Add your content here. You can add question/answer pairs, important boxes, videos, and other content following the same format as Chapter 1."
   },
   {
-    "objectID": "bounding_outliers",
-    "href": "/chapter/bounding_outliers",
-    "title": "Bounding Outliers",
-    "section": "",
-    "text": "Bounding Outliers Understanding the behavior of extreme values, or outliers, is crucial in statistical analysis. In real-world data, we often encounter observations that lie far from the center of a distribution. While we may not know the exact probability of such extreme events, probability inequalities allow us to establish upper bounds on how likely they are to occur. This chapter introduces two fundamental inequalities—Markov’s inequality and Chebyshev’s inequality—that help us bound the probability of outliers using only basic distributional properties."
-  },
-  {
-    "objectID": "bounding_outliers#why-bounding-outliers-matters",
-    "href": "/chapter/bounding_outliers#why-bounding-outliers-matters",
-    "title": "Bounding Outliers",
-    "section": "Why Bounding Outliers Matters",
-    "text": "Why do we need mathematical tools to bound the probability of outliers? In many practical situations, we don’t know the complete probability distribution of a random variable. However, we often know simpler properties like the mean or variance. Probability inequalities allow us to make rigorous statements about tail probabilities (the likelihood of extreme values) using only this limited information. This is invaluable for risk assessment, quality control, and understanding the reliability of statistical estimates. Consider a manufacturing process where you’re monitoring the weight of products. You know the average weight is 500 grams, but you don’t know the full distribution of weights. If a product weighs 1000 grams or more, it might indicate a defect. How can you bound the probability of such an outlier? This is precisely the type of question that Markov’s inequality addresses."
-  },
-  {
-    "objectID": "bounding_outliers#markovs-inequality",
-    "href": "/chapter/bounding_outliers#markovs-inequality",
-    "title": "Bounding Outliers",
-    "section": "Markov’s Inequality",
-    "text": "Markov’s inequality provides a remarkably simple bound on tail probabilities for non-negative random variables, requiring only knowledge of the mean. Markov’s Inequality Let Y be a random variable defined over the positive subspace of \\mathbb{R}^1 . Then for any positive constant a > 0 , \\mathrm{P}(Y \\geq a) \\leq \\frac{\\mathbb{E}(Y)}{a} This inequality tells us that the probability of a non-negative random variable exceeding some value a is at most the mean divided by a . The larger the value of a relative to the mean, the smaller this upper bound becomes. What does Markov’s inequality tell us intuitively? Markov’s inequality formalizes the intuition that if a non-negative random variable has a small mean, it’s unlikely to take on very large values. For instance, if the average value is 10, the probability of seeing a value of 100 or more cannot exceed 10/100 = 0.1, or 10%. Example: Manufacturing Quality Control Let’s return to our manufacturing example. Suppose the average product weight is \\mathbb{E}(Y) = 500 grams, and all products have non-negative weight. We want to know: what’s the maximum probability that a randomly selected product weighs 1000 grams or more? Using Markov’s inequality with a = 1000 : \\mathrm{P}(Y \\geq 1000) \\leq \\frac{500}{1000} = 0.5 This tells us that at most 50% of products can weigh 1000 grams or more. While this bound might seem loose, remember that we derived it using only the mean—no other information about the distribution! We can also ask: what’s the probability of a product weighing at least twice the average? \\mathrm{P}(Y \\geq 1000) = \\mathrm{P}(Y \\geq 2 \\cdot 500) \\leq \\frac{1}{2} More generally, the probability of exceeding k times the mean is bounded by 1/k : \\mathrm{P}(Y \\geq k \\cdot \\mathbb{E}(Y)) \\leq \\frac{1}{k}"
-  },
-  {
-    "objectID": "bounding_outliers#chebyshevs-inequality",
-    "href": "/chapter/bounding_outliers#chebyshevs-inequality",
-    "title": "Bounding Outliers",
-    "section": "Chebyshev’s Inequality",
-    "text": "While Markov’s inequality is powerful in its simplicity, we can obtain tighter bounds if we have more information. Chebyshev’s inequality leverages both the mean and variance to bound the probability of deviations from the mean in either direction. Chebyshev’s Inequality Let Y be a random variable with finite mean \\mu and finite, non-zero variance \\sigma^2 . Then for any real number k > 0 , \\mathrm{P}(|Y - \\mu| \\geq k\\sigma) \\leq \\frac{1}{k^2} This inequality bounds the probability that Y deviates from its mean \\mu by at least k standard deviations. Notice that the bound depends on k^2 rather than k , making it much tighter than Markov’s inequality for large deviations. How does Chebyshev’s inequality improve upon Markov’s inequality? Chebyshev’s inequality provides three key advantages: (1) it applies to any random variable, not just non-negative ones; (2) it bounds deviations in both directions from the mean; and (3) it typically provides tighter bounds because it incorporates information about variability through the variance. The 1/k^2 decay is much faster than the 1/k decay in Markov’s inequality. Example: Manufacturing Quality Control Revisited Let’s enhance our manufacturing example with variance information. Suppose products have mean weight \\mu = 500 grams and standard deviation \\sigma = 50 grams. We want to bound the probability that a product’s weight deviates from the mean by 100 grams or more (either heavier or lighter). Here, we’re asking about \\mathrm{P}(|Y - 500| \\geq 100) . Since 100 = 2 \\times 50 = 2\\sigma , we have k = 2 . Applying Chebyshev’s inequality: \\mathrm{P}(|Y - 500| \\geq 100) = \\mathrm{P}(|Y - \\mu| \\geq 2\\sigma) \\leq \\frac{1}{2^2} = \\frac{1}{4} = 0.25 So at most 25% of products have weights outside the range [400, 600] grams. Let’s compare this to what Markov’s inequality would tell us. For the upper tail only, Markov’s inequality gives: \\mathrm{P}(Y \\geq 600) \\leq \\frac{500}{600} \\approx 0.833 Chebyshev’s inequality provides a much tigh"
-  },
-  {
-    "objectID": "bounding_outliers#practical-implications",
-    "href": "/chapter/bounding_outliers#practical-implications",
-    "title": "Bounding Outliers",
-    "section": "Practical Implications",
-    "text": "These inequalities have far-reaching applications: Quality control: Set tolerance limits based on guaranteed maximum defect rates Risk management: Bound the probability of extreme losses without assuming specific distributions Algorithm analysis: Bound the probability that a randomized algorithm performs poorly Sample size determination: Ensure that sample means are close to population means with high probability The key insight is that even with minimal information (just the mean, or the mean and variance), we can make rigorous probabilistic statements about outliers. While these bounds may not be tight for specific distributions, their generality and simplicity make them indispensable tools in statistical reasoning. Proofs of Probability Inequalities"
-  },
-  {
-    "objectID": "bounding_outliers#proof-of-markovs-inequality",
-    "href": "/chapter/bounding_outliers#proof-of-markovs-inequality",
-    "title": "Bounding Outliers",
-    "section": "Proof of Markov’s Inequality",
-    "text": "Let Y be a random variable defined over the positive subspace of \\mathbb{R}^1 . Then for any positive constant a > 0 , \\mathrm{P}(Y \\geq a) \\leq \\frac{\\mathbb{E}(Y)}{a} Proof. Since Y is defined over the positive subspace of \\mathbb{R}^1 , its expectation is \\mathbb{E}(Y) = \\int_0^{\\infty} Y \\cdot \\mathrm{P}(Y) \\, dY Given some arbitrary positive constant a , the right-hand side of this equation can be partitioned as \\begin{aligned} \\mathbb{E}(Y) &= \\int_0^a Y \\cdot \\mathrm{P}(Y) \\, dY + \\int_a^{\\infty} Y \\cdot \\mathrm{P}(Y) \\, dY \\\\ &\\geq \\int_a^{\\infty} Y \\cdot \\mathrm{P}(Y) \\, dY \\\\ &\\geq \\int_a^{\\infty} a \\cdot \\mathrm{P}(Y) \\, dY \\\\ &= a \\int_a^{\\infty} \\mathrm{P}(Y) \\, dY \\\\ &= a \\cdot \\mathrm{P}(Y \\geq a) \\end{aligned} The first inequality holds because we drop a non-negative term (the integral from 0 to a ). The second inequality holds because Y \\geq a in the region of integration, so Y \\cdot \\mathrm{P}(Y) \\geq a \\cdot \\mathrm{P}(Y) . Dividing both sides by a and rearranging terms, we obtain \\mathrm{P}(Y \\geq a) \\leq \\frac{\\mathbb{E}(Y)}{a} ◻"
-  },
-  {
-    "objectID": "bounding_outliers#proof-of-chebyshevs-inequality",
-    "href": "/chapter/bounding_outliers#proof-of-chebyshevs-inequality",
-    "title": "Bounding Outliers",
-    "section": "Proof of Chebyshev’s Inequality",
-    "text": "Let Y be a random variable with finite mean \\mu and finite, non-zero variance \\sigma^2 . Then for any real number k > 0 , \\mathrm{P}(|Y - \\mu| \\geq k\\sigma) \\leq \\frac{1}{k^2} Proof. Since Y has finite mean \\mu , the random variable (Y - \\mu)^2 is defined over the positive subspace of \\mathbb{R}^1 . By Markov’s inequality, \\mathrm{P}\\left((Y - \\mu)^2 \\geq a\\right) \\leq \\frac{\\mathbb{E}\\left((Y - \\mu)^2\\right)}{a} By definition, \\mathbb{E}((Y - \\mu)^2) = \\sigma^2 . Therefore, \\mathrm{P}\\left((Y - \\mu)^2 \\geq a\\right) \\leq \\frac{\\sigma^2}{a} For any real k > 0 , define a \\equiv k^2\\sigma^2 . Substituting for a , \\mathrm{P}\\left((Y - \\mu)^2 \\geq k^2\\sigma^2\\right) \\leq \\frac{\\sigma^2}{k^2\\sigma^2} = \\frac{1}{k^2} Since (Y - \\mu)^2 \\geq k^2\\sigma^2 is equivalent to |Y - \\mu| \\geq k\\sigma , we have \\mathrm{P}(|Y - \\mu| \\geq k\\sigma) \\leq \\frac{1}{k^2} ◻"
-  },
-  {
     "objectID": "bounds-outliers",
     "href": "/chapter/bounds-outliers",
     "title": "Bounding Outliers",

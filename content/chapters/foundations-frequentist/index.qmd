@@ -1,0 +1,392 @@
+# Foundations of Frequentist Statistics
+
+
+In this chapter, we embark on a journey into the heart of frequentist statistical inference—a framework that dominates modern empirical research. At its core, frequentist statistics is about making observations from a sample and then drawing inferences about the broader population from which that sample was drawn. The fundamental question we seek to answer is: *How confident can we be that the patterns we observe in our limited sample reflect true patterns in the population?*
+
+By the end of this chapter, you will understand the foundational concepts that underpin frequentist inference, including the philosophy of repeated sampling, the nature of estimators, and the mathematical criteria we use to distinguish good estimators from poor ones.
+
+## The Nature of Inferential Statistics
+
+::: {.callout-note icon=false}
+## What Are We Really Doing?
+
+Inferential statistics is fundamentally about making observations in **sample data** and then attempting to extrapolate causal connections or patterns to the **population data**. When we successfully extrapolate these connections, we say our results are **statistically significant**. When we cannot extrapolate with confidence, we say our results are **not statistically significant**.
+:::
+
+This distinction—between what we observe in our sample and what we can confidently claim about the population—lies at the heart of all inferential statistics. But what exactly are we making claims about when we talk about populations?
+
+### Population Parameters vs. Sample Statistics
+
+When we make claims about a population, we are not making claims about individual observations. After all, populations are conceptually infinite in size. Instead, we make claims about specific **parameters** of the population's distribution. The two parameters we encounter most frequently are:
+
+1. **The population mean** ($\mu$): This is by far the most common parameter we test hypotheses about in applied statistics.
+
+2. **The population variance** ($\sigma^2$): This parameter is crucial because tests for the population mean often depend on our ability to estimate the population variance.
+
+Because we never truly know the values of $\mu$ or $\sigma^2$, we must estimate them using sample data. The corresponding quantities we calculate from our sample are:
+
+- **Sample mean** ($\bar{y}$): The analog to the population mean
+- **Sample variance** ($s^2$): The analog to the population variance
+
+::: {.callout-important icon=false}
+## A Critical Distinction
+
+When we call the sample mean and sample variance "analogs" or "counterparts" to their population equivalents, we mean only that they correspond conceptually. We are *not* claiming they are equal or even necessarily good estimates. Establishing which sample statistics make good estimators of population parameters is precisely what this chapter is about.
+:::
+
+## Transformations of Random Variables
+
+Before we dive into the philosophy of estimation, we need to develop some mathematical machinery. In statistics, we routinely transform data—we take numbers, apply formulas to them, and generate new numbers. Understanding how these transformations affect the mean and variance of our data is essential.
+
+### Affine Transformations
+
+Consider a simple but powerful type of transformation called an **affine transformation**. If we have a random variable $X$ with mean $\bar{x}$ and variance $s^2$, we might create a new variable:
+
+$$Y = mX + c$$
+
+where $m$ is a multiplicative constant (the slope) and $c$ is an additive constant (the intercept). This is exactly the form of a linear equation you've seen since high school algebra.
+
+The question is: if we know the mean and variance of $X$, what are the mean and variance of $Y$?
+
+We can decompose this affine transformation into two simpler operations:
+
+1. **Translation**: $X \rightarrow X + c$ (adding a constant)
+2. **Linear transformation**: $X \rightarrow mX$ (multiplying by a constant)
+
+#### Properties of Translation
+
+When you add a constant $c$ to every value in your dataset, creating $Y = X + c$:
+
+$$
+\begin{aligned}
+\text{Mean of } Y &= \bar{x} + c \\
+\text{Variance of } Y &= s^2
+\end{aligned}
+$$
+
+The mean shifts by exactly $c$, but the variance remains unchanged. Why? Because variance measures the spread of data around the mean, and when you shift all values by the same amount, their relative positions don't change.
+
+::: {.callout-tip icon=false}
+## Connecting to Earlier Concepts
+
+You've already encountered this idea when we discussed the $z$-transformation. When we subtract the mean from a variable, we're performing a translation that shifts the entire distribution to have mean zero. The shape and spread of the distribution remain the same.
+:::
+
+#### Properties of Linear Transformation
+
+When you multiply every value by a constant $m$, creating $Y = mX$:
+
+$$
+\begin{aligned}
+\text{Mean of } Y &= m\bar{x} \\
+\text{Variance of } Y &= m^2 s^2 \\
+\text{Standard deviation of } Y &= |m| s
+\end{aligned}
+$$
+
+Notice that the variance is multiplied by $m^2$, not $m$. This occurs because variance involves squared deviations, so a multiplicative constant gets squared in the process.
+
+#### Combining Both Transformations
+
+For the full affine transformation $Y = mX + c$:
+
+$$
+\begin{aligned}
+\text{Mean of } Y &= m\bar{x} + c \\
+\text{Variance of } Y &= m^2 s^2 \\
+\text{Standard deviation of } Y &= |m| s
+\end{aligned}
+$$
+
+These formulas will prove invaluable as we develop more sophisticated statistical techniques.
+
+## The Frequentist Philosophy: Repeated Sampling
+
+We now arrive at the conceptual heart of frequentist statistics. The entire edifice of frequentist inference rests on an imaginary exercise: **repeated sampling**.
+
+::: {.callout-note icon=false}
+## The Thought Experiment
+
+Imagine that we could:
+
+1. Draw a random sample from the population
+2. Calculate some statistic from that sample
+3. Return the sample to the population
+4. Draw another random sample
+5. Calculate the statistic again
+6. Repeat this process infinitely many times
+
+This thought experiment—sampling repeatedly from the same population—forms the foundation for how we evaluate estimators in frequentist statistics.
+:::
+
+Here's the crucial point: *in practice, we only sample once*. But theoretically, we imagine what would happen if we could sample infinitely many times. The behavior of our estimator across these hypothetical repeated samples tells us whether it's a good estimator or not.
+
+### The Concept of an Estimator
+
+An **estimator** is simply a formula that we apply to sample data to estimate a population parameter. Importantly, there are infinitely many possible estimators for any given parameter.
+
+For example, suppose we want to estimate the population mean $\mu$. Here are just a few of the infinitely many estimators we could choose:
+
+- The first observation: $\hat{\mu}_1 = y_1$
+- The sum of the first two observations: $\hat{\mu}_2 = y_1 + y_2$
+- The cube of the first observation: $\hat{\mu}_3 = y_1^3$
+- The fourth power of the seventh observation times the sine of the second: $\hat{\mu}_4 = y_7^4 \times \sin(y_2)$
+- The sample mean: $\hat{\mu}_5 = \bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i$
+
+Most of these are obviously terrible estimators. But the point is that we can construct any formula we want, and each formula defines a different estimator. The set of all possible estimators is infinite.
+
+So how do we choose among them? How do we determine which estimators are "good" and which are "bad"?
+
+The answer lies in examining the **sampling distribution** of each estimator.
+
+### Sampling Distributions
+
+For any estimator, we can imagine the repeated sampling process:
+
+1. Draw a sample of size $n$
+2. Apply the estimator to get an estimate
+3. Record that estimate
+4. Repeat infinitely many times
+
+The distribution of all these estimates is called the **sampling distribution** of the estimator. Each different estimator has its own sampling distribution.
+
+::: {.callout-important icon=false}
+## Key Insight
+
+The sampling distribution is a theoretical construct. We never actually observe it because we only sample once in practice. But by imagining what it would look like, we can develop mathematical criteria for judging the quality of different estimators.
+:::
+
+## A Concrete Example: Estimating from a Simple Population
+
+To make these abstract ideas concrete, let's work through a simple example. Consider a population with only three values: $\{1, 2, 3\}$. Since there's one of each value, each has probability $1/3$ of being selected if we draw randomly from this population.
+
+### The True Population Parameters
+
+This is a discrete uniform distribution, and we can easily calculate the true population mean and variance:
+
+$$
+\mu = \mathbb{E}[Y] = 1 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} + 3 \cdot \frac{1}{3} = 2
+$$
+
+For the variance, we first calculate the expected value of $Y^2$:
+
+$$
+\mathbb{E}[Y^2] = 1^2 \cdot \frac{1}{3} + 2^2 \cdot \frac{1}{3} + 3^2 \cdot \frac{1}{3} = \frac{14}{3}
+$$
+
+Then, using the formula $\mathrm{Var}(Y) = \mathbb{E}[Y^2] - (\mathbb{E}[Y])^2$:
+
+$$
+\sigma^2 = \frac{14}{3} - 2^2 = \frac{14}{3} - 4 = \frac{2}{3}
+$$
+
+We can also verify this directly by calculating the squared deviations:
+
+| Value ($y$) | Deviation ($y - \mu$) | Squared Deviation ($y - \mu$)² |
+|:-----------:|:---------------------:|:------------------------------:|
+| 1 | -1 | 1 |
+| 2 | 0 | 0 |
+| 3 | 1 | 1 |
+
+$$
+\sigma^2 = \frac{1 + 0 + 1}{3} = \frac{2}{3}
+$$
+
+So we know that $\mu = 2$ and $\sigma^2 = 2/3$. In practice, we wouldn't know these values—we'd have to estimate them from sample data. But in this pedagogical example, knowing them allows us to evaluate how well different estimators perform.
+
+### Using a Single Observation as an Estimator
+
+Suppose we draw a single observation from this population. Can we use it to estimate the population mean? According to frequentist thinking, the surprising answer is yes—at least by one important criterion.
+
+Consider the estimator $\hat{\mu} = Y_1$, where $Y_1$ is our single observation. To evaluate this estimator, we imagine drawing infinitely many samples (each of size 1) and recording each estimate. What would the sampling distribution look like?
+
+Since each draw yields 1, 2, or 3 with equal probability, our estimates would be:
+- $\hat{\mu} = 1$ one-third of the time
+- $\hat{\mu} = 2$ one-third of the time
+- $\hat{\mu} = 3$ one-third of the time
+
+The mean of this sampling distribution is:
+
+$$
+\mathbb{E}[\hat{\mu}] = 1 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} + 3 \cdot \frac{1}{3} = 2 = \mu
+$$
+
+The expected value of our estimator equals the population mean! This means that on average, across infinitely many samples, our estimator hits the target.
+
+## Properties of Estimators
+
+We've just discovered our first desirable property of estimators: **unbiasedness**. Let's now systematically examine the key properties that statisticians use to evaluate estimators.
+
+### Unbiasedness: Accuracy on Average
+
+::: {.callout-important icon=false}
+## Definition: Unbiasedness
+
+An estimator $\hat{\theta}$ is **unbiased** for a parameter $\theta$ if its expected value equals the parameter:
+
+$$
+\mathbb{E}[\hat{\theta}] = \theta
+$$
+
+In words: on average across all possible samples, an unbiased estimator gets the right answer.
+:::
+
+Any single estimate from an unbiased estimator might be far from the truth. But the errors balance out—sometimes we overestimate, sometimes we underestimate, and on average we hit the bullseye.
+
+::: {.callout-tip icon=false collapse=true}
+## Question: Is the sample mean unbiased?
+
+Yes! The sample mean $\bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Y_i$ is an unbiased estimator of the population mean $\mu$. Here's the proof:
+
+$$
+\mathbb{E}[\bar{Y}] = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^{n} Y_i\right] = \frac{1}{n}\sum_{i=1}^{n} \mathbb{E}[Y_i] = \frac{1}{n} \cdot n\mu = \mu
+$$
+
+Each $Y_i$ is drawn from the population, so $\mathbb{E}[Y_i] = \mu$ for all $i$.
+:::
+
+### The Abundance of Unbiased Estimators
+
+Here's something remarkable: for a sample of size 2, there are infinitely many unbiased estimators of the population mean! Any weighted average of the form:
+
+$$
+\hat{\mu} = w_1 Y_1 + w_2 Y_2 \quad \text{where } w_1 + w_2 = 1
+$$
+
+is an unbiased estimator. For example:
+- $0.5 Y_1 + 0.5 Y_2$ (the sample mean)
+- $0.1 Y_1 + 0.9 Y_2$
+- $0.8 Y_1 + 0.2 Y_2$
+
+All of these are unbiased! So if unbiasedness is all we care about, we could pick any of these weighted averages. But surely some are better than others. This leads us to our second criterion.
+
+### Efficiency: Achieving Precision
+
+Look carefully at the sampling distributions of different unbiased estimators. You'll notice something important: some have smaller variance than others. An estimator with smaller variance gives us more *precise* estimates—they cluster more tightly around the parameter value.
+
+::: {.callout-important icon=false}
+## Definition: Efficiency
+
+Among all unbiased estimators of a parameter, the most **efficient** estimator is the one with the smallest variance in its sampling distribution.
+:::
+
+Consider our sample of size 2 from the population $\{1, 2, 3\}$. The variances of different unbiased estimators are:
+
+| Estimator | Variance |
+|-----------|----------|
+| $Y_1$ (first observation only) | $\sigma^2 = 2/3$ |
+| $Y_2$ (second observation only) | $\sigma^2 = 2/3$ |
+| $0.1Y_1 + 0.9Y_2$ | $0.82\sigma^2$ |
+| $0.8Y_1 + 0.2Y_2$ | $0.68\sigma^2$ |
+| $\bar{Y} = \frac{Y_1 + Y_2}{2}$ | $\frac{\sigma^2}{2} = 1/3$ |
+
+The sample mean has the smallest variance! It turns out that among all unbiased estimators of the population mean, the sample mean is the most efficient—it has the minimum possible variance. This remarkable result is known as the **Gauss-Markov theorem**.
+
+### Consistency: Convergence with More Data
+
+Both unbiasedness and efficiency are properties that hold for a fixed sample size. But what happens as we gather more data? This brings us to our third fundamental property.
+
+::: {.callout-important icon=false}
+## Definition: Consistency
+
+An estimator $\hat{\theta}$ is **consistent** if it converges in probability to the parameter value as the sample size approaches infinity. Formally, for any $\epsilon > 0$:
+
+$$
+\lim_{n \to \infty} P(|\hat{\theta} - \theta| > \epsilon) = 0
+$$
+
+In plain language: as we gather more data, the probability that our estimate is far from the parameter approaches zero.
+:::
+
+For the sample mean, we can see consistency directly from its variance:
+
+$$
+\mathrm{Var}(\bar{Y}) = \frac{\sigma^2}{n}
+$$
+
+As $n$ increases, the variance shrinks toward zero. The sampling distribution collapses to a spike at $\mu$. This is the **Law of Large Numbers**—one of the most fundamental theorems in probability and statistics.
+
+::: {.callout-note icon=false}
+## The Law of Large Numbers
+
+As the sample size $n$ approaches infinity, the sample mean $\bar{Y}$ converges to the population mean $\mu$. Formally:
+
+$$
+\bar{Y} \xrightarrow{P} \mu \quad \text{as } n \to \infty
+$$
+
+This theorem is what makes empirical knowledge possible. It tells us that our effort in collecting more data is worthwhile—more data leads to better estimates.
+:::
+
+::: {.callout-warning icon=false}
+## The Gambler's Fallacy
+
+The Law of Large Numbers is often misunderstood. Consider flipping a fair coin ten times and getting heads all ten times. Many people reason: "The coin should come up heads 50% of the time in the long run. I've gotten too many heads, so tails are 'due'—the next flip is more likely to be tails."
+
+This reasoning is **completely wrong**! Each flip is independent. The probability of heads on the eleventh flip is still exactly 50%. The coin has no memory and no desire for balance.
+
+The Law of Large Numbers says that as $n$ grows large, the *probability* that the proportion deviates far from 50% becomes small. It does not say that outcomes will "even out" in any deterministic way.
+:::
+
+## The Broader Landscape of Estimator Properties
+
+Unbiasedness, efficiency, and consistency are the "big three" properties, but statisticians have identified many others.
+
+### Sufficiency
+
+An estimator is **sufficient** if it captures all the information in the sample relevant to the parameter. Once you know the value of a sufficient statistic, the individual observations provide no additional information about the parameter.
+
+For estimating the mean of a normal distribution, the sample mean is sufficient. If I tell you $\bar{Y} = 10$, knowing that the individual observations were 8, 9, 10, 11, 12 tells you nothing more about $\mu$.
+
+### Robustness
+
+An estimator is **robust** if it performs well even when distributional assumptions are violated. The sample mean is sensitive to outliers—a single extreme value can drastically shift it. The sample median, by contrast, is highly robust to outliers.
+
+### Properties Are Distinct
+
+It's crucial to understand that these properties are distinct—an estimator can possess one without possessing another.
+
+**Consistent but biased**: Consider estimating population variance using:
+$$
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^{n}(Y_i - \bar{Y})^2
+$$
+
+This is consistent (converges to $\sigma^2$ as $n \to \infty$) but biased—its expected value is $\frac{n-1}{n}\sigma^2$, which underestimates the variance. The unbiased version divides by $n-1$ instead of $n$.
+
+**Unbiased but inefficient**: Using just the first observation $\hat{\mu} = Y_1$ is unbiased but spectacularly inefficient. Its variance is $\sigma^2$, compared to $\sigma^2/n$ for the sample mean. You're throwing away all but one observation!
+
+## Navigating Tradeoffs
+
+When properties conflict, statisticians must choose which to prioritize.
+
+### The Classical Approach: Prioritizing Unbiasedness
+
+Traditional frequentist statistics often prioritizes unbiasedness. The reasoning: if our method is systematically biased, we're building error into our procedure from the start. Better to be right on average with high variance than systematically wrong with low variance.
+
+### Modern Approaches: The Bias-Variance Tradeoff
+
+Sometimes we might accept a small amount of bias to achieve a large reduction in variance. This insight drives modern techniques like ridge regression and regularization methods.
+
+::: {.callout-important icon=false}
+## Mean Squared Error
+
+The **mean squared error (MSE)** combines bias and variance into a single measure:
+
+$$
+\text{MSE}(\hat{\theta}) = \mathbb{E}[(\hat{\theta} - \theta)^2] = \text{Bias}(\hat{\theta})^2 + \mathrm{Var}(\hat{\theta})
+$$
+
+An estimator with small MSE might have some bias but sufficiently low variance that its overall performance is superior to an unbiased but high-variance alternative.
+:::
+
+The bias-variance tradeoff, quantified through MSE, has become one of the central organizing principles of modern statistical learning.
+
+## Summary
+
+We've established that the sample mean possesses three fundamental and universally valued properties:
+
+1. **Unbiasedness**: On average, across all possible samples, it equals the population mean
+2. **Efficiency**: Among unbiased estimators, it has the smallest variance
+3. **Consistency**: As sample size grows, it converges to the population mean
+
+These properties make the sample mean a natural and powerful choice for estimating population means. But the landscape of estimator properties is rich—different problems call for different priorities, and understanding the tradeoffs among properties is essential for becoming a sophisticated statistical thinker.
