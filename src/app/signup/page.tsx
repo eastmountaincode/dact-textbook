@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/providers/AuthProvider';
 import { useDevMode } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
+import { CountrySelect } from '@/components/CountrySelect';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'Select status' },
@@ -57,23 +58,6 @@ const REFERRAL_OPTIONS = [
   { value: 'other', label: 'Other' },
 ];
 
-// Simple list of common countries
-const COUNTRY_OPTIONS = [
-  { value: '', label: 'Select country' },
-  { value: 'US', label: 'United States' },
-  { value: 'CA', label: 'Canada' },
-  { value: 'GB', label: 'United Kingdom' },
-  { value: 'AU', label: 'Australia' },
-  { value: 'DE', label: 'Germany' },
-  { value: 'FR', label: 'France' },
-  { value: 'IN', label: 'India' },
-  { value: 'CN', label: 'China' },
-  { value: 'JP', label: 'Japan' },
-  { value: 'BR', label: 'Brazil' },
-  { value: 'MX', label: 'Mexico' },
-  { value: 'OTHER', label: 'Other' },
-];
-
 export default function SignupPage() {
   const [formData, setFormData] = useState({
     email: '',
@@ -93,8 +77,15 @@ export default function SignupPage() {
   const [emailStatus, setEmailStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const errorRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { signUp } = useAuth();
+  const { signUp, user } = useAuth();
   const { devBorder } = useDevMode();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.replace('/chapter/welcome');
+    }
+  }, [user, router]);
 
   // Debounced email availability check - triggers as user types
   useEffect(() => {
@@ -330,19 +321,11 @@ export default function SignupPage() {
                 <label htmlFor="country" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Country <span className="text-red-500">*</span>
                 </label>
-                <select
-                  id="country"
-                  name="country"
+                <CountrySelect
                   value={formData.country}
-                  onChange={handleChange}
+                  onChange={(value) => setFormData(prev => ({ ...prev, country: value }))}
                   required
-                  className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
-                  style={selectStyle}
-                >
-                  {COUNTRY_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 

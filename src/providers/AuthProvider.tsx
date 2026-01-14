@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 
@@ -45,6 +45,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
 
+  // Track current user ID to avoid re-fetching profile on token refresh
+  const currentUserIdRef = useRef<string | null>(null);
+  // Track if initial session load has completed to prevent race conditions
+  const initialLoadCompleteRef = useRef(false);
+
   const supabase = createClient();
 
   const isAdmin = userRole === 'admin';
@@ -80,53 +85,85 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Get initial session
+    // Get initial session - use getUser() to verify with server
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
+      try {
+        // First get the session to have tokens available
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
 
-      if (session?.user) {
-        try {
-          const profileData = await fetchProfile(session.user.id);
-          setProfile(profileData);
-          const role = await fetchUserRole(session.user.id);
-          setUserRole(role);
-        } catch (err) {
-          console.error('Error fetching profile/role:', err);
+        // Then verify user with server - more reliable than just reading cookies
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+
+        if (user) {
+          try {
+            currentUserIdRef.current = user.id;
+            const profileData = await fetchProfile(user.id);
+            setProfile(profileData);
+            const role = await fetchUserRole(user.id);
+            setUserRole(role);
+          } catch (err) {
+            console.error('Error fetching profile/role:', err);
+          }
         }
-      }
 
-      setIsLoading(false);
+        initialLoadCompleteRef.current = true;
+      } catch (err) {
+        console.error('Error getting initial session:', err);
+      } finally {
+        // Always ensure loading is set to false
+        setIsLoading(false);
+      }
     };
 
     getInitialSession();
 
     // Listen for auth changes
+    // IMPORTANT: Don't do async database calls directly in this callback - it can cause deadlocks
+    // Instead, update state synchronously and defer async work
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          try {
-            // On sign in, sync profile data from user metadata (for new users after email confirmation)
-            if (event === 'SIGNED_IN') {
-              await syncProfileFromMetadata(session.user);
+          // Defer async work to avoid deadlocks with Supabase auth
+          const userId = session.user.id;
+          const user = session.user;
+
+          setTimeout(async () => {
+            try {
+              // On sign in, sync profile data from user metadata (for new users after email confirmation)
+              if (event === 'SIGNED_IN') {
+                await syncProfileFromMetadata(user);
+              }
+              // Only fetch profile if it's a different user or we don't have one yet
+              // For token refreshes of the same user, keep the existing profile to avoid flicker
+              const isSameUser = currentUserIdRef.current === userId;
+              if (!isSameUser || event === 'SIGNED_IN') {
+                currentUserIdRef.current = userId;
+                const profileData = await fetchProfile(userId);
+                setProfile(profileData);
+                const role = await fetchUserRole(userId);
+                setUserRole(role);
+                setIsLoading(false);
+              } else {
+                // For token refresh of same user, always clear loading
+                setIsLoading(false);
+              }
+            } catch (err) {
+              console.error('Error in auth state change:', err);
+              // Always clear loading on error to prevent infinite loading states
+              setIsLoading(false);
             }
-            const profileData = await fetchProfile(session.user.id);
-            setProfile(profileData);
-            const role = await fetchUserRole(session.user.id);
-            setUserRole(role);
-          } catch (err) {
-            console.error('Error in auth state change:', err);
-          }
+          }, 0);
         } else {
+          currentUserIdRef.current = null;
           setProfile(null);
           setUserRole(null);
+          setIsLoading(false);
         }
-
-        setIsLoading(false);
       }
     );
 
@@ -199,10 +236,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    // Clear local state immediately for responsive UI
+    currentUserIdRef.current = null;
     setUser(null);
     setProfile(null);
     setSession(null);
+    setUserRole(null);
+    // Use server-side signout to properly clear HttpOnly cookies
+    try {
+      await fetch('/api/auth/signout', { method: 'POST' });
+    } catch (err) {
+      console.error('Error signing out:', err);
+    }
   };
 
   const updateProfile = async (profileData: Partial<UserProfile>) => {

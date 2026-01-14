@@ -28,18 +28,11 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
   const sidebarRef = useRef<HTMLElement>(null);
   const { devBorder } = useDevMode();
 
-  // Preserve scroll position across navigation
-  useLayoutEffect(() => {
+  // Set up scroll listener once on mount
+  useEffect(() => {
     const sidebar = sidebarRef.current;
     if (!sidebar) return;
 
-    // Restore scroll position from sessionStorage
-    const savedScroll = sessionStorage.getItem('sidebar-scroll');
-    if (savedScroll) {
-      sidebar.scrollTop = parseInt(savedScroll, 10);
-    }
-
-    // Save scroll position on scroll
     const handleScroll = () => {
       sessionStorage.setItem('sidebar-scroll', String(sidebar.scrollTop));
     };
@@ -47,6 +40,17 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
     sidebar.addEventListener('scroll', handleScroll);
     return () => sidebar.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Restore scroll position on mount and after navigation
+  useLayoutEffect(() => {
+    const sidebar = sidebarRef.current;
+    if (!sidebar) return;
+
+    const savedScroll = sessionStorage.getItem('sidebar-scroll');
+    if (savedScroll) {
+      sidebar.scrollTop = parseInt(savedScroll, 10);
+    }
+  }, [currentSlug]);
 
   // Close sidebar on navigation (mobile)
   useEffect(() => {
@@ -90,7 +94,7 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
         {/* Sidebar Content - scrollable */}
         <aside
           ref={sidebarRef}
-          className={`h-full overflow-y-auto bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] ${devBorder('blue')}`}
+          className={`h-full overflow-y-auto bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] font-serif ${devBorder('blue')}`}
         >
           {/* Search */}
           <SidebarSearch currentSlug={currentSlug} />

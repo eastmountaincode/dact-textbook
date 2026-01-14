@@ -90,7 +90,7 @@ export default function TextbookLayout({
   const canDecrease = fontSize > MIN_FONT_SIZE;
 
   return (
-    <div className={`min-h-screen ${fontFamilyClass} ${devMode ? 'dev-mode' : ''} ${devBorder('purple')}`} style={{ backgroundColor: 'var(--background)' }}>
+    <div className={`min-h-screen ${devMode ? 'dev-mode' : ''} ${devBorder('purple')}`} style={{ backgroundColor: 'var(--background)' }}>
       <Header
         fontFamily={fontFamily}
         fontSize={fontSize}
@@ -114,7 +114,7 @@ export default function TextbookLayout({
 
       {/* Main Content Area */}
       <main
-        className={`${showSidebar ? 'ml-0 md:ml-72' : ''} pt-14 min-h-screen overflow-x-hidden overscroll-contain ${devBorder('green')}`}
+        className={`${showSidebar ? 'ml-0 md:ml-72' : ''} pt-14 min-h-screen overflow-x-hidden overscroll-contain ${fontFamilyClass} ${devBorder('green')}`}
         style={{ fontSize: `${fontSize}px` }}
       >
         <div className={showSidebar ? 'max-w-4xl mx-auto px-8 md:px-8 py-8' : ''}>

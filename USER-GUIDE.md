@@ -11,6 +11,7 @@ This guide explains how to manage and update your textbook website.
 5. [Creating New Sections](#creating-new-sections)
 6. [Building the Site](#building-the-site)
 7. [Common Tasks](#common-tasks)
+8. [Data Sources & Third-Party Dependencies](#data-sources--third-party-dependencies)
 
 ---
 
@@ -224,6 +225,28 @@ After building, deploy the contents of the `.next` folder to your hosting provid
 
 ## Common Tasks
 
+### Configure Auth Emails (AWS SES)
+
+Auth emails (signup confirmation, password reset, resend confirmation) are sent by Supabase Auth. To route them through AWS SES, configure SMTP on the Supabase project and provide the SES SMTP credentials locally.
+
+**Supabase hosted (production):**
+- In Supabase Dashboard → Authentication → SMTP, set:
+  - Host: `email-smtp.<region>.amazonaws.com`
+  - Port: `587`
+  - Username/Password: SES SMTP credentials (not AWS access keys)
+  - Sender email/name: a verified SES identity
+
+**Local development:**
+- Set the following environment variables to match your SES SMTP credentials:
+  - `SES_SMTP_HOST`, `SES_SMTP_PORT`, `SES_SMTP_USER`, `SES_SMTP_PASS`
+  - `SES_ADMIN_EMAIL`, `SES_SENDER_NAME`
+- The Supabase local config already reads these from `supabase/config.toml`.
+
+**SES prerequisites:**
+- Verify the sender domain/email in SES
+- Enable DKIM (recommended)
+- Keep the sending domain aligned with your app domain to reduce spam risk
+
 ### Renaming a Section
 
 Edit `content/chapters.yaml` and change the `name` field:
@@ -359,3 +382,22 @@ nextjs-dafct-working/
 | `content/chapters.yaml` | Chapter order and sections |
 | `content/html/*.html` | Chapter content files |
 | `public/search.json` | Search index |
+
+---
+
+## Data Sources & Third-Party Dependencies
+
+### Country List
+
+The country selection dropdown (used in signup and profile forms) uses the **[i18n-iso-countries](https://www.npmjs.com/package/i18n-iso-countries)** npm package.
+
+- **Data source**: ISO 3166-1 standard (maintained by the International Organization for Standardization)
+- **Updates**: The package is regularly updated when ISO publishes changes to country codes or names
+- **Usage**: Provides official country names in English with ISO 2-letter country codes (e.g., "US" for United States)
+
+This approach ensures:
+1. The country list stays current without manual maintenance
+2. Country codes follow international standards
+3. Consistent naming conventions across the application
+
+**Component location**: `src/components/CountrySelect.tsx`

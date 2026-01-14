@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/AuthProvider';
 import { useDevMode, DevBorderColor } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
+import { UserAnalyticsView } from '@/components/analytics/UserAnalyticsView';
+import { UserDemographics } from '@/components/analytics/UserDemographics';
+import { TextbookAnalytics } from '@/components/analytics/TextbookAnalytics';
+import { CountrySelect } from '@/components/CountrySelect';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'Select status' },
@@ -46,22 +50,6 @@ const INSTITUTION_OPTIONS = [
   { value: 'other', label: 'Other' },
 ];
 
-const COUNTRY_OPTIONS = [
-  { value: '', label: 'Select country' },
-  { value: 'US', label: 'United States' },
-  { value: 'CA', label: 'Canada' },
-  { value: 'GB', label: 'United Kingdom' },
-  { value: 'AU', label: 'Australia' },
-  { value: 'DE', label: 'Germany' },
-  { value: 'FR', label: 'France' },
-  { value: 'IN', label: 'India' },
-  { value: 'CN', label: 'China' },
-  { value: 'JP', label: 'Japan' },
-  { value: 'BR', label: 'Brazil' },
-  { value: 'MX', label: 'Mexico' },
-  { value: 'OTHER', label: 'Other' },
-];
-
 type TabType = 'profile' | 'security' | 'analytics' | 'delete' | 'admin-users' | 'admin-analytics' | 'admin-content';
 
 export default function AccountPage() {
@@ -95,26 +83,24 @@ export default function AccountPage() {
     { id: 'profile', label: 'Profile' },
     { id: 'security', label: 'Security' },
     { id: 'analytics', label: 'Your Activity' },
-    { id: 'delete', label: 'Delete Account' },
   ];
 
   const adminTabs: { id: TabType; label: string }[] = [
-    { id: 'admin-users', label: 'User Analytics' },
+    { id: 'admin-users', label: 'User Demographics' },
     { id: 'admin-analytics', label: 'Textbook Analytics' },
-    { id: 'admin-content', label: 'Content Management' },
   ];
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] pt-12 pb-12 px-4 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] pt-12 pb-12 px-8 ${devBorder('blue')}`}>
         <div className={`w-full max-w-4xl mx-auto ${devBorder('green')}`}>
           {/* Title */}
           <h1 className="text-2xl font-semibold mb-6" style={{ color: 'var(--foreground)' }}>
             Account
           </h1>
 
-          {/* User Tabs */}
-          <div className="flex gap-6 border-b mb-6" style={{ borderColor: 'var(--card-border)' }}>
+          {/* Tabs */}
+          <div className="flex items-center gap-6 border-b mb-6" style={{ borderColor: 'var(--card-border)' }}>
             {userTabs.map((tab) => (
               <button
                 key={tab.id}
@@ -132,17 +118,10 @@ export default function AccountPage() {
                 {tab.label}
               </button>
             ))}
-          </div>
 
-          {/* Admin Section */}
-          {isAdmin && (
-            <>
-              <div className="mt-8 mb-4">
-                <h2 className="text-lg font-semibold" style={{ color: 'var(--foreground)' }}>
-                  Admin
-                </h2>
-              </div>
-              <div className="flex gap-6 border-b mb-6" style={{ borderColor: 'var(--card-border)' }}>
+            {isAdmin && (
+              <>
+                <div className="h-6 w-px" style={{ backgroundColor: 'var(--card-border)' }} />
                 {adminTabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -160,9 +139,9 @@ export default function AccountPage() {
                     {tab.label}
                   </button>
                 ))}
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
 
           {/* Tab Content */}
           {activeTab === 'profile' && (
@@ -182,21 +161,13 @@ export default function AccountPage() {
           {activeTab === 'analytics' && (
             <AnalyticsTab devBorder={devBorder} />
           )}
-          {activeTab === 'delete' && (
-            <DeleteTab
-              deleteAccount={deleteAccount}
-              devBorder={devBorder}
-            />
-          )}
           {activeTab === 'admin-users' && (
             <AdminUsersTab devBorder={devBorder} />
           )}
           {activeTab === 'admin-analytics' && (
             <AdminAnalyticsTab devBorder={devBorder} />
           )}
-          {activeTab === 'admin-content' && (
-            <AdminContentTab devBorder={devBorder} />
-          )}
+
         </div>
       </div>
     </TextbookLayout>
@@ -299,7 +270,7 @@ function ProfileTab({
             className="mb-4 p-3 rounded-lg text-sm"
             style={{
               backgroundColor: message.type === 'success' ? 'var(--callout-note-bg)' : 'var(--callout-warning-bg)',
-              color: message.type === 'success' ? '#16a34a' : '#dc2626',
+              color: message.type === 'success' ? 'var(--callout-note-border)' : '#dc2626',
               border: `1px solid ${message.type === 'success' ? 'var(--callout-note-border)' : 'var(--callout-warning-border)'}`,
             }}
           >
@@ -378,18 +349,10 @@ function ProfileTab({
             <label htmlFor="country" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Country
             </label>
-            <select
-              id="country"
-              name="country"
+            <CountrySelect
               value={formData.country}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
-              style={selectStyle}
-            >
-              {COUNTRY_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
+              onChange={(value) => setFormData(prev => ({ ...prev, country: value }))}
+            />
           </div>
         </div>
 
@@ -538,7 +501,7 @@ function SecurityTab({
             className="mb-4 p-3 rounded-lg text-sm"
             style={{
               backgroundColor: message.type === 'success' ? 'var(--callout-note-bg)' : 'var(--callout-warning-bg)',
-              color: message.type === 'success' ? '#16a34a' : '#dc2626',
+              color: message.type === 'success' ? 'var(--callout-note-border)' : '#dc2626',
               border: `1px solid ${message.type === 'success' ? 'var(--callout-note-border)' : 'var(--callout-warning-border)'}`,
             }}
           >
@@ -735,250 +698,29 @@ function DeleteTab({
   );
 }
 
-// Analytics Tab Component (Placeholder)
+// Analytics Tab Component
 function AnalyticsTab({
   devBorder,
 }: {
   devBorder: (color: DevBorderColor) => string;
 }) {
-  return (
-    <div
-      className={`rounded-xl p-8 ${devBorder('purple')}`}
-      style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-    >
-      <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--foreground)' }}>
-        Your Activity
-      </h2>
-      <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
-        Track your reading progress and engagement
-      </p>
-
-      {/* Placeholder content */}
-      <div className="space-y-6">
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Reading Time</h3>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--berkeley-blue)' }}>--</span>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Total time spent reading
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Chapters Visited</h3>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--berkeley-blue)' }}>--</span>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Unique chapters you&apos;ve read
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Last Active</h3>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--berkeley-blue)' }}>--</span>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Your most recent session
-          </p>
-        </div>
-      </div>
-
-      <p className="mt-6 text-sm text-center" style={{ color: 'var(--muted-text)' }}>
-        Analytics will be available once you start reading.
-      </p>
-    </div>
-  );
+  return <UserAnalyticsView devBorder={devBorder} />;
 }
 
-// Admin Users Tab Component (Placeholder)
+// Admin Users Tab Component
 function AdminUsersTab({
   devBorder,
 }: {
   devBorder: (color: DevBorderColor) => string;
 }) {
-  return (
-    <div
-      className={`rounded-xl p-8 ${devBorder('purple')}`}
-      style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-    >
-      <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--foreground)' }}>
-        User Analytics
-      </h2>
-      <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
-        View and analyze user data across the platform
-      </p>
-
-      {/* Placeholder content */}
-      <div className="space-y-6">
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Total Users</h3>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--berkeley-blue)' }}>--</span>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Registered accounts
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Users by Status</h3>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Student, Professional, Educator breakdown will appear here
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Users by Country</h3>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Geographic distribution will appear here
-          </p>
-        </div>
-      </div>
-
-      <p className="mt-6 text-sm text-center" style={{ color: 'var(--muted-text)' }}>
-        User analytics coming soon.
-      </p>
-    </div>
-  );
+  return <UserDemographics devBorder={devBorder} />;
 }
 
-// Admin Analytics Tab Component (Placeholder)
+// Admin Textbook Analytics Tab Component
 function AdminAnalyticsTab({
   devBorder,
 }: {
   devBorder: (color: DevBorderColor) => string;
 }) {
-  return (
-    <div
-      className={`rounded-xl p-8 ${devBorder('purple')}`}
-      style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-    >
-      <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--foreground)' }}>
-        Textbook Analytics
-      </h2>
-      <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
-        View reading patterns and engagement across chapters
-      </p>
-
-      {/* Placeholder content */}
-      <div className="space-y-6">
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Total Reading Time</h3>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--berkeley-blue)' }}>--</span>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Aggregate time across all users
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Most Popular Chapters</h3>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Chapter popularity rankings will appear here
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Reading Time by Chapter</h3>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Time distribution across chapters will appear here
-          </p>
-        </div>
-      </div>
-
-      <p className="mt-6 text-sm text-center" style={{ color: 'var(--muted-text)' }}>
-        Textbook analytics coming soon.
-      </p>
-    </div>
-  );
-}
-
-// Admin Content Tab Component (Placeholder)
-function AdminContentTab({
-  devBorder,
-}: {
-  devBorder: (color: DevBorderColor) => string;
-}) {
-  return (
-    <div
-      className={`rounded-xl p-8 ${devBorder('purple')}`}
-      style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-    >
-      <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--foreground)' }}>
-        Content Management
-      </h2>
-      <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
-        Manage chapters and textbook content
-      </p>
-
-      {/* Placeholder content */}
-      <div className="space-y-6">
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium" style={{ color: 'var(--foreground)' }}>Chapters</h3>
-            <span className="text-2xl font-semibold" style={{ color: 'var(--berkeley-blue)' }}>--</span>
-          </div>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Total published chapters
-          </p>
-        </div>
-
-        <div
-          className="p-6 rounded-lg"
-          style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
-        >
-          <h3 className="font-medium mb-4" style={{ color: 'var(--foreground)' }}>Chapter List</h3>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
-            Chapter management interface will appear here
-          </p>
-        </div>
-      </div>
-
-      <p className="mt-6 text-sm text-center" style={{ color: 'var(--muted-text)' }}>
-        Content management coming soon.
-      </p>
-    </div>
-  );
+  return <TextbookAnalytics devBorder={devBorder} />;
 }

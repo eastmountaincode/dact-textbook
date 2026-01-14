@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/providers/AuthProvider';
 import { useDevMode } from '@/providers/DevModeProvider';
+import { useAuth } from '@/providers/AuthProvider';
 import TextbookLayout from '@/components/TextbookLayout';
 import { createClient } from '@/lib/supabase/client';
 
@@ -61,8 +61,15 @@ export default function LoginPage() {
   const [resendSuccess, setResendSuccess] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { signIn, signOut, user } = useAuth();
   const { devBorder } = useDevMode();
+  const { user } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.replace('/chapter/welcome');
+    }
+  }, [user, router]);
 
   // Check for error in URL (e.g., from expired confirmation link)
   useEffect(() => {
@@ -80,19 +87,24 @@ export default function LoginPage() {
     setResendSuccess(false);
     setIsLoading(true);
 
-    // If already logged in, sign out first before signing in with new credentials
-    if (user) {
-      await signOut();
-    }
+    const supabase = createClient();
 
-    const { error } = await signIn(email, password);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      setError(parseLoginError(error.message));
+      if (error) {
+        setError(parseLoginError(error.message));
+        setIsLoading(false);
+      } else {
+        // Use window.location for more reliable redirect after login
+        window.location.href = '/chapter/welcome';
+      }
+    } catch (err) {
+      setError(parseLoginError(err instanceof Error ? err.message : 'An unexpected error occurred'));
       setIsLoading(false);
-    } else {
-      // Use window.location for more reliable redirect after login
-      window.location.href = '/chapter/welcome';
     }
   };
 

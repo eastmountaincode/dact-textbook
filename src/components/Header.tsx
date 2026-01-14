@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useDevMode } from '@/providers/DevModeProvider';
 import { useTheme } from '@/providers/ThemeProvider';
 import { useAuth } from '@/providers/AuthProvider';
@@ -32,7 +31,6 @@ export default function Header({
 }: HeaderProps) {
   const [showFontMenu, setShowFontMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
-  const router = useRouter();
   const { devBorder } = useDevMode();
   const { isDark, toggleTheme } = useTheme();
   const { user, profile, signOut } = useAuth();
@@ -40,11 +38,12 @@ export default function Header({
   const handleLogout = async () => {
     setShowAccountMenu(false);
     await signOut();
-    router.push('/login');
+    // Use hard navigation to ensure cookies are fully cleared before loading new page
+    window.location.href = '/login';
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
+    <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md font-serif ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
       {/* Logo / Title */}
       <div className={`flex items-center gap-4 ${devBorder('amber')}`}>
         <a href="/chapter/welcome" className={`text-[#FDB515] font-semibold text-lg hover:opacity-80 ${devBorder('emerald')}`}>
@@ -170,7 +169,7 @@ export default function Header({
                 </svg>
                 {/* Show the user's name if it exists, otherwise show the email (before the @) */}
                 <span className={`text-sm hidden sm:inline ${devBorder('yellow')}`}>
-                  {profile?.first_name || user.email?.split('@')[0]}
+                  {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
                 </span>
               </button>
 
@@ -178,7 +177,7 @@ export default function Header({
                 <div className="absolute right-0 top-10 rounded-lg shadow-xl p-4 w-56 z-50" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--foreground)' }}>
                   <div className="mb-3 pb-3" style={{ borderBottom: '1px solid var(--card-border)' }}>
                     <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
-                      {profile?.first_name || user.email?.split('@')[0]}
+                      {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--muted-text)' }}>
                       {user.email}

@@ -1,8 +1,9 @@
 import { loadChapter, getOrderedChapterSlugs, getChaptersBySection, getChapterNavigation } from '@/lib/latex-loader';
-import HighlightableContent from '@/components/HighlightableContent';
+import ChapterContent from '@/components/ChapterContent';
 import ChapterNavigation from '@/components/ChapterNavigation';
 import TextbookLayout from '@/components/TextbookLayout';
 import GatedContent from '@/components/GatedContent';
+import ReadingTimeTracker from '@/components/ReadingTimeTracker';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
@@ -43,13 +44,10 @@ export default async function ChapterPage({ params }: PageProps) {
   // Check if this is a preface page (always accessible)
   const isPrefacePage = isPreface(sections, slug);
 
-  // Check authentication for non-preface pages
-  let isAuthenticated = false;
-  if (!isPrefacePage) {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    isAuthenticated = !!user;
-  }
+  // Check authentication (needed for gating and reading time tracking)
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isAuthenticated = !!user;
 
   // Show gated content for non-preface pages when not authenticated
   if (!isPrefacePage && !isAuthenticated) {
@@ -62,7 +60,8 @@ export default async function ChapterPage({ params }: PageProps) {
 
   return (
     <TextbookLayout sections={sections} currentSlug={slug}>
-      <HighlightableContent html={chapter.html} chapterSlug={slug} />
+      {isAuthenticated && <ReadingTimeTracker chapterSlug={slug} />}
+      <ChapterContent html={chapter.html} chapterSlug={slug} />
       <ChapterNavigation prev={navigation.prev} next={navigation.next} />
     </TextbookLayout>
   );

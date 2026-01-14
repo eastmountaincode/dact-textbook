@@ -55,11 +55,8 @@ When creating or modifying components, add a dev border to help identify the com
 - Notes list: `fuchsia`
 - Add note area: `sky`
 
-*HighlightableContent:*
-- Wrapper: `violet`
-- Content flex container: `slate`
+*ChapterContent:*
 - Article: `amber`
-- Notes margin: `lime`
 
 *Chapter Content Elements (auto-applied via CSS):*
 - h1: red-600
