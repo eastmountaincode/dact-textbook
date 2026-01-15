@@ -3,8 +3,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Select, { StylesConfig, components, InputProps, GroupBase, DropdownIndicatorProps } from 'react-select';
 import { COUNTRIES, getCountryLabel } from '@/components/CountrySelect';
+import {
+  STATUS_OPTIONS,
+  EDUCATION_OPTIONS,
+  FIELD_OPTIONS,
+  INSTITUTION_OPTIONS,
+  STATISTICS_USE_OPTIONS,
+  REFERRAL_OPTIONS,
+} from '@/lib/profile-options';
 
-type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type';
+type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'statistics_use' | 'referral_source';
 type CountryOption = { value: string; label: string };
 
 // Custom Input component to disable browser autofill for country filter
@@ -38,55 +46,20 @@ const GROUP_BY_OPTIONS: { value: GroupByField; label: string }[] = [
   { value: 'education_level', label: 'Education Level' },
   { value: 'field_of_study', label: 'Field of Study' },
   { value: 'institution_type', label: 'Institution Type' },
+  { value: 'statistics_use', label: 'Statistics Use' },
+  { value: 'referral_source', label: 'Referral Source' },
 ];
 
 // Filter options for non-country fields (country uses searchable select with full ISO list)
+// Uses centralized options from profile-options.ts to stay in sync with signup form and account settings
 type NonCountryField = Exclude<GroupByField, 'country'>;
 const FILTER_OPTIONS: Record<NonCountryField, { label: string; values: { value: string; label: string }[] }> = {
-  status: {
-    label: 'Status',
-    values: [
-      { value: 'student', label: 'Student' },
-      { value: 'professional', label: 'Professional' },
-      { value: 'educator', label: 'Educator' },
-      { value: 'researcher', label: 'Researcher' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
-  education_level: {
-    label: 'Education',
-    values: [
-      { value: 'high_school', label: 'High School' },
-      { value: 'undergraduate', label: 'Undergraduate' },
-      { value: 'graduate', label: 'Graduate' },
-      { value: 'phd', label: 'PhD' },
-      { value: 'professional', label: 'Professional' },
-    ],
-  },
-  field_of_study: {
-    label: 'Field of Study',
-    values: [
-      { value: 'economics', label: 'Economics' },
-      { value: 'statistics', label: 'Statistics' },
-      { value: 'data_science', label: 'Data Science' },
-      { value: 'business', label: 'Business' },
-      { value: 'social_sciences', label: 'Social Sciences' },
-      { value: 'natural_sciences', label: 'Natural Sciences' },
-      { value: 'engineering', label: 'Engineering' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
-  institution_type: {
-    label: 'Institution',
-    values: [
-      { value: 'university', label: 'University' },
-      { value: 'community_college', label: 'Community College' },
-      { value: 'company', label: 'Company' },
-      { value: 'government', label: 'Government' },
-      { value: 'self_study', label: 'Self-study' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
+  status: { label: 'Status', values: STATUS_OPTIONS },
+  education_level: { label: 'Education', values: EDUCATION_OPTIONS },
+  field_of_study: { label: 'Field of Study', values: FIELD_OPTIONS },
+  institution_type: { label: 'Institution', values: INSTITUTION_OPTIONS },
+  statistics_use: { label: 'Statistics Use', values: STATISTICS_USE_OPTIONS },
+  referral_source: { label: 'Referral Source', values: REFERRAL_OPTIONS },
 };
 
 interface GroupData {
@@ -416,7 +389,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
           <select
             value={groupBy}
             onChange={(e) => setGroupBy(e.target.value as GroupByField)}
-            className="px-4 py-2 rounded-lg text-sm outline-none cursor-pointer"
+            className="px-4 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
             style={selectStyle}
           >
             {GROUP_BY_OPTIONS.map((opt) => (
@@ -444,7 +417,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
           <select
             value=""
             onChange={(e) => handleAddFilter(e.target.value)}
-            className="px-4 py-2 rounded-lg text-sm outline-none cursor-pointer"
+            className="px-4 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
             style={selectStyle}
           >
             <option value="">+ Add filter</option>

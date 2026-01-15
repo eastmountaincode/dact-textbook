@@ -38,8 +38,8 @@ export default function GatedContent({ chapterTitle }: GatedContentProps) {
             href="/signup"
             className="px-6 py-3 rounded-lg font-medium hover:opacity-90"
             style={{
-              backgroundColor: 'var(--california-gold)',
-              color: 'var(--berkeley-blue)'
+              backgroundColor: '#FDB515',
+              color: 'var(--header-bg)'
             }}
           >
             Create Account

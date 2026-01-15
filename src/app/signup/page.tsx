@@ -7,56 +7,23 @@ import { useAuth } from '@/providers/AuthProvider';
 import { useDevMode } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
 import { CountrySelect } from '@/components/CountrySelect';
+import {
+  STATUS_OPTIONS,
+  EDUCATION_OPTIONS,
+  FIELD_OPTIONS,
+  INSTITUTION_OPTIONS,
+  STATISTICS_USE_OPTIONS,
+  REFERRAL_OPTIONS,
+  withPlaceholder,
+} from '@/lib/profile-options';
 
-const STATUS_OPTIONS = [
-  { value: '', label: 'Select status' },
-  { value: 'student', label: 'Student' },
-  { value: 'professional', label: 'Professional' },
-  { value: 'educator', label: 'Educator' },
-  { value: 'researcher', label: 'Researcher' },
-  { value: 'other', label: 'Other' },
-];
-
-const EDUCATION_OPTIONS = [
-  { value: '', label: 'Select level' },
-  { value: 'high_school', label: 'High School' },
-  { value: 'undergraduate', label: 'Undergraduate' },
-  { value: 'graduate', label: 'Graduate' },
-  { value: 'phd', label: 'PhD' },
-  { value: 'professional', label: 'Professional' },
-];
-
-const FIELD_OPTIONS = [
-  { value: '', label: 'Select field' },
-  { value: 'economics', label: 'Economics' },
-  { value: 'statistics', label: 'Statistics' },
-  { value: 'data_science', label: 'Data Science' },
-  { value: 'business', label: 'Business' },
-  { value: 'social_sciences', label: 'Social Sciences' },
-  { value: 'natural_sciences', label: 'Natural Sciences' },
-  { value: 'engineering', label: 'Engineering' },
-  { value: 'other', label: 'Other' },
-];
-
-const INSTITUTION_OPTIONS = [
-  { value: '', label: 'Select type' },
-  { value: 'university', label: 'University' },
-  { value: 'community_college', label: 'Community College' },
-  { value: 'company', label: 'Company' },
-  { value: 'government', label: 'Government' },
-  { value: 'self_study', label: 'Self-study' },
-  { value: 'other', label: 'Other' },
-];
-
-const REFERRAL_OPTIONS = [
-  { value: '', label: 'Select option' },
-  { value: 'search_engine', label: 'Search Engine' },
-  { value: 'social_media', label: 'Social Media' },
-  { value: 'colleague', label: 'Colleague' },
-  { value: 'professor', label: 'Professor' },
-  { value: 'online_course', label: 'Online Course' },
-  { value: 'other', label: 'Other' },
-];
+// Add placeholders for form selects
+const STATUS_FORM_OPTIONS = withPlaceholder(STATUS_OPTIONS, 'Select status');
+const EDUCATION_FORM_OPTIONS = withPlaceholder(EDUCATION_OPTIONS, 'Select level');
+const FIELD_FORM_OPTIONS = withPlaceholder(FIELD_OPTIONS, 'Select field');
+const INSTITUTION_FORM_OPTIONS = withPlaceholder(INSTITUTION_OPTIONS, 'Select type');
+const STATISTICS_USE_FORM_OPTIONS = withPlaceholder(STATISTICS_USE_OPTIONS, 'Select option');
+const REFERRAL_FORM_OPTIONS = withPlaceholder(REFERRAL_OPTIONS, 'Select option');
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -70,6 +37,7 @@ export default function SignupPage() {
     educationLevel: '',
     fieldOfStudy: '',
     institutionType: '',
+    statisticsUse: '',
     referralSource: '',
   });
   const [error, setError] = useState<string | null>(null);
@@ -175,6 +143,7 @@ export default function SignupPage() {
       education_level: formData.educationLevel || undefined,
       field_of_study: formData.fieldOfStudy || undefined,
       institution_type: formData.institutionType || undefined,
+      statistics_use: formData.statisticsUse || undefined,
       referral_source: formData.referralSource || undefined,
     });
 
@@ -204,7 +173,7 @@ export default function SignupPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 pb-12 justify-center px-8 ${devBorder('blue')}`}>
         <div className={`w-full max-w-2xl ${devBorder('green')}`}>
         {/* Title area */}
         <div className={`text-center mb-4 ${devBorder('amber')}`}>
@@ -214,7 +183,7 @@ export default function SignupPage() {
         </div>
 
         {/* Form Card */}
-        <div className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
+        <div className={`rounded-xl px-8 py-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
           <form onSubmit={handleSubmit} className={devBorder('cyan')}>
             {error && (
               <div ref={errorRef} className="mb-4 p-3 rounded-lg text-sm" style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
@@ -312,7 +281,7 @@ export default function SignupPage() {
                   className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
                   style={selectStyle}
                 >
-                  {STATUS_OPTIONS.map((opt) => (
+                  {STATUS_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
@@ -368,7 +337,7 @@ export default function SignupPage() {
 
               <div className="mb-4">
                 <label htmlFor="educationLevel" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-                  Education Level
+                  Highest or Current Level of Education
                 </label>
                 <select
                   id="educationLevel"
@@ -378,7 +347,7 @@ export default function SignupPage() {
                   className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
                   style={selectStyle}
                 >
-                  {EDUCATION_OPTIONS.map((opt) => (
+                  {EDUCATION_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
@@ -395,7 +364,7 @@ export default function SignupPage() {
                   className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
                   style={selectStyle}
                 >
-                  {FIELD_OPTIONS.map((opt) => (
+                  {FIELD_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
@@ -413,7 +382,24 @@ export default function SignupPage() {
                   className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
                   style={selectStyle}
                 >
-                  {INSTITUTION_OPTIONS.map((opt) => (
+                  {INSTITUTION_FORM_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="statisticsUse" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                  What do you plan to use statistics for?
+                </label>
+                <select
+                  id="statisticsUse"
+                  name="statisticsUse"
+                  value={formData.statisticsUse}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
+                  style={selectStyle}
+                >
+                  {STATISTICS_USE_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
@@ -430,7 +416,7 @@ export default function SignupPage() {
                   className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
                   style={selectStyle}
                 >
-                  {REFERRAL_OPTIONS.map((opt) => (
+                  {REFERRAL_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>

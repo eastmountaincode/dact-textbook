@@ -2,49 +2,31 @@ import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
+import {
+  STATUS_OPTIONS,
+  EDUCATION_OPTIONS,
+  FIELD_OPTIONS,
+  INSTITUTION_OPTIONS,
+  STATISTICS_USE_OPTIONS,
+  REFERRAL_OPTIONS,
+  getOptionLabel,
+} from '@/lib/profile-options';
 
 // Register English locale for country names
 countries.registerLocale(enLocale);
 
-type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type';
-type NonCountryField = Exclude<GroupByField, 'country'>;
+type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'statistics_use' | 'referral_source';
 
-const VALID_GROUP_BY_FIELDS: GroupByField[] = ['status', 'country', 'education_level', 'field_of_study', 'institution_type'];
+const VALID_GROUP_BY_FIELDS: GroupByField[] = ['status', 'country', 'education_level', 'field_of_study', 'institution_type', 'statistics_use', 'referral_source'];
 
-// Labels for non-country fields (country uses i18n-iso-countries package)
-const FIELD_LABELS: Record<NonCountryField, Record<string, string>> = {
-  status: {
-    student: 'Student',
-    professional: 'Professional',
-    educator: 'Educator',
-    researcher: 'Researcher',
-    other: 'Other',
-  },
-  education_level: {
-    high_school: 'High School',
-    undergraduate: 'Undergraduate',
-    graduate: 'Graduate',
-    phd: 'PhD',
-    professional: 'Professional',
-  },
-  field_of_study: {
-    economics: 'Economics',
-    statistics: 'Statistics',
-    data_science: 'Data Science',
-    business: 'Business',
-    social_sciences: 'Social Sciences',
-    natural_sciences: 'Natural Sciences',
-    engineering: 'Engineering',
-    other: 'Other',
-  },
-  institution_type: {
-    university: 'University',
-    community_college: 'Community College',
-    company: 'Company',
-    government: 'Government',
-    self_study: 'Self-study',
-    other: 'Other',
-  },
+// Map groupBy field to centralized options
+const FIELD_OPTIONS_MAP = {
+  status: STATUS_OPTIONS,
+  education_level: EDUCATION_OPTIONS,
+  field_of_study: FIELD_OPTIONS,
+  institution_type: INSTITUTION_OPTIONS,
+  statistics_use: STATISTICS_USE_OPTIONS,
+  referral_source: REFERRAL_OPTIONS,
 };
 
 // Helper to get label for any field value
@@ -53,7 +35,8 @@ function getFieldLabel(field: GroupByField, value: string): string {
   if (field === 'country') {
     return countries.getName(value, 'en') || value;
   }
-  return FIELD_LABELS[field as NonCountryField]?.[value] || value;
+  const options = FIELD_OPTIONS_MAP[field as keyof typeof FIELD_OPTIONS_MAP];
+  return options ? getOptionLabel(options, value) : value;
 }
 
 export async function GET(request: Request) {
@@ -90,25 +73,33 @@ export async function GET(request: Request) {
     const educationLevel = searchParams.get('education_level')?.split(',').filter(Boolean);
     const fieldOfStudy = searchParams.get('field_of_study')?.split(',').filter(Boolean);
     const institutionType = searchParams.get('institution_type')?.split(',').filter(Boolean);
+    const statisticsUse = searchParams.get('statistics_use')?.split(',').filter(Boolean);
+    const referralSource = searchParams.get('referral_source')?.split(',').filter(Boolean);
 
     // Build query
     let query = supabase.from('user_profiles').select('*');
 
-    // Apply filters (excluding the groupBy field to allow meaningful grouping)
-    if (status?.length && groupBy !== 'status') {
+    // Apply all filters
+    if (status?.length) {
       query = query.in('status', status);
     }
-    if (country?.length && groupBy !== 'country') {
+    if (country?.length) {
       query = query.in('country', country);
     }
-    if (educationLevel?.length && groupBy !== 'education_level') {
+    if (educationLevel?.length) {
       query = query.in('education_level', educationLevel);
     }
-    if (fieldOfStudy?.length && groupBy !== 'field_of_study') {
+    if (fieldOfStudy?.length) {
       query = query.in('field_of_study', fieldOfStudy);
     }
-    if (institutionType?.length && groupBy !== 'institution_type') {
+    if (institutionType?.length) {
       query = query.in('institution_type', institutionType);
+    }
+    if (statisticsUse?.length) {
+      query = query.in('statistics_use', statisticsUse);
+    }
+    if (referralSource?.length) {
+      query = query.in('referral_source', referralSource);
     }
 
     const { data: profiles, error: profilesError } = await query;

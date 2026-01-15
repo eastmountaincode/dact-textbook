@@ -13,6 +13,7 @@ interface UserProfile {
   education_level?: string;
   field_of_study?: string;
   institution_type?: string;
+  statistics_use?: string;
   referral_source?: string;
   created_at: string;
   updated_at: string;
@@ -223,6 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       education_level: metadata.education_level,
       field_of_study: metadata.field_of_study,
       institution_type: metadata.institution_type,
+      statistics_use: metadata.statistics_use,
       referral_source: metadata.referral_source,
     };
 

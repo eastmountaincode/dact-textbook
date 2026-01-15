@@ -745,3 +745,20 @@ html, body {
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+/* ======================================================================
+   NATIVE SELECT HOVER EFFECT
+   Matches react-select hover behavior
+   ====================================================================== */
+.select-hover:hover {
+  border-color: var(--berkeley-blue) !important;
+}

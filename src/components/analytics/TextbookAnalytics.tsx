@@ -6,6 +6,13 @@ import AsyncSelect from 'react-select/async';
 import { ReadingTimeBar, formatTime } from './ReadingTimeBar';
 import { DateRangeFilter, DateRange } from './DateRangeFilter';
 import { COUNTRIES, getCountryLabel } from '@/components/CountrySelect';
+import {
+  STATUS_OPTIONS,
+  EDUCATION_OPTIONS,
+  FIELD_OPTIONS,
+  INSTITUTION_OPTIONS,
+  getOptionLabel,
+} from '@/lib/profile-options';
 
 type CountryOption = { value: string; label: string };
 type UserOption = { value: string; label: string };
@@ -39,52 +46,12 @@ const CustomDropdownIndicator = (props: DropdownIndicatorProps<CountryOption, fa
   </components.DropdownIndicator>
 );
 
-// Filter options for dropdown fields
+// Filter options for dropdown fields (using centralized constants)
 const FILTER_OPTIONS: Record<NonCountryUserChapterField, { label: string; values: { value: string; label: string }[] }> = {
-  status: {
-    label: 'Status',
-    values: [
-      { value: 'student', label: 'Student' },
-      { value: 'professional', label: 'Professional' },
-      { value: 'educator', label: 'Educator' },
-      { value: 'researcher', label: 'Researcher' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
-  education_level: {
-    label: 'Education',
-    values: [
-      { value: 'high_school', label: 'High School' },
-      { value: 'undergraduate', label: 'Undergraduate' },
-      { value: 'graduate', label: 'Graduate' },
-      { value: 'phd', label: 'PhD' },
-      { value: 'professional', label: 'Professional' },
-    ],
-  },
-  field_of_study: {
-    label: 'Field of Study',
-    values: [
-      { value: 'economics', label: 'Economics' },
-      { value: 'statistics', label: 'Statistics' },
-      { value: 'data_science', label: 'Data Science' },
-      { value: 'business', label: 'Business' },
-      { value: 'social_sciences', label: 'Social Sciences' },
-      { value: 'natural_sciences', label: 'Natural Sciences' },
-      { value: 'engineering', label: 'Engineering' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
-  institution_type: {
-    label: 'Institution',
-    values: [
-      { value: 'university', label: 'University' },
-      { value: 'community_college', label: 'Community College' },
-      { value: 'company', label: 'Company' },
-      { value: 'government', label: 'Government' },
-      { value: 'self_study', label: 'Self-study' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
+  status: { label: 'Status', values: STATUS_OPTIONS },
+  education_level: { label: 'Education', values: EDUCATION_OPTIONS },
+  field_of_study: { label: 'Field of Study', values: FIELD_OPTIONS },
+  institution_type: { label: 'Institution', values: INSTITUTION_OPTIONS },
 };
 
 interface ChapterData {
@@ -185,13 +152,24 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
 
       // Store chapter options for filter dropdown (always returned)
       if (data.chapterOptions) {
-        setChapterOptions(data.chapterOptions.map((ch: { id: string; title: string; section: string; order: number }) => {
+        // First, separate preface and numbered chapters
+        const allChapters = data.chapterOptions as { id: string; title: string; section: string; order: number }[];
+        const numberedChapters = allChapters.filter(ch => ch.section && ch.section.toLowerCase() !== 'preface');
+
+        setChapterOptions(allChapters.map((ch) => {
           // Format label with chapter number for non-Preface chapters
           const isNumbered = ch.section && ch.section.toLowerCase() !== 'preface';
-          const label = isNumbered ? `Chapter ${ch.order}: ${ch.title}` : ch.title;
+          if (isNumbered) {
+            // Find the position among numbered chapters (1-indexed)
+            const chapterNum = numberedChapters.findIndex(nc => nc.id === ch.id) + 1;
+            return {
+              value: ch.id,
+              label: `${chapterNum}: ${ch.title}`,
+            };
+          }
           return {
             value: ch.id,
-            label,
+            label: ch.title,
           };
         }));
       }
@@ -375,6 +353,19 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
     acc[section].push(chapter);
     return acc;
   }, {} as Record<string, ChapterData[]>);
+
+  // Get numbered chapters for display labels
+  const numberedChaptersForDisplay = chapters.filter(ch => ch.section && ch.section.toLowerCase() !== 'preface');
+
+  // Get chapter display label with number for non-preface chapters
+  const getChapterDisplayLabel = (chapter: ChapterData): string => {
+    const isNumbered = chapter.section && chapter.section.toLowerCase() !== 'preface';
+    if (isNumbered) {
+      const chapterNum = numberedChaptersForDisplay.findIndex(nc => nc.id === chapter.id) + 1;
+      return `${chapterNum}: ${chapter.title}`;
+    }
+    return chapter.title;
+  };
 
   // Get section order based on first chapter in each section
   const sectionOrder = Object.keys(groupedChapters).sort((a, b) => {
@@ -570,7 +561,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
           <select
             value={groupBy || ''}
             onChange={(e) => setGroupBy((e.target.value || null) as GroupByField)}
-            className="w-full px-3 py-2 rounded-lg text-sm outline-none cursor-pointer"
+            className="w-full px-3 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
             style={nativeSelectStyle}
           >
             {GROUP_BY_OPTIONS.map(opt => (
@@ -611,7 +602,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
             <select
               value=""
               onChange={(e) => handleAddFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg text-sm outline-none cursor-pointer"
+              className="w-full px-3 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
               style={nativeSelectStyle}
             >
               <option value="">+ Add filter</option>
@@ -660,7 +651,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
               }}
               loadOptions={loadUserOptions}
               styles={selectStyles as StylesConfig<UserOption, false>}
-              placeholder="+ Search user"
+              placeholder="+ Add user"
               isClearable={false}
               isSearchable
               classNamePrefix="user-filter"
@@ -873,7 +864,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
                         {groupedChapters[section].map(chapter => (
                           <ReadingTimeBar
                             key={chapter.id}
-                            label={chapter.title}
+                            label={getChapterDisplayLabel(chapter)}
                             seconds={chapter.seconds}
                             maxSeconds={maxSeconds}
                           />

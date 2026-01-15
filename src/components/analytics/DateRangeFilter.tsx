@@ -31,7 +31,7 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as DateRange)}
-      className="px-3 py-2 rounded-lg text-sm outline-none cursor-pointer"
+      className="px-3 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
       style={selectStyle}
     >
       {DATE_RANGE_OPTIONS.map((opt) => (
