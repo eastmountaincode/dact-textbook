@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChapterInfo } from '@/lib/latex-loader';
+import { ChapterInfo } from '@/lib/chapter-loader';
 
 interface ChapterNavigationProps {
   prev: ChapterInfo | null;

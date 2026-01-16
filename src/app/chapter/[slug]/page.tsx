@@ -1,4 +1,4 @@
-import { loadChapter, getOrderedChapterSlugs, getChaptersBySection, getChapterNavigation } from '@/lib/latex-loader';
+import { loadChapter, getOrderedChapterSlugs, getChaptersBySection, getChapterNavigation } from '@/lib/chapter-loader';
 import ChapterContent from '@/components/ChapterContent';
 import ChapterNavigation from '@/components/ChapterNavigation';
 import TextbookLayout from '@/components/TextbookLayout';
