@@ -18,6 +18,7 @@ sections:
       - operators-properties
       - bounds-outliers
       - normal-distribution
+      - new-chapter
 
   - name: "Descriptive Statistics"
     chapters:
