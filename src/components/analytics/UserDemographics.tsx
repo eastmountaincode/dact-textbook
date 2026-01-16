@@ -182,9 +182,10 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
     appearance: 'none' as const,
     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 0.75rem center',
+    backgroundPosition: 'right 12px center',
     backgroundSize: '1rem',
-    paddingRight: '2.5rem',
+    paddingLeft: '12px',
+    paddingRight: '40px',
   };
 
   const groupByLabel = GROUP_BY_OPTIONS.find(o => o.value === groupBy)?.label || groupBy;
@@ -272,6 +273,10 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
       '&:hover': {
         borderColor: 'var(--berkeley-blue)',
       },
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: '0 0 0 12px', // Match native select (12px left padding)
     }),
     menu: (base) => ({
       ...base,
@@ -389,7 +394,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
           <select
             value={groupBy}
             onChange={(e) => setGroupBy(e.target.value as GroupByField)}
-            className="px-4 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+            className="py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
             style={selectStyle}
           >
             {GROUP_BY_OPTIONS.map((opt) => (
@@ -417,7 +422,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
           <select
             value=""
             onChange={(e) => handleAddFilter(e.target.value)}
-            className="px-4 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+            className={`py-2 rounded-lg text-sm outline-none cursor-pointer select-hover ${devBorder('red')}`}
             style={selectStyle}
           >
             <option value="">+ Add filter</option>
@@ -441,7 +446,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
 
           {/* Country filter (searchable) */}
           {showCountryFilter && (
-            <div style={{ width: '200px' }}>
+            <div className={devBorder('blue')} style={{ width: '200px' }}>
               <Select<CountryOption, false>
                 value={null}
                 onChange={(option) => {

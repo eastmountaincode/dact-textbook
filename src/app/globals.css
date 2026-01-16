@@ -135,6 +135,7 @@ html, body {
   line-height: 1.4;
   overscroll-behavior-y: none;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Prevent horizontal overflow on mobile */

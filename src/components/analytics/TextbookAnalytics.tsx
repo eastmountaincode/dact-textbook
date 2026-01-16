@@ -391,6 +391,10 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
         borderColor: 'var(--berkeley-blue)',
       },
     }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: '0 0 0 12px', // Match native select (12px left padding)
+    }),
     menu: (base) => ({
       ...base,
       backgroundColor: 'var(--card-bg)',
@@ -449,9 +453,10 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
     appearance: 'none' as const,
     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 0.75rem center',
+    backgroundPosition: 'right 12px center',
     backgroundSize: '1rem',
-    paddingRight: '2.5rem',
+    paddingLeft: '13px',
+    paddingRight: '40px',
   };
 
   // Available countries (exclude already selected ones)
@@ -561,7 +566,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
           <select
             value={groupBy || ''}
             onChange={(e) => setGroupBy((e.target.value || null) as GroupByField)}
-            className="w-full px-3 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+            className="w-full py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
             style={nativeSelectStyle}
           >
             {GROUP_BY_OPTIONS.map(opt => (
@@ -602,7 +607,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
             <select
               value=""
               onChange={(e) => handleAddFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+              className="w-full py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
               style={nativeSelectStyle}
             >
               <option value="">+ Add filter</option>

@@ -22,16 +22,17 @@ export function DateRangeFilter({ value, onChange }: DateRangeFilterProps) {
     appearance: 'none' as const,
     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 0.5rem center',
+    backgroundPosition: 'right 12px center',
     backgroundSize: '1rem',
-    paddingRight: '2rem',
+    paddingLeft: '12px',
+    paddingRight: '40px',
   };
 
   return (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as DateRange)}
-      className="px-3 py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+      className="py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
       style={selectStyle}
     >
       {DATE_RANGE_OPTIONS.map((opt) => (

@@ -497,11 +497,18 @@
     "text": "Now that we understand the variables, let’s interpret what each coefficient tells us. The dependent variable is log(MEDV), which means we need to be careful about the interpretation depending on whether the independent variable is in levels, logs, or transformed. Environmental Quality: \beta_1 (NOX²) Since the model includes NOX², the effect of pollution on home values is: $$ rac{( ext{MEDV})}{ext{NOX}} = 2\beta_1"
   },
   {
+    "objectID": "new-chapter",
+    "href": "/chapter/new-chapter",
+    "title": "Test",
+    "section": "",
+    "text": "Test This chapter is currently under development. Content coming soon."
+  },
+  {
     "objectID": "normal-distribution",
     "href": "/chapter/normal-distribution",
-    "title": "The normal distribution",
+    "title": "The Normal Distribution",
     "section": "",
-    "text": "The normal distribution This chapter is currently under development. Content coming soon."
+    "text": "The Normal Distribution This chapter is currently under development. Content coming soon."
   },
   {
     "objectID": "operators-properties",
