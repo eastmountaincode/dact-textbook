@@ -1,4 +1,4 @@
-# The Normal Distribution
+# The normal distribution
 
 
 ::: {.callout-note}
