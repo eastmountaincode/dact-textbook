@@ -71,12 +71,31 @@ export default function LoginPage() {
   const { devBorder } = useDevMode();
   const { user } = useAuth();
 
-  // Redirect if already logged in
+  // Handle hash fragment from email confirmation (implicit flow)
+  // When user clicks confirmation link, Supabase may redirect with tokens in hash
+  // We need to catch this and redirect to confirmed page instead of auto-logging in
+  const [isConfirmationRedirect, setIsConfirmationRedirect] = useState(false);
+
   useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('type=signup')) {
+      setIsConfirmationRedirect(true);
+      // Sign out to clear any auto-established session, then redirect
+      const supabase = createClient();
+      supabase.auth.signOut().then(() => {
+        window.location.replace('/auth/confirmed');
+      });
+      return;
+    }
+  }, []);
+
+  // Redirect if already logged in (but not if coming from confirmation)
+  useEffect(() => {
+    if (isConfirmationRedirect) return;
     if (user) {
       router.replace('/chapter/welcome');
     }
-  }, [user, router]);
+  }, [user, router, isConfirmationRedirect]);
 
   // Check for error in URL (e.g., from expired confirmation link)
   useEffect(() => {
