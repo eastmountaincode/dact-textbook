@@ -294,15 +294,13 @@ INSERT INTO auth.identities (
   NOW()
 );
 
+-- Samir left optional fields empty (common for professionals in a hurry)
 UPDATE public.user_profiles SET
   first_name = 'Samir',
   last_name = 'Patel',
   role = 'professional',
   country = 'IN',
-  education_level = 'undergraduate',
-  field_of_study = 'business',
-  institution_type = 'other',
-  statistics_use = 'professional_work'
+  education_level = 'undergraduate'
 WHERE id = '00000000-0000-0000-0000-000000000005';
 
 INSERT INTO public.user_roles (user_id, role)
@@ -438,15 +436,14 @@ INSERT INTO auth.identities (
   NOW()
 );
 
+-- Aisha only filled field_of_study, left institution_type and statistics_use empty
 UPDATE public.user_profiles SET
   first_name = 'Aisha',
   last_name = 'Okafor',
   role = 'student',
   country = 'NG',
   education_level = 'high_school',
-  field_of_study = 'mathematics',
-  institution_type = 'other',
-  statistics_use = 'academic_coursework'
+  field_of_study = 'mathematics'
 WHERE id = '00000000-0000-0000-0000-000000000007';
 
 INSERT INTO public.user_roles (user_id, role)
@@ -588,16 +585,13 @@ INSERT INTO auth.identities (
   NOW()
 );
 
--- Update the auto-created profile with actual data
+-- Unconfirmed user only filled required fields
 UPDATE public.user_profiles SET
   first_name = 'Unconfirmed',
   last_name = 'User',
   role = 'student',
   country = 'US',
-  education_level = 'undergraduate',
-  field_of_study = 'other',
-  institution_type = 'other',
-  statistics_use = 'academic_coursework'
+  education_level = 'undergraduate'
 WHERE id = '00000000-0000-0000-0000-000000000003';
 
 INSERT INTO public.user_roles (user_id, role)

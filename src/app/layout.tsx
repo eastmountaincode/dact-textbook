@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import { DevModeProvider } from "@/providers/DevModeProvider";
@@ -33,6 +34,7 @@ export default function RootLayout({
             </DevModeProvider>
           </AuthProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

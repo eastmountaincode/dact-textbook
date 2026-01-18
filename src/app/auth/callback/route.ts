@@ -12,31 +12,10 @@ export async function GET(request: Request) {
 
   const cookieStore = await cookies();
 
-  // Create supabase client to check session
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll() {
-          // Read-only for checking session
-        },
-      },
-    }
-  );
-
   // Handle errors from Supabase (e.g., expired link)
   if (error) {
-    // Check if user is already logged in - if so, just redirect them
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      return NextResponse.redirect(`${origin}/chapter/welcome`);
-    }
-
     const errorMessage = errorDescription || error;
+    // Always redirect to login with error - let user see the error and log in properly
     return NextResponse.redirect(
       `${origin}/login?error=${encodeURIComponent(errorMessage)}`
     );
@@ -47,8 +26,11 @@ export async function GET(request: Request) {
     // For email confirmation (signup), we just confirm the email but don't log them in
     const isRecovery = type === 'recovery';
 
+    const confirmationRedirect = `${origin}/auth/confirmed`;
+    const recoveryRedirect = `${origin}/reset-password`;
+
     const response = NextResponse.redirect(
-      isRecovery ? `${origin}/reset-password` : `${origin}/auth/confirmed`
+      isRecovery ? recoveryRedirect : confirmationRedirect
     );
 
     // Create supabase client - only set cookies for recovery flow
@@ -76,12 +58,6 @@ export async function GET(request: Request) {
 
     // If exchange failed (e.g., link already used), handle appropriately
     if (exchangeError) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        // Already logged in - just redirect them
-        return NextResponse.redirect(`${origin}/chapter/welcome`);
-      }
-
       // Check if this is an "already used" or "expired" link error for signup confirmation
       // These errors indicate the email was likely already confirmed
       const errorLower = exchangeError.message.toLowerCase();
@@ -97,20 +73,18 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/auth/confirmed?already=true`);
       }
 
+      // For recovery or other errors, redirect to login with error
       return NextResponse.redirect(
         `${origin}/login?error=${encodeURIComponent(exchangeError.message)}`
       );
     }
 
+    // Success - redirect to appropriate page
+    // For signup confirmation: always go to /auth/confirmed (user must log in manually)
+    // For recovery: go to reset-password page
     return response;
   }
 
-  // No code provided - check if already logged in
-  const { data: { user } } = await supabase.auth.getUser();
-  if (user) {
-    return NextResponse.redirect(`${origin}/chapter/welcome`);
-  }
-
-  // Not logged in and no code - redirect to login
+  // No code provided - redirect to login
   return NextResponse.redirect(`${origin}/login`);
 }

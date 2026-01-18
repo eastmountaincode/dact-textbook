@@ -16,6 +16,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.90.1",
+    "@vercel/analytics": "^1.6.1",
     "fuse.js": "^7.1.0",
     "gray-matter": "^4.0.3",
     "i18n-iso-countries": "^7.14.0",
