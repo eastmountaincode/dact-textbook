@@ -35,6 +35,20 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
   const showSearchResults = debouncedQuery.trim().length > 0 && results.length > 0;
   const showNoResults = debouncedQuery.trim().length > 0 && !isLoading && results.length === 0;
 
+  // Calculate occurrence index for each result - tracks position within same chapter
+  const resultsWithOccurrence = results.slice(0, 10).map((result, index) => {
+    // Count how many previous results have the same base path (same chapter)
+    const basePath = result.item.href.split('#')[0].split('?')[0];
+    let occurrenceIndex = 0;
+    for (let i = 0; i < index; i++) {
+      const prevBasePath = results[i].item.href.split('#')[0].split('?')[0];
+      if (prevBasePath === basePath) {
+        occurrenceIndex++;
+      }
+    }
+    return { result, occurrenceIndex };
+  });
+
   return (
     <>
       {/* Search Input */}
@@ -75,12 +89,13 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
             Search Results ({results.length})
           </p>
           <ul className="px-2 pb-2 space-y-1">
-            {results.slice(0, 10).map((result) => (
+            {resultsWithOccurrence.map(({ result, occurrenceIndex }) => (
               <SearchResultItem
                 key={result.item.objectID}
                 result={result}
                 query={debouncedQuery}
                 isActive={result.item.href.includes(currentSlug || '')}
+                occurrenceIndex={occurrenceIndex}
               />
             ))}
           </ul>
@@ -105,21 +120,23 @@ function SearchResultItem({
   result,
   query,
   isActive,
+  occurrenceIndex,
 }: {
   result: SearchResult;
   query: string;
   isActive: boolean;
+  occurrenceIndex: number;
 }) {
   const { item } = result;
   const snippet = getMatchSnippet(item.text, query);
 
-  // Add search query to URL so the page can highlight/scroll to the match
-  // URL format: /chapter/slug?q=term#section-id (query before hash)
+  // Add search query and occurrence index to URL so the page can highlight/scroll to the specific match
+  // URL format: /chapter/slug?q=term&n=0#section-id (query params before hash)
   const [basePath, hash] = item.href.split('#');
   const separator = basePath.includes('?') ? '&' : '?';
   const hrefWithQuery = hash
-    ? `${basePath}${separator}q=${encodeURIComponent(query)}#${hash}`
-    : `${basePath}${separator}q=${encodeURIComponent(query)}`;
+    ? `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}#${hash}`
+    : `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}`;
 
   return (
     <li>
