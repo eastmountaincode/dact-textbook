@@ -8,7 +8,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import TextbookLayout from '@/components/TextbookLayout';
 import { createClient } from '@/lib/supabase/client';
 
-type ErrorType = 'email_not_confirmed' | 'invalid_credentials' | 'rate_limited' | 'link_expired' | 'generic';
+type ErrorType = 'email_not_confirmed' | 'invalid_credentials' | 'rate_limited' | 'link_expired' | 'pkce_error' | 'generic';
 
 interface LoginError {
   type: ErrorType;
@@ -36,6 +36,13 @@ function parseLoginError(errorMessage: string): LoginError {
     return {
       type: 'rate_limited',
       message: 'Too many login attempts. Please wait a moment and try again.',
+    };
+  }
+
+  if (lowerMessage.includes('pkce') || lowerMessage.includes('code verifier')) {
+    return {
+      type: 'pkce_error',
+      message: 'Your email has been confirmed. Please log in with your email and password.',
     };
   }
 
@@ -142,7 +149,14 @@ export default function LoginPage() {
         <div className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
           <form onSubmit={handleSubmit} className={devBorder('cyan')}>
             {error && (
-              <div className={`mb-4 p-3 rounded-lg text-sm ${devBorder('red')}`} style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
+              <div
+                className={`mb-4 p-3 rounded-lg text-sm ${devBorder('red')}`}
+                style={{
+                  backgroundColor: error.type === 'pkce_error' ? 'var(--card-bg)' : 'var(--callout-warning-bg)',
+                  color: error.type === 'pkce_error' ? 'var(--foreground)' : '#dc2626',
+                  border: error.type === 'pkce_error' ? '1px solid var(--card-border)' : '1px solid var(--callout-warning-border)'
+                }}
+              >
                 <p>{error.message}</p>
                 {(error.type === 'email_not_confirmed' || error.type === 'link_expired') && (
                   <button

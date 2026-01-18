@@ -88,9 +88,12 @@ export async function GET(request: Request) {
       const isLinkUsedOrExpired = errorLower.includes('expired') ||
                                    errorLower.includes('invalid') ||
                                    errorLower.includes('already');
+      const isPKCEError = errorLower.includes('pkce') ||
+                          errorLower.includes('code verifier');
 
-      if (!isRecovery && isLinkUsedOrExpired) {
+      if (!isRecovery && (isLinkUsedOrExpired || isPKCEError)) {
         // For signup confirmation, show a friendly "already confirmed" message
+        // PKCE errors typically mean the email was confirmed but session couldn't be established
         return NextResponse.redirect(`${origin}/auth/confirmed?already=true`);
       }
 
