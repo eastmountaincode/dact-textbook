@@ -64,8 +64,12 @@ test.describe.serial('Email Confirmation', () => {
     await page.fill('input[type="email"]', testEmail);
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    // For country, use react-select
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.fill('input[name="firstName"]', 'Test');
     await page.click('button[type="submit"]');
 
@@ -115,8 +119,11 @@ test.describe.serial('Email Confirmation', () => {
     await page.fill('input[type="email"]', testEmail);
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.fill('input[name="firstName"]', 'Test');
     await page.click('button[type="submit"]');
     await page.waitForTimeout(2000);
@@ -144,8 +151,11 @@ test.describe.serial('Email Confirmation', () => {
     await page.fill('input[type="email"]', testEmail);
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.fill('input[name="firstName"]', 'Test');
     await page.click('button[type="submit"]');
     await page.waitForTimeout(2000);

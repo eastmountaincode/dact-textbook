@@ -13,9 +13,11 @@ type CountryOption = { value: string; label: string };
 const NoAutofillInput = (props: InputProps<CountryOption, false, GroupBase<CountryOption>>) => (
   <components.Input
     {...props}
-    autoComplete="off"
+    autoComplete="nope"
     data-lpignore="true"
     data-form-type="other"
+    data-1p-ignore="true"
+    aria-autocomplete="none"
   />
 );
 
@@ -41,8 +43,8 @@ export function CountrySelect({
   value,
   onChange,
   required,
-  id = 'country',
-  name = 'country',
+  id = 'location-selector',
+  name = 'location-selector',
   placeholder = 'Select or type to search...',
 }: CountrySelectProps) {
   const selectedOption = COUNTRIES.find(c => c.value === value) || null;

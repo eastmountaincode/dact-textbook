@@ -46,13 +46,10 @@ export default function Header({
   return (
     <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md font-serif ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
       {/* Logo / Title */}
-      <div className={`flex items-center gap-4 ${devBorder('amber')}`}>
-        <a href="/chapter/welcome" className={`text-[#FDB515] font-semibold text-lg hover:opacity-80 ${devBorder('emerald')}`}>
-          The Philomath
-        </a>
-        <span className={`text-white/60 text-sm hidden sm:inline ${devBorder('lime')}`}>
+      <div className={`flex items-center ${devBorder('amber')}`}>
+        <a href="/chapter/welcome" className={`text-white font-normal text-lg hover:opacity-80 ${devBorder('emerald')}`}>
           Data Analytics for Critical Thinkers
-        </span>
+        </a>
       </div>
 
       {/* Controls */}

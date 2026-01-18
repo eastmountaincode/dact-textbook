@@ -68,16 +68,14 @@ async function loginUser(page, email, password) {
   await expect(page).toHaveURL('/chapter/welcome', { timeout: 15000 });
 }
 
-// Helper to navigate to delete account tab
-async function navigateToDeleteTab(page) {
+// Helper to navigate to security tab and expand delete section
+async function navigateToDeleteSection(page) {
   await page.goto('/account');
-  await page.click('text=Delete Account');
-}
-
-// Helper to open delete confirmation modal
-async function openDeleteModal(page) {
-  await page.click('button:has-text("Delete My Account")');
-  // Use unique modal text to avoid matching the static description
+  // Click the Security tab
+  await page.click('text=Security');
+  // Click the collapsible Delete Account section header to expand it
+  await page.click('button:has-text("Delete Account")');
+  // Wait for the section to expand and show the confirmation input
   await expect(page.locator('text=Type DELETE to confirm')).toBeVisible({ timeout: 5000 });
 }
 
@@ -87,30 +85,27 @@ async function openDeleteModal(page) {
 // ============================================
 
 test.describe('Account Deletion UI', () => {
-  test('account page shows delete account tab', async ({ page }) => {
+  test('account page shows delete account section in security tab', async ({ page }) => {
     // Login with seeded student user
     await loginUser(page, TEST_USERS.student.email, TEST_USERS.student.password);
 
     // Navigate to account page
     await page.goto('/account');
 
-    // Check that Delete Account tab exists
-    await expect(page.locator('text=Delete Account')).toBeVisible({ timeout: 10000 });
+    // Check that Security tab exists and click it
+    await expect(page.locator('text=Security')).toBeVisible({ timeout: 10000 });
+    await page.click('text=Security');
 
-    // Click on Delete Account tab
-    await page.click('text=Delete Account');
-
-    // Verify the delete section content
-    await expect(page.locator('button:has-text("Delete My Account")')).toBeVisible();
+    // Verify the delete section exists (as a collapsible header)
+    await expect(page.locator('button:has-text("Delete Account")')).toBeVisible();
   });
 
   test('delete account requires typing DELETE to confirm', async ({ page }) => {
     await loginUser(page, TEST_USERS.student.email, TEST_USERS.student.password);
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    await navigateToDeleteSection(page);
 
     // Confirm button should be disabled initially
-    const confirmButton = page.locator('button:has-text("Delete Forever")');
+    const confirmButton = page.locator('button:has-text("Delete Account")').last();
     await expect(confirmButton).toBeDisabled();
 
     // Type wrong text (lowercase) - button should still be disabled
@@ -121,42 +116,41 @@ test.describe('Account Deletion UI', () => {
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
     await expect(confirmButton).toBeEnabled();
 
-    // Cancel without deleting (preserve seeded user)
-    await page.click('button:has-text("Cancel")');
+    // Collapse section to preserve seeded user (click header again)
+    await page.click('h2:has-text("Delete Account")');
   });
 
-  test('cancel button closes delete confirmation modal', async ({ page }) => {
+  test('collapsing delete section hides confirmation', async ({ page }) => {
     await loginUser(page, TEST_USERS.student.email, TEST_USERS.student.password);
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    await navigateToDeleteSection(page);
 
-    // Click Cancel button
-    await page.click('button:has-text("Cancel")');
+    // Collapse the section by clicking the header
+    await page.click('h2:has-text("Delete Account")');
 
-    // Modal should be closed
+    // Confirmation text should be hidden
     await expect(page.locator('text=Type DELETE to confirm')).not.toBeVisible({ timeout: 5000 });
   });
 
-  test('delete confirmation input clears when modal is closed', async ({ page }) => {
+  test('delete confirmation input clears when section is collapsed', async ({ page }) => {
     await loginUser(page, TEST_USERS.student.email, TEST_USERS.student.password);
-    await navigateToDeleteTab(page);
+    await navigateToDeleteSection(page);
 
-    // Open modal and type DELETE
-    await openDeleteModal(page);
+    // Type DELETE
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
 
-    // Close modal
-    await page.click('button:has-text("Cancel")');
+    // Collapse section
+    await page.click('h2:has-text("Delete Account")');
 
-    // Re-open modal
-    await openDeleteModal(page);
+    // Re-expand section
+    await page.click('button:has-text("Delete Account")');
+    await expect(page.locator('text=Type DELETE to confirm')).toBeVisible({ timeout: 5000 });
 
     // Input should be cleared
     const input = page.locator('input[placeholder="DELETE"]');
     await expect(input).toHaveValue('');
 
-    // Cancel to preserve seeded user
-    await page.click('button:has-text("Cancel")');
+    // Collapse to preserve seeded user
+    await page.click('h2:has-text("Delete Account")');
   });
 
   test('unauthenticated user cannot access account page', async ({ page }) => {
@@ -191,8 +185,12 @@ test.describe.serial('Account Deletion Flow', () => {
     await page.fill('input[name="firstName"]', 'DeleteTest');
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    // For country, type in the react-select input
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.click('button[type="submit"]');
 
     // Wait for signup to process
@@ -206,13 +204,12 @@ test.describe.serial('Account Deletion Flow', () => {
     // Login
     await loginUser(page, testEmail, testPassword);
 
-    // Navigate to delete account
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    // Navigate to delete account section
+    await navigateToDeleteSection(page);
 
     // Type DELETE and confirm
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
-    await page.click('button:has-text("Delete Forever")');
+    await page.click('button:has-text("Delete Account") >> nth=-1');
 
     // Should redirect away from account page (to / or /login after signOut)
     await expect(page).not.toHaveURL('/account', { timeout: 15000 });
@@ -231,8 +228,11 @@ test.describe.serial('Account Deletion Flow', () => {
     await page.fill('input[name="firstName"]', 'DeleteTest');
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.click('button[type="submit"]');
 
     await page.waitForTimeout(2000);
@@ -246,10 +246,9 @@ test.describe.serial('Account Deletion Flow', () => {
     await loginUser(page, testEmail, testPassword);
 
     // Delete account
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    await navigateToDeleteSection(page);
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
-    await page.click('button:has-text("Delete Forever")');
+    await page.click('button:has-text("Delete Account") >> nth=-1');
     // Should redirect away from account page (to / or /login after signOut)
     await expect(page).not.toHaveURL('/account', { timeout: 15000 });
 
@@ -273,8 +272,11 @@ test.describe.serial('Account Deletion Flow', () => {
     await page.fill('input[name="firstName"]', 'DeleteTest');
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.click('button[type="submit"]');
 
     await page.waitForTimeout(2000);
@@ -288,10 +290,9 @@ test.describe.serial('Account Deletion Flow', () => {
     await loginUser(page, testEmail, testPassword);
 
     // Delete account
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    await navigateToDeleteSection(page);
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
-    await page.click('button:has-text("Delete Forever")');
+    await page.click('button:has-text("Delete Account") >> nth=-1');
     // Should redirect away from account page (to / or /login after signOut)
     await expect(page).not.toHaveURL('/account', { timeout: 15000 });
 
@@ -303,7 +304,7 @@ test.describe.serial('Account Deletion Flow', () => {
     await expect(page).toHaveURL('/login', { timeout: 10000 });
   });
 
-  test('delete modal shows loading state during deletion', async ({ page }) => {
+  test('delete section shows loading state during deletion', async ({ page }) => {
     const testEmail = generateTestEmail();
     const testPassword = 'TestPassword123!';
 
@@ -313,8 +314,11 @@ test.describe.serial('Account Deletion Flow', () => {
     await page.fill('input[name="firstName"]', 'DeleteTest');
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.click('button[type="submit"]');
 
     await page.waitForTimeout(2000);
@@ -327,13 +331,12 @@ test.describe.serial('Account Deletion Flow', () => {
     // Login
     await loginUser(page, testEmail, testPassword);
 
-    // Navigate to delete and open modal
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    // Navigate to delete section
+    await navigateToDeleteSection(page);
 
     // Type DELETE and click confirm
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
-    const confirmButton = page.locator('button:has-text("Delete Forever")');
+    const confirmButton = page.locator('button:has-text("Delete Account") >> nth=-1');
     await confirmButton.click();
 
     // Check for loading state (might be too fast to catch, so race with redirect)
@@ -366,8 +369,11 @@ test.describe.serial('Account Deletion Edge Cases', () => {
     await page.fill('input[name="firstName"]', 'DeleteTest');
     await page.fill('input#password', testPassword);
     await page.fill('input#confirmPassword', testPassword);
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
     await page.click('button[type="submit"]');
 
     await page.waitForTimeout(2000);
@@ -381,10 +387,9 @@ test.describe.serial('Account Deletion Edge Cases', () => {
     await loginUser(page, testEmail, testPassword);
 
     // Delete account
-    await navigateToDeleteTab(page);
-    await openDeleteModal(page);
+    await navigateToDeleteSection(page);
     await page.fill('input[placeholder="DELETE"]', 'DELETE');
-    await page.click('button:has-text("Delete Forever")');
+    await page.click('button:has-text("Delete Account") >> nth=-1');
     // Should redirect away from account page (to / or /login after signOut)
     await expect(page).not.toHaveURL('/account', { timeout: 15000 });
 
@@ -400,8 +405,11 @@ test.describe.serial('Account Deletion Edge Cases', () => {
     await page.fill('input[name="firstName"]', 'NewUser');
     await page.fill('input#password', 'NewPassword123!');
     await page.fill('input#confirmPassword', 'NewPassword123!');
-    await page.selectOption('select[name="status"]', 'student');
-    await page.selectOption('select[name="country"]', 'US');
+    await page.selectOption('select[name="role"]', 'student');
+    await page.selectOption('select[name="educationLevel"]', 'undergraduate');
+    await page.click('[class*="country-select"]');
+    await page.keyboard.type('United States');
+    await page.keyboard.press('Enter');
 
     // Wait for real-time validation
     await page.waitForTimeout(1500);

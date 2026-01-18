@@ -69,7 +69,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Admin',
   last_name = 'User',
-  status = 'educator',
+  role = 'educator',
   country = 'US',
   education_level = 'phd',
   field_of_study = 'statistics',
@@ -78,7 +78,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000001';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000001', 'admin');
+VALUES ('00000000-0000-0000-0000-000000000001', 'admin')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- ============================================
 -- STUDENT USER
@@ -147,7 +148,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Test',
   last_name = 'Student',
-  status = 'student',
+  role = 'student',
   country = 'US',
   education_level = 'undergraduate',
   field_of_study = 'economics',
@@ -156,7 +157,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000002';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000002', 'student');
+VALUES ('00000000-0000-0000-0000-000000000002', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- ============================================
 -- ADDITIONAL USERS (for demographics analytics)
@@ -223,7 +225,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Maya',
   last_name = 'Chen',
-  status = 'student',
+  role = 'student',
   country = 'CA',
   education_level = 'graduate',
   field_of_study = 'computer_science',
@@ -232,7 +234,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000004';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000004', 'student');
+VALUES ('00000000-0000-0000-0000-000000000004', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- Samir Patel
 INSERT INTO auth.users (
@@ -294,7 +297,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Samir',
   last_name = 'Patel',
-  status = 'professional',
+  role = 'professional',
   country = 'IN',
   education_level = 'undergraduate',
   field_of_study = 'business',
@@ -303,7 +306,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000005';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000005', 'student');
+VALUES ('00000000-0000-0000-0000-000000000005', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- Lucia Rossi
 INSERT INTO auth.users (
@@ -365,7 +369,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Lucia',
   last_name = 'Rossi',
-  status = 'educator',
+  role = 'educator',
   country = 'IT',
   education_level = 'phd',
   field_of_study = 'statistics',
@@ -374,7 +378,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000006';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000006', 'student');
+VALUES ('00000000-0000-0000-0000-000000000006', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- Aisha Okafor
 INSERT INTO auth.users (
@@ -436,7 +441,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Aisha',
   last_name = 'Okafor',
-  status = 'student',
+  role = 'student',
   country = 'NG',
   education_level = 'high_school',
   field_of_study = 'mathematics',
@@ -445,7 +450,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000007';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000007', 'student');
+VALUES ('00000000-0000-0000-0000-000000000007', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- Benjamin Wright
 INSERT INTO auth.users (
@@ -507,7 +513,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Benjamin',
   last_name = 'Wright',
-  status = 'self_learner',
+  role = 'self_learner',
   country = 'US',
   education_level = 'undergraduate',
   field_of_study = 'data_science',
@@ -516,7 +522,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000008';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000008', 'student');
+VALUES ('00000000-0000-0000-0000-000000000008', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- ============================================
 -- UNCONFIRMED USER (for testing email not confirmed flow)
@@ -585,7 +592,7 @@ INSERT INTO auth.identities (
 UPDATE public.user_profiles SET
   first_name = 'Unconfirmed',
   last_name = 'User',
-  status = 'student',
+  role = 'student',
   country = 'US',
   education_level = 'undergraduate',
   field_of_study = 'other',
@@ -594,7 +601,8 @@ UPDATE public.user_profiles SET
 WHERE id = '00000000-0000-0000-0000-000000000003';
 
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('00000000-0000-0000-0000-000000000003', 'student');
+VALUES ('00000000-0000-0000-0000-000000000003', 'student')
+ON CONFLICT (user_id) DO UPDATE SET role = EXCLUDED.role;
 
 -- ============================================
 -- CHAPTERS (auto-generated from content files)
