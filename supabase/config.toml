@@ -210,16 +210,16 @@ otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
-# Use a production-ready SMTP server (AWS SES SMTP)
-[auth.email.smtp]
-enabled = true
-# Example: email-smtp.us-east-1.amazonaws.com
-host = "env(SES_SMTP_HOST)"
-port = 587
-user = "env(SES_SMTP_USER)"
-pass = "env(SES_SMTP_PASS)"
-admin_email = "env(SES_ADMIN_EMAIL)"
-sender_name = "env(SES_SENDER_NAME)"
+# Custom SMTP server (disabled - using Supabase's built-in email for production,
+# and Inbucket for local development)
+# [auth.email.smtp]
+# enabled = true
+# host = "env(SES_SMTP_HOST)"
+# port = 587
+# user = "env(SES_SMTP_USER)"
+# pass = "env(SES_SMTP_PASS)"
+# admin_email = "env(SES_ADMIN_EMAIL)"
+# sender_name = "env(SES_SENDER_NAME)"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]
