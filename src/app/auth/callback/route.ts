@@ -10,6 +10,12 @@ export async function GET(request: Request) {
   const errorDescription = requestUrl.searchParams.get('error_description');
   const origin = requestUrl.origin;
 
+  // Debug logging
+  console.log('[auth/callback] URL:', requestUrl.toString());
+  console.log('[auth/callback] code:', code ? 'present' : 'missing');
+  console.log('[auth/callback] type:', type);
+  console.log('[auth/callback] error:', error);
+
   const cookieStore = await cookies();
 
   // Handle errors from Supabase (e.g., expired link)
@@ -82,6 +88,7 @@ export async function GET(request: Request) {
     // Success - redirect to appropriate page
     // For signup confirmation: always go to /auth/confirmed (user must log in manually)
     // For recovery: go to reset-password page
+    console.log('[auth/callback] Success! Redirecting to:', isRecovery ? recoveryRedirect : confirmationRedirect);
     return response;
   }
 
