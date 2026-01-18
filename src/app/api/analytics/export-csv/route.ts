@@ -1,14 +1,15 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
-type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type';
+type GroupByField = 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type';
 
 const FIELD_LABELS: Record<GroupByField, Record<string, string>> = {
-  status: {
+  role: {
     student: 'Student',
     professional: 'Professional',
     educator: 'Educator',
     researcher: 'Researcher',
+    self_learner: 'Self-learner',
     other: 'Other',
   },
   country: {
@@ -53,7 +54,7 @@ const FIELD_LABELS: Record<GroupByField, Record<string, string>> = {
 };
 
 const GROUP_BY_LABELS: Record<GroupByField, string> = {
-  status: 'Status',
+  role: 'Role',
   country: 'Country',
   education_level: 'Education Level',
   field_of_study: 'Field of Study',
@@ -83,7 +84,7 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'users';
-    const groupBy = (searchParams.get('groupBy') || 'status') as GroupByField;
+    const groupBy = (searchParams.get('groupBy') || 'role') as GroupByField;
 
     if (type === 'users') {
       // Export user demographics

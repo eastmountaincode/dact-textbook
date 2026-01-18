@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Select, { StylesConfig, components, InputProps, GroupBase, DropdownIndicatorProps } from 'react-select';
 import { COUNTRIES, getCountryLabel } from '@/components/CountrySelect';
 import {
-  STATUS_OPTIONS,
+  ROLE_OPTIONS,
   EDUCATION_OPTIONS,
   FIELD_OPTIONS,
   INSTITUTION_OPTIONS,
@@ -12,7 +12,7 @@ import {
   REFERRAL_OPTIONS,
 } from '@/lib/profile-options';
 
-type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'statistics_use' | 'referral_source';
+type GroupByField = 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'statistics_use' | 'referral_source';
 type CountryOption = { value: string; label: string };
 
 // Custom Input component to disable browser autofill for country filter
@@ -41,7 +41,7 @@ const CustomDropdownIndicator = (props: DropdownIndicatorProps<CountryOption, fa
 );
 
 const GROUP_BY_OPTIONS: { value: GroupByField; label: string }[] = [
-  { value: 'status', label: 'Status' },
+  { value: 'role', label: 'Role' },
   { value: 'country', label: 'Country' },
   { value: 'education_level', label: 'Education Level' },
   { value: 'field_of_study', label: 'Field of Study' },
@@ -54,7 +54,7 @@ const GROUP_BY_OPTIONS: { value: GroupByField; label: string }[] = [
 // Uses centralized options from profile-options.ts to stay in sync with signup form and account settings
 type NonCountryField = Exclude<GroupByField, 'country'>;
 const FILTER_OPTIONS: Record<NonCountryField, { label: string; values: { value: string; label: string }[] }> = {
-  status: { label: 'Status', values: STATUS_OPTIONS },
+  role: { label: 'Role', values: ROLE_OPTIONS },
   education_level: { label: 'Education', values: EDUCATION_OPTIONS },
   field_of_study: { label: 'Field of Study', values: FIELD_OPTIONS },
   institution_type: { label: 'Institution', values: INSTITUTION_OPTIONS },
@@ -120,7 +120,7 @@ function DemographicBar({
 }
 
 export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps) {
-  const [groupBy, setGroupBy] = useState<GroupByField>('status');
+  const [groupBy, setGroupBy] = useState<GroupByField>('role');
   const [filters, setFilters] = useState<Filters>({});
   const [groups, setGroups] = useState<GroupData[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);

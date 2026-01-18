@@ -5,7 +5,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { DevBorderColor } from '@/providers/DevModeProvider';
 import { CountrySelect } from '@/components/CountrySelect';
 import {
-  STATUS_OPTIONS,
+  ROLE_OPTIONS,
   EDUCATION_OPTIONS,
   FIELD_OPTIONS,
   INSTITUTION_OPTIONS,
@@ -13,7 +13,7 @@ import {
   withPlaceholder,
 } from '@/lib/profile-options';
 
-const STATUS_FORM_OPTIONS = withPlaceholder(STATUS_OPTIONS, 'Select status');
+const ROLE_FORM_OPTIONS = withPlaceholder(ROLE_OPTIONS, 'Select role');
 const EDUCATION_FORM_OPTIONS = withPlaceholder(EDUCATION_OPTIONS, 'Select level');
 const FIELD_FORM_OPTIONS = withPlaceholder(FIELD_OPTIONS, 'Select field');
 const INSTITUTION_FORM_OPTIONS = withPlaceholder(INSTITUTION_OPTIONS, 'Select type');
@@ -30,7 +30,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
   const [formData, setFormData] = useState({
     firstName: profile?.first_name || '',
     lastName: profile?.last_name || '',
-    status: profile?.status || '',
+    role: profile?.role || '',
     country: profile?.country || '',
     educationLevel: profile?.education_level || '',
     fieldOfStudy: profile?.field_of_study || '',
@@ -46,7 +46,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
       setFormData({
         firstName: profile.first_name || '',
         lastName: profile.last_name || '',
-        status: profile.status || '',
+        role: profile.role || '',
         country: profile.country || '',
         educationLevel: profile.education_level || '',
         fieldOfStudy: profile.field_of_study || '',
@@ -71,7 +71,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
     const { error } = await updateProfile({
       first_name: formData.firstName || undefined,
       last_name: formData.lastName || undefined,
-      status: formData.status || undefined,
+      role: formData.role || undefined,
       country: formData.country || undefined,
       education_level: formData.educationLevel || undefined,
       field_of_study: formData.fieldOfStudy || undefined,
@@ -174,21 +174,21 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
           </div>
         </div>
 
-        {/* Status and Country row */}
+        {/* Role and Country row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="status" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-              Status
+            <label htmlFor="role" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+              Role
             </label>
             <select
-              id="status"
-              name="status"
-              value={formData.status}
+              id="role"
+              name="role"
+              value={formData.role}
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
               style={selectStyle}
             >
-              {STATUS_FORM_OPTIONS.map((opt) => (
+              {ROLE_FORM_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}
             </select>

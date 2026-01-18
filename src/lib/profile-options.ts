@@ -6,8 +6,8 @@ export interface ProfileOption {
   label: string;
 }
 
-// Status options
-export const STATUS_OPTIONS: ProfileOption[] = [
+// Role options (student, professional, educator, etc.)
+export const ROLE_OPTIONS: ProfileOption[] = [
   { value: 'student', label: 'Student' },
   { value: 'professional', label: 'Professional' },
   { value: 'educator', label: 'Educator' },

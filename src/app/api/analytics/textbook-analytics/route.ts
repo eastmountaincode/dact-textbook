@@ -35,17 +35,17 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const dateRange = (searchParams.get('dateRange') || 'all') as DateRange;
     const userId = searchParams.get('userId');
-    const groupBy = searchParams.get('groupBy') as 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | null;
+    const groupBy = searchParams.get('groupBy') as 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | null;
     const chapterFilter = searchParams.get('chapter')?.split(',').filter(Boolean);
 
     // Demographic filters (multi-value via comma-separated strings)
-    const statusFilter = searchParams.get('status')?.split(',').filter(Boolean);
+    const roleFilter = searchParams.get('role')?.split(',').filter(Boolean);
     const countryFilter = searchParams.get('country')?.split(',').filter(Boolean);
     const educationLevelFilter = searchParams.get('education_level')?.split(',').filter(Boolean);
     const fieldOfStudyFilter = searchParams.get('field_of_study')?.split(',').filter(Boolean);
     const institutionTypeFilter = searchParams.get('institution_type')?.split(',').filter(Boolean);
 
-    const hasFilters = statusFilter?.length || countryFilter?.length ||
+    const hasFilters = roleFilter?.length || countryFilter?.length ||
       educationLevelFilter?.length || fieldOfStudyFilter?.length || institutionTypeFilter?.length;
 
     const dateStart = getDateRangeStart(dateRange);
@@ -67,11 +67,11 @@ export async function GET(request: Request) {
     if (hasFilters) {
       let profilesQuery = supabase
         .from('user_profiles')
-        .select('id, status, country, education_level, field_of_study, institution_type');
+        .select('id, role, country, education_level, field_of_study, institution_type');
 
       // Apply demographic filters
-      if (statusFilter?.length) {
-        profilesQuery = profilesQuery.in('status', statusFilter);
+      if (roleFilter?.length) {
+        profilesQuery = profilesQuery.in('role', roleFilter);
       }
       if (countryFilter?.length) {
         profilesQuery = profilesQuery.in('country', countryFilter);

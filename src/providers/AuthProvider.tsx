@@ -8,7 +8,7 @@ interface UserProfile {
   id: string;
   first_name?: string;
   last_name?: string;
-  status?: string;
+  role?: string;
   country?: string;
   education_level?: string;
   field_of_study?: string;
@@ -207,19 +207,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check if profile exists and has data
     const { data: existingProfile } = await supabase
       .from('user_profiles')
-      .select('id, status')
+      .select('id, role')
       .eq('id', user.id)
       .maybeSingle();
 
     // If profile already has data, don't overwrite
-    if (existingProfile?.status) return;
+    if (existingProfile?.role) return;
 
     // Sync metadata to profile using upsert (creates row if it doesn't exist)
     const profileData = {
       id: user.id,
       first_name: metadata.first_name,
       last_name: metadata.last_name,
-      status: metadata.status,
+      role: metadata.role,
       country: metadata.country,
       education_level: metadata.education_level,
       field_of_study: metadata.field_of_study,

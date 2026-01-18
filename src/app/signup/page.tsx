@@ -8,7 +8,7 @@ import { useDevMode } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
 import { CountrySelect } from '@/components/CountrySelect';
 import {
-  STATUS_OPTIONS,
+  ROLE_OPTIONS,
   EDUCATION_OPTIONS,
   FIELD_OPTIONS,
   INSTITUTION_OPTIONS,
@@ -18,7 +18,7 @@ import {
 } from '@/lib/profile-options';
 
 // Add placeholders for form selects
-const STATUS_FORM_OPTIONS = withPlaceholder(STATUS_OPTIONS, 'Select status');
+const ROLE_FORM_OPTIONS = withPlaceholder(ROLE_OPTIONS, 'Select role');
 const EDUCATION_FORM_OPTIONS = withPlaceholder(EDUCATION_OPTIONS, 'Select level');
 const FIELD_FORM_OPTIONS = withPlaceholder(FIELD_OPTIONS, 'Select field');
 const INSTITUTION_FORM_OPTIONS = withPlaceholder(INSTITUTION_OPTIONS, 'Select type');
@@ -30,7 +30,7 @@ export default function SignupPage() {
     email: '',
     password: '',
     confirmPassword: '',
-    status: '',
+    role: '',
     country: '',
     firstName: '',
     lastName: '',
@@ -110,7 +110,7 @@ export default function SignupPage() {
     setError(null);
 
     // Validate required fields
-    if (!formData.email || !formData.password || !formData.status || !formData.country) {
+    if (!formData.email || !formData.password || !formData.role || !formData.country || !formData.educationLevel) {
       showError('Please fill in all required fields.');
       return;
     }
@@ -138,9 +138,9 @@ export default function SignupPage() {
     const { error } = await signUp(formData.email, formData.password, {
       first_name: formData.firstName || undefined,
       last_name: formData.lastName || undefined,
-      status: formData.status,
+      role: formData.role,
       country: formData.country,
-      education_level: formData.educationLevel || undefined,
+      education_level: formData.educationLevel,
       field_of_study: formData.fieldOfStudy || undefined,
       institution_type: formData.institutionType || undefined,
       statistics_use: formData.statisticsUse || undefined,
@@ -269,24 +269,24 @@ export default function SignupPage() {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="status" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-                  Status <span className="text-red-500">*</span>
+                <label htmlFor="role" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                  Role <span className="text-red-500">*</span>
                 </label>
                 <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
+                  id="role"
+                  name="role"
+                  value={formData.role}
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
                   style={selectStyle}
                 >
-                  {STATUS_FORM_OPTIONS.map((opt) => (
+                  {ROLE_FORM_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
-              <div>
+              <div className="mb-4">
                 <label htmlFor="country" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Country <span className="text-red-500">*</span>
                 </label>
@@ -295,6 +295,24 @@ export default function SignupPage() {
                   onChange={(value) => setFormData(prev => ({ ...prev, country: value }))}
                   required
                 />
+              </div>
+              <div>
+                <label htmlFor="educationLevel" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                  Highest or Current Level of Education <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="educationLevel"
+                  name="educationLevel"
+                  value={formData.educationLevel}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
+                  style={selectStyle}
+                >
+                  {EDUCATION_FORM_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -335,23 +353,6 @@ export default function SignupPage() {
                 />
               </div>
 
-              <div className="mb-4">
-                <label htmlFor="educationLevel" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-                  Highest or Current Level of Education
-                </label>
-                <select
-                  id="educationLevel"
-                  name="educationLevel"
-                  value={formData.educationLevel}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
-                  style={selectStyle}
-                >
-                  {EDUCATION_FORM_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                  ))}
-                </select>
-              </div>
               <div className="mb-4">
                 <label htmlFor="fieldOfStudy" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Field of Study/Work

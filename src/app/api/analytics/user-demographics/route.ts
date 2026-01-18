@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import {
-  STATUS_OPTIONS,
+  ROLE_OPTIONS,
   EDUCATION_OPTIONS,
   FIELD_OPTIONS,
   INSTITUTION_OPTIONS,
@@ -16,13 +16,13 @@ import {
 // Register English locale for country names
 countries.registerLocale(enLocale);
 
-type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'statistics_use' | 'referral_source';
+type GroupByField = 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'statistics_use' | 'referral_source';
 
-const VALID_GROUP_BY_FIELDS: GroupByField[] = ['status', 'country', 'education_level', 'field_of_study', 'institution_type', 'statistics_use', 'referral_source'];
+const VALID_GROUP_BY_FIELDS: GroupByField[] = ['role', 'country', 'education_level', 'field_of_study', 'institution_type', 'statistics_use', 'referral_source'];
 
 // Map groupBy field to centralized options
 const FIELD_OPTIONS_MAP = {
-  status: STATUS_OPTIONS,
+  role: ROLE_OPTIONS,
   education_level: EDUCATION_OPTIONS,
   field_of_study: FIELD_OPTIONS,
   institution_type: INSTITUTION_OPTIONS,
@@ -62,14 +62,14 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url);
-    const groupBy = (searchParams.get('groupBy') || 'status') as GroupByField;
+    const groupBy = (searchParams.get('groupBy') || 'role') as GroupByField;
 
     if (!VALID_GROUP_BY_FIELDS.includes(groupBy)) {
       return NextResponse.json({ error: 'Invalid groupBy field' }, { status: 400 });
     }
 
     // Optional additional filters (comma-separated for multiple values)
-    const status = searchParams.get('status')?.split(',').filter(Boolean);
+    const role = searchParams.get('role')?.split(',').filter(Boolean);
     const country = searchParams.get('country')?.split(',').filter(Boolean);
     const educationLevel = searchParams.get('education_level')?.split(',').filter(Boolean);
     const fieldOfStudy = searchParams.get('field_of_study')?.split(',').filter(Boolean);
@@ -81,8 +81,8 @@ export async function GET(request: Request) {
     let query = supabase.from('user_profiles').select('*');
 
     // Apply all filters
-    if (status?.length) {
-      query = query.in('status', status);
+    if (role?.length) {
+      query = query.in('role', role);
     }
     if (country?.length) {
       query = query.in('country', country);

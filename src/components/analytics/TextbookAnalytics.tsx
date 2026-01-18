@@ -7,7 +7,7 @@ import { ReadingTimeBar, formatTime } from './ReadingTimeBar';
 import { DateRangeFilter, DateRange } from './DateRangeFilter';
 import { COUNTRIES, getCountryLabel } from '@/components/CountrySelect';
 import {
-  STATUS_OPTIONS,
+  ROLE_OPTIONS,
   EDUCATION_OPTIONS,
   FIELD_OPTIONS,
   INSTITUTION_OPTIONS,
@@ -17,9 +17,9 @@ import {
 type CountryOption = { value: string; label: string };
 type UserOption = { value: string; label: string };
 type ChapterOption = { value: string; label: string };
-type FilterField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'user' | 'chapter';
+type FilterField = 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | 'user' | 'chapter';
 type NonCountryUserChapterField = Exclude<FilterField, 'country' | 'user' | 'chapter'>;
-type GroupByField = 'status' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | null;
+type GroupByField = 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type' | null;
 
 // Custom Input component to disable browser autofill
 const NoAutofillInput = (props: InputProps<CountryOption, false, GroupBase<CountryOption>>) => (
@@ -48,7 +48,7 @@ const CustomDropdownIndicator = (props: DropdownIndicatorProps<CountryOption, fa
 
 // Filter options for dropdown fields (using centralized constants)
 const FILTER_OPTIONS: Record<NonCountryUserChapterField, { label: string; values: { value: string; label: string }[] }> = {
-  status: { label: 'Status', values: STATUS_OPTIONS },
+  role: { label: 'Role', values: ROLE_OPTIONS },
   education_level: { label: 'Education', values: EDUCATION_OPTIONS },
   field_of_study: { label: 'Field of Study', values: FIELD_OPTIONS },
   institution_type: { label: 'Institution', values: INSTITUTION_OPTIONS },
@@ -468,7 +468,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
   // Group by options
   const GROUP_BY_OPTIONS: { value: GroupByField; label: string }[] = [
     { value: null, label: 'None (by Chapter)' },
-    { value: 'status', label: 'Status' },
+    { value: 'role', label: 'Role' },
     { value: 'education_level', label: 'Education Level' },
     { value: 'country', label: 'Country' },
     { value: 'field_of_study', label: 'Field of Study' },
