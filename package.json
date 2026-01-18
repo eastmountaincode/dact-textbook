@@ -7,7 +7,7 @@
     "build": "npm run build:content && npm run generate-search && npm run seed-chapters && next build",
     "build:content": "bash scripts/build-qmd.sh",
     "generate-search": "node scripts/generate-search-index.mjs",
-    "seed-chapters": "node --env-file=.env.local scripts/seed-chapters.mjs --run",
+    "seed-chapters": "test -f .env.local && node --env-file=.env.local scripts/seed-chapters.mjs --run || node scripts/seed-chapters.mjs --run",
     "seed-chapters:sql": "node scripts/seed-chapters.mjs",
     "start": "next start",
     "lint": "eslint",
