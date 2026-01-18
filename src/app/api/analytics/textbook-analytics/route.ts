@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
+import { getEducationOrder } from '@/lib/profile-options';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
 
@@ -212,7 +213,7 @@ export async function GET(request: Request) {
         data.userIds.add(rt.user_id);
       }
 
-      // Convert to array and sort by seconds descending
+      // Convert to array and sort (education by level, others by seconds)
       const grouped = Array.from(groupData.entries())
         .map(([value, data]) => ({
           value,
@@ -220,7 +221,12 @@ export async function GET(request: Request) {
           seconds: data.seconds,
           userCount: data.userIds.size,
         }))
-        .sort((a, b) => b.seconds - a.seconds);
+        .sort((a, b) => {
+          if (groupBy === 'education_level') {
+            return getEducationOrder(a.value) - getEducationOrder(b.value);
+          }
+          return b.seconds - a.seconds;
+        });
 
       const totalSeconds = grouped.reduce((sum, g) => sum + g.seconds, 0);
 

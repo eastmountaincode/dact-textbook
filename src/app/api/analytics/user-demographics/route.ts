@@ -10,6 +10,7 @@ import {
   STATISTICS_USE_OPTIONS,
   REFERRAL_OPTIONS,
   getOptionLabel,
+  getEducationOrder,
 } from '@/lib/profile-options';
 
 // Register English locale for country names
@@ -128,7 +129,13 @@ export async function GET(request: Request) {
         count,
         percentage: totalUsers > 0 ? Math.round((count / totalUsers) * 100) : 0,
       }))
-      .sort((a, b) => b.count - a.count);
+      .sort((a, b) => {
+        // Sort education levels by academic progression, others by count
+        if (groupBy === 'education_level') {
+          return getEducationOrder(a.value) - getEducationOrder(b.value);
+        }
+        return b.count - a.count;
+      });
 
     return NextResponse.json({
       totalUsers,

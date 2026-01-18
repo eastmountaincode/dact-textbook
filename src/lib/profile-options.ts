@@ -79,6 +79,13 @@ export function getOptionLabel(options: ProfileOption[], value: string): string 
   return options.find(opt => opt.value === value)?.label || value;
 }
 
+// Helper to get sort order for education levels (by academic progression)
+// Returns index in EDUCATION_OPTIONS array, or a high number for unknown values
+export function getEducationOrder(value: string): number {
+  const index = EDUCATION_OPTIONS.findIndex(opt => opt.value === value);
+  return index >= 0 ? index : EDUCATION_OPTIONS.length;
+}
+
 // For forms: prepend a placeholder option
 export function withPlaceholder(options: ProfileOption[], placeholder: string): ProfileOption[] {
   return [{ value: '', label: placeholder }, ...options];
