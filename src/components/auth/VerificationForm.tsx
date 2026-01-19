@@ -63,8 +63,15 @@ export function VerificationForm({
     try {
       await onVerify(verificationCode);
     } catch (err: unknown) {
-      const clerkError = err as { errors?: Array<{ message: string }> };
-      showError(clerkError.errors?.[0]?.message || 'Invalid verification code');
+      const clerkError = err as { errors?: Array<{ message: string; longMessage?: string; code?: string }> };
+      const errorObj = clerkError.errors?.[0];
+      // Use longMessage for full context, fall back to message, then default
+      // Common codes: 'form_code_incorrect' for wrong/expired codes
+      let errorMessage = errorObj?.longMessage || errorObj?.message || 'Invalid verification code';
+      if (errorObj?.code === 'form_code_incorrect') {
+        errorMessage = 'Incorrect verification code. Please check your email for the latest code.';
+      }
+      showError(errorMessage);
     } finally {
       setLocalLoading(false);
     }
@@ -78,8 +85,9 @@ export function VerificationForm({
       setResendCooldown(30);
       localStorage.setItem('resendCooldownExpiry', String(Date.now() + 30000));
     } catch (err: unknown) {
-      const clerkError = err as { errors?: Array<{ message: string }> };
-      showError(clerkError.errors?.[0]?.message || 'Failed to resend code');
+      const clerkError = err as { errors?: Array<{ message: string; longMessage?: string }> };
+      const errorObj = clerkError.errors?.[0];
+      showError(errorObj?.longMessage || errorObj?.message || 'Failed to resend code');
     } finally {
       setLocalLoading(false);
     }

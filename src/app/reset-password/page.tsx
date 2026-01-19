@@ -62,8 +62,13 @@ function ResetPasswordForm() {
         }, 2000);
       }
     } catch (err: unknown) {
-      const clerkError = err as { errors?: Array<{ message: string }> };
-      setError(clerkError.errors?.[0]?.message || 'Invalid code or an error occurred');
+      const clerkError = err as { errors?: Array<{ message: string; longMessage?: string; code?: string }> };
+      const errorObj = clerkError.errors?.[0];
+      let errorMessage = errorObj?.longMessage || errorObj?.message || 'Invalid code or an error occurred';
+      if (errorObj?.code === 'form_code_incorrect') {
+        errorMessage = 'Incorrect reset code. Please check your email for the latest code.';
+      }
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

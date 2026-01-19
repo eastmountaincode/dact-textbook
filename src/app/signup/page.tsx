@@ -146,8 +146,9 @@ export default function SignupPage() {
 
       setPendingVerification(true);
     } catch (err: unknown) {
-      const clerkError = err as { errors?: Array<{ message: string }> };
-      showError(clerkError.errors?.[0]?.message || 'An error occurred during signup');
+      const clerkError = err as { errors?: Array<{ message: string; longMessage?: string }> };
+      const errorObj = clerkError.errors?.[0];
+      showError(errorObj?.longMessage || errorObj?.message || 'An error occurred during signup');
     } finally {
       setIsLoading(false);
     }

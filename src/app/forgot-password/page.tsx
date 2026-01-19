@@ -29,8 +29,9 @@ export default function ForgotPasswordPage() {
 
       setSuccess(true);
     } catch (err: unknown) {
-      const clerkError = err as { errors?: Array<{ message: string }> };
-      setError(clerkError.errors?.[0]?.message || 'An error occurred');
+      const clerkError = err as { errors?: Array<{ message: string; longMessage?: string }> };
+      const errorObj = clerkError.errors?.[0];
+      setError(errorObj?.longMessage || errorObj?.message || 'An error occurred');
     } finally {
       setIsLoading(false);
     }

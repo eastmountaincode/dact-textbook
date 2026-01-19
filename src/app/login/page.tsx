@@ -56,8 +56,9 @@ function LoginForm() {
         setError('Unable to complete sign in. Please try again or contact support.');
       }
     } catch (err: unknown) {
-      const clerkError = err as { errors?: Array<{ message: string; code: string }> };
-      const errorMessage = clerkError.errors?.[0]?.message || 'An error occurred during login';
+      const clerkError = err as { errors?: Array<{ message: string; longMessage?: string; code: string }> };
+      const errorObj = clerkError.errors?.[0];
+      const errorMessage = errorObj?.longMessage || errorObj?.message || 'An error occurred during login';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
