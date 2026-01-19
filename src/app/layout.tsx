@@ -24,7 +24,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider afterSignOutUrl="/chapter/welcome">
+    <ClerkProvider
+      afterSignOutUrl="/chapter/welcome"
+      appearance={{
+        variables: {
+          colorPrimary: '#003262', // Berkeley blue
+          colorText: 'var(--foreground)',
+          colorTextSecondary: 'var(--muted-text)',
+          colorBackground: 'var(--card-bg)',
+          colorInputBackground: 'var(--input-bg)',
+          colorInputText: 'var(--foreground)',
+          fontFamily: 'EB Garamond, serif',
+          borderRadius: '0.5rem',
+        },
+        elements: {
+          // Hide profile editing (name/avatar) - we use Supabase for profile data
+          profileSection__profile: { display: 'none' },
+          // Hide connected accounts since we only use email/password
+          profileSection__connectedAccounts: { display: 'none' },
+          // Style the modal/card
+          card: {
+            backgroundColor: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+          },
+          modalBackdrop: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          // Form inputs
+          formFieldInput: {
+            backgroundColor: 'var(--input-bg)',
+            borderColor: 'var(--input-border)',
+          },
+        },
+      }}
+    >
       <html lang="en">
         <body className={`${garamond.variable} font-serif antialiased bg-stone-50`}>
           <ThemeProvider>
