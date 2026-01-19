@@ -99,14 +99,14 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
       <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--foreground)' }}>
         Change Password
       </h2>
-      <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
+      <p className="text-base mb-6" style={{ color: 'var(--muted-text)' }}>
         Update your password
       </p>
 
       <form onSubmit={handleSubmit} className="max-w-md">
         {message && (
           <div
-            className="mb-4 p-3 rounded-lg text-sm"
+            className="mb-4 p-3 rounded-lg text-base"
             style={{
               backgroundColor: message.type === 'success' ? 'var(--callout-note-bg)' : 'var(--callout-warning-bg)',
               color: message.type === 'success' ? 'var(--callout-note-border)' : '#dc2626',
@@ -118,7 +118,7 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
         )}
 
         <div className="mb-4">
-          <label htmlFor="currentPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+          <label htmlFor="currentPassword" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
             Current Password
           </label>
           <input
@@ -128,13 +128,13 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
             value={formData.currentPassword}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+            className="w-full px-4 py-3 rounded-lg text-base outline-none"
             style={inputStyle}
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="newPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+          <label htmlFor="newPassword" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
             New Password
           </label>
           <input
@@ -145,13 +145,13 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
             onChange={handleChange}
             required
             placeholder="Min 8 characters"
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+            className="w-full px-4 py-3 rounded-lg text-base outline-none"
             style={inputStyle}
           />
         </div>
 
         <div className="mb-6">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+          <label htmlFor="confirmPassword" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
             Confirm New Password
           </label>
           <input
@@ -161,7 +161,7 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+            className="w-full px-4 py-3 rounded-lg text-base outline-none"
             style={inputStyle}
           />
         </div>
@@ -196,7 +196,7 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
           <h2 className="text-lg font-semibold" style={{ color: 'var(--foreground)' }}>
             Delete Account
           </h2>
-          <p className="text-sm mt-1" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base mt-1" style={{ color: 'var(--muted-text)' }}>
             Permanently delete your account and all associated data
           </p>
         </div>
@@ -213,13 +213,13 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
 
       {showDeleteSection && (
         <div className="px-6 pb-6 border-t" style={{ borderColor: 'var(--card-border)' }}>
-          <p className="text-sm mt-4 mb-4" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base mt-4 mb-4" style={{ color: 'var(--muted-text)' }}>
             This action cannot be undone. All your data, including reading progress and account information, will be permanently removed.
           </p>
 
           {deleteError && (
             <div
-              className="mb-4 p-3 rounded-lg text-sm"
+              className="mb-4 p-3 rounded-lg text-base"
               style={{
                 backgroundColor: 'var(--callout-warning-bg)',
                 color: 'var(--foreground)',
@@ -230,7 +230,7 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
             </div>
           )}
 
-          <p className="text-sm mb-2" style={{ color: 'var(--foreground)' }}>
+          <p className="text-base mb-2" style={{ color: 'var(--foreground)' }}>
             Type <strong>DELETE</strong> to confirm
           </p>
           <input
@@ -238,7 +238,7 @@ export function SecurityTab({ updatePassword, deleteAccount, devBorder }: Securi
             value={deleteConfirmText}
             onChange={(e) => setDeleteConfirmText(e.target.value)}
             placeholder="DELETE"
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none mb-4 max-w-xs"
+            className="w-full px-4 py-3 rounded-lg text-base outline-none mb-4 max-w-xs"
             style={inputStyle}
           />
 

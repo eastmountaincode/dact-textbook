@@ -94,14 +94,14 @@ function DemographicBar({
   return (
     <div className="py-3">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm" style={{ color: 'var(--foreground)' }}>
+        <span className="text-base" style={{ color: 'var(--foreground)' }}>
           {label}
         </span>
         <div className="flex items-center gap-2">
           <span className="font-semibold" style={{ color: 'var(--foreground)' }}>
             {count.toLocaleString()}
           </span>
-          <span className="text-sm" style={{ color: 'var(--muted-text)' }}>
+          <span className="text-base" style={{ color: 'var(--muted-text)' }}>
             ({percentage}%)
           </span>
         </div>
@@ -390,11 +390,11 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
         style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
       >
         <div className={`flex flex-wrap items-center gap-3 ${devBorder('cyan')}`}>
-          <span className="text-sm" style={{ color: 'var(--muted-text)' }}>Show users grouped by</span>
+          <span className="text-base" style={{ color: 'var(--muted-text)' }}>Show users grouped by</span>
           <select
             value={groupBy}
             onChange={(e) => setGroupBy(e.target.value as GroupByField)}
-            className="py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+            className="py-2 rounded-lg text-base outline-none cursor-pointer select-hover"
             style={selectStyle}
           >
             {GROUP_BY_OPTIONS.map((opt) => (
@@ -416,13 +416,13 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
       >
         {/* Add filter controls */}
         <div className={`flex flex-wrap items-center gap-3 ${devBorder('yellow')}`}>
-          <span className="text-sm" style={{ color: 'var(--muted-text)' }}>Filter by</span>
+          <span className="text-base" style={{ color: 'var(--muted-text)' }}>Filter by</span>
 
           {/* Regular filter dropdown (status, education, field of study, institution) */}
           <select
             value=""
             onChange={(e) => handleAddFilter(e.target.value)}
-            className={`py-2 rounded-lg text-sm outline-none cursor-pointer select-hover ${devBorder('red')}`}
+            className={`py-2 rounded-lg text-base outline-none cursor-pointer select-hover ${devBorder('red')}`}
             style={selectStyle}
           >
             <option value="">+ Add filter</option>
@@ -469,7 +469,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
           {activeFilterChips.length > 0 && (
             <button
               onClick={() => setFilters({})}
-              className="text-sm cursor-pointer hover:underline"
+              className="text-base cursor-pointer hover:underline"
               style={{ color: 'var(--muted-text)' }}
             >
               Clear all
@@ -479,15 +479,15 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
 
         {/* Active filters */}
         <div className={`flex flex-wrap items-center gap-2 mt-4 pt-4 border-t ${devBorder('orange')}`} style={{ borderColor: 'var(--card-border)' }}>
-          <span className="text-sm" style={{ color: 'var(--muted-text)' }}>Active filters:</span>
+          <span className="text-base" style={{ color: 'var(--muted-text)' }}>Active filters:</span>
 
           {activeFilterChips.length === 0 ? (
-            <span className="text-sm" style={{ color: 'var(--muted-text)', fontStyle: 'italic' }}>None</span>
+            <span className="text-base" style={{ color: 'var(--muted-text)', fontStyle: 'italic' }}>None</span>
           ) : (
             activeFilterChips.map(({ field, value }) => (
               <div
                 key={`${field}:${value}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-base"
                 style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--card-border)' }}
               >
                 <span style={{ color: 'var(--muted-text)' }}>
@@ -519,19 +519,19 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
           <h3 className="font-semibold text-lg" style={{ color: 'var(--foreground)' }}>
             Users by {groupByLabel}
             {activeFilterChips.length > 0 && (
-              <span className="font-normal text-sm ml-2" style={{ color: 'var(--muted-text)' }}>
+              <span className="font-normal text-base ml-2" style={{ color: 'var(--muted-text)' }}>
                 ({activeFilterChips.length} {activeFilterChips.length === 1 ? 'filter' : 'filters'} applied)
               </span>
             )}
           </h3>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base" style={{ color: 'var(--muted-text)' }}>
             {totalUsers.toLocaleString()} total users
           </p>
         </div>
 
         {/* Results List */}
         {groups.length === 0 ? (
-          <p className="text-sm py-8 text-center" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base py-8 text-center" style={{ color: 'var(--muted-text)' }}>
             No user data available for the selected filters.
           </p>
         ) : (

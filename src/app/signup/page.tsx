@@ -3,10 +3,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/providers/AuthProvider';
+import { useSignUp, useUser } from '@clerk/nextjs';
 import { useDevMode } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
 import { CountrySelect } from '@/components/CountrySelect';
+import { VerificationForm } from '@/components/auth/VerificationForm';
+import { createClient } from '@/lib/supabase/client';
 import {
   ROLE_OPTIONS,
   EDUCATION_OPTIONS,
@@ -26,6 +28,11 @@ const STATISTICS_USE_FORM_OPTIONS = withPlaceholder(STATISTICS_USE_OPTIONS, 'Sel
 const REFERRAL_FORM_OPTIONS = withPlaceholder(REFERRAL_OPTIONS, 'Select option');
 
 export default function SignupPage() {
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+  const { devBorder } = useDevMode();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -42,49 +49,40 @@ export default function SignupPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [emailStatus, setEmailStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
   const errorRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-  const { signUp, user } = useAuth();
-  const { devBorder } = useDevMode();
+
+  // Load saved form data from localStorage on mount
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('signupFormData');
+    if (savedFormData) {
+      try {
+        const parsed = JSON.parse(savedFormData);
+        setFormData(prev => ({ ...prev, ...parsed }));
+      } catch {
+        // Ignore invalid JSON
+      }
+    }
+  }, []);
+
+  // Check if there's a pending verification from a previous session
+  useEffect(() => {
+    if (isLoaded && signUp?.status === 'missing_requirements') {
+      // Check if email verification is pending
+      const emailVerification = signUp.verifications?.emailAddress;
+      if (emailVerification?.status === 'unverified') {
+        setPendingVerification(true);
+        setPendingEmail(signUp.emailAddress || null);
+      }
+    }
+  }, [isLoaded, signUp]);
 
   // Redirect if already logged in
-  useEffect(() => {
-    if (user) {
-      router.replace('/chapter/welcome');
-    }
-  }, [user, router]);
-
-  // Debounced email availability check - triggers as user types
-  useEffect(() => {
-    const email = formData.email;
-
-    // Don't check if email is empty or invalid
-    if (!email || !email.includes('@')) {
-      setEmailStatus('idle');
-      return;
-    }
-
-    // Set to checking immediately so user knows something is happening
-    setEmailStatus('checking');
-
-    // Debounce the actual API call
-    const timer = setTimeout(async () => {
-      try {
-        const response = await fetch('/api/auth/check-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        });
-        const data = await response.json();
-        setEmailStatus(data.exists ? 'taken' : 'available');
-      } catch {
-        setEmailStatus('idle');
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formData.email]);
+  if (isSignedIn) {
+    router.replace('/chapter/welcome');
+    return null;
+  }
 
   // Password validation helpers
   const isPasswordLongEnough = formData.password.length >= 8;
@@ -109,15 +107,11 @@ export default function SignupPage() {
     e.preventDefault();
     setError(null);
 
+    if (!isLoaded) return;
+
     // Validate required fields
     if (!formData.email || !formData.password || !formData.role || !formData.country || !formData.educationLevel) {
       showError('Please fill in all required fields.');
-      return;
-    }
-
-    // Check if email is already taken
-    if (emailStatus === 'taken') {
-      showError('This email is already registered. Please use a different email or log in.');
       return;
     }
 
@@ -135,24 +129,100 @@ export default function SignupPage() {
 
     setIsLoading(true);
 
-    const { error } = await signUp(formData.email, formData.password, {
-      first_name: formData.firstName || undefined,
-      last_name: formData.lastName || undefined,
-      role: formData.role,
-      country: formData.country,
-      education_level: formData.educationLevel,
-      field_of_study: formData.fieldOfStudy || undefined,
-      institution_type: formData.institutionType || undefined,
-      statistics_use: formData.statisticsUse || undefined,
-      referral_source: formData.referralSource || undefined,
-    });
+    try {
+      // Create the user with Clerk
+      await signUp.create({
+        emailAddress: formData.email,
+        password: formData.password,
+        firstName: formData.firstName || undefined,
+        lastName: formData.lastName || undefined,
+      });
 
-    if (error) {
-      showError(error.message);
+      // Send email verification code
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+
+      // Save form data to localStorage in case user navigates away
+      localStorage.setItem('signupFormData', JSON.stringify(formData));
+
+      setPendingVerification(true);
+    } catch (err: unknown) {
+      const clerkError = err as { errors?: Array<{ message: string }> };
+      showError(clerkError.errors?.[0]?.message || 'An error occurred during signup');
+    } finally {
       setIsLoading(false);
-    } else {
-      router.push('/signup/confirm');
     }
+  };
+
+  const handleVerification = async (code: string) => {
+    if (!isLoaded) return;
+
+    const result = await signUp.attemptEmailAddressVerification({ code });
+
+    if (result.status === 'complete') {
+      // Save profile data to Supabase
+      const supabase = createClient();
+      const { error: profileError } = await supabase
+        .from('user_profiles')
+        .upsert({
+          id: result.createdUserId,
+          first_name: formData.firstName || null,
+          last_name: formData.lastName || null,
+          role: formData.role,
+          country: formData.country,
+          education_level: formData.educationLevel,
+          field_of_study: formData.fieldOfStudy || null,
+          institution_type: formData.institutionType || null,
+          statistics_use: formData.statisticsUse || null,
+          referral_source: formData.referralSource || null,
+        }, { onConflict: 'id' });
+
+      if (profileError) {
+        console.error('Error saving profile:', profileError);
+      }
+
+      // Create user_roles entry (default to 'student')
+      const { error: roleError } = await supabase
+        .from('user_roles')
+        .upsert({
+          user_id: result.createdUserId,
+          role: 'student',
+        }, { onConflict: 'user_id' });
+
+      if (roleError) {
+        console.error('Error saving user role:', roleError);
+      }
+
+      // Track the initial login
+      const { error: loginError } = await supabase
+        .from('logins')
+        .insert({
+          user_id: result.createdUserId,
+        });
+
+      if (loginError) {
+        console.error('Error tracking login:', loginError);
+      }
+
+      // Clear saved form data
+      localStorage.removeItem('signupFormData');
+
+      // Set the session active
+      await setActive({ session: result.createdSessionId });
+
+      // Redirect to verification success page
+      router.push('/signup/verified');
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (!isLoaded || !signUp) return;
+    await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+  };
+
+  const handleStartOver = () => {
+    setPendingVerification(false);
+    setPendingEmail(null);
+    setError(null);
   };
 
   const inputStyle = {
@@ -171,13 +241,28 @@ export default function SignupPage() {
     paddingRight: '2.5rem',
   };
 
+  // Verification code form
+  if (pendingVerification) {
+    const displayEmail = formData.email || pendingEmail || 'your email';
+
+    return (
+      <VerificationForm
+        email={displayEmail}
+        isLoading={isLoading}
+        onVerify={handleVerification}
+        onResendCode={handleResendCode}
+        onStartOver={handleStartOver}
+      />
+    );
+  }
+
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 pb-12 justify-center px-8 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
         <div className={`w-full max-w-2xl ${devBorder('green')}`}>
         {/* Title area */}
         <div className={`text-center mb-4 ${devBorder('amber')}`}>
-          <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+          <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
             Create account
           </h1>
         </div>
@@ -186,19 +271,19 @@ export default function SignupPage() {
         <div className={`rounded-xl px-8 py-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
           <form onSubmit={handleSubmit} className={devBorder('cyan')}>
             {error && (
-              <div ref={errorRef} className="mb-4 p-3 rounded-lg text-sm" style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
+              <div ref={errorRef} className="mb-4 p-3 rounded-lg text-base" style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
                 {error}
               </div>
             )}
 
             {/* Required Information */}
             <div className={`mb-6 ${devBorder('orange')}`}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: 'var(--muted-text)' }}>
+              <p className="text-base font-semibold mb-4" style={{ color: 'var(--berkeley-blue)' }}>
                 Required Information
               </p>
 
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="email" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -212,19 +297,10 @@ export default function SignupPage() {
                   className="w-full px-4 py-3 rounded-lg text-base outline-none"
                   style={inputStyle}
                 />
-                {emailStatus === 'checking' && (
-                  <p className="text-xs mt-1" style={{ color: 'var(--muted-text)' }}>Checking availability...</p>
-                )}
-                {emailStatus === 'taken' && (
-                  <p className="text-xs mt-1 text-red-600">This email is already registered</p>
-                )}
-                {emailStatus === 'available' && (
-                  <p className="text-xs mt-1 text-green-600">✓</p>
-                )}
               </div>
 
               <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="password" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Password <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -246,7 +322,7 @@ export default function SignupPage() {
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="confirmPassword" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Confirm Password <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -269,7 +345,7 @@ export default function SignupPage() {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="role" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="role" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Role <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -287,7 +363,7 @@ export default function SignupPage() {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="country" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="country" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Country <span className="text-red-500">*</span>
                 </label>
                 <CountrySelect
@@ -297,7 +373,7 @@ export default function SignupPage() {
                 />
               </div>
               <div>
-                <label htmlFor="educationLevel" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="educationLevel" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Highest or Current Level of Education <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -316,14 +392,17 @@ export default function SignupPage() {
               </div>
             </div>
 
+            {/* Divider */}
+            <div className="my-8 border-t" style={{ borderColor: 'var(--card-border)' }} />
+
             {/* Optional Information */}
             <div className={`mb-6 ${devBorder('lime')}`}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: 'var(--muted-text)' }}>
+              <p className="text-base font-semibold mb-4" style={{ color: 'var(--berkeley-blue)' }}>
                 Optional Information
               </p>
 
               <div className="mb-4">
-                <label htmlFor="firstName" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="firstName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   First Name
                 </label>
                 <input
@@ -338,7 +417,7 @@ export default function SignupPage() {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="lastName" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="lastName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Last Name
                 </label>
                 <input
@@ -354,7 +433,7 @@ export default function SignupPage() {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="fieldOfStudy" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="fieldOfStudy" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Field of Study/Work
                 </label>
                 <select
@@ -372,7 +451,7 @@ export default function SignupPage() {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="institutionType" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="institutionType" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Institution Type
                 </label>
                 <select
@@ -389,7 +468,7 @@ export default function SignupPage() {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="statisticsUse" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="statisticsUse" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   What do you plan to use statistics for?
                 </label>
                 <select
@@ -406,7 +485,7 @@ export default function SignupPage() {
                 </select>
               </div>
               <div>
-                <label htmlFor="referralSource" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="referralSource" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   How did you hear about us?
                 </label>
                 <select
@@ -426,7 +505,7 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !isLoaded}
               className={`w-full py-3 rounded-lg font-medium text-white disabled:opacity-50 cursor-pointer hover:opacity-90 ${devBorder('indigo')}`}
               style={{ backgroundColor: 'var(--berkeley-blue)' }}
             >
@@ -434,9 +513,9 @@ export default function SignupPage() {
             </button>
           </form>
 
-          <p className={`mt-6 text-center text-sm ${devBorder('teal')}`} style={{ color: 'var(--muted-text)' }}>
+          <p className={`mt-6 text-center text-base ${devBorder('teal')}`} style={{ color: 'var(--muted-text)' }}>
             Already have an account?{' '}
-            <Link href="/login" className="font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+            <Link href="/login" className="font-medium cursor-pointer hover:opacity-90" style={{ color: 'var(--berkeley-blue)' }}>
               Log In
             </Link>
           </p>

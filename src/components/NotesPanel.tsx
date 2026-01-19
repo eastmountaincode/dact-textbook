@@ -89,7 +89,7 @@ export default function NotesPanel({ chapterSlug }: NotesPanelProps) {
       {/* Notes List */}
       <div className={`flex-1 overflow-y-auto p-4 space-y-3 ${devBorder('fuchsia')}`}>
         {notes.length === 0 ? (
-          <p className="text-sm text-center py-8" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base text-center py-8" style={{ color: 'var(--muted-text)' }}>
             No notes yet. Add your first note below.
           </p>
         ) : (
@@ -98,7 +98,7 @@ export default function NotesPanel({ chapterSlug }: NotesPanelProps) {
               key={note.id}
               className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 relative group"
             >
-              <p className="text-sm pr-6" style={{ color: 'var(--foreground)' }}>{note.text}</p>
+              <p className="text-base pr-6" style={{ color: 'var(--foreground)' }}>{note.text}</p>
               <p className="text-xs mt-2" style={{ color: 'var(--muted-text)' }}>
                 {new Date(note.timestamp).toLocaleDateString()}
               </p>
@@ -123,7 +123,7 @@ export default function NotesPanel({ chapterSlug }: NotesPanelProps) {
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
           placeholder="Add a note..."
-          className="w-full p-3 text-sm rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#003262] focus:border-transparent"
+          className="w-full p-3 text-base rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#003262] focus:border-transparent"
           style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)', color: 'var(--foreground)' }}
           rows={3}
           onKeyDown={(e) => {
@@ -135,7 +135,7 @@ export default function NotesPanel({ chapterSlug }: NotesPanelProps) {
         <button
           onClick={addNote}
           disabled={!newNote.trim()}
-          className="mt-2 w-full py-2 text-white rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="mt-2 w-full py-2 text-white rounded-lg text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           style={{ backgroundColor: 'var(--berkeley-blue)' }}
         >
           Add Note

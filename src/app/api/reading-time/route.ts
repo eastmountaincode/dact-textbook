@@ -1,15 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
+import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 // GET: Retrieve reading time for a chapter (for the authenticated user)
 export async function GET(request: Request) {
   try {
-    const supabase = await createClient();
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
+    // Check authentication using Clerk
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const supabase = await createClient();
 
     const { searchParams } = new URL(request.url);
     const chapterSlug = searchParams.get('chapterSlug');
@@ -33,7 +35,7 @@ export async function GET(request: Request) {
     const { data: readingTime } = await supabase
       .from('reading_time_per_chapter')
       .select('seconds_spent, last_updated')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .eq('chapter_id', chapter.id)
       .maybeSingle();
 
@@ -49,14 +51,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-
-    // Check if user is authenticated
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
+    // Check authentication using Clerk
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const supabase = await createClient();
 
     // Parse request body
     // Support both JSON and sendBeacon (which sends as text)
@@ -111,7 +112,7 @@ export async function POST(request: Request) {
     const { data: existing } = await supabase
       .from('reading_time_per_chapter')
       .select('id, seconds_spent, last_updated')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .eq('chapter_id', chapterId)
       .maybeSingle();
 
@@ -152,7 +153,7 @@ export async function POST(request: Request) {
       const { error: insertError } = await supabase
         .from('reading_time_per_chapter')
         .insert({
-          user_id: user.id,
+          user_id: userId,
           chapter_id: chapterId,
           seconds_spent: secondsToAdd,
           last_updated: new Date().toISOString(),
@@ -179,7 +180,7 @@ export async function POST(request: Request) {
     const { data: existingDaily } = await supabase
       .from('reading_time_daily')
       .select('id, seconds_spent')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .eq('chapter_id', chapterId)
       .eq('date', today)
       .maybeSingle();
@@ -196,7 +197,7 @@ export async function POST(request: Request) {
       const { error: dailyInsertError } = await supabase
         .from('reading_time_daily')
         .insert({
-          user_id: user.id,
+          user_id: userId,
           chapter_id: chapterId,
           date: today,
           seconds_spent: actualSecondsToAdd,

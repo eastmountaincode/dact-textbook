@@ -549,7 +549,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
           className={`rounded-xl p-5 ${devBorder('blue')}`}
           style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
         >
-          <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--foreground)' }}>
+          <h3 className="text-base font-medium mb-3" style={{ color: 'var(--foreground)' }}>
             Date Range
           </h3>
           <DateRangeFilter value={dateRange} onChange={setDateRange} />
@@ -560,13 +560,13 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
           className={`rounded-xl p-5 ${devBorder('cyan')}`}
           style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
         >
-          <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--foreground)' }}>
+          <h3 className="text-base font-medium mb-3" style={{ color: 'var(--foreground)' }}>
             Group By
           </h3>
           <select
             value={groupBy || ''}
             onChange={(e) => setGroupBy((e.target.value || null) as GroupByField)}
-            className="w-full py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+            className="w-full py-2 rounded-lg text-base outline-none cursor-pointer select-hover"
             style={nativeSelectStyle}
           >
             {GROUP_BY_OPTIONS.map(opt => (
@@ -583,7 +583,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
           style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
         >
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+            <h3 className="text-base font-medium" style={{ color: 'var(--foreground)' }}>
               Filters
             </h3>
             {activeFilterChips.length > 0 && (
@@ -607,7 +607,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
             <select
               value=""
               onChange={(e) => handleAddFilter(e.target.value)}
-              className="w-full py-2 rounded-lg text-sm outline-none cursor-pointer select-hover"
+              className="w-full py-2 rounded-lg text-base outline-none cursor-pointer select-hover"
               style={nativeSelectStyle}
             >
               <option value="">+ Add filter</option>
@@ -823,7 +823,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
               </h3>
 
               {grouped.length === 0 ? (
-                <p className="text-sm py-8 text-center" style={{ color: 'var(--muted-text)' }}>
+                <p className="text-base py-8 text-center" style={{ color: 'var(--muted-text)' }}>
                   No data available for this grouping.
                 </p>
               ) : (
@@ -848,7 +848,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
               </h3>
 
               {chapters.length === 0 ? (
-                <p className="text-sm py-8 text-center" style={{ color: 'var(--muted-text)' }}>
+                <p className="text-base py-8 text-center" style={{ color: 'var(--muted-text)' }}>
                   No chapters available yet.
                 </p>
               ) : (
@@ -860,7 +860,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
                       style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
                     >
                       <h4
-                        className="text-sm font-medium mb-3"
+                        className="text-base font-medium mb-3"
                         style={{ color: 'var(--muted-text)' }}
                       >
                         {section}

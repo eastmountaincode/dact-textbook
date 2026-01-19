@@ -1,168 +1,93 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useSignIn, useUser } from '@clerk/nextjs';
 import { useDevMode } from '@/providers/DevModeProvider';
-import { useAuth } from '@/providers/AuthProvider';
 import TextbookLayout from '@/components/TextbookLayout';
-import { createClient } from '@/lib/supabase/client';
 
-type ErrorType = 'email_not_confirmed' | 'invalid_credentials' | 'rate_limited' | 'link_expired' | 'pkce_error' | 'generic';
-
-interface LoginError {
-  type: ErrorType;
-  message: string;
-}
-
-function parseLoginError(errorMessage: string): LoginError {
-  const lowerMessage = errorMessage.toLowerCase();
-
-  if (lowerMessage.includes('email not confirmed')) {
-    return {
-      type: 'email_not_confirmed',
-      message: 'Please check your email and click the confirmation link to activate your account.',
-    };
-  }
-
-  if (lowerMessage.includes('invalid login credentials') || lowerMessage.includes('invalid credentials')) {
-    return {
-      type: 'invalid_credentials',
-      message: 'Incorrect email or password. Please try again.',
-    };
-  }
-
-  if (lowerMessage.includes('rate limit') || lowerMessage.includes('too many requests')) {
-    return {
-      type: 'rate_limited',
-      message: 'Too many login attempts. Please wait a moment and try again.',
-    };
-  }
-
-  if (lowerMessage.includes('pkce') || lowerMessage.includes('code verifier')) {
-    return {
-      type: 'pkce_error',
-      message: 'Your email has been confirmed. Please log in with your email and password.',
-    };
-  }
-
-  if (lowerMessage.includes('expired') || lowerMessage.includes('invalid') || lowerMessage.includes('otp')) {
-    return {
-      type: 'link_expired',
-      message: 'This link has expired or is invalid. Please log in or request a new confirmation email.',
-    };
-  }
-
-  return {
-    type: 'generic',
-    message: errorMessage,
-  };
-}
-
-export default function LoginPage() {
+function LoginForm() {
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const { isSignedIn, isLoaded: isUserLoaded } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<LoginError | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isResending, setIsResending] = useState(false);
-  const [resendSuccess, setResendSuccess] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { devBorder } = useDevMode();
-  const { user } = useAuth();
 
-  // Handle hash fragment from email confirmation (implicit flow)
-  // When user clicks confirmation link, Supabase may redirect with tokens in hash
-  // We need to catch this and redirect to confirmed page instead of auto-logging in
-  const [isConfirmationRedirect, setIsConfirmationRedirect] = useState(false);
-
+  // Redirect if already logged in
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash && hash.includes('type=signup')) {
-      setIsConfirmationRedirect(true);
-      // Sign out to clear any auto-established session, then redirect
-      const supabase = createClient();
-      supabase.auth.signOut().then(() => {
-        window.location.replace('/auth/confirmed');
-      });
-      return;
-    }
-  }, []);
-
-  // Redirect if already logged in (but not if coming from confirmation)
-  useEffect(() => {
-    if (isConfirmationRedirect) return;
-    if (user) {
+    if (isUserLoaded && isSignedIn) {
       router.replace('/chapter/welcome');
     }
-  }, [user, router, isConfirmationRedirect]);
+  }, [isSignedIn, isUserLoaded, router]);
 
-  // Check for error in URL (e.g., from expired confirmation link)
+  // Check for error in URL
   useEffect(() => {
     const urlError = searchParams.get('error');
     if (urlError) {
-      setError(parseLoginError(urlError));
-      // Clear the error from URL without reloading the page
+      setError(urlError);
       router.replace('/login', { scroll: false });
     }
   }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isLoaded || !signIn) return;
+
     setError(null);
-    setResendSuccess(false);
     setIsLoading(true);
 
-    const supabase = createClient();
-
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
+      const result = await signIn.create({
+        identifier: email,
         password,
       });
 
-      if (error) {
-        setError(parseLoginError(error.message));
-        setIsLoading(false);
-      } else {
-        // Use window.location for more reliable redirect after login
+      if (result.status === 'complete') {
+        await setActive({ session: result.createdSessionId });
         window.location.href = '/chapter/welcome';
+      } else {
+        // Handle other statuses if needed (e.g., 2FA)
+        console.log('Sign in status:', result.status);
       }
-    } catch (err) {
-      setError(parseLoginError(err instanceof Error ? err.message : 'An unexpected error occurred'));
+    } catch (err: unknown) {
+      const clerkError = err as { errors?: Array<{ message: string; code: string }> };
+      const errorMessage = clerkError.errors?.[0]?.message || 'An error occurred during login';
+      setError(errorMessage);
+    } finally {
       setIsLoading(false);
     }
   };
 
-  const handleResendConfirmation = async () => {
-    setIsResending(true);
-    setResendSuccess(false);
+  // Show loading while Clerk initializes
+  if (!isLoaded || !isUserLoaded) {
+    return (
+      <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center">
+        <p style={{ color: 'var(--muted-text)' }}>Loading...</p>
+      </div>
+    );
+  }
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.resend({
-      type: 'signup',
-      email: email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-
-    setIsResending(false);
-
-    if (error) {
-      setError(parseLoginError(error.message));
-    } else {
-      setResendSuccess(true);
-    }
-  };
+  // Don't render form if already signed in (will redirect)
+  if (isSignedIn) {
+    return (
+      <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center">
+        <p style={{ color: 'var(--muted-text)' }}>Redirecting...</p>
+      </div>
+    );
+  }
 
   return (
-    <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4 ${devBorder('blue')}`}>
-        <div className={`w-full max-w-sm ${devBorder('green')}`}>
+    <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
+      <div className={`w-full max-w-sm ${devBorder('green')}`}>
         {/* Title area */}
         <div className={`text-center mb-4 ${devBorder('amber')}`}>
-          <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+          <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
             Log in to your account
           </h1>
         </div>
@@ -172,34 +97,19 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className={devBorder('cyan')}>
             {error && (
               <div
-                className={`mb-4 p-3 rounded-lg text-sm ${devBorder('red')}`}
+                className={`mb-4 p-3 rounded-lg text-base ${devBorder('red')}`}
                 style={{
-                  backgroundColor: error.type === 'pkce_error' ? 'var(--card-bg)' : 'var(--callout-warning-bg)',
-                  color: error.type === 'pkce_error' ? 'var(--foreground)' : '#dc2626',
-                  border: error.type === 'pkce_error' ? '1px solid var(--card-border)' : '1px solid var(--callout-warning-border)'
+                  backgroundColor: 'var(--callout-warning-bg)',
+                  color: '#dc2626',
+                  border: '1px solid var(--callout-warning-border)'
                 }}
               >
-                <p>{error.message}</p>
-                {(error.type === 'email_not_confirmed' || error.type === 'link_expired') && (
-                  <button
-                    type="button"
-                    onClick={handleResendConfirmation}
-                    disabled={isResending || !email}
-                    className="mt-2 underline cursor-pointer disabled:opacity-50"
-                  >
-                    {isResending ? 'Sending...' : 'Resend confirmation email'}
-                  </button>
-                )}
-              </div>
-            )}
-            {resendSuccess && (
-              <div className={`mb-4 p-3 rounded-lg text-sm ${devBorder('green')}`} style={{ backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', border: '1px solid var(--card-border)' }}>
-                Confirmation email sent! Please check your inbox.
+                <p>{error}</p>
               </div>
             )}
 
             <div className={`mb-4 ${devBorder('teal')}`}>
-              <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+              <label htmlFor="email" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                 Email
               </label>
               <input
@@ -219,27 +129,48 @@ export default function LoginPage() {
             </div>
 
             <div className={`mb-4 ${devBorder('teal')}`}>
-              <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+              <label htmlFor="password" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Your password"
-                className={`w-full px-4 py-3 rounded-lg text-base outline-none ${devBorder('orange')}`}
-                style={{
-                  backgroundColor: 'var(--input-bg)',
-                  border: '1px solid var(--input-border)',
-                  color: 'var(--foreground)',
-                }}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Your password"
+                  className={`w-full px-4 py-3 pr-12 rounded-lg text-base outline-none ${devBorder('orange')}`}
+                  style={{
+                    backgroundColor: 'var(--input-bg)',
+                    border: '1px solid var(--input-border)',
+                    color: 'var(--foreground)',
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 cursor-pointer"
+                  style={{ color: 'var(--muted-text)' }}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
 
             <div className={`mb-6 text-right ${devBorder('indigo')}`}>
-              <Link href="/forgot-password" className="text-sm cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+              <Link href="/forgot-password" className="text-base cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
                 Forgot password?
               </Link>
             </div>
@@ -254,15 +185,28 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className={`mt-6 text-center text-sm ${devBorder('lime')}`} style={{ color: 'var(--muted-text)' }}>
+          <p className={`mt-6 text-center text-base ${devBorder('lime')}`} style={{ color: 'var(--muted-text)' }}>
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+            <Link href="/signup" className="font-medium cursor-pointer hover:opacity-90" style={{ color: 'var(--berkeley-blue)' }}>
               Create account
             </Link>
           </p>
         </div>
-        </div>
       </div>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <TextbookLayout>
+      <Suspense fallback={
+        <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center">
+          <p style={{ color: 'var(--muted-text)' }}>Loading...</p>
+        </div>
+      }>
+        <LoginForm />
+      </Suspense>
     </TextbookLayout>
   );
 }

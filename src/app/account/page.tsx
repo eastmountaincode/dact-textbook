@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/providers/AuthProvider';
+import { useUser, useClerk } from '@clerk/nextjs';
+import { useProfile } from '@/providers/ProfileProvider';
 import { useDevMode, DevBorderColor } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
-import { ProfileTab, SecurityTab } from '@/components/account';
+import { ProfileTab } from '@/components/account';
 import { UserAnalyticsView } from '@/components/analytics/UserAnalyticsView';
 import { UserDemographics } from '@/components/analytics/UserDemographics';
 import { TextbookAnalytics } from '@/components/analytics/TextbookAnalytics';
@@ -14,16 +15,20 @@ type TabType = 'profile' | 'security' | 'analytics' | 'admin-users' | 'admin-ana
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
-  const { user, profile, isLoading, isAdmin, updateProfile, updatePassword, deleteAccount } = useAuth();
+  const { user, isLoaded: isUserLoaded, isSignedIn } = useUser();
+  const { openUserProfile } = useClerk();
+  const { profile, isLoading: isProfileLoading, isAdmin, updateProfile } = useProfile();
   const { devBorder } = useDevMode();
   const router = useRouter();
 
+  const isLoading = !isUserLoaded || isProfileLoading;
+
   // Redirect if not authenticated
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (isUserLoaded && !isSignedIn) {
       router.push('/login');
     }
-  }, [isLoading, user, router]);
+  }, [isUserLoaded, isSignedIn, router]);
 
   if (isLoading) {
     return (
@@ -35,9 +40,11 @@ export default function AccountPage() {
     );
   }
 
-  if (!user) {
+  if (!isSignedIn || !user) {
     return null;
   }
+
+  const userEmail = user.emailAddresses?.[0]?.emailAddress || '';
 
   const userTabs: { id: TabType; label: string }[] = [
     { id: 'profile', label: 'Profile' },
@@ -52,7 +59,7 @@ export default function AccountPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] pt-12 pb-12 px-8 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] py-8 px-8 ${devBorder('blue')}`}>
         <div className={`w-full max-w-4xl mx-auto ${devBorder('green')}`}>
           {/* Title */}
           <h1 className="text-2xl font-semibold mb-6" style={{ color: 'var(--foreground)' }}>
@@ -64,7 +71,7 @@ export default function AccountPage() {
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value as TabType)}
-              className="w-full px-4 py-3 rounded-lg text-sm font-medium outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base font-medium outline-none cursor-pointer"
               style={{
                 backgroundColor: 'var(--input-bg)',
                 border: '1px solid var(--input-border)',
@@ -93,7 +100,7 @@ export default function AccountPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`pb-3 text-sm font-medium cursor-pointer ${
+                  className={`pb-3 text-base font-medium cursor-pointer ${
                     activeTab === tab.id
                       ? 'border-b-2'
                       : ''
@@ -114,7 +121,7 @@ export default function AccountPage() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`pb-3 text-sm font-medium cursor-pointer ${
+                      className={`pb-3 text-base font-medium cursor-pointer ${
                         activeTab === tab.id
                           ? 'border-b-2'
                           : ''
@@ -136,15 +143,14 @@ export default function AccountPage() {
           {activeTab === 'profile' && (
             <ProfileTab
               profile={profile}
-              email={user.email}
+              email={userEmail}
               updateProfile={updateProfile}
               devBorder={devBorder}
             />
           )}
           {activeTab === 'security' && (
             <SecurityTab
-              updatePassword={updatePassword}
-              deleteAccount={deleteAccount}
+              openUserProfile={openUserProfile}
               devBorder={devBorder}
             />
           )}
@@ -161,6 +167,41 @@ export default function AccountPage() {
         </div>
       </div>
     </TextbookLayout>
+  );
+}
+
+// Security Tab - uses Clerk's user profile modal for password changes
+function SecurityTab({
+  openUserProfile,
+  devBorder,
+}: {
+  openUserProfile: () => void;
+  devBorder: (color: DevBorderColor) => string;
+}) {
+  return (
+    <div className={`rounded-xl p-6 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
+      <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>
+        Security Settings
+      </h2>
+
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            Password & Security
+          </h3>
+          <p className="text-base mb-3" style={{ color: 'var(--muted-text)' }}>
+            Manage your password, two-factor authentication, and other security settings.
+          </p>
+          <button
+            onClick={openUserProfile}
+            className="px-4 py-2 rounded-lg text-base font-medium cursor-pointer hover:opacity-90"
+            style={{ backgroundColor: 'var(--berkeley-blue)', color: 'white' }}
+          >
+            Manage Security Settings
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

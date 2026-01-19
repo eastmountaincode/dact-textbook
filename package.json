@@ -11,9 +11,14 @@
     "seed-chapters:sql": "node scripts/seed-chapters.mjs",
     "start": "next start",
     "lint": "eslint",
-    "snapshots": "playwright test -c playwright.config.ts"
+    "snapshots": "playwright test -c playwright.config.ts",
+    "db:reset": "supabase db reset",
+    "db:seed-users": "node --env-file=.env.local scripts/seed-test-users.mjs",
+    "db:seed-users:force": "node --env-file=.env.local scripts/seed-test-users.mjs --force",
+    "db:setup": "npm run db:reset && npm run db:seed-users:force"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.8",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.90.1",
     "@vercel/analytics": "^1.6.1",
@@ -36,6 +41,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@clerk/backend": "^2.29.3",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4",
     "@types/js-yaml": "^4.0.9",

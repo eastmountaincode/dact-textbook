@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
-import { useAuth } from '@/providers/AuthProvider';
+import { useUser } from '@clerk/nextjs';
 
 interface UseReadingTimeTrackerOptions {
   chapterSlug: string;
@@ -24,7 +24,7 @@ export function useReadingTimeTracker({
   updateIntervalSeconds = 30,
   enabled = true,
 }: UseReadingTimeTrackerOptions) {
-  const { user } = useAuth();
+  const { user, isSignedIn } = useUser();
   const accumulatedSecondsRef = useRef(0);
   const lastTickRef = useRef<number | null>(null);
   const isVisibleRef = useRef(true);
@@ -34,7 +34,7 @@ export function useReadingTimeTracker({
   // Send accumulated time to server
   const sendTimeUpdate = useCallback(async (force = false) => {
     // Don't send if no user, no time accumulated, or already sending
-    if (!user || accumulatedSecondsRef.current === 0 || isSendingRef.current) {
+    if (!isSignedIn || !user || accumulatedSecondsRef.current === 0 || isSendingRef.current) {
       return;
     }
 
@@ -71,11 +71,11 @@ export function useReadingTimeTracker({
     } finally {
       isSendingRef.current = false;
     }
-  }, [user, chapterSlug]);
+  }, [isSignedIn, user, chapterSlug]);
 
   // Handle visibility changes
   useEffect(() => {
-    if (!enabled || !user) return;
+    if (!enabled || !isSignedIn || !user) return;
 
     const handleVisibilityChange = () => {
       const wasVisible = isVisibleRef.current;
@@ -101,11 +101,11 @@ export function useReadingTimeTracker({
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [enabled, user, sendTimeUpdate]);
+  }, [enabled, isSignedIn, user, sendTimeUpdate]);
 
   // Main tracking interval
   useEffect(() => {
-    if (!enabled || !user) return;
+    if (!enabled || !isSignedIn || !user) return;
 
     // Start tracking
     lastTickRef.current = Date.now();
@@ -140,7 +140,7 @@ export function useReadingTimeTracker({
       }
 
       // Send final update on unmount (use sendBeacon for reliability)
-      if (accumulatedSecondsRef.current > 0 && user) {
+      if (accumulatedSecondsRef.current > 0 && isSignedIn && user) {
         const secondsToSend = Math.floor(accumulatedSecondsRef.current);
         if (secondsToSend > 0) {
           // Use sendBeacon for reliable delivery on page unload
@@ -152,11 +152,11 @@ export function useReadingTimeTracker({
         }
       }
     };
-  }, [enabled, user, chapterSlug, updateIntervalSeconds, sendTimeUpdate]);
+  }, [enabled, isSignedIn, user, chapterSlug, updateIntervalSeconds, sendTimeUpdate]);
 
   // Handle page unload (backup for sendBeacon)
   useEffect(() => {
-    if (!enabled || !user) return;
+    if (!enabled || !isSignedIn || !user) return;
 
     const handleBeforeUnload = () => {
       // Record final time
@@ -183,5 +183,5 @@ export function useReadingTimeTracker({
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [enabled, user, chapterSlug]);
+  }, [enabled, isSignedIn, user, chapterSlug]);
 }

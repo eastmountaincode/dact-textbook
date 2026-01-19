@@ -2,30 +2,36 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/providers/AuthProvider';
+import { useSignIn } from '@clerk/nextjs';
 import { useDevMode } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
 
 export default function ForgotPasswordPage() {
+  const { isLoaded, signIn } = useSignIn();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { resetPassword } = useAuth();
   const { devBorder } = useDevMode();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isLoaded) return;
+
     setError(null);
     setIsLoading(true);
 
-    const { error } = await resetPassword(email);
+    try {
+      await signIn.create({
+        strategy: 'reset_password_email_code',
+        identifier: email,
+      });
 
-    if (error) {
-      setError(error.message);
-      setIsLoading(false);
-    } else {
       setSuccess(true);
+    } catch (err: unknown) {
+      const clerkError = err as { errors?: Array<{ message: string }> };
+      setError(clerkError.errors?.[0]?.message || 'An error occurred');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -33,10 +39,10 @@ export default function ForgotPasswordPage() {
   if (success) {
     return (
       <TextbookLayout>
-        <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4 ${devBorder('blue')}`}>
+        <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
           <div className={`w-full max-w-sm ${devBorder('green')}`}>
             <div className={`text-center mb-4 ${devBorder('amber')}`}>
-              <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+              <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
                 Check your email
               </h1>
             </div>
@@ -49,15 +55,23 @@ export default function ForgotPasswordPage() {
               </div>
 
               <p className="mb-4" style={{ color: 'var(--foreground)' }}>
-                We&apos;ve sent a password reset link to <strong>{email}</strong>
+                We&apos;ve sent a password reset code to <strong>{email}</strong>
               </p>
 
-              <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
-                Click the link in the email to reset your password. If you don&apos;t see it, check your spam folder.
+              <p className="text-base mb-6" style={{ color: 'var(--muted-text)' }}>
+                Check your email for the code and use it to reset your password. If you don&apos;t see it, check your spam folder.
               </p>
 
-              <div className="pt-4 border-t" style={{ borderColor: 'var(--card-border)' }}>
-                <Link href="/login" className="text-sm font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+              <Link
+                href={`/reset-password?email=${encodeURIComponent(email)}`}
+                className="inline-block px-6 py-3 rounded-lg font-medium text-white cursor-pointer hover:opacity-90"
+                style={{ backgroundColor: 'var(--berkeley-blue)' }}
+              >
+                Enter Reset Code
+              </Link>
+
+              <div className="pt-4 mt-4 border-t" style={{ borderColor: 'var(--card-border)' }}>
+                <Link href="/login" className="text-base font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
                   Back to Log In
                 </Link>
               </div>
@@ -70,28 +84,28 @@ export default function ForgotPasswordPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
         <div className={`w-full max-w-sm ${devBorder('green')}`}>
           <div className={`text-center mb-4 ${devBorder('amber')}`}>
-            <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+            <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
               Reset your password
             </h1>
           </div>
 
           <div className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
-            <p className={`text-sm mb-6 ${devBorder('teal')}`} style={{ color: 'var(--muted-text)' }}>
-              Enter your email address and we&apos;ll send you a link to reset your password.
+            <p className={`text-base mb-6 ${devBorder('teal')}`} style={{ color: 'var(--muted-text)' }}>
+              Enter your email address and we&apos;ll send you a code to reset your password.
             </p>
 
             <form onSubmit={handleSubmit} className={devBorder('cyan')}>
               {error && (
-                <div className={`mb-4 p-3 rounded-lg text-sm ${devBorder('red')}`} style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
+                <div className={`mb-4 p-3 rounded-lg text-base ${devBorder('red')}`} style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
                   {error}
                 </div>
               )}
 
               <div className={`mb-6 ${devBorder('teal')}`}>
-                <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="email" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Email
                 </label>
                 <input
@@ -112,17 +126,17 @@ export default function ForgotPasswordPage() {
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || !isLoaded}
                 className={`w-full py-3 rounded-lg font-medium text-white disabled:opacity-50 cursor-pointer hover:opacity-90 ${devBorder('pink')}`}
                 style={{ backgroundColor: 'var(--berkeley-blue)' }}
               >
-                {isLoading ? 'Sending...' : 'Send Reset Link'}
+                {isLoading ? 'Sending...' : 'Send Reset Code'}
               </button>
             </form>
 
-            <p className={`mt-6 text-center text-sm ${devBorder('lime')}`} style={{ color: 'var(--muted-text)' }}>
+            <p className={`mt-6 text-center text-base ${devBorder('lime')}`} style={{ color: 'var(--muted-text)' }}>
               Remember your password?{' '}
-              <Link href="/login" className="font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+              <Link href="/login" className="font-medium cursor-pointer hover:opacity-90" style={{ color: 'var(--berkeley-blue)' }}>
                 Log In
               </Link>
             </p>

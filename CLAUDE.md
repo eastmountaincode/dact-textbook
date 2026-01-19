@@ -184,3 +184,5 @@ All colors have dark mode equivalents that are automatically applied when `.dark
 Don't use transition effects unless I specifically ask for them.
 
 Callout styles are in `src/app/callouts.css`.
+
+Keep components simple and focused, if a component gets too complex, break it down into smaller components.

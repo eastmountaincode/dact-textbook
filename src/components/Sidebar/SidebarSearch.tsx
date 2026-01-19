@@ -35,6 +35,20 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
   const showSearchResults = debouncedQuery.trim().length > 0 && results.length > 0;
   const showNoResults = debouncedQuery.trim().length > 0 && !isLoading && results.length === 0;
 
+  // Calculate occurrence index for each result - tracks position within same chapter
+  const resultsWithOccurrence = results.slice(0, 10).map((result, index) => {
+    // Count how many previous results have the same base path (same chapter)
+    const basePath = result.item.href.split('#')[0].split('?')[0];
+    let occurrenceIndex = 0;
+    for (let i = 0; i < index; i++) {
+      const prevBasePath = results[i].item.href.split('#')[0].split('?')[0];
+      if (prevBasePath === basePath) {
+        occurrenceIndex++;
+      }
+    }
+    return { result, occurrenceIndex };
+  });
+
   return (
     <>
       {/* Search Input */}
@@ -58,7 +72,7 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
             placeholder="Search content..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-lg bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--berkeley-blue)] focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 text-base rounded-lg bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--berkeley-blue)] focus:border-transparent"
           />
           {isLoading && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -75,12 +89,13 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
             Search Results ({results.length})
           </p>
           <ul className="px-2 pb-2 space-y-1">
-            {results.slice(0, 10).map((result) => (
+            {resultsWithOccurrence.map(({ result, occurrenceIndex }) => (
               <SearchResultItem
                 key={result.item.objectID}
                 result={result}
                 query={debouncedQuery}
                 isActive={result.item.href.includes(currentSlug || '')}
+                occurrenceIndex={occurrenceIndex}
               />
             ))}
           </ul>
@@ -93,7 +108,7 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
       )}
 
       {showNoResults && (
-        <div className="px-4 py-4 text-sm text-center text-[var(--muted-text)] border-b border-[var(--sidebar-border)]">
+        <div className="px-4 py-4 text-base text-center text-[var(--muted-text)] border-b border-[var(--sidebar-border)]">
           No results found for &ldquo;{debouncedQuery}&rdquo;
         </div>
       )}
@@ -105,27 +120,29 @@ function SearchResultItem({
   result,
   query,
   isActive,
+  occurrenceIndex,
 }: {
   result: SearchResult;
   query: string;
   isActive: boolean;
+  occurrenceIndex: number;
 }) {
   const { item } = result;
   const snippet = getMatchSnippet(item.text, query);
 
-  // Add search query to URL so the page can highlight/scroll to the match
-  // URL format: /chapter/slug?q=term#section-id (query before hash)
+  // Add search query and occurrence index to URL so the page can highlight/scroll to the specific match
+  // URL format: /chapter/slug?q=term&n=0#section-id (query params before hash)
   const [basePath, hash] = item.href.split('#');
   const separator = basePath.includes('?') ? '&' : '?';
   const hrefWithQuery = hash
-    ? `${basePath}${separator}q=${encodeURIComponent(query)}#${hash}`
-    : `${basePath}${separator}q=${encodeURIComponent(query)}`;
+    ? `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}#${hash}`
+    : `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}`;
 
   return (
     <li>
       <Link
         href={hrefWithQuery}
-        className={`block px-3 py-2 rounded-lg text-sm ${isActive ? 'bg-[var(--sidebar-active)]' : 'hover:bg-[var(--sidebar-hover)]'}`}
+        className={`block px-3 py-2 rounded-lg text-base ${isActive ? 'bg-[var(--sidebar-active)]' : 'hover:bg-[var(--sidebar-hover)]'}`}
       >
         <div className="font-medium truncate text-[var(--foreground)]">{item.title}</div>
         {item.section && (

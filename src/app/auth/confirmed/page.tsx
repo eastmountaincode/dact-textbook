@@ -10,10 +10,10 @@ function ConfirmedContent() {
   const isLinkInvalid = searchParams.get('already') === 'true';
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4">
+    <div className="min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center">
       <div className="w-full max-w-sm">
         <div className="text-center mb-4">
-          <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+          <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
             {isLinkInvalid ? 'Link no longer valid' : 'Email confirmed'}
           </h1>
         </div>
@@ -64,10 +64,10 @@ export default function EmailConfirmedPage() {
   return (
     <TextbookLayout>
       <Suspense fallback={
-        <div className="min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4">
+        <div className="min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center">
           <div className="w-full max-w-sm">
             <div className="text-center mb-4">
-              <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+              <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
                 Email confirmed
               </h1>
             </div>

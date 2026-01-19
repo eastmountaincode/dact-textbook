@@ -3,7 +3,8 @@
 import { useEffect, useRef, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { useDevMode } from '@/providers/DevModeProvider';
-import SidebarSearch from './SidebarSearch';
+// TODO: Search disabled temporarily - needs fix for navigating to specific occurrences
+// import SidebarSearch from './SidebarSearch';
 
 interface ChapterInfo {
   slug: string;
@@ -63,13 +64,11 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
   return (
     <>
       {/* Overlay for mobile when sidebar is open */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-30 md:hidden"
-          onClick={onToggle}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className={`fixed inset-0 bg-black/30 z-30 md:hidden transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        onClick={onToggle}
+        aria-hidden="true"
+      />
 
       {/* Sidebar Container - handles positioning and transform */}
       <div
@@ -96,8 +95,8 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
           ref={sidebarRef}
           className={`h-full overflow-y-auto bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] font-serif ${devBorder('blue')}`}
         >
-          {/* Search */}
-          <SidebarSearch currentSlug={currentSlug} />
+          {/* Search - disabled temporarily */}
+          {/* <SidebarSearch currentSlug={currentSlug} /> */}
 
           {/* Section List */}
           <nav className={`${devBorder('cyan')}`}>
@@ -105,7 +104,7 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
                 <div key={section.name} className={`${devBorder('orange')}`}>
                   {/* Section Header */}
                   <div
-                    className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider bg-[var(--sidebar-section-bg)] text-[var(--muted-text)] ${devBorder('pink')}`}
+                    className={`px-4 py-2 text-sm font-semibold bg-[var(--sidebar-section-bg)] text-[var(--muted-text)] ${devBorder('pink')}`}
                   >
                     {section.name}
                   </div>

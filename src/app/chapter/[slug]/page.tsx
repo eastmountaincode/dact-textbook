@@ -4,7 +4,7 @@ import ChapterNavigation from '@/components/ChapterNavigation';
 import TextbookLayout from '@/components/TextbookLayout';
 import GatedContent from '@/components/GatedContent';
 import ReadingTimeTracker from '@/components/ReadingTimeTracker';
-import { createClient } from '@/lib/supabase/server';
+import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 
 interface PageProps {
@@ -44,10 +44,9 @@ export default async function ChapterPage({ params }: PageProps) {
   // Check if this is a preface page (always accessible)
   const isPrefacePage = isPreface(sections, slug);
 
-  // Check authentication (needed for gating and reading time tracking)
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const isAuthenticated = !!user;
+  // Check authentication using Clerk (needed for gating and reading time tracking)
+  const { userId } = await auth();
+  const isAuthenticated = !!userId;
 
   // Show gated content for non-preface pages when not authenticated
   if (!isPrefacePage && !isAuthenticated) {

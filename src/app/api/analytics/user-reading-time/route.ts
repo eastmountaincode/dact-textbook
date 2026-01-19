@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 type DateRange = '7d' | '30d' | '90d' | 'all';
@@ -13,12 +14,13 @@ function getDateRangeStart(range: DateRange): string | null {
 
 export async function GET(request: Request) {
   try {
-    const supabase = await createClient();
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
+    // Check authentication using Clerk
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const supabase = await createClient();
 
     const { searchParams } = new URL(request.url);
     const dateRange = (searchParams.get('dateRange') || 'all') as DateRange;
@@ -42,7 +44,7 @@ export async function GET(request: Request) {
       const { data: dailyTimes, error: dailyError } = await supabase
         .from('reading_time_daily')
         .select('chapter_id, seconds_spent, updated_at')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .gte('date', dateStart);
 
       if (dailyError) {
@@ -72,7 +74,7 @@ export async function GET(request: Request) {
       const { data: readingTimes, error: readingError } = await supabase
         .from('reading_time_per_chapter')
         .select('chapter_id, seconds_spent, last_updated')
-        .eq('user_id', user.id);
+        .eq('user_id', userId);
 
       if (readingError) {
         console.error('Error fetching reading times:', readingError);
