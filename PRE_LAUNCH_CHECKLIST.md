@@ -24,6 +24,11 @@
 - [ ] **Verification email**: Customize branding if desired
 - [ ] **Password reset email**: Customize branding if desired
 
+### Webhooks (Configure → Webhooks)
+- [ ] **Add webhook endpoint**: `https://analytics.thephilomath.org/api/webhooks/clerk`
+- [ ] **Subscribe to event**: `user.deleted`
+- [ ] **Copy signing secret**: Add to Vercel as `CLERK_WEBHOOK_SECRET`
+
 ---
 
 ## Supabase Settings to Verify
@@ -43,6 +48,7 @@
 Required variables:
 - [ ] `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - from Clerk dashboard
 - [ ] `CLERK_SECRET_KEY` - from Clerk dashboard
+- [ ] `CLERK_WEBHOOK_SECRET` - from Clerk webhook endpoint (starts with `whsec_`)
 - [ ] `NEXT_PUBLIC_SUPABASE_URL` - your Supabase project URL
 - [ ] `NEXT_PUBLIC_SUPABASE_ANON_KEY` - from Supabase API settings
 - [ ] `SUPABASE_SERVICE_ROLE_KEY` - from Supabase API settings (for server operations)
@@ -91,6 +97,11 @@ Required variables:
 ### Admin Features (if applicable)
 - [ ] Admin user can access admin dashboard
 - [ ] Non-admin cannot access admin routes
+
+### Account Deletion (after webhook is configured)
+- [ ] Create a test user account
+- [ ] Delete account via user profile settings
+- [ ] Verify user data removed from Supabase (check user_profiles, reading_time tables)
 
 ---
 
