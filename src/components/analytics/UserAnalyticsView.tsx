@@ -134,7 +134,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
           <h2 className="text-lg font-semibold mb-1" style={{ color: 'var(--foreground)' }}>
             Your Activity
           </h2>
-          <p className="text-sm" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base" style={{ color: 'var(--muted-text)' }}>
             Track your reading progress and engagement
           </p>
         </div>
@@ -155,7 +155,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
           <div className="text-2xl font-semibold mb-1" style={{ color: 'var(--berkeley-blue)' }}>
             {summary ? formatTime(summary.totalSeconds) : '--'}
           </div>
-          <div className="text-sm" style={{ color: 'var(--muted-text)' }}>
+          <div className="text-base" style={{ color: 'var(--muted-text)' }}>
             Total Reading Time
           </div>
         </div>
@@ -169,7 +169,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
               ? formatTime(Math.round(summary.totalSeconds / summary.chaptersVisited))
               : '--'}
           </div>
-          <div className="text-sm" style={{ color: 'var(--muted-text)' }}>
+          <div className="text-base" style={{ color: 'var(--muted-text)' }}>
             Avg per Chapter
           </div>
         </div>
@@ -181,7 +181,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
           <div className="text-2xl font-semibold mb-1" style={{ color: 'var(--berkeley-blue)' }}>
             {summary ? `${summary.chaptersVisited}/${summary.totalChapters}` : '--'}
           </div>
-          <div className="text-sm" style={{ color: 'var(--muted-text)' }}>
+          <div className="text-base" style={{ color: 'var(--muted-text)' }}>
             Chapters Visited
           </div>
         </div>
@@ -193,7 +193,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
       </h3>
 
       {chapters.length === 0 ? (
-        <p className="text-sm py-8 text-center" style={{ color: 'var(--muted-text)' }}>
+        <p className="text-base py-8 text-center" style={{ color: 'var(--muted-text)' }}>
           No chapters available yet.
         </p>
       ) : (
@@ -205,7 +205,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
               style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--input-border)' }}
             >
               <h4
-                className="text-sm font-medium mb-3"
+                className="text-base font-medium mb-3"
                 style={{ color: 'var(--muted-text)' }}
               >
                 {section}
@@ -226,7 +226,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
       )}
 
       {summary && summary.chaptersVisited === 0 && (
-        <p className="mt-6 text-sm text-center" style={{ color: 'var(--muted-text)' }}>
+        <p className="mt-6 text-base text-center" style={{ color: 'var(--muted-text)' }}>
           Start reading to track your progress!
         </p>
       )}

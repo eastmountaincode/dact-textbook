@@ -39,10 +39,10 @@ export default function ForgotPasswordPage() {
   if (success) {
     return (
       <TextbookLayout>
-        <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4 ${devBorder('blue')}`}>
+        <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
           <div className={`w-full max-w-sm ${devBorder('green')}`}>
             <div className={`text-center mb-4 ${devBorder('amber')}`}>
-              <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+              <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
                 Check your email
               </h1>
             </div>
@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
                 We&apos;ve sent a password reset code to <strong>{email}</strong>
               </p>
 
-              <p className="text-sm mb-6" style={{ color: 'var(--muted-text)' }}>
+              <p className="text-base mb-6" style={{ color: 'var(--muted-text)' }}>
                 Check your email for the code and use it to reset your password. If you don&apos;t see it, check your spam folder.
               </p>
 
@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
               </Link>
 
               <div className="pt-4 mt-4 border-t" style={{ borderColor: 'var(--card-border)' }}>
-                <Link href="/login" className="text-sm font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+                <Link href="/login" className="text-base font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
                   Back to Log In
                 </Link>
               </div>
@@ -84,28 +84,28 @@ export default function ForgotPasswordPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-12 justify-center p-4 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
         <div className={`w-full max-w-sm ${devBorder('green')}`}>
           <div className={`text-center mb-4 ${devBorder('amber')}`}>
-            <h1 className="text-xl font-semibold" style={{ color: 'var(--foreground)' }}>
+            <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
               Reset your password
             </h1>
           </div>
 
           <div className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
-            <p className={`text-sm mb-6 ${devBorder('teal')}`} style={{ color: 'var(--muted-text)' }}>
+            <p className={`text-base mb-6 ${devBorder('teal')}`} style={{ color: 'var(--muted-text)' }}>
               Enter your email address and we&apos;ll send you a code to reset your password.
             </p>
 
             <form onSubmit={handleSubmit} className={devBorder('cyan')}>
               {error && (
-                <div className={`mb-4 p-3 rounded-lg text-sm ${devBorder('red')}`} style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
+                <div className={`mb-4 p-3 rounded-lg text-base ${devBorder('red')}`} style={{ backgroundColor: 'var(--callout-warning-bg)', color: '#dc2626', border: '1px solid var(--callout-warning-border)' }}>
                   {error}
                 </div>
               )}
 
               <div className={`mb-6 ${devBorder('teal')}`}>
-                <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                <label htmlFor="email" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Email
                 </label>
                 <input
@@ -134,9 +134,9 @@ export default function ForgotPasswordPage() {
               </button>
             </form>
 
-            <p className={`mt-6 text-center text-sm ${devBorder('lime')}`} style={{ color: 'var(--muted-text)' }}>
+            <p className={`mt-6 text-center text-base ${devBorder('lime')}`} style={{ color: 'var(--muted-text)' }}>
               Remember your password?{' '}
-              <Link href="/login" className="font-medium cursor-pointer" style={{ color: 'var(--berkeley-blue)' }}>
+              <Link href="/login" className="font-medium cursor-pointer hover:opacity-90" style={{ color: 'var(--berkeley-blue)' }}>
                 Log In
               </Link>
             </p>

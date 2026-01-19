@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl="/chapter/welcome">
       <html lang="en">
         <body className={`${garamond.variable} font-serif antialiased bg-stone-50`}>
           <ThemeProvider>

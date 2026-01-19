@@ -71,6 +71,45 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     return data?.role ?? null;
   };
 
+  // Track login in the logins table
+  const trackLogin = async (clerkUserId: string) => {
+    // Check if we've already tracked this session's login
+    const sessionKey = `login_tracked_${clerkUserId}`;
+    if (sessionStorage.getItem(sessionKey)) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from('logins')
+      .insert({ user_id: clerkUserId });
+
+    if (error) {
+      console.error('Error tracking login:', error.message);
+    } else {
+      // Mark this session's login as tracked
+      sessionStorage.setItem(sessionKey, 'true');
+    }
+  };
+
+  // Ensure user_roles entry exists (for users who signed up before this was added)
+  const ensureUserRole = async (clerkUserId: string) => {
+    const { data } = await supabase
+      .from('user_roles')
+      .select('user_id')
+      .eq('user_id', clerkUserId)
+      .maybeSingle();
+
+    if (!data) {
+      const { error } = await supabase
+        .from('user_roles')
+        .insert({ user_id: clerkUserId, role: 'student' });
+
+      if (error) {
+        console.error('Error creating user role:', error.message);
+      }
+    }
+  };
+
   // Create or update profile when user signs up/in via Clerk
   const ensureProfile = async (clerkUser: NonNullable<typeof user>) => {
     const clerkUserId = clerkUser.id;
@@ -113,8 +152,14 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
           try {
             const profileData = await ensureProfile(user);
             setProfile(profileData);
+
+            // Ensure user_roles entry exists
+            await ensureUserRole(user.id);
             const role = await fetchUserRole(user.id);
             setUserRole(role);
+
+            // Track login (uses sessionStorage to avoid duplicates)
+            await trackLogin(user.id);
           } catch (err) {
             console.error('Error loading profile:', err);
           } finally {

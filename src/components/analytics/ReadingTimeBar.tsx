@@ -29,7 +29,7 @@ export function ReadingTimeBar({ label, seconds, maxSeconds, color = 'var(--berk
     <div className="flex items-center justify-between gap-4 py-2">
       {/* Label */}
       <div className="flex-1 md:flex-none md:w-64">
-        <span className="text-sm" style={{ color: 'var(--foreground)' }}>{label}</span>
+        <span className="text-base" style={{ color: 'var(--foreground)' }}>{label}</span>
         {subtitle && (
           <span className="text-xs ml-2" style={{ color: 'var(--muted-text)' }}>({subtitle})</span>
         )}
@@ -54,7 +54,7 @@ export function ReadingTimeBar({ label, seconds, maxSeconds, color = 'var(--berk
 
       {/* Time value - fixed width to ensure consistent bar lengths */}
       <span
-        className="text-right text-sm font-medium flex-shrink-0 w-12"
+        className="text-right text-base font-medium flex-shrink-0 w-12"
         style={{ color: 'var(--foreground)' }}
       >
         {formatTime(seconds)}
@@ -77,7 +77,7 @@ export function ReadingTimeBarList({ items, color, emptyMessage = 'No data avail
   if (items.length === 0) {
     return (
       <div className="py-8 text-center">
-        <p className="text-sm" style={{ color: 'var(--muted-text)' }}>{emptyMessage}</p>
+        <p className="text-base" style={{ color: 'var(--muted-text)' }}>{emptyMessage}</p>
       </div>
     );
   }

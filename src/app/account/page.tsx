@@ -59,7 +59,7 @@ export default function AccountPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] pt-12 pb-12 px-8 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] py-8 px-8 ${devBorder('blue')}`}>
         <div className={`w-full max-w-4xl mx-auto ${devBorder('green')}`}>
           {/* Title */}
           <h1 className="text-2xl font-semibold mb-6" style={{ color: 'var(--foreground)' }}>
@@ -71,7 +71,7 @@ export default function AccountPage() {
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value as TabType)}
-              className="w-full px-4 py-3 rounded-lg text-sm font-medium outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base font-medium outline-none cursor-pointer"
               style={{
                 backgroundColor: 'var(--input-bg)',
                 border: '1px solid var(--input-border)',
@@ -100,7 +100,7 @@ export default function AccountPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`pb-3 text-sm font-medium cursor-pointer ${
+                  className={`pb-3 text-base font-medium cursor-pointer ${
                     activeTab === tab.id
                       ? 'border-b-2'
                       : ''
@@ -121,7 +121,7 @@ export default function AccountPage() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`pb-3 text-sm font-medium cursor-pointer ${
+                      className={`pb-3 text-base font-medium cursor-pointer ${
                         activeTab === tab.id
                           ? 'border-b-2'
                           : ''
@@ -186,15 +186,15 @@ function SecurityTab({
 
       <div className="space-y-4">
         <div>
-          <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+          <h3 className="text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
             Password & Security
           </h3>
-          <p className="text-sm mb-3" style={{ color: 'var(--muted-text)' }}>
+          <p className="text-base mb-3" style={{ color: 'var(--muted-text)' }}>
             Manage your password, two-factor authentication, and other security settings.
           </p>
           <button
             onClick={openUserProfile}
-            className="px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:opacity-90"
+            className="px-4 py-2 rounded-lg text-base font-medium cursor-pointer hover:opacity-90"
             style={{ backgroundColor: 'var(--berkeley-blue)', color: 'white' }}
           >
             Manage Security Settings

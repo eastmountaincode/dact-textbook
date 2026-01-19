@@ -115,7 +115,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
       <form onSubmit={handleSubmit}>
         {message && (
           <div
-            className="mb-4 p-3 rounded-lg text-sm"
+            className="mb-4 p-3 rounded-lg text-base"
             style={{
               backgroundColor: message.type === 'success' ? 'var(--callout-note-bg)' : 'var(--callout-warning-bg)',
               color: message.type === 'success' ? 'var(--callout-note-border)' : '#dc2626',
@@ -128,14 +128,14 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
 
         {/* Email (read-only) */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+          <label className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
             Email
           </label>
           <input
             type="email"
             value={email || ''}
             disabled
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none opacity-60 cursor-not-allowed"
+            className="w-full px-4 py-3 rounded-lg text-base outline-none opacity-60 cursor-not-allowed"
             style={inputStyle}
           />
         </div>
@@ -143,7 +143,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
         {/* Name row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="firstName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               First Name
             </label>
             <input
@@ -153,12 +153,12 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               value={formData.firstName}
               onChange={handleChange}
               placeholder="First name"
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none"
               style={inputStyle}
             />
           </div>
           <div>
-            <label htmlFor="lastName" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="lastName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Last Name
             </label>
             <input
@@ -168,7 +168,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               value={formData.lastName}
               onChange={handleChange}
               placeholder="Last name"
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none"
               style={inputStyle}
             />
           </div>
@@ -177,7 +177,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
         {/* Role and Country row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="role" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="role" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Role
             </label>
             <select
@@ -185,7 +185,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
               style={selectStyle}
             >
               {ROLE_FORM_OPTIONS.map((opt) => (
@@ -194,7 +194,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
             </select>
           </div>
           <div>
-            <label htmlFor="country" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="country" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Country
             </label>
             <CountrySelect
@@ -207,7 +207,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
         {/* Education and Field row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="educationLevel" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="educationLevel" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Highest or Current Level of Education
             </label>
             <select
@@ -215,7 +215,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               name="educationLevel"
               value={formData.educationLevel}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
               style={selectStyle}
             >
               {EDUCATION_FORM_OPTIONS.map((opt) => (
@@ -224,7 +224,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
             </select>
           </div>
           <div>
-            <label htmlFor="fieldOfStudy" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="fieldOfStudy" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Field of Study/Work
             </label>
             <select
@@ -232,7 +232,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               name="fieldOfStudy"
               value={formData.fieldOfStudy}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
               style={selectStyle}
             >
               {FIELD_FORM_OPTIONS.map((opt) => (
@@ -245,7 +245,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
         {/* Institution Type and Statistics Use row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <label htmlFor="institutionType" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="institutionType" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               Institution Type
             </label>
             <select
@@ -253,7 +253,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               name="institutionType"
               value={formData.institutionType}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
               style={selectStyle}
             >
               {INSTITUTION_FORM_OPTIONS.map((opt) => (
@@ -262,7 +262,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
             </select>
           </div>
           <div>
-            <label htmlFor="statisticsUse" className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+            <label htmlFor="statisticsUse" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
               What do you plan to use statistics for?
             </label>
             <select
@@ -270,7 +270,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
               name="statisticsUse"
               value={formData.statisticsUse}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg text-sm outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none cursor-pointer"
               style={selectStyle}
             >
               {STATISTICS_USE_FORM_OPTIONS.map((opt) => (

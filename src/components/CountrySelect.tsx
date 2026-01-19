@@ -59,6 +59,7 @@ export function CountrySelect({
       fontSize: '1rem',
       boxShadow: 'none',
       cursor: 'pointer',
+      transition: 'none',
       '&:hover': {
         borderColor: 'var(--berkeley-blue)',
       },
@@ -69,16 +70,19 @@ export function CountrySelect({
       border: '1px solid var(--card-border)',
       borderRadius: '0.5rem',
       zIndex: 50,
+      transition: 'none',
     }),
     menuList: (base) => ({
       ...base,
       maxHeight: '200px',
+      transition: 'none',
     }),
     option: (base, state) => ({
       ...base,
       backgroundColor: state.isFocused ? 'var(--input-bg)' : 'transparent',
       color: 'var(--foreground)',
       cursor: 'pointer',
+      transition: 'none',
       '&:active': {
         backgroundColor: 'var(--input-bg)',
       },
@@ -86,14 +90,17 @@ export function CountrySelect({
     singleValue: (base) => ({
       ...base,
       color: 'var(--foreground)',
+      transition: 'none',
     }),
     input: (base) => ({
       ...base,
       color: 'var(--foreground)',
+      transition: 'none',
     }),
     placeholder: (base) => ({
       ...base,
       color: 'var(--muted-text)',
+      transition: 'none',
     }),
     indicatorSeparator: () => ({
       display: 'none',
@@ -101,6 +108,7 @@ export function CountrySelect({
     dropdownIndicator: (base) => ({
       ...base,
       color: 'var(--muted-text)',
+      transition: 'none',
       '&:hover': {
         color: 'var(--foreground)',
       },

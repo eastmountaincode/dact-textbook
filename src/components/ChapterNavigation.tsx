@@ -15,8 +15,8 @@ export default function ChapterNavigation({ prev, next }: ChapterNavigationProps
             href={`/chapter/${prev.slug}`}
             className="flex flex-col p-4 border border-[var(--card-border)] rounded-lg no-underline text-[var(--foreground)] bg-[var(--card-bg)] hover:border-[var(--berkeley-blue)] hover:bg-[var(--sidebar-hover)]"
           >
-            <span className="text-sm text-[var(--muted-text)] mb-1">Previous</span>
-            <span className="font-semibold text-[var(--berkeley-blue)] leading-tight">{prev.title}</span>
+            <span className="text-base text-[var(--muted-text)] mb-1">Previous</span>
+            <span className="text-[var(--berkeley-blue)]">{prev.title}</span>
           </Link>
         )}
       </div>
@@ -26,8 +26,8 @@ export default function ChapterNavigation({ prev, next }: ChapterNavigationProps
             href={`/chapter/${next.slug}`}
             className="flex flex-col p-4 border border-[var(--card-border)] rounded-lg no-underline text-[var(--foreground)] bg-[var(--card-bg)] hover:border-[var(--berkeley-blue)] hover:bg-[var(--sidebar-hover)] items-end max-sm:items-start"
           >
-            <span className="text-sm text-[var(--muted-text)] mb-1">Next</span>
-            <span className="font-semibold text-[var(--berkeley-blue)] leading-tight">{next.title}</span>
+            <span className="text-base text-[var(--muted-text)] mb-1">Next</span>
+            <span className="text-[var(--berkeley-blue)]">{next.title}</span>
           </Link>
         )}
       </div>

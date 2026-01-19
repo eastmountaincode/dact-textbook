@@ -1,2 +1,4 @@
--- Add statistics_use column to user_profiles
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS statistics_use TEXT;
+-- statistics_use column already added in base migration for Clerk
+-- Keeping file as placeholder to avoid migration ordering issues
+
+SELECT 1;

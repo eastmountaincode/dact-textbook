@@ -72,7 +72,7 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
             placeholder="Search content..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-lg bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--berkeley-blue)] focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 text-base rounded-lg bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--berkeley-blue)] focus:border-transparent"
           />
           {isLoading && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -108,7 +108,7 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
       )}
 
       {showNoResults && (
-        <div className="px-4 py-4 text-sm text-center text-[var(--muted-text)] border-b border-[var(--sidebar-border)]">
+        <div className="px-4 py-4 text-base text-center text-[var(--muted-text)] border-b border-[var(--sidebar-border)]">
           No results found for &ldquo;{debouncedQuery}&rdquo;
         </div>
       )}
@@ -142,7 +142,7 @@ function SearchResultItem({
     <li>
       <Link
         href={hrefWithQuery}
-        className={`block px-3 py-2 rounded-lg text-sm ${isActive ? 'bg-[var(--sidebar-active)]' : 'hover:bg-[var(--sidebar-hover)]'}`}
+        className={`block px-3 py-2 rounded-lg text-base ${isActive ? 'bg-[var(--sidebar-active)]' : 'hover:bg-[var(--sidebar-hover)]'}`}
       >
         <div className="font-medium truncate text-[var(--foreground)]">{item.title}</div>
         {item.section && (

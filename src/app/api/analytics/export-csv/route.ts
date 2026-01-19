@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 type GroupByField = 'role' | 'country' | 'education_level' | 'field_of_study' | 'institution_type';
@@ -63,19 +64,19 @@ const GROUP_BY_LABELS: Record<GroupByField, string> = {
 
 export async function GET(request: Request) {
   try {
-    const supabase = await createClient();
-
-    // Check authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
+    // Check authentication using Clerk
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const supabase = await createClient();
 
     // Check admin role
     const { data: roleData } = await supabase
       .from('user_roles')
       .select('role')
-      .eq('user_id', user.id)
+      .eq('user_id', userId)
       .single();
 
     if (roleData?.role !== 'admin') {

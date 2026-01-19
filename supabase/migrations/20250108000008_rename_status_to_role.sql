@@ -1,4 +1,4 @@
--- Rename 'status' column to 'role' in user_profiles table
--- This better reflects that it represents the user's role (student, educator, researcher, etc.)
+-- Column already named 'role' in base migration for Clerk
+-- Keeping file as placeholder to avoid migration ordering issues
 
-ALTER TABLE user_profiles RENAME COLUMN status TO role;
+SELECT 1;
