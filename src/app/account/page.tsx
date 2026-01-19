@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, UserProfile } from '@clerk/nextjs';
+import { useUser, useClerk } from '@clerk/nextjs';
 import { useProfile } from '@/providers/ProfileProvider';
 import { useDevMode, DevBorderColor } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
@@ -16,6 +16,7 @@ type TabType = 'profile' | 'security' | 'analytics' | 'admin-users' | 'admin-ana
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const { user, isLoaded: isUserLoaded, isSignedIn } = useUser();
+  const { openUserProfile } = useClerk();
   const { profile, isLoading: isProfileLoading, isAdmin, updateProfile } = useProfile();
   const { devBorder } = useDevMode();
   const router = useRouter();
@@ -148,7 +149,10 @@ export default function AccountPage() {
             />
           )}
           {activeTab === 'security' && (
-            <SecurityTab devBorder={devBorder} />
+            <SecurityTab
+              openUserProfile={openUserProfile}
+              devBorder={devBorder}
+            />
           )}
           {activeTab === 'analytics' && (
             <AnalyticsTab devBorder={devBorder} />
@@ -166,29 +170,26 @@ export default function AccountPage() {
   );
 }
 
-// Security Tab - embeds Clerk's UserProfile for password/email management
+// Security Tab - opens Clerk's UserProfile modal for password/email management
 function SecurityTab({
+  openUserProfile,
   devBorder,
 }: {
+  openUserProfile: () => void;
   devBorder: (color: DevBorderColor) => string;
 }) {
   return (
-    <div className={devBorder('purple')}>
-      <UserProfile
-        appearance={{
-          elements: {
-            rootBox: { width: '100%' },
-            card: {
-              boxShadow: 'none',
-              width: '100%',
-            },
-            navbar: { display: 'none' },
-            navbarMobileMenuButton: { display: 'none' },
-            headerTitle: { display: 'none' },
-            headerSubtitle: { display: 'none' },
-          },
-        }}
-      />
+    <div className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
+      <p className="text-base mb-4" style={{ color: 'var(--muted-text)' }}>
+        Change your password or manage your email addresses.
+      </p>
+      <button
+        onClick={openUserProfile}
+        className="px-6 py-3 rounded-lg font-medium text-white hover:opacity-90 cursor-pointer"
+        style={{ backgroundColor: 'var(--berkeley-blue)' }}
+      >
+        Open Security Settings
+      </button>
     </div>
   );
 }

@@ -109,7 +109,7 @@ export function ProfileTab({ profile, email, updateProfile, devBorder }: Profile
   return (
     <div
       ref={formRef}
-      className={`rounded-xl p-8 ${devBorder('purple')}`}
+      className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`}
       style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)', scrollMarginTop: '5rem' }}
     >
       <form onSubmit={handleSubmit}>

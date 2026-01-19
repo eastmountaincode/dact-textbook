@@ -110,7 +110,7 @@ export default function SignupPage() {
     if (!isLoaded) return;
 
     // Validate required fields
-    if (!formData.email || !formData.password || !formData.role || !formData.country || !formData.educationLevel) {
+    if (!formData.email || !formData.password || !formData.firstName || !formData.lastName || !formData.role || !formData.country || !formData.educationLevel) {
       showError('Please fill in all required fields.');
       return;
     }
@@ -343,6 +343,41 @@ export default function SignupPage() {
                 )}
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="firstName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                    placeholder="First name"
+                    className="w-full px-4 py-3 rounded-lg text-base outline-none"
+                    style={inputStyle}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    required
+                    placeholder="Last name"
+                    className="w-full px-4 py-3 rounded-lg text-base outline-none"
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+
               <div className="mb-4">
                 <label htmlFor="role" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
                   Role <span className="text-red-500">*</span>
@@ -399,37 +434,6 @@ export default function SignupPage() {
               <p className="text-base font-semibold mb-4" style={{ color: 'var(--berkeley-blue)' }}>
                 Optional Information
               </p>
-
-              <div className="mb-4">
-                <label htmlFor="firstName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder="First name"
-                  className="w-full px-4 py-3 rounded-lg text-base outline-none"
-                  style={inputStyle}
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="lastName" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder="Last name"
-                  className="w-full px-4 py-3 rounded-lg text-base outline-none"
-                  style={inputStyle}
-                />
-              </div>
 
               <div className="mb-4">
                 <label htmlFor="fieldOfStudy" className="block text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>

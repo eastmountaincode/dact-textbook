@@ -93,7 +93,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
   if (isLoading) {
     return (
       <div
-        className={`rounded-xl p-8 ${devBorder('purple')}`}
+        className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`}
         style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
       >
         <div className="animate-pulse">
@@ -115,7 +115,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
   if (error) {
     return (
       <div
-        className={`rounded-xl p-8 ${devBorder('purple')}`}
+        className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`}
         style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
       >
         <p style={{ color: '#dc2626' }}>{error}</p>
@@ -125,7 +125,7 @@ export function UserAnalyticsView({ devBorder = () => '' }: UserAnalyticsViewPro
 
   return (
     <div
-      className={`rounded-xl p-8 ${devBorder('purple')}`}
+      className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`}
       style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
     >
       {/* Header with date range */}

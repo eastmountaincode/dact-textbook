@@ -374,7 +374,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
   if (error) {
     return (
       <div
-        className={`rounded-xl p-8 ${devBorder('purple')}`}
+        className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`}
         style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
       >
         <p style={{ color: '#dc2626' }}>{error}</p>
@@ -511,7 +511,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
 
       {/* Results Card */}
       <div
-        className={`rounded-xl p-6 ${devBorder('red')}`}
+        className={`rounded-xl p-6 shadow-lg ${devBorder('red')}`}
         style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
       >
         {/* Header */}
