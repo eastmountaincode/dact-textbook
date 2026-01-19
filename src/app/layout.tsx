@@ -35,6 +35,7 @@ export default function RootLayout({
           colorInputBackground: 'var(--input-bg)',
           colorInputText: 'var(--foreground)',
           fontFamily: 'EB Garamond, serif',
+          fontSize: '1rem',
           borderRadius: '0.5rem',
         },
         elements: {

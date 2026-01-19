@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, useClerk } from '@clerk/nextjs';
+import { useUser, UserProfile } from '@clerk/nextjs';
 import { useProfile } from '@/providers/ProfileProvider';
 import { useDevMode, DevBorderColor } from '@/providers/DevModeProvider';
 import TextbookLayout from '@/components/TextbookLayout';
@@ -16,7 +16,6 @@ type TabType = 'profile' | 'security' | 'analytics' | 'admin-users' | 'admin-ana
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const { user, isLoaded: isUserLoaded, isSignedIn } = useUser();
-  const { openUserProfile } = useClerk();
   const { profile, isLoading: isProfileLoading, isAdmin, updateProfile } = useProfile();
   const { devBorder } = useDevMode();
   const router = useRouter();
@@ -149,10 +148,7 @@ export default function AccountPage() {
             />
           )}
           {activeTab === 'security' && (
-            <SecurityTab
-              openUserProfile={openUserProfile}
-              devBorder={devBorder}
-            />
+            <SecurityTab devBorder={devBorder} />
           )}
           {activeTab === 'analytics' && (
             <AnalyticsTab devBorder={devBorder} />
@@ -170,37 +166,29 @@ export default function AccountPage() {
   );
 }
 
-// Security Tab - uses Clerk's user profile modal for password changes
+// Security Tab - embeds Clerk's UserProfile for password/email management
 function SecurityTab({
-  openUserProfile,
   devBorder,
 }: {
-  openUserProfile: () => void;
   devBorder: (color: DevBorderColor) => string;
 }) {
   return (
-    <div className={`rounded-xl p-6 shadow-lg ${devBorder('purple')}`} style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
-      <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>
-        Security Settings
-      </h2>
-
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-base font-medium mb-2" style={{ color: 'var(--foreground)' }}>
-            Password & Security
-          </h3>
-          <p className="text-base mb-3" style={{ color: 'var(--muted-text)' }}>
-            Manage your password, two-factor authentication, and other security settings.
-          </p>
-          <button
-            onClick={openUserProfile}
-            className="px-4 py-2 rounded-lg text-base font-medium cursor-pointer hover:opacity-90"
-            style={{ backgroundColor: 'var(--berkeley-blue)', color: 'white' }}
-          >
-            Manage Security Settings
-          </button>
-        </div>
-      </div>
+    <div className={devBorder('purple')}>
+      <UserProfile
+        appearance={{
+          elements: {
+            rootBox: { width: '100%' },
+            card: {
+              boxShadow: 'none',
+              width: '100%',
+            },
+            navbar: { display: 'none' },
+            navbarMobileMenuButton: { display: 'none' },
+            headerTitle: { display: 'none' },
+            headerSubtitle: { display: 'none' },
+          },
+        }}
+      />
     </div>
   );
 }
