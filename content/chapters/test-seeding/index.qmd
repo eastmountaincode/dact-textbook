@@ -1,0 +1,14 @@
+# Test Chapter for Seeding
+
+This is a test chapter to verify that the chapter seeding process works correctly during deployment.
+
+If you can see this chapter in the sidebar and read this content, the seeding process is working as expected.
+
+## What This Tests
+
+1. The `chapters.yaml` file is being read correctly
+2. The QMD file is being built to HTML
+3. The `seed-chapters` script is running during build
+4. The chapter is being upserted to the Supabase database
+
+You can delete this chapter after confirming everything works.

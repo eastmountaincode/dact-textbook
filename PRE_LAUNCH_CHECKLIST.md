@@ -3,31 +3,16 @@
 ## Clerk Dashboard Settings to Verify
 
 ### Authentication Settings (Settings → User & Authentication)
-- [ ] **Email**: Enabled as sign-in method
-- [ ] **Password**: Enabled (if using password auth)
-- [ ] **Email verification**: Check if required (affects signup flow)
-- [ ] **Client Trust**: DISABLED (or implement 2FA flow in login page)
+- [x] **Email**: Enabled as sign-in method
+- [x] **Password**: Enabled (if using password auth)
+- [x] **Email verification**: Check if required (affects signup flow)
+- [x] **Client Trust**: DISABLED (or implement 2FA flow in login page)
 
-### Attack Protection (Settings → Attack Protection)
-- [ ] **Bot Protection**: Review settings - may block automated testing
-- [ ] **CAPTCHA**: Disabled or handled in your forms
-
-### Session Settings (Settings → Sessions)
-- [ ] **Session lifetime**: Set appropriately (default is fine for most cases)
-- [ ] **Inactivity timeout**: Review if needed
-
-### Restrictions (Settings → Restrictions)
-- [ ] **Allowlist/Blocklist**: No unexpected restrictions
-- [ ] **Sign-up mode**: "Public" (unless you want invite-only)
-
-### Customization (Configure → Email Templates)
-- [ ] **Verification email**: Customize branding if desired
-- [ ] **Password reset email**: Customize branding if desired
 
 ### Webhooks (Configure → Webhooks)
-- [ ] **Add webhook endpoint**: `https://analytics.thephilomath.org/api/webhooks/clerk`
-- [ ] **Subscribe to event**: `user.deleted`
-- [ ] **Copy signing secret**: Add to Vercel as `CLERK_WEBHOOK_SECRET`
+- [x] **Add webhook endpoint**: `https://analytics.thephilomath.org/api/webhooks/clerk`
+- [x] **Subscribe to event**: `user.deleted`
+- [x] **Copy signing secret**: Add to Vercel as `CLERK_WEBHOOK_SECRET`
 
 ---
 
