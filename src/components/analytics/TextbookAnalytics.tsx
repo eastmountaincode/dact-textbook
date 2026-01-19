@@ -532,7 +532,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
   if (error) {
     return (
       <div
-        className={`rounded-xl p-8 shadow-lg ${devBorder('purple')}`}
+        className={`rounded-xl p-8 ${devBorder('purple')}`}
         style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
       >
         <p style={{ color: '#dc2626' }}>{error}</p>
@@ -802,7 +802,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
 
         {/* Results Card */}
         <div
-          className={`rounded-xl p-6 shadow-lg ${devBorder('red')}`}
+          className={`rounded-xl p-6 ${devBorder('red')}`}
           style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
         >
           {groupBy ? (
