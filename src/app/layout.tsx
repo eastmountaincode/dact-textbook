@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import { DevModeProvider } from "@/providers/DevModeProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { AuthProvider } from "@/providers/AuthProvider";
-import { AuthErrorHandler } from "@/components/AuthErrorHandler";
+import { ProfileProvider } from "@/providers/ProfileProvider";
 
 const garamond = EB_Garamond({
   variable: "--font-garamond",
@@ -24,18 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${garamond.variable} font-serif antialiased bg-stone-50`}>
-        <ThemeProvider>
-          <AuthProvider>
-            <DevModeProvider>
-              <AuthErrorHandler />
-              {children}
-            </DevModeProvider>
-          </AuthProvider>
-        </ThemeProvider>
-        <Analytics />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${garamond.variable} font-serif antialiased bg-stone-50`}>
+          <ThemeProvider>
+            <ProfileProvider>
+              <DevModeProvider>
+                {children}
+              </DevModeProvider>
+            </ProfileProvider>
+          </ThemeProvider>
+          <Analytics />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

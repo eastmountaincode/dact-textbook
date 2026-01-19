@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useDevMode } from '@/providers/DevModeProvider';
 import { useTheme } from '@/providers/ThemeProvider';
-import { useAuth } from '@/providers/AuthProvider';
+import { useUser, useClerk } from '@clerk/nextjs';
+import { useProfile } from '@/providers/ProfileProvider';
 
 interface HeaderProps {
   onFontSizeIncrease: () => void;
@@ -34,14 +35,18 @@ export default function Header({
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { devBorder } = useDevMode();
   const { isDark, toggleTheme } = useTheme();
-  const { user, profile, signOut } = useAuth();
+  const { user, isSignedIn } = useUser();
+  const { signOut } = useClerk();
+  const { profile } = useProfile();
 
   const handleLogout = async () => {
     setShowAccountMenu(false);
     await signOut();
-    // Use hard navigation to ensure cookies are fully cleared before loading new page
     window.location.href = '/login';
   };
+
+  const displayName = profile?.first_name || user?.firstName || user?.emailAddresses?.[0]?.emailAddress?.split('@')[0] || 'User';
+  const userEmail = user?.emailAddresses?.[0]?.emailAddress || '';
 
   return (
     <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md font-serif ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
@@ -155,7 +160,7 @@ export default function Header({
 
         {/* Desktop: Account or Login buttons */}
         <div className="relative hidden md:block">
-          {user ? (
+          {isSignedIn ? (
             <>
               <button
                 onClick={() => setShowAccountMenu(!showAccountMenu)}
@@ -166,7 +171,7 @@ export default function Header({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span className={`text-sm ${devBorder('yellow')}`}>
-                  {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
+                  {displayName}
                 </span>
               </button>
 
@@ -174,10 +179,10 @@ export default function Header({
                 <div className="absolute right-0 top-11 rounded-lg shadow-xl p-4 w-56 z-50" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--foreground)' }}>
                   <div className="mb-3 pb-3" style={{ borderBottom: '1px solid var(--card-border)' }}>
                     <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
-                      {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
+                      {displayName}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--muted-text)' }}>
-                      {user.email}
+                      {userEmail}
                     </p>
                   </div>
                   <Link
@@ -234,14 +239,14 @@ export default function Header({
             <div className="absolute right-0 top-11 rounded-lg shadow-xl p-4 w-64 z-50" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--foreground)' }}>
               {/* Auth section - different for logged in vs logged out */}
               <div className="mb-4 pb-4" style={{ borderBottom: '1px solid var(--card-border)' }}>
-                {user ? (
+                {isSignedIn ? (
                   <>
                     <div className="mb-3 pb-3" style={{ borderBottom: '1px solid var(--card-border)' }}>
                       <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
-                        {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
+                        {displayName}
                       </p>
                       <p className="text-xs" style={{ color: 'var(--muted-text)' }}>
-                        {user.email}
+                        {userEmail}
                       </p>
                     </div>
                     <Link

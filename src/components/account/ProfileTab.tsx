@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '@/providers/AuthProvider';
+import { useProfile } from '@/providers/ProfileProvider';
 import { DevBorderColor } from '@/providers/DevModeProvider';
 import { CountrySelect } from '@/components/CountrySelect';
 import {
@@ -20,9 +20,9 @@ const INSTITUTION_FORM_OPTIONS = withPlaceholder(INSTITUTION_OPTIONS, 'Select ty
 const STATISTICS_USE_FORM_OPTIONS = withPlaceholder(STATISTICS_USE_OPTIONS, 'Select option');
 
 interface ProfileTabProps {
-  profile: ReturnType<typeof useAuth>['profile'];
+  profile: ReturnType<typeof useProfile>['profile'];
   email: string | undefined;
-  updateProfile: ReturnType<typeof useAuth>['updateProfile'];
+  updateProfile: ReturnType<typeof useProfile>['updateProfile'];
   devBorder: (color: DevBorderColor) => string;
 }
 
