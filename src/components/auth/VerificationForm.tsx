@@ -23,17 +23,19 @@ export function VerificationForm({
   const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [localLoading, setLocalLoading] = useState(false);
-  const [resendCooldown, setResendCooldown] = useState(() => {
-    if (typeof window === 'undefined') return 0;
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const errorRef = useRef<HTMLDivElement>(null);
+
+  // Load cooldown from localStorage after mount (avoids hydration mismatch)
+  useEffect(() => {
     const savedExpiry = localStorage.getItem('resendCooldownExpiry');
     if (savedExpiry) {
       const remaining = Math.ceil((parseInt(savedExpiry) - Date.now()) / 1000);
-      return remaining > 0 ? remaining : 0;
+      if (remaining > 0) setResendCooldown(remaining);
     }
-    return 0;
-  });
-  const errorRef = useRef<HTMLDivElement>(null);
+  }, []);
 
+  // Countdown timer
   useEffect(() => {
     if (resendCooldown <= 0) {
       localStorage.removeItem('resendCooldownExpiry');
