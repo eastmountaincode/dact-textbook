@@ -206,11 +206,10 @@ export default function SignupPage() {
       // Clear saved form data
       localStorage.removeItem('signupFormData');
 
-      // Set the session active
+      // Set the session active and redirect immediately
+      // Using window.location.href to prevent race condition with isSignedIn redirect
       await setActive({ session: result.createdSessionId });
-
-      // Redirect to verification success page
-      router.push('/signup/verified');
+      window.location.href = '/signup/verified';
     }
   };
 
