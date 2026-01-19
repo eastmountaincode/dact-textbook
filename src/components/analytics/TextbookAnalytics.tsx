@@ -382,7 +382,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
       borderColor: state.isFocused ? 'var(--berkeley-blue)' : 'var(--card-border)',
       borderRadius: '0.5rem',
       padding: '0',
-      fontSize: '0.875rem',
+      fontSize: '1rem',
       minHeight: '38px',
       boxShadow: 'none',
       cursor: 'pointer',
@@ -412,7 +412,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
       backgroundColor: state.isFocused ? 'var(--input-bg)' : 'transparent',
       color: 'var(--foreground)',
       cursor: 'pointer',
-      fontSize: '0.875rem',
+      fontSize: '1rem',
       transition: 'none',
       '&:active': {
         backgroundColor: 'var(--input-bg)',

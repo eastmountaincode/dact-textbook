@@ -32,6 +32,7 @@ CREATE TABLE user_profiles (
   institution_type TEXT,
   statistics_use TEXT,
   referral_source TEXT,
+  last_logged_in TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -109,3 +110,48 @@ CREATE TRIGGER update_user_profiles_updated_at
 CREATE TRIGGER update_reading_time_daily_updated_at
   BEFORE UPDATE ON reading_time_daily
   FOR EACH ROW EXECUTE FUNCTION public.update_updated_at();
+
+-- ============================================
+-- ROW LEVEL SECURITY (RLS)
+-- ============================================
+-- Note: Using Clerk for auth, not Supabase Auth.
+-- These policies allow client-side access since we can't
+-- verify Clerk user IDs without JWT integration.
+-- For tighter security, move operations to server-side
+-- API routes using the service role key.
+-- ============================================
+
+-- Enable RLS on all tables
+ALTER TABLE chapters ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_roles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE logins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reading_time_per_chapter ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reading_time_daily ENABLE ROW LEVEL SECURITY;
+
+-- CHAPTERS: Public read, service role write
+CREATE POLICY "chapters_public_read" ON chapters
+  FOR SELECT USING (true);
+
+CREATE POLICY "chapters_service_write" ON chapters
+  FOR ALL USING (auth.role() = 'service_role');
+
+-- USER_PROFILES: Allow all operations (Clerk handles auth)
+CREATE POLICY "user_profiles_all" ON user_profiles
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- USER_ROLES: Allow all operations (Clerk handles auth)
+CREATE POLICY "user_roles_all" ON user_roles
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- LOGINS: Allow all operations (Clerk handles auth)
+CREATE POLICY "logins_all" ON logins
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- READING_TIME_PER_CHAPTER: Allow all operations (Clerk handles auth)
+CREATE POLICY "reading_time_per_chapter_all" ON reading_time_per_chapter
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- READING_TIME_DAILY: Allow all operations (Clerk handles auth)
+CREATE POLICY "reading_time_daily_all" ON reading_time_daily
+  FOR ALL USING (true) WITH CHECK (true);

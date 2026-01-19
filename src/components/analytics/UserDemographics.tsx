@@ -265,7 +265,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
       borderColor: state.isFocused ? 'var(--berkeley-blue)' : 'var(--card-border)',
       borderRadius: '0.5rem',
       padding: '0',
-      fontSize: '0.875rem',
+      fontSize: '1rem',
       minHeight: '38px',
       boxShadow: 'none',
       cursor: 'pointer',
@@ -295,7 +295,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
       backgroundColor: state.isFocused ? 'var(--input-bg)' : 'transparent',
       color: 'var(--foreground)',
       cursor: 'pointer',
-      fontSize: '0.875rem',
+      fontSize: '1rem',
       transition: 'none',
       '&:active': {
         backgroundColor: 'var(--input-bg)',

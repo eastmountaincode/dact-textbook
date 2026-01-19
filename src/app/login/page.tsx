@@ -52,8 +52,8 @@ function LoginForm() {
         await setActive({ session: result.createdSessionId });
         window.location.href = '/chapter/welcome';
       } else {
-        // Handle other statuses if needed (e.g., 2FA)
-        console.log('Sign in status:', result.status);
+        // Handle incomplete sign-in (e.g., 2FA, email verification)
+        setError('Unable to complete sign in. Please try again or contact support.');
       }
     } catch (err: unknown) {
       const clerkError = err as { errors?: Array<{ message: string; code: string }> };
