@@ -696,7 +696,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
               {activeFilterChips.map(({ field, value }) => (
                 <div
                   key={`${field}:${value}`}
-                  className="flex items-center gap-1 px-2 py-1 rounded text-xs"
+                  className="flex items-start gap-1.5 px-3 py-1.5 rounded-lg text-sm"
                   style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--card-border)' }}
                 >
                   <span style={{ color: 'var(--muted-text)' }}>
@@ -707,7 +707,7 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
                   </span>
                   <button
                     onClick={() => handleRemoveFilter(field, value)}
-                    className="ml-1 hover:opacity-70 cursor-pointer leading-none"
+                    className="ml-1 self-center hover:opacity-70 cursor-pointer text-base leading-none"
                     style={{ color: 'var(--muted-text)' }}
                   >
                     ×
@@ -820,6 +820,11 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
                     {' '}for {filters.chapter.length} chapters
                   </span>
                 )}
+                {activeFilterChips.length > 0 && (
+                  <span className="font-normal text-sm ml-2" style={{ color: 'var(--muted-text)' }}>
+                    ({activeFilterChips.length} {activeFilterChips.length === 1 ? 'filter' : 'filters'} applied)
+                  </span>
+                )}
               </h3>
 
               {grouped.length === 0 ? (
@@ -845,6 +850,11 @@ export function TextbookAnalytics({ devBorder = () => '' }: TextbookAnalyticsPro
             <>
               <h3 className="font-medium mb-4" style={{ color: 'var(--foreground)' }}>
                 Reading Time by Chapter
+                {activeFilterChips.length > 0 && (
+                  <span className="font-normal text-sm ml-2" style={{ color: 'var(--muted-text)' }}>
+                    ({activeFilterChips.length} {activeFilterChips.length === 1 ? 'filter' : 'filters'} applied)
+                  </span>
+                )}
               </h3>
 
               {chapters.length === 0 ? (

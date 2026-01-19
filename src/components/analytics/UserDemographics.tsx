@@ -487,7 +487,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
             activeFilterChips.map(({ field, value }) => (
               <div
                 key={`${field}:${value}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-base"
+                className="flex items-start gap-1.5 px-3 py-1.5 rounded-lg text-sm"
                 style={{ backgroundColor: 'var(--input-bg)', border: '1px solid var(--card-border)' }}
               >
                 <span style={{ color: 'var(--muted-text)' }}>
@@ -498,7 +498,7 @@ export function UserDemographics({ devBorder = () => '' }: UserDemographicsProps
                 </span>
                 <button
                   onClick={() => handleRemoveFilter(field, value)}
-                  className="ml-1 hover:opacity-70 cursor-pointer text-lg leading-none"
+                  className="ml-1 self-center hover:opacity-70 cursor-pointer text-base leading-none"
                   style={{ color: 'var(--muted-text)' }}
                 >
                   ×
