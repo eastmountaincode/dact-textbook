@@ -10,8 +10,10 @@ This guide explains how to manage and update your textbook website.
 4. [Reordering Chapters](#reordering-chapters)
 5. [Creating New Sections](#creating-new-sections)
 6. [Building the Site](#building-the-site)
-7. [Common Tasks](#common-tasks)
-8. [Data Sources & Third-Party Dependencies](#data-sources--third-party-dependencies)
+7. [Database Setup](#database-setup)
+8. [User Management](#user-management)
+9. [Common Tasks](#common-tasks)
+10. [Data Sources & Third-Party Dependencies](#data-sources--third-party-dependencies)
 
 ---
 
@@ -130,14 +132,6 @@ sections:
       - your-new-chapter    # Add here
 ```
 
-### Step 5: Rebuild Search Index
-
-```bash
-npm run generate-search
-```
-
-This updates the search functionality to include your new chapter.
-
 ---
 
 ## Reordering Chapters
@@ -214,7 +208,7 @@ npm run build
 
 This runs:
 1. `build:content` - Converts Quarto files to HTML
-2. `generate-search` - Builds the search index
+2. `seed-chapters` - Updates chapter data in database
 3. `next build` - Creates the production site
 
 ### Deploy
@@ -223,29 +217,78 @@ After building, deploy the contents of the `.next` folder to your hosting provid
 
 ---
 
+## Database Setup
+
+The site uses **Clerk** for authentication and **Supabase** for storing user data (profiles, reading time, etc.).
+
+### Prerequisites
+
+- Supabase CLI installed and running locally (`supabase start`)
+- Clerk account with API keys in `.env.local`
+
+### Full Database Reset (Development)
+
+To reset the database and create test users:
+
+```bash
+npm run db:setup
+```
+
+This runs:
+1. `supabase db reset` - Drops all tables, runs migrations, seeds chapters
+2. `seed-test-users.mjs` - Creates test users in Clerk with Supabase profiles
+
+### Individual Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run db:setup` | Full reset + seed test users |
+| `npm run db:reset` | Reset database only (no test users) |
+| `npm run db:seed-users` | Seed test users (requires existing database) |
+
+### Test Users
+
+All test users have password: `TestPassword123!`
+
+| Email | Role | Country | Admin |
+|-------|------|---------|-------|
+| admin@test.com | educator | US | Yes |
+| student@test.com | student | US | No |
+| maya.chen@test.com | student | CA | No |
+| samir.patel@test.com | professional | IN | No |
+| lucia.rossi@test.com | educator | IT | No |
+| aisha.okafor@test.com | student | NG | No |
+| benjamin.wright@test.com | self_learner | US | No |
+
+---
+
+## User Management
+
+### Authentication
+
+Users authenticate via **Clerk**. User metadata (profile info, roles, reading time) is stored in **Supabase**.
+
+### Promoting a User to Admin
+
+1. Find the user's Clerk ID:
+   - Check `user_profiles` table in Supabase, or
+   - Look in Clerk Dashboard → Users
+
+2. Run in Supabase SQL Editor:
+   ```sql
+   INSERT INTO user_roles (user_id, role) VALUES ('user_xxx', 'admin')
+   ON CONFLICT (user_id) DO UPDATE SET role = 'admin';
+   ```
+
+See `supabase/promote-admin.sql` for a helper script.
+
+---
+
 ## Common Tasks
 
-### Configure Auth Emails (AWS SES)
+### Configure Auth Emails (Clerk)
 
-Auth emails (signup confirmation, password reset, resend confirmation) are sent by Supabase Auth. To route them through AWS SES, configure SMTP on the Supabase project and provide the SES SMTP credentials locally.
-
-**Supabase hosted (production):**
-- In Supabase Dashboard → Authentication → SMTP, set:
-  - Host: `email-smtp.<region>.amazonaws.com`
-  - Port: `587`
-  - Username/Password: SES SMTP credentials (not AWS access keys)
-  - Sender email/name: a verified SES identity
-
-**Local development:**
-- Set the following environment variables to match your SES SMTP credentials:
-  - `SES_SMTP_HOST`, `SES_SMTP_PORT`, `SES_SMTP_USER`, `SES_SMTP_PASS`
-  - `SES_ADMIN_EMAIL`, `SES_SENDER_NAME`
-- The Supabase local config already reads these from `supabase/config.toml`.
-
-**SES prerequisites:**
-- Verify the sender domain/email in SES
-- Enable DKIM (recommended)
-- Keep the sending domain aligned with your app domain to reduce spam risk
+Auth emails (signup verification, password reset) are handled by Clerk. Configure email settings in the Clerk Dashboard under "Email & SMS".
 
 ### Renaming a Section
 
@@ -259,7 +302,6 @@ Edit `content/chapters.yaml` and change the `name` field:
 
 1. Remove the chapter slug from `content/chapters.yaml`
 2. Optionally delete the HTML file from `content/html/`
-3. Rebuild the search index: `npm run generate-search`
 
 ### Moving a Chapter to a Different Section
 
@@ -340,11 +382,17 @@ nextjs-dafct-working/
 │       ├── intro-data-analytics.html
 │       └── ...
 ├── public/
-│   ├── search.json        # Search index (auto-generated)
 │   └── assets/            # GENERATED: Copied images (don't edit!)
 │       ├── intro-data-analytics/
 │       │   └── images/
 │       └── ...
+├── supabase/
+│   ├── migrations/        # Database schema
+│   ├── seed.sql           # Chapter seed data
+│   └── promote-admin.sql  # Helper to promote users to admin
+├── scripts/
+│   ├── seed-test-users.mjs  # Creates test users in Clerk + Supabase
+│   └── seed-chapters.mjs    # Updates chapter data in database
 └── src/
     └── ...                # Application code
 ```
@@ -359,12 +407,17 @@ nextjs-dafct-working/
 - Check that the slug in `chapters.yaml` matches the HTML filename exactly (without `.html`)
 - Verify the HTML file exists in `content/html/`
 
-### Search not finding new content
-- Run `npm run generate-search` after adding/changing chapters
-
 ### Changes not showing
 - In development: refresh the browser
 - In production: rebuild with `npm run build`
+
+### Database connection issues
+- Ensure Supabase is running: `supabase status`
+- Check `.env.local` has correct `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+### Test users not created
+- Ensure `CLERK_SECRET_KEY` is in `.env.local`
+- Run `npm run db:seed-users` separately to see detailed errors
 
 ---
 
@@ -375,13 +428,16 @@ nextjs-dafct-working/
 | Start dev server | `npm run dev` |
 | Build for production | `npm run build` |
 | Convert Quarto to HTML | `npm run build:content` |
-| Rebuild search index | `npm run generate-search` |
+| Full database reset + test users | `npm run db:setup` |
+| Reset database only | `npm run db:reset` |
+| Seed test users only | `npm run db:seed-users` |
 
 | File | Purpose |
 |------|---------|
 | `content/chapters.yaml` | Chapter order and sections |
 | `content/html/*.html` | Chapter content files |
-| `public/search.json` | Search index |
+| `supabase/migrations/` | Database schema |
+| `.env.local` | Environment variables (Clerk, Supabase keys) |
 
 ---
 

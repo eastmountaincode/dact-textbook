@@ -1,10 +1,13 @@
 -- Promote a user to admin
--- Usage: Replace 'admin@example.com' with the actual email, then run in Supabase Dashboard SQL Editor
+-- Usage: Run in Supabase Dashboard SQL Editor
 
--- First, verify the user exists
-SELECT id, email FROM auth.users WHERE email = 'admin@example.com';
+-- Step 1: Find the user's Clerk ID by looking at user_profiles
+SELECT id, first_name, last_name, role, country FROM user_profiles;
 
--- Then promote them to admin (uncomment and run after verifying)
--- UPDATE public.user_roles
--- SET role = 'admin'
--- WHERE user_id = (SELECT id FROM auth.users WHERE email = 'admin@example.com');
+-- Step 2: Once you have the Clerk user ID (starts with 'user_'), promote them to admin
+-- Replace 'user_xxx' with the actual Clerk user ID from Step 1 or from Clerk Dashboard
+-- UPDATE user_roles SET role = 'admin' WHERE user_id = 'user_xxx';
+
+-- Alternative: If user doesn't have a user_roles entry yet, insert one
+-- INSERT INTO user_roles (user_id, role) VALUES ('user_xxx', 'admin')
+-- ON CONFLICT (user_id) DO UPDATE SET role = 'admin';
