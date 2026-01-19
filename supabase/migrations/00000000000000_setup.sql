@@ -46,15 +46,6 @@ CREATE TABLE user_roles (
 );
 
 -- ============================================
--- LOGINS (for tracking user activity)
--- ============================================
-CREATE TABLE logins (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id TEXT NOT NULL,
-  logged_in_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- ============================================
 -- READING TIME (cumulative per chapter)
 -- ============================================
 CREATE TABLE reading_time_per_chapter (
@@ -84,7 +75,6 @@ CREATE TABLE reading_time_daily (
 -- INDEXES
 -- ============================================
 CREATE INDEX idx_reading_time_user_id ON reading_time_per_chapter(user_id);
-CREATE INDEX idx_logins_user_id ON logins(user_id);
 CREATE INDEX idx_reading_time_daily_date ON reading_time_daily(date);
 CREATE INDEX idx_reading_time_daily_user_date ON reading_time_daily(user_id, date);
 
@@ -125,7 +115,6 @@ CREATE TRIGGER update_reading_time_daily_updated_at
 ALTER TABLE chapters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_roles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE logins ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reading_time_per_chapter ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reading_time_daily ENABLE ROW LEVEL SECURITY;
 
@@ -142,10 +131,6 @@ CREATE POLICY "user_profiles_all" ON user_profiles
 
 -- USER_ROLES: Allow all operations (Clerk handles auth)
 CREATE POLICY "user_roles_all" ON user_roles
-  FOR ALL USING (true) WITH CHECK (true);
-
--- LOGINS: Allow all operations (Clerk handles auth)
-CREATE POLICY "logins_all" ON logins
   FOR ALL USING (true) WITH CHECK (true);
 
 -- READING_TIME_PER_CHAPTER: Allow all operations (Clerk handles auth)

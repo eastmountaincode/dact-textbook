@@ -15,6 +15,7 @@ interface UserProfile {
   institution_type?: string;
   statistics_use?: string;
   referral_source?: string;
+  last_logged_in?: string;
   created_at: string;
   updated_at: string;
 }
@@ -71,7 +72,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     return data?.role ?? null;
   };
 
-  // Track login in the logins table
+  // Update last_logged_in timestamp in user_profiles
   const trackLogin = async (clerkUserId: string) => {
     // Check if we've already tracked this session's login
     const sessionKey = `login_tracked_${clerkUserId}`;
@@ -80,8 +81,9 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     }
 
     const { error } = await supabase
-      .from('logins')
-      .insert({ user_id: clerkUserId });
+      .from('user_profiles')
+      .update({ last_logged_in: new Date().toISOString() })
+      .eq('id', clerkUserId);
 
     if (error) {
       console.error('Error tracking login:', error.message);

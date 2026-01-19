@@ -244,10 +244,11 @@ async function setUserRole(clerkUserId, isAdmin) {
 
 async function trackLogin(clerkUserId) {
   const { error } = await supabase
-    .from('logins')
-    .insert({ user_id: clerkUserId });
+    .from('user_profiles')
+    .update({ last_logged_in: new Date().toISOString() })
+    .eq('id', clerkUserId);
 
-  if (error && !error.message.includes('duplicate')) {
+  if (error) {
     throw error;
   }
 }

@@ -194,10 +194,9 @@ export default function SignupPage() {
 
       // Track the initial login
       const { error: loginError } = await supabase
-        .from('logins')
-        .insert({
-          user_id: result.createdUserId,
-        });
+        .from('user_profiles')
+        .update({ last_logged_in: new Date().toISOString() })
+        .eq('id', result.createdUserId);
 
       if (loginError) {
         console.error('Error tracking login:', loginError);
