@@ -54,8 +54,8 @@ export default function Header({
   return (
     <header className={`fixed top-0 left-0 right-0 h-14 text-white z-50 flex items-center justify-between px-6 shadow-md font-serif ${devBorder('red')}`} style={{ backgroundColor: 'var(--header-bg)' }}>
       {/* Logo / Title */}
-      <div className={`flex items-center ${devBorder('amber')}`}>
-        <a href="/chapter/welcome" className={`text-white text-lg hover:opacity-80 ${devBorder('emerald')}`}>
+      <div className={`flex items-center min-w-0 ${devBorder('amber')}`}>
+        <a href="/chapter/welcome" className={`text-white text-sm md:text-lg hover:opacity-80 truncate ${devBorder('emerald')}`}>
           Data Analytics for Critical Thinkers
         </a>
       </div>
