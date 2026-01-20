@@ -124,6 +124,8 @@ treat       age      educ  black  hisp  married  nodegree        re74        re7
 
 
 
+
+
 ## The Naive Comparison: Why It Fails
 
 Let's start with the most obvious approach: simply comparing the average earnings of the treated and untreated groups.
@@ -146,6 +148,8 @@ Average earnings (control):    $2,365.07
 Naive treatment effect:        $2,333.69
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -194,6 +198,8 @@ nodegree    0.67    0.84      -0.17
     re75 2421.47 2111.91     309.56
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -275,6 +281,8 @@ Naive treatment effect:           $-14,289.70
 
 
 
+
+
 Now the estimate is dramatically different—and in fact, it's *negative*! This suggests the program made participants worse off, which contradicts what we found with the experimental control group. What went wrong?
 
 Let's look at the balance between NSW participants and PSID controls:
@@ -313,6 +321,8 @@ nodegree        0.67          0.32       0.35
     re75     2421.47      17919.97  -15498.50
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -381,12 +391,16 @@ print(df_obs.groupby('treat')['propensity_score'].describe())
 <!-- AUTO-OUTPUT-START -->
 ```
 Propensity Score Summary Statistics:
-        count      mean       std           min           25%           50%           75%       max
-treat                                                                                              
-0.0    2490.0  0.001332  0.022641  2.490600e-33  9.663518e-15  1.777903e-11  1.776816e-08  0.528043
-1.0     185.0  0.982062  0.094362  1.407498e-01  9.980161e-01  9.995102e-01  9.999020e-01  0.999994
+        count      mean       std  ...           50%           75%       max
+treat                              ...                                      
+0.0    2490.0  0.001332  0.022641  ...  1.777903e-11  1.776816e-08  0.528043
+1.0     185.0  0.982062  0.094362  ...  9.995102e-01  9.999020e-01  0.999994
+
+[2 rows x 8 columns]
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -426,6 +440,8 @@ plt.show()
 
 ![Propensity Scores Dist](figures/propensity_scores_dist.png)
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -508,6 +524,8 @@ Match rate: 1.6%
 
 
 
+
+
 Not all treated individuals can be matched if we enforce a caliper. This is actually a good thing—it prevents us from making poor comparisons. The individuals we drop are those for whom we simply don't have good control group comparisons in the data.
 
 ## Assessing Balance After Matching
@@ -561,6 +579,8 @@ nodegree    0.67    0.33       0.33      0.577
     re75 6367.74 5635.21     732.54      0.269
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -653,6 +673,8 @@ plt.show()
 
 
 
+
+
 ## Estimating the Treatment Effect
 
 Now that we have a matched sample with good balance, we can estimate the treatment effect. The simplest approach is to compare average outcomes between the matched treated and control groups:
@@ -681,6 +703,8 @@ Naive (PSID controls)          $ -14,289.70
 Propensity score matching      $  -2,522.60
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 

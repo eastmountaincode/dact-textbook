@@ -7,6 +7,15 @@ QMD_DIR="$PROJECT_ROOT/content/chapters"
 HTML_DIR="$PROJECT_ROOT/content/html"
 ASSETS_DIR="$PROJECT_ROOT/public/assets"
 
+# Cross-platform sed in-place: macOS requires '', Linux doesn't
+sedi() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "$@"
+    else
+        sed -i "$@"
+    fi
+}
+
 # Ensure output directories exist
 mkdir -p "$HTML_DIR"
 mkdir -p "$ASSETS_DIR"
@@ -64,11 +73,11 @@ find "$QMD_DIR" -name "index.qmd" -type f | while read -r qmd_file; do
 
         # Rewrite image paths in HTML to point to /assets/[slug]/
         # images/foo.png -> /assets/slug/images/foo.png
-        sed -i '' "s|src=\"images/|src=\"/assets/$slug/images/|g" "$HTML_DIR/$slug.html"
-        sed -i '' "s|src=\"figures/|src=\"/assets/$slug/figures/|g" "$HTML_DIR/$slug.html"
-        sed -i '' "s|src=\"animations/|src=\"/assets/$slug/animations/|g" "$HTML_DIR/$slug.html"
-        sed -i '' "s|src=\"assets/|src=\"/assets/$slug/assets/|g" "$HTML_DIR/$slug.html"
-        sed -i '' "s|src=\"interactives/|src=\"/assets/$slug/interactives/|g" "$HTML_DIR/$slug.html"
+        sedi "s|src=\"images/|src=\"/assets/$slug/images/|g" "$HTML_DIR/$slug.html"
+        sedi "s|src=\"figures/|src=\"/assets/$slug/figures/|g" "$HTML_DIR/$slug.html"
+        sedi "s|src=\"animations/|src=\"/assets/$slug/animations/|g" "$HTML_DIR/$slug.html"
+        sedi "s|src=\"assets/|src=\"/assets/$slug/assets/|g" "$HTML_DIR/$slug.html"
+        sedi "s|src=\"interactives/|src=\"/assets/$slug/interactives/|g" "$HTML_DIR/$slug.html"
 
     else
         echo "    ✗ Failed: $slug"
