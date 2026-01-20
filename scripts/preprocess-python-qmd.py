@@ -106,6 +106,10 @@ def execute_code_blocks(blocks, working_dir):
     original_dir = os.getcwd()
     os.chdir(working_dir)
 
+    # Ensure figures directory exists for savefig calls
+    figures_dir = Path(working_dir) / 'figures'
+    figures_dir.mkdir(exist_ok=True)
+
     try:
         for block in blocks:
             code = block['code']
