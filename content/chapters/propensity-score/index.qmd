@@ -122,6 +122,8 @@ treat       age      educ  black  hisp  married  nodegree        re74        re7
 
 
 
+
+
 ## The Naive Comparison: Why It Fails
 
 Let's start with the most obvious approach: simply comparing the average earnings of the treated and untreated groups.
@@ -144,6 +146,8 @@ Average earnings (control):    $2,365.07
 Naive treatment effect:        $2,333.69
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -190,6 +194,8 @@ nodegree    0.67    0.84      -0.17
     re75 2421.47 2111.91     309.56
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -267,6 +273,8 @@ Naive treatment effect:           $-14,289.70
 
 
 
+
+
 Now the estimate is dramatically different—and in fact, it's *negative*! This suggests the program made participants worse off, which contradicts what we found with the experimental control group. What went wrong?
 
 Let's look at the balance between NSW participants and PSID controls:
@@ -305,6 +313,8 @@ nodegree        0.67          0.32       0.35
     re75     2421.47      17919.97  -15498.50
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -386,6 +396,8 @@ treat
 
 
 
+
+
 Let's visualize the distribution of propensity scores for treated and control units:
 
 ```python
@@ -414,6 +426,8 @@ plt.show()
 
 ![Propensity Scores Dist](figures/propensity_scores_dist.png)
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -492,6 +506,8 @@ Match rate: 1.6%
 
 
 
+
+
 Not all treated individuals can be matched if we enforce a caliper. This is actually a good thing—it prevents us from making poor comparisons. The individuals we drop are those for whom we simply don't have good control group comparisons in the data.
 
 ## Assessing Balance After Matching
@@ -545,6 +561,8 @@ nodegree    0.67    0.33       0.33      0.577
     re75 6367.74 5635.21     732.54      0.269
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 
@@ -633,6 +651,8 @@ plt.show()
 
 
 
+
+
 ## Estimating the Treatment Effect
 
 Now that we have a matched sample with good balance, we can estimate the treatment effect. The simplest approach is to compare average outcomes between the matched treated and control groups:
@@ -661,6 +681,8 @@ Naive (PSID controls)          $ -14,289.70
 Propensity score matching      $  -2,522.60
 ```
 <!-- AUTO-OUTPUT-END -->
+
+
 
 
 

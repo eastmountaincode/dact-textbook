@@ -144,14 +144,14 @@
     "href": "/chapter/dichotomous-choice",
     "title": "Dichotomous Choice Modeling",
     "section": "Definition",
-    "text": "For a dichotomous outcome Y that takes the value 1 with probability p and the value 0 with probability (1-p) , the probability function is: f(y) = p^y(1-p)^{1-y} The expected value of Y is simply: E(Y) = (1-p) \\times 0 + p \\times 1 = p In our commuting example, Y = 1 represents choosing transit and Y = 0 represents choosing a car. The probability p represents the probability that an individual will choose transit, given their specific circumstances. Following standard econometric practice, we decompose the observed outcome into a deterministic part (what we can predict) and a stochastic part (random variation): Y_i = p_i + \u001b\\epsilon_i where p_i is the predicted probability for individual i and \u001b\\epsilon_i is the error term. The key question becomes: How does the difference in commute times relate to p ?"
+    "text": "For a dichotomous outcome Y that takes the value 1 with probability p and the value 0 with probability (1-p) , the probability function is: f(y) = p^y(1-p)^{1-y} The expected value of Y is simply: E(Y) = (1-p) \\times 0 + p \\times 1 = p In our commuting example, Y = 1 represents choosing transit and Y = 0 represents choosing a car. The probability p represents the probability that an individual will choose transit, given their specific circumstances. Following standard econometric practice, we decompose the observed outcome into a deterministic part (what we can predict) and a stochastic part (random variation): Y_i = p_i + \\epsilon_i where p_i is the predicted probability for individual i and \\epsilon_i is the error term. The key question becomes: How does the difference in commute times relate to p ?"
   },
   {
     "objectID": "dichotomous-choice#the-linear-probability-model-a-first-attempt",
     "href": "/chapter/dichotomous-choice#the-linear-probability-model-a-first-attempt",
     "title": "Dichotomous Choice Modeling",
     "section": "The Linear Probability Model: A First Attempt",
-    "text": "The most straightforward approach is the Linear Probability Model (LPM) , which assumes a linear relationship between the commute time difference and the probability of choosing transit: $$p_i = \b_0 + \b_1"
+    "text": "The most straightforward approach is the Linear Probability Model (LPM) , which assumes a linear relationship between the commute time difference and the probability of choosing transit: This chapter is unfinished."
   },
   {
     "objectID": "estimating-mean",
