@@ -10,8 +10,9 @@ import { ProfileTab } from '@/components/account';
 import { UserAnalyticsView } from '@/components/analytics/UserAnalyticsView';
 import { UserDemographics } from '@/components/analytics/UserDemographics';
 import { TextbookAnalytics } from '@/components/analytics/TextbookAnalytics';
+import { SiteMaintenance } from '@/components/analytics/SiteMaintenance';
 
-type TabType = 'profile' | 'security' | 'analytics' | 'admin-users' | 'admin-analytics';
+type TabType = 'profile' | 'security' | 'analytics' | 'admin-users' | 'admin-analytics' | 'admin-maintenance';
 
 export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
@@ -55,6 +56,7 @@ export default function AccountPage() {
   const adminTabs: { id: TabType; label: string }[] = [
     { id: 'admin-users', label: 'User Demographics' },
     { id: 'admin-analytics', label: 'Textbook Analytics' },
+    { id: 'admin-maintenance', label: 'Site Maintenance' },
   ];
 
   return (
@@ -163,6 +165,9 @@ export default function AccountPage() {
           {activeTab === 'admin-analytics' && (
             <AdminAnalyticsTab devBorder={devBorder} />
           )}
+          {activeTab === 'admin-maintenance' && (
+            <AdminMaintenanceTab devBorder={devBorder} />
+          )}
 
         </div>
       </div>
@@ -219,4 +224,13 @@ function AdminAnalyticsTab({
   devBorder: (color: DevBorderColor) => string;
 }) {
   return <TextbookAnalytics devBorder={devBorder} />;
+}
+
+// Admin Site Maintenance Tab Component - simple wrapper
+function AdminMaintenanceTab({
+  devBorder,
+}: {
+  devBorder: (color: DevBorderColor) => string;
+}) {
+  return <SiteMaintenance devBorder={devBorder} />;
 }
