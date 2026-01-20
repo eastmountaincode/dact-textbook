@@ -16,6 +16,34 @@ const garamond = EB_Garamond({
 export const metadata: Metadata = {
   title: "Data Analytics for Critical Thinkers",
   description: "A statistics textbook by Gautam Sethi",
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.ico", sizes: "any" },
+      { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: "/favicon/apple-touch-icon.png",
+  },
+  manifest: "/favicon/site.webmanifest",
+  openGraph: {
+    title: "Data Analytics for Critical Thinkers",
+    description: "A statistics textbook by Gautam Sethi",
+    type: "website",
+    images: [
+      {
+        url: "/data-analytics.png",
+        width: 512,
+        height: 512,
+        alt: "Data Analytics for Critical Thinkers",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Data Analytics for Critical Thinkers",
+    description: "A statistics textbook by Gautam Sethi",
+    images: ["/data-analytics.png"],
+  },
 };
 
 export default function RootLayout({
