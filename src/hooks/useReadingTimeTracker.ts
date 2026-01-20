@@ -13,10 +13,10 @@ interface UseReadingTimeTrackerOptions {
  * Hook to track reading time for a chapter.
  *
  * Features:
- * - Tracks time only when the page/tab is visible
+ * - Tracks time only when the page/tab is visible AND window is focused
  * - Batches updates to reduce API calls (default: every 30 seconds)
  * - Accumulates time on the server (one row per user/chapter)
- * - Pauses when user switches tabs or minimizes window
+ * - Pauses when user switches tabs, minimizes window, or clicks into another window
  * - Sends final update on unmount/navigation
  */
 export function useReadingTimeTracker({
@@ -73,33 +73,58 @@ export function useReadingTimeTracker({
     }
   }, [isSignedIn, user, chapterSlug]);
 
-  // Handle visibility changes
+  // Handle visibility and focus changes
   useEffect(() => {
     if (!enabled || !isSignedIn || !user) return;
 
-    const handleVisibilityChange = () => {
-      const wasVisible = isVisibleRef.current;
-      isVisibleRef.current = document.visibilityState === 'visible';
+    const handleBecameInactive = () => {
+      if (!isVisibleRef.current) return; // Already inactive
 
-      if (wasVisible && !isVisibleRef.current) {
-        // Page became hidden - record time since last tick and send update
-        if (lastTickRef.current !== null) {
-          const now = Date.now();
-          const elapsed = (now - lastTickRef.current) / 1000;
-          accumulatedSecondsRef.current += elapsed;
-          lastTickRef.current = null;
-        }
-        // Send accumulated time when user leaves
-        sendTimeUpdate(true);
-      } else if (!wasVisible && isVisibleRef.current) {
-        // Page became visible - start tracking again
-        lastTickRef.current = Date.now();
+      isVisibleRef.current = false;
+      // Record time since last tick and send update
+      if (lastTickRef.current !== null) {
+        const now = Date.now();
+        const elapsed = (now - lastTickRef.current) / 1000;
+        accumulatedSecondsRef.current += elapsed;
+        lastTickRef.current = null;
+      }
+      // Send accumulated time when user leaves
+      sendTimeUpdate(true);
+    };
+
+    const handleBecameActive = () => {
+      // Only activate if tab is visible AND window is focused
+      const shouldBeActive = document.visibilityState === 'visible' && document.hasFocus();
+      if (isVisibleRef.current || !shouldBeActive) return; // Already active or shouldn't be
+
+      isVisibleRef.current = true;
+      lastTickRef.current = Date.now();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        handleBecameInactive();
+      } else {
+        handleBecameActive();
       }
     };
 
+    const handleWindowBlur = () => {
+      handleBecameInactive();
+    };
+
+    const handleWindowFocus = () => {
+      handleBecameActive();
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
     };
   }, [enabled, isSignedIn, user, sendTimeUpdate]);
 
@@ -107,9 +132,10 @@ export function useReadingTimeTracker({
   useEffect(() => {
     if (!enabled || !isSignedIn || !user) return;
 
-    // Start tracking
-    lastTickRef.current = Date.now();
-    isVisibleRef.current = document.visibilityState === 'visible';
+    // Start tracking only if tab is visible AND window is focused
+    const isActive = document.visibilityState === 'visible' && document.hasFocus();
+    isVisibleRef.current = isActive;
+    lastTickRef.current = isActive ? Date.now() : null;
 
     // Tick every second to accumulate time (only when visible)
     const tickInterval = setInterval(() => {
