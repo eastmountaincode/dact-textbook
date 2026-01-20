@@ -1,5 +1,5 @@
 {
-  "installCommand": "curl -sL https://github.com/jgm/pandoc/releases/download/3.1.11/pandoc-3.1.11-linux-amd64.tar.gz | tar xz && uv pip install --system -r requirements.txt && npm install",
+  "installCommand": "curl -sL https://github.com/jgm/pandoc/releases/download/3.1.11/pandoc-3.1.11-linux-amd64.tar.gz | tar xz && npm install",
   "buildCommand": "PATH=$PWD/pandoc-3.1.11/bin:$PATH npm run build",
   "crons": [
     {
