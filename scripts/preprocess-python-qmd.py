@@ -107,7 +107,7 @@ def execute_code_blocks(blocks, working_dir):
     os.chdir(working_dir)
 
     # Ensure figures directory exists for savefig calls
-    figures_dir = Path(working_dir) / 'figures'
+    figures_dir = Path('figures')
     figures_dir.mkdir(exist_ok=True)
 
     try:
