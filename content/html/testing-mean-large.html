@@ -29,9 +29,9 @@ alt="Our data: Test scores from 38 randomly selected students" />
 <figcaption aria-hidden="true">Our data: Test scores from 38 randomly
 selected students</figcaption>
 </figure>
-<section id="initial-observation" class="callout-note"
+<section id="initial-observation" class="callout-warning"
 data-icon="false">
-<h2>🤔 Initial Observation</h2>
+<h2>Initial Observation</h2>
 <p>While our sample mean of 83 is higher than the old curriculum mean of
 80, we cannot immediately conclude that the population mean of all
 students trained under the new curriculum exceeds 80. Why not? Because
@@ -65,12 +65,11 @@ hypothesis testing</figcaption>
 <h2 id="understanding-standard-error">Understanding Standard Error</h2>
 <p>Before we can conduct a proper hypothesis test, we need to understand
 a crucial concept: <strong>standard error</strong>.</p>
-<section id="what-is-standard-error" class="callout-important"
-data-icon="false">
-<h2>💡 What is Standard Error?</h2>
-<p>Standard error measures how far, <strong>on average</strong>, a
-sample mean deviates from the population mean across repeated samples.
-It quantifies the precision of our estimator.</p>
+<section id="definition" class="callout-important" data-icon="false">
+<h2>Definition</h2>
+<p><strong>Standard error</strong> measures how far, <strong>on
+average</strong>, a sample mean deviates from the population mean across
+repeated samples. It quantifies the precision of our estimator.</p>
 <p>Mathematically, the standard error of the sample mean is: <span
 class="math display">
 SE = \frac{\sigma}{\sqrt{n}}
@@ -94,8 +93,8 @@ mean. The standard error tells us the typical size of this variation. In
 our example, with a sample size of 38 and a calculated standard error of
 1.64 points, we know that a typical sample mean deviates from the
 population mean by about 1.64 points.</p>
-<section id="key-insight" class="callout-note" data-icon="false">
-<h2>🎯 Key Insight</h2>
+<section id="key-insight" class="callout-warning" data-icon="false">
+<h2>Key Insight</h2>
 <p><strong>Smaller standard error = More precision = Greater
 reliability</strong></p>
 <p>When the standard error is small, we can be more confident that our
@@ -210,8 +209,8 @@ attempt to falsify.</p>
 class="math inline">\alpha</span>, which represents our tolerance for
 making a Type I error (rejecting a true null hypothesis). Let’s set
 <span class="math inline">\alpha = 0.04</span> or 4%.</p>
-<section id="why-this-setup" class="callout-note" data-icon="false">
-<h2>📊 Why This Setup?</h2>
+<section id="why-this-setup" class="callout-warning" data-icon="false">
+<h2>Why This Setup?</h2>
 <p>Notice that our null hypothesis includes the equality. This is a
 one-sided test because we’re only interested in whether the new
 curriculum is <em>better</em>, not just different. If we cared about any
@@ -311,9 +310,9 @@ null hypothesis “at its most extreme”).</p>
 <span class="math inline">s = 10.1</span> points - Standard error: <span
 class="math inline">SE = s/\sqrt{n} = 10.1/\sqrt{38} \approx 1.64</span>
 points</p>
-<section id="the-sampling-distribution" class="callout-important"
+<section id="the-sampling-distribution" class="callout-warning"
 data-icon="false">
-<h2>💡 The Sampling Distribution</h2>
+<h2>The Sampling Distribution</h2>
 <p>We now have a complete picture of the sampling distribution under
 <span class="math inline">H_0</span>: <span class="math display">
 \bar{Y} \sim N(80, 1.64^2)
@@ -346,9 +345,9 @@ population mean under the null (80 in our case).</p>
 result to a <strong>unit-free measure</strong> 2. It tells us
 <strong>how many standard errors</strong> our observed mean is from the
 hypothesized mean</p>
-<section id="interpretation-of-ζ" class="callout-note"
+<section id="interpretation-of-ζ" class="callout-warning"
 data-icon="false">
-<h2>🎯 Interpretation of ζ</h2>
+<h2>Interpretation of ζ</h2>
 <p>The value of ζ represents the number of standard deviations (or
 standard errors) that the observed sample mean is from the hypothesized
 population mean.</p>
@@ -391,8 +390,8 @@ p   \text{-value} \approx 0.034 \text{ or } 3.4\%
 <span class="math inline">\alpha</span> = 4%</p>
 <p>Since the p-value (3.4%) is less than our significance level (4%), we
 <strong>reject the null hypothesis</strong>.</p>
-<section id="conclusion" class="callout-important" data-icon="false">
-<h2>📊 Conclusion</h2>
+<section id="conclusion" class="callout-warning" data-icon="false">
+<h2>Conclusion</h2>
 <p>We have sufficient evidence at the 4% significance level to conclude
 that the new curriculum improves average test scores beyond 80. The
 probability of observing a sample mean as high as 83 (or higher) purely
@@ -440,9 +439,13 @@ class="math display">
 degrees of freedom</strong>: <span class="math display">
 \zeta \sim t_{\nu}
 </span></p>
-<section id="why-degrees-of-freedom" class="callout-important"
-data-icon="false">
-<h2>💡 Why Degrees of Freedom?</h2>
+<section id="question" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>Why do we lose a degree of freedom in the t-distribution?</p>
+</section>
+<section id="answer" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>We lose one degree of freedom because we used one piece of
 information from our sample to estimate the population standard
 deviation. We “expended” one observation to estimate the mean, which we
@@ -474,16 +477,20 @@ t-distribution is virtually indistinguishable from the normal</li>
 class="math display">
     \text{Ben} = \frac{\bar{Y} - \mu_0}{s/\sqrt{n}}
 </span></p>
-<section id="question" class="callout-note" data-icon="false">
-<h2>🤔 Question</h2>
+<section id="question-1" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Which ratio fluctuates more from sample to sample—Andrew or Ben?</p>
-<p><strong>Answer:</strong> Ben fluctuates more because both the
-numerator AND the denominator are random variables. In Andrew, only the
-numerator (<span class="math inline">\bar{Y}</span>) varies; the
-denominator (<span class="math inline">\sigma/\sqrt{n}</span>) is a
-known constant. In Ben, both <span class="math inline">\bar{Y}</span>
-and <span class="math inline">s</span> vary from sample to sample,
-creating additional volatility.</p>
+</section>
+<section id="answer-1" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>Ben fluctuates more because both the numerator AND the denominator
+are random variables. In Andrew, only the numerator (<span
+class="math inline">\bar{Y}</span>) varies; the denominator (<span
+class="math inline">\sigma/\sqrt{n}</span>) is a known constant. In Ben,
+both <span class="math inline">\bar{Y}</span> and <span
+class="math inline">s</span> vary from sample to sample, creating
+additional volatility.</p>
 <p>This extra volatility is exactly what the t-distribution accounts
 for.</p>
 </section>
@@ -511,7 +518,7 @@ p   \text{-value} \approx 0.08 \text{ or } 8\%
 <strong>fail to reject the null hypothesis</strong>.</p>
 <section id="critical-insight" class="callout-warning"
 data-icon="false">
-<h2>⚠️ Critical Insight</h2>
+<h2>Critical Insight</h2>
 <p>Notice what happened: With the same sample mean (83) and the same
 sample standard deviation (10.1), we reached opposite conclusions
 depending on our sample size!</p>
@@ -563,9 +570,9 @@ class="math inline">H_0</span></li>
 <li>Compare p-value to α and make a decision</li>
 <li>State your conclusion in context</li>
 </ol>
-<section id="the-theoretical-foundation" class="callout-note"
+<section id="the-theoretical-foundation" class="callout-warning"
 data-icon="false">
-<h2>🔄 The Theoretical Foundation</h2>
+<h2>The Theoretical Foundation</h2>
 <p>Notice how our hypothesis testing framework rests on a foundation of
 theoretical results:</p>
 <ul>
@@ -602,8 +609,8 @@ distributions, standard errors, test statistics, and p-values—will carry
 forward directly to these more powerful tests. The transition is a
 relatively small mechanical extension, but it opens the door to
 answering causal questions.</p>
-<section id="key-takeaways" class="callout-tip" data-icon="false">
-<h2>🎯 Key Takeaways</h2>
+<section id="key-takeaways" class="callout-warning" data-icon="false">
+<h2>Key Takeaways</h2>
 <ol type="1">
 <li><strong>Standard error</strong> measures the precision of an
 estimator across repeated samples</li>
@@ -622,9 +629,8 @@ intuition about your tests</li>
 </ol>
 </section>
 <h2 id="practice-questions">Practice Questions</h2>
-<section id="question-1-understanding-standard-error"
-class="callout-note" data-icon="false" data-collapse="true">
-<h2>Question 1: Understanding Standard Error</h2>
+<section id="question-2" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Suppose you have two samples from the same population:</p>
 <ul>
 <li>Sample A: <span class="math inline">n = 25</span>, <span
@@ -634,8 +640,11 @@ class="math inline">s = 15</span></li>
 </ul>
 <p>Which sample provides more precise estimates of the population mean?
 Calculate the standard error for each and explain the difference.</p>
-<p><strong>Answer:</strong> Sample B provides more precise
-estimates.</p>
+</section>
+<section id="answer-2" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>Sample B provides more precise estimates.</p>
 <p>For Sample A: <span class="math inline">SE_A = 15/\sqrt{25} = 15/5 =
 3</span></p>
 <p>For Sample B: <span class="math inline">SE_B = 15/\sqrt{100} = 15/10
@@ -646,16 +655,19 @@ sample size (from 25 to 100) results in a twofold increase in precision
 (standard error is halved). This demonstrates the principle that larger
 samples yield more reliable estimates.</p>
 </section>
-<section id="question-2-interpreting-test-statistics"
-class="callout-note" data-icon="false" data-collapse="true">
-<h2>Question 2: Interpreting Test Statistics</h2>
+<section id="question-3" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>A researcher calculates a test statistic of ζ = 2.5 for a large
 sample test. Explain what this value means in plain language, and
 describe where this value would fall on a standard normal
 distribution.</p>
-<p><strong>Answer:</strong> A test statistic of ζ = 2.5 means that the
-observed sample mean is 2.5 standard errors above the hypothesized
-population mean under the null hypothesis.</p>
+</section>
+<section id="answer-3" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>A test statistic of ζ = 2.5 means that the observed sample mean is
+2.5 standard errors above the hypothesized population mean under the
+null hypothesis.</p>
 <p>On a standard normal distribution (bell curve), this value falls in
 the right tail. Approximately 99.4% of the distribution lies to the left
 of 2.5 standard deviations from the mean, so only about 0.6% lies beyond
@@ -665,15 +677,18 @@ null hypothesis were true.</p>
 0.6%, which would lead to rejection of the null at common significance
 levels.</p>
 </section>
-<section id="question-3-large-vs.-small-sample-tests"
-class="callout-note" data-icon="false" data-collapse="true">
-<h2>Question 3: Large vs. Small Sample Tests</h2>
+<section id="question-4" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>You conduct the same hypothesis test twice: once with a sample size
 of 100 and once with a sample size of 20. In both cases, you observe the
 same sample mean and sample standard deviation.</p>
 <p>Will the p-values be the same? Why or why not?</p>
-<p><strong>Answer:</strong> No, the p-values will not be the same, and
-the small sample will generally produce a larger p-value.</p>
+</section>
+<section id="answer-4" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>No, the p-values will not be the same, and the small sample will
+generally produce a larger p-value.</p>
 <p>With <span class="math inline">n = 100</span>, we use the
 Z-distribution (or t-distribution with 99 df, which is virtually
 identical). The standard error will be relatively small: <span
@@ -682,20 +697,26 @@ class="math inline">SE = s/\sqrt{100} = s/10</span>.</p>
 t-distribution with 19 degrees of freedom, which has heavier tails than
 the normal. Additionally, the standard error will be larger: <span
 class="math inline">SE = s/\sqrt{20} \approx s/4.47</span>.</p>
-<p>Two effects compound: 1. The larger standard error makes the test
-statistic smaller 2. The t-distribution with few degrees of freedom
-makes any given test statistic less significant</p>
+<p>Two effects compound:</p>
+<ol type="1">
+<li>The larger standard error makes the test statistic smaller</li>
+<li>The t-distribution with few degrees of freedom makes any given test
+statistic less significant</li>
+</ol>
 <p>Both effects work against rejecting the null hypothesis, resulting in
 a larger p-value for the small sample test.</p>
 </section>
-<section id="question-4-choosing-significance-levels"
-class="callout-note" data-icon="false" data-collapse="true">
-<h2>Question 4: Choosing Significance Levels</h2>
+<section id="question-5" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Explain why a researcher might choose a more stringent significance
 level (say, α = 0.01) rather than a more lenient one (say, α = 0.10).
 What are the tradeoffs involved?</p>
-<p><strong>Answer:</strong> The choice of significance level involves a
-tradeoff between Type I and Type II errors:</p>
+</section>
+<section id="answer-5" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
+<p>The choice of significance level involves a tradeoff between Type I
+and Type II errors:</p>
 <p><strong>Choosing a more stringent α (like 0.01):</strong></p>
 <ul>
 <li><strong>Benefit:</strong> Lower risk of Type I error (falsely

@@ -17,7 +17,7 @@ expressions</li>
 transformations</li>
 </ul>
 <h2 id="what-is-an-operator">What is an Operator?</h2>
-<section id="definition" class="callout-note" data-icon="false">
+<section id="definition" class="callout-important" data-icon="false">
 <h2>Definition</h2>
 <p>An <strong>operator</strong> is a mapping that takes elements from
 one space and produces elements in another space (which may be the same
@@ -29,11 +29,13 @@ random variables rather than on simple numbers. Just as the square root
 function takes a number and returns another number, statistical
 operators take random variables and return quantities that summarize key
 features of those variables.</p>
-<section
-id="question-why-do-we-call-them-operators-instead-of-just-functions"
-class="callout-tip" data-icon="false" data-collapse="true">
-<h2>Question: Why do we call them “operators” instead of just
-“functions”?</h2>
+<section id="question" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>Why do we call them “operators” instead of just “functions”?</p>
+</section>
+<section id="answer" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>The term “operator” emphasizes that these mappings act on objects
 (random variables) that are themselves functions. This distinguishes
 them from ordinary functions that act on numbers. The expectation
@@ -48,9 +50,8 @@ that variable. For example, if we roll a fair six-sided die thousands of
 times and compute the average of all the outcomes, that average will
 converge to 3.5. This value—3.5—is the expected value of the die
 roll.</p>
-<section id="definition-expected-value" class="callout-important"
-data-icon="false">
-<h2>Definition: Expected Value</h2>
+<section id="definition-1" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>The <strong>expected value</strong> (or <strong>expectation</strong>)
 of a discrete random variable <span class="math inline">X</span> is the
 probability-weighted average of all its possible values:</p>
@@ -73,11 +74,13 @@ class="math inline">\mu</span> (mu) to denote the expected value.</p>
 </span></p>
 <p>where <span class="math inline">f(x)</span> is the probability
 density function of <span class="math inline">X</span>.</p>
-<section
-id="question-can-you-give-a-concrete-example-of-computing-an-expected-value"
-class="callout-tip" data-icon="false" data-collapse="true">
-<h2>Question: Can you give a concrete example of computing an expected
-value?</h2>
+<section id="question-1" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>Can you give a concrete example of computing an expected value?</p>
+</section>
+<section id="answer-1" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Consider a simple game where you flip a fair coin. If it lands heads,
 you win $10; if it lands tails, you lose $5. What are your expected
 winnings?</p>
@@ -165,7 +168,7 @@ data-collapse="true">
 class="math inline">\sum_y p_{X,Y}(x,y) = p_X(x)</span> (the marginal
 distribution).</p>
 </section>
-<section id="why-linearity-matters" class="callout-important"
+<section id="why-linearity-matters" class="callout-warning"
 data-icon="false">
 <h2>Why Linearity Matters</h2>
 <p>Linearity is perhaps the most important property of expectation. It
@@ -174,9 +177,13 @@ expectations of the parts separately, and combine them. Moreover,
 linearity holds <em>regardless of whether the random variables are
 independent</em>—a remarkable and powerful feature.</p>
 </section>
-<section id="question-how-can-we-use-linearity-in-practice"
-class="callout-tip" data-icon="false" data-collapse="true">
-<h2>Question: How can we use linearity in practice?</h2>
+<section id="question-2" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>How can we use linearity in practice?</p>
+</section>
+<section id="answer-2" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Suppose you’re analyzing a portfolio with investments in three
 different assets. Let <span class="math inline">X_1, X_2, X_3</span>
 represent the returns on these assets, and suppose you invest amounts
@@ -211,9 +218,8 @@ differently. The variance operator captures this difference.</p>
 their expected value. A small variance indicates that values cluster
 tightly around the mean; a large variance indicates that values are more
 dispersed.</p>
-<section id="definition-variance" class="callout-important"
-data-icon="false">
-<h2>Definition: Variance</h2>
+<section id="definition-2" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>The <strong>variance</strong> of a random variable <span
 class="math inline">X</span> is the expected value of the squared
 deviation from the mean:</p>
@@ -228,11 +234,14 @@ mean of <span class="math inline">X</span>. We often denote variance as
 <p><span class="math display">
 \mathrm{Var}(Y) = \sum_{i=1}^n p_i (Y_i - \mu)^2 = \sigma^2
 </span></p>
-<section
-id="question-why-do-we-square-the-deviations-why-not-just-take-the-absolute-value"
-class="callout-tip" data-icon="false" data-collapse="true">
-<h2>Question: Why do we square the deviations? Why not just take the
-absolute value?</h2>
+<section id="question-3" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>Why do we square the deviations? Why not just take the absolute
+value?</p>
+</section>
+<section id="answer-3" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Squaring serves several purposes. First, it ensures that positive and
 negative deviations don’t cancel out (which would happen if we just
 summed the deviations directly). Second, squaring gives more weight to
@@ -345,9 +354,8 @@ data-collapse="true">
 \end{aligned}
 </span></p>
 </section>
-<section id="special-case-independent-variables"
-class="callout-important" data-icon="false">
-<h2>Special Case: Independent Variables</h2>
+<section id="definition-3" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>If <span class="math inline">X</span> and <span
 class="math inline">Y</span> are independent random variables, then
 <span class="math inline">\mathrm{Cov}(X,Y) = 0</span>, and the formula
@@ -404,11 +412,14 @@ data-collapse="true">
 \end{aligned}
 </span></p>
 </section>
-<section
-id="question-why-does-variance-scale-with-the-square-of-the-constant-rather-than-just-the-constant-itself"
-class="callout-tip" data-icon="false" data-collapse="true">
-<h2>Question: Why does variance scale with the square of the constant
-rather than just the constant itself?</h2>
+<section id="question-4" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>Why does variance scale with the square of the constant rather than
+just the constant itself?</p>
+</section>
+<section id="answer-4" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Remember that variance involves squared deviations: <span
 class="math inline">\mathrm{Var}(X) = \mathbb{E}[(X-\mu)^2]</span>. When
 we scale <span class="math inline">X</span> by <span
@@ -439,16 +450,18 @@ and the behavior of sample means.</p>
 <h2 id="putting-it-all-together">Putting It All Together</h2>
 <p>Let’s work through a comprehensive example that uses both operators
 and their properties.</p>
-<section id="question-quality-control-example" class="callout-tip"
-data-icon="false" data-collapse="true">
-<h2>Question: Quality Control Example</h2>
+<section id="question-5" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Suppose you’re managing quality control for a manufacturing process.
 Each item has a production cost that’s normally distributed with mean
 $50 and variance $25. If an item passes inspection (which happens 90% of
 the time), you can sell it for $100. If it fails inspection, you must
 sell it at a loss for $30. You produce 100 items. What are the expected
 total profit and the variance of total profit?</p>
-<p><strong>Solution:</strong></p>
+</section>
+<section id="answer-5" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Let’s define our random variables carefully. For item <span
 class="math inline">i</span>:</p>
 <ul>

@@ -7,11 +7,13 @@ Not so fast. The problem is that people don't randomly stumble into job training
 
 This is the fundamental challenge of causal inference from observational data: when treatment isn't randomly assigned, how can we estimate what *would have* happened to the treated individuals if they hadn't received treatment? In this chapter, we'll explore one elegant solution to this problem: **propensity score matching**.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 What makes propensity score matching different from simply comparing averages between treated and untreated groups?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Propensity score matching explicitly accounts for the fact that treated and untreated individuals may differ systematically in their observable characteristics. Rather than comparing all treated individuals to all untreated individuals, it finds pairs (or small groups) of individuals who look similar in terms of their background characteristics but differ in whether they received treatment. This creates a more "apples-to-apples" comparison.
 :::
 
@@ -37,8 +39,7 @@ Let's start by looking at the data. We have information on 445 individuals: 185 
 
 Here's a glimpse of what the data looks like:
 
-```{python}
-#| echo: false
+```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -97,12 +98,35 @@ df_nsw = pd.concat([
 print(df_nsw.head(10).to_string(index=False))
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+treat       age      educ  black  hisp  married  nodegree        re74        re75         re78
+   1.0 28.476999 11.428001      0     0        0         1  499.986277 1558.323172  2482.889365
+   1.0 24.032150 10.946475      1     0        0         1 3065.783667 3309.787827   420.215401
+   1.0 29.533820  9.854342      1     0        0         1 2654.879272 3878.374161  8327.703493
+   1.0 35.661209  8.306413      1     0        0         1 1541.881809 1012.745716  2579.234125
+   1.0 23.360926  6.970306      1     0        0         0  923.493196  565.316687  1823.876946
+   1.0 23.361041  9.106970      1     0        1         1 1374.227781  290.886908 11670.209612
+   1.0 36.054490 11.712798      1     0        0         1 2163.734392 2894.711820  5590.970545
+   1.0 30.372043 10.428187      0     0        0         1  516.813175 2664.400618  2209.027468
+   1.0 21.713679  7.508522      1     0        0         0 4311.715310 8881.565086  9402.492297
+   1.0 28.797920 10.346362      1     0        0         1 2149.431657 2129.466778  7374.803906
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 ## The Naive Comparison: Why It Fails
 
 Let's start with the most obvious approach: simply comparing the average earnings of the treated and untreated groups.
 
-```{python}
-#| echo: false
+```python
 # Calculate simple difference in means
 treated_mean = df_nsw[df_nsw['treat']==1]['re78'].mean()
 control_mean = df_nsw[df_nsw['treat']==0]['re78'].mean()
@@ -113,10 +137,25 @@ print(f"Average earnings (control):    ${control_mean:,.2f}")
 print(f"Naive treatment effect:        ${naive_effect:,.2f}")
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+Average earnings (treated):    $4,698.75
+Average earnings (control):    $2,365.07
+Naive treatment effect:        $2,333.69
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 This naive comparison suggests the program increased earnings by a certain amount. But can we trust this estimate? Let's check whether the treated and control groups were actually comparable to begin with.
 
-```{python}
-#| echo: false
+```python
 # Create balance table
 covariates = ['age', 'educ', 'black', 'hisp', 'married', 'nodegree', 're74', 're75']
 balance_data = []
@@ -133,16 +172,40 @@ for var in covariates:
     })
 
 balance_df = pd.DataFrame(balance_data)
-print("
-Balance Table: Pre-treatment Characteristics")
+print("\nBalance Table: Pre-treatment Characteristics")
 print(balance_df.to_string(index=False))
 ```
 
-::: {.question}
+<!-- AUTO-OUTPUT-START -->
+```
+Balance Table: Pre-treatment Characteristics
+Variable Treated Control Difference
+     age   24.81   24.82      -0.01
+    educ   10.08   10.05       0.04
+   black    0.83    0.84      -0.02
+    hisp    0.04    0.08      -0.04
+ married    0.18    0.14       0.04
+nodegree    0.67    0.84      -0.17
+    re74 2126.22 2182.12     -55.90
+    re75 2421.47 2111.91     309.56
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
+::: {.callout-note icon=false}
+## Question
 Looking at this balance table, what do you notice about the treated and control groups?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 In this experimental sample, the treated and control groups are quite similar across most pre-treatment characteristics. This is exactly what we'd expect from randomization—the groups are balanced. However, in many real-world settings without randomization, we would see substantial differences, making simple comparisons problematic.
 :::
 
@@ -150,8 +213,7 @@ In this experimental sample, the treated and control groups are quite similar ac
 
 To illustrate why propensity score matching matters, let's consider what happens when we use a non-experimental control group. Instead of comparing NSW participants to the randomized control group, imagine we compared them to a sample drawn from a national survey like the Panel Study of Income Dynamics (PSID). These are also non-participants in the program, but they represent a very different population.
 
-```{python}
-#| echo: false
+```python
 # Create a PSID comparison group (more advantaged)
 n_psid = 2490
 
@@ -182,19 +244,34 @@ treated_mean_obs = df_obs[df_obs['treat']==1]['re78'].mean()
 psid_mean = df_obs[df_obs['treat']==0]['re78'].mean()
 naive_effect_obs = treated_mean_obs - psid_mean
 
-print(f"
-Comparison with PSID controls:")
+print("\nComparison with PSID controls:")
 print(f"Average earnings (NSW treated):  ${treated_mean_obs:,.2f}")
 print(f"Average earnings (PSID controls): ${psid_mean:,.2f}")
 print(f"Naive treatment effect:           ${naive_effect_obs:,.2f}")
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+Comparison with PSID controls:
+Average earnings (NSW treated):  $4,698.75
+Average earnings (PSID controls): $18,988.45
+Naive treatment effect:           $-14,289.70
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 Now the estimate is dramatically different—and in fact, it's *negative*! This suggests the program made participants worse off, which contradicts what we found with the experimental control group. What went wrong?
 
 Let's look at the balance between NSW participants and PSID controls:
 
-```{python}
-#| echo: false
+```python
 # Balance table for observational comparison
 balance_data_obs = []
 
@@ -210,18 +287,42 @@ for var in covariates:
     })
 
 balance_df_obs = pd.DataFrame(balance_data_obs)
-print("
-Balance Table: NSW Treated vs. PSID Controls")
+print("\nBalance Table: NSW Treated vs. PSID Controls")
 print(balance_df_obs.to_string(index=False))
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+Balance Table: NSW Treated vs. PSID Controls
+Variable NSW Treated PSID Controls Difference
+     age       24.81         32.64      -7.83
+    educ       10.08         12.04      -1.95
+   black        0.83          0.26       0.57
+    hisp        0.04          0.03       0.01
+ married        0.18          0.86      -0.68
+nodegree        0.67          0.32       0.35
+    re74     2126.22      17703.99  -15577.76
+    re75     2421.47      17919.97  -15498.50
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 The problem is clear: NSW participants and PSID respondents are dramatically different. PSID respondents are older, more educated, more likely to be married, more likely to have a high school degree, and had much higher earnings before 1978. Comparing these two groups is like comparing apples to oranges—any difference in 1978 earnings could reflect these pre-existing differences rather than the effect of the program.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 Why does this selection problem matter for causal inference?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 When treatment and control groups differ systematically in their characteristics, we can't tell whether differences in outcomes are due to the treatment or due to these pre-existing differences. For example, if PSID controls earn more in 1978, is that because they didn't participate in the program (suggesting the program is harmful)? Or is it simply because they started from a more advantaged position—more education, stronger employment histories, etc.?
 :::
 
@@ -232,25 +333,26 @@ This is where the propensity score comes in. Rather than trying to match on all 
 Formally, the **propensity score** for individual $i$ is:
 
 $$
-e(X_i) = P(	ext{Treat}_i = 1 \mid X_i)
+e(X_i) = P(\text{Treat}_i = 1 \mid X_i)
 $$
 
 where $X_i$ represents all of the individual's observed pre-treatment characteristics.
 
 The remarkable property of the propensity score, proven by Rosenbaum and Rubin (1983), is that if we compare individuals with similar propensity scores, we've effectively balanced all of the observed characteristics in $X_i$. In other words, among people with the same propensity score, treatment assignment is "as if" random.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 How do we estimate propensity scores in practice?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 We typically use logistic regression, where the dependent variable is treatment status (1 for treated, 0 for control) and the independent variables are all the pre-treatment characteristics we want to balance on. The predicted probabilities from this regression are the estimated propensity scores.
 :::
 
 Let's estimate propensity scores for our NSW participants and PSID controls:
 
-```{python}
-#| echo: false
+```python
 from sklearn.linear_model import LogisticRegression
 
 # Prepare data for propensity score estimation
@@ -262,16 +364,31 @@ ps_model = LogisticRegression(max_iter=1000, random_state=42)
 ps_model.fit(X, y)
 df_obs['propensity_score'] = ps_model.predict_proba(X)[:, 1]
 
-print("
-Propensity Score Summary Statistics:")
+print("\nPropensity Score Summary Statistics:")
 print(df_obs.groupby('treat')['propensity_score'].describe())
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+Propensity Score Summary Statistics:
+        count      mean       std           min           25%           50%           75%       max
+treat                                                                                              
+0.0    2490.0  0.001332  0.022641  2.490600e-33  9.663518e-15  1.777903e-11  1.776816e-08  0.528043
+1.0     185.0  0.982062  0.094362  1.407498e-01  9.980161e-01  9.995102e-01  9.999020e-01  0.999994
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 Let's visualize the distribution of propensity scores for treated and control units:
 
-```{python}
-#| echo: false
-#| fig-cap: "Distribution of propensity scores for NSW treated participants and PSID controls"
+```python
 # Create propensity score distribution plot
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -293,9 +410,22 @@ plt.savefig('figures/propensity_scores_dist.png', dpi=150, bbox_inches='tight')
 plt.show()
 ```
 
+<!-- AUTO-OUTPUT-START -->
+
+![Propensity Scores Dist](figures/propensity_scores_dist.png)
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 This plot reveals something important: there's limited overlap in propensity scores between the treated and control groups. Most NSW participants have high propensity scores (they look like people who would get treatment), while most PSID controls have low propensity scores (they look like people who wouldn't get treatment). This limited overlap is a warning sign—we don't have good comparisons for all treated individuals.
 
-::: {.callout-important}
+::: {.callout-warning icon=false}
 ## Common Support and the Overlap Assumption
 
 For propensity score matching to work, we need **common support**—that is, for every treated individual, there must be at least some control individuals with similar propensity scores. When propensity score distributions barely overlap, we're trying to compare individuals who are so different that no amount of statistical adjustment can make them truly comparable. In such cases, we should limit our analysis to the region of common support.
@@ -311,8 +441,7 @@ Now that we have propensity scores, we can use them to find matches. The idea is
 
 Let's implement nearest neighbor matching with a caliper:
 
-```{python}
-#| echo: false
+```python
 # Implement nearest neighbor matching with caliper
 def match_with_caliper(df, caliper=0.1):
     """Match treated units to control units within caliper distance."""
@@ -344,10 +473,24 @@ def match_with_caliper(df, caliper=0.1):
 
 # Perform matching
 matches = match_with_caliper(df_obs, caliper=0.1)
-print(f"
-Matched {len(matches)} out of {df_obs['treat'].sum()} treated units")
+print(f"\nMatched {len(matches)} out of {int(df_obs['treat'].sum())} treated units")
 print(f"Match rate: {100*len(matches)/df_obs['treat'].sum():.1f}%")
 ```
+
+<!-- AUTO-OUTPUT-START -->
+```
+Matched 3 out of 185 treated units
+Match rate: 1.6%
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
 
 Not all treated individuals can be matched if we enforce a caliper. This is actually a good thing—it prevents us from making poor comparisons. The individuals we drop are those for whom we simply don't have good control group comparisons in the data.
 
@@ -355,8 +498,7 @@ Not all treated individuals can be matched if we enforce a caliper. This is actu
 
 The key test of whether matching worked is whether it achieved balance—that is, whether the matched treated and control groups now look similar in terms of their pre-treatment characteristics. Let's check:
 
-```{python}
-#| echo: false
+```python
 # Create matched sample
 matched_treated_idx = matches['treated_idx'].values
 matched_control_idx = matches['control_idx'].values
@@ -365,8 +507,7 @@ matched_treated = df_obs.loc[matched_treated_idx]
 matched_control = df_obs.loc[matched_control_idx]
 
 # Balance table for matched sample
-print("
-Balance After Matching:")
+print("\nBalance After Matching:")
 balance_data_matched = []
 
 for var in covariates:
@@ -390,21 +531,44 @@ balance_df_matched = pd.DataFrame(balance_data_matched)
 print(balance_df_matched.to_string(index=False))
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+Balance After Matching:
+Variable Treated Control Difference Std. Diff.
+     age   28.50   29.08      -0.58     -0.076
+    educ   11.60   13.52      -1.91     -0.885
+   black    0.33    0.00       0.33      0.816
+    hisp    0.00    0.00       0.00      0.000
+ married    0.67    1.00      -0.33     -0.816
+nodegree    0.67    0.33       0.33      0.577
+    re74 5002.87 3853.17    1149.70      0.783
+    re75 6367.74 5635.21     732.54      0.269
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 Much better! The standardized differences are now much smaller. A common rule of thumb is that standardized differences should be less than 0.1 (or sometimes 0.25) for adequate balance. While not perfect, matching has substantially reduced the imbalance between treated and control groups.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 What is a standardized difference, and why do we use it instead of just looking at raw differences?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 A standardized difference expresses the difference between groups in units of standard deviations. It's calculated as the difference in means divided by the pooled standard deviation. We use it because it's scale-invariant—a difference of 2 years in age means something very different from a difference of $2,000 in earnings. By standardizing, we can assess balance consistently across variables measured in different units.
 :::
 
 We can also visualize balance using a "love plot," which shows standardized differences before and after matching:
 
-```{python}
-#| echo: false
-#| fig-cap: "Covariate balance before and after propensity score matching"
+```python
 # Create love plot
 fig, ax = plt.subplots(figsize=(10, 8))
 
@@ -456,19 +620,30 @@ plt.savefig('figures/love_plot.png', dpi=150, bbox_inches='tight')
 plt.show()
 ```
 
+<!-- AUTO-OUTPUT-START -->
+
+![Love Plot](figures/love_plot.png)
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 ## Estimating the Treatment Effect
 
 Now that we have a matched sample with good balance, we can estimate the treatment effect. The simplest approach is to compare average outcomes between the matched treated and control groups:
 
-```{python}
-#| echo: false
+```python
 # Estimate treatment effect on matched sample
 matched_treated_outcome = matched_treated['re78'].mean()
 matched_control_outcome = matched_control['re78'].mean()
 matched_effect = matched_treated_outcome - matched_control_outcome
 
-print(f"
-Treatment Effect Estimates:")
+print("\nTreatment Effect Estimates:")
 print(f"{'Method':<30} {'Estimate':>12}")
 print(f"{'-'*42}")
 print(f"{'Experimental benchmark':<30} ${naive_effect:>11,.2f}")
@@ -476,14 +651,41 @@ print(f"{'Naive (PSID controls)':<30} ${naive_effect_obs:>11,.2f}")
 print(f"{'Propensity score matching':<30} ${matched_effect:>11,.2f}")
 ```
 
+<!-- AUTO-OUTPUT-START -->
+```
+Treatment Effect Estimates:
+Method                             Estimate
+------------------------------------------
+Experimental benchmark         $   2,333.69
+Naive (PSID controls)          $ -14,289.70
+Propensity score matching      $  -2,522.60
+```
+<!-- AUTO-OUTPUT-END -->
+
+
+
+
+
+
+
+
+
 The propensity score matching estimate is much closer to the experimental benchmark than the naive comparison! This demonstrates the power of matching: by creating comparable groups, we can recover estimates that approximate what we would have found in a randomized experiment.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 Why isn't the propensity score matching estimate exactly equal to the experimental benchmark?
 :::
 
-::: {.answer}
-There are several reasons: (1) Matching only balances *observed* characteristics—if there are important unobserved differences between NSW participants and PSID controls, matching won't eliminate that bias. (2) Even with the same data, different matching methods (nearest neighbor vs. kernel, different calipers, etc.) can produce slightly different estimates. (3) The experimental benchmark itself has sampling variability. The key point is that matching gets us much closer to the truth than naive comparisons.
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+There are several reasons:
+
+1. Matching only balances *observed* characteristics—if there are important unobserved differences between NSW participants and PSID controls, matching won't eliminate that bias.
+2. Even with the same data, different matching methods (nearest neighbor vs. kernel, different calipers, etc.) can produce slightly different estimates.
+3. The experimental benchmark itself has sampling variability.
+
+The key point is that matching gets us much closer to the truth than naive comparisons.
 :::
 
 ## The Fundamental Assumption: Unconfoundedness
@@ -491,19 +693,27 @@ There are several reasons: (1) Matching only balances *observed* characteristics
 All of this analysis rests on a critical assumption called **unconfoundedness** or **selection on observables**. This assumption states that, conditional on the observed covariates $X$, treatment assignment is independent of potential outcomes:
 
 $$
-(Y_1, Y_0) \perp 	ext{Treat} \mid X
+(Y_1, Y_0) \perp \text{Treat} \mid X
 $$
 
 In plain English: once we account for all the observed characteristics, there are no remaining systematic differences between treated and control groups that affect outcomes.
 
 This is a strong assumption, and it's fundamentally untestable. We can check whether we've achieved balance on observed characteristics, but we can never know whether there are unobserved confounders lurking in the background.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 When is the unconfoundedness assumption most plausible?
 :::
 
-::: {.answer}
-The assumption is most credible when: (1) We have rich data on pre-treatment characteristics that are likely to affect both treatment assignment and outcomes. (2) We understand the treatment assignment process well enough to know what variables matter. (3) The treatment decision is based primarily on factors we can observe. In the NSW example, if individuals selected into the program based solely on observable characteristics like employment history and demographics, unconfoundedness is plausible. If they also selected based on unobservable factors like motivation or family support, we may still have bias.
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+The assumption is most credible when:
+
+1. We have rich data on pre-treatment characteristics that are likely to affect both treatment assignment and outcomes.
+2. We understand the treatment assignment process well enough to know what variables matter.
+3. The treatment decision is based primarily on factors we can observe.
+
+In the NSW example, if individuals selected into the program based solely on observable characteristics like employment history and demographics, unconfoundedness is plausible. If they also selected based on unobservable factors like motivation or family support, we may still have bias.
 :::
 
 ## Sensitivity Analysis: How Robust Are Our Results?

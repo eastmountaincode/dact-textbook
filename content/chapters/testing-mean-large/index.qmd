@@ -15,8 +15,8 @@ To investigate this question, we randomly sample 38 students from those trained 
 
 ![Our data: Test scores from 38 randomly selected students](images/slide_004.png){fig-align="center" width="85%"}
 
-::: {.callout-note icon=false}
-## 🤔 Initial Observation
+::: {.callout-warning icon=false}
+## Initial Observation
 
 While our sample mean of 83 is higher than the old curriculum mean of 80, we cannot immediately conclude that the population mean of all students trained under the new curriculum exceeds 80. Why not? Because our sample is just one of many possible samples we could have drawn, and sample means vary due to random sampling.
 :::
@@ -36,9 +36,9 @@ The intuition is straightforward: we set up a hypothesis about a population para
 Before we can conduct a proper hypothesis test, we need to understand a crucial concept: **standard error**.
 
 ::: {.callout-important icon=false}
-## 💡 What is Standard Error?
+## Definition
 
-Standard error measures how far, **on average**, a sample mean deviates from the population mean across repeated samples. It quantifies the precision of our estimator.
+**Standard error** measures how far, **on average**, a sample mean deviates from the population mean across repeated samples. It quantifies the precision of our estimator.
 
 Mathematically, the standard error of the sample mean is:
 $$
@@ -55,8 +55,8 @@ Here's the remarkable thing: if we computed all these sample means and calculate
 
 But these individual sample means would vary around the population mean. The standard error tells us the typical size of this variation. In our example, with a sample size of 38 and a calculated standard error of 1.64 points, we know that a typical sample mean deviates from the population mean by about 1.64 points.
 
-::: {.callout-note icon=false}
-## 🎯 Key Insight
+::: {.callout-warning icon=false}
+## Key Insight
 
 **Smaller standard error = More precision = Greater reliability**
 
@@ -133,8 +133,8 @@ The null hypothesis represents the status quo or the claim we're trying to find 
 
 We also need to choose a **significance level** $\alpha$, which represents our tolerance for making a Type I error (rejecting a true null hypothesis). Let's set $\alpha = 0.04$ or 4%.
 
-::: {.callout-note icon=false}
-## 📊 Why This Setup?
+::: {.callout-warning icon=false}
+## Why This Setup?
 
 Notice that our null hypothesis includes the equality. This is a one-sided test because we're only interested in whether the new curriculum is *better*, not just different. If we cared about any difference (better or worse), we'd use a two-sided test.
 :::
@@ -197,8 +197,8 @@ From our sample data, we calculate:
 - Sample standard deviation: $s = 10.1$ points
 - Standard error: $SE = s/\sqrt{n} = 10.1/\sqrt{38} \approx 1.64$ points
 
-::: {.callout-important icon=false}
-## 💡 The Sampling Distribution
+::: {.callout-warning icon=false}
+## The Sampling Distribution
 
 We now have a complete picture of the sampling distribution under $H_0$:
 $$
@@ -232,8 +232,8 @@ This standardization accomplishes two things:
 1. It converts our result to a **unit-free measure**
 2. It tells us **how many standard errors** our observed mean is from the hypothesized mean
 
-::: {.callout-note icon=false}
-## 🎯 Interpretation of ζ
+::: {.callout-warning icon=false}
+## Interpretation of ζ
 
 The value of ζ represents the number of standard deviations (or standard errors) that the observed sample mean is from the hypothesized population mean.
 
@@ -284,8 +284,8 @@ We compare our p-value to our significance level:
 
 Since the p-value (3.4%) is less than our significance level (4%), we **reject the null hypothesis**.
 
-::: {.callout-important icon=false}
-## 📊 Conclusion
+::: {.callout-warning icon=false}
+## Conclusion
 
 We have sufficient evidence at the 4% significance level to conclude that the new curriculum improves average test scores beyond 80. The probability of observing a sample mean as high as 83 (or higher) purely by chance, if the true population mean were 80 or less, is only 3.4%.
 :::
@@ -320,8 +320,14 @@ $$
 \zeta \sim t_{\nu}
 $$
 
-::: {.callout-important icon=false}
-## 💡 Why Degrees of Freedom?
+::: {.callout-note icon=false}
+## Question
+
+Why do we lose a degree of freedom in the t-distribution?
+:::
+
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 
 We lose one degree of freedom because we used one piece of information from our sample to estimate the population standard deviation. We "expended" one observation to estimate the mean, which we then used to calculate the standard deviation.
 
@@ -353,11 +359,15 @@ $$
 $$
 
 ::: {.callout-note icon=false}
-## 🤔 Question
+## Question
 
 Which ratio fluctuates more from sample to sample—Andrew or Ben?
+:::
 
-**Answer:** Ben fluctuates more because both the numerator AND the denominator are random variables. In Andrew, only the numerator ($\bar{Y}$) varies; the denominator ($\sigma/\sqrt{n}$) is a known constant. In Ben, both $\bar{Y}$ and $s$ vary from sample to sample, creating additional volatility.
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+
+Ben fluctuates more because both the numerator AND the denominator are random variables. In Andrew, only the numerator ($\bar{Y}$) varies; the denominator ($\sigma/\sqrt{n}$) is a known constant. In Ben, both $\bar{Y}$ and $s$ vary from sample to sample, creating additional volatility.
 
 This extra volatility is exactly what the t-distribution accounts for.
 :::
@@ -387,7 +397,7 @@ $$
 Now our p-value (8%) exceeds our significance level (4%). We **fail to reject the null hypothesis**.
 
 ::: {.callout-warning icon=false}
-## ⚠️ Critical Insight
+## Critical Insight
 
 Notice what happened: With the same sample mean (83) and the same sample standard deviation (10.1), we reached opposite conclusions depending on our sample size!
 
@@ -434,8 +444,8 @@ Let's review the complete process we've developed:
 4. Compare p-value to α and make a decision
 5. State your conclusion in context
 
-::: {.callout-note icon=false}
-## 🔄 The Theoretical Foundation
+::: {.callout-warning icon=false}
+## The Theoretical Foundation
 
 Notice how our hypothesis testing framework rests on a foundation of theoretical results:
 
@@ -459,8 +469,8 @@ Two-sample tests look very similar mechanically to what we've done here, with a 
 
 The foundation you've built here—understanding sampling distributions, standard errors, test statistics, and p-values—will carry forward directly to these more powerful tests. The transition is a relatively small mechanical extension, but it opens the door to answering causal questions.
 
-::: {.callout-tip icon=false}
-## 🎯 Key Takeaways
+::: {.callout-warning icon=false}
+## Key Takeaways
 
 1. **Standard error** measures the precision of an estimator across repeated samples
 2. **Hypothesis testing** provides a formal framework for making decisions under uncertainty
@@ -473,8 +483,8 @@ The foundation you've built here—understanding sampling distributions, standar
 
 ## Practice Questions
 
-::: {.callout-note icon=false collapse="true"}
-## Question 1: Understanding Standard Error
+::: {.callout-note icon=false}
+## Question
 
 Suppose you have two samples from the same population:
 
@@ -482,8 +492,12 @@ Suppose you have two samples from the same population:
 - Sample B: $n = 100$, $s = 15$
 
 Which sample provides more precise estimates of the population mean? Calculate the standard error for each and explain the difference.
+:::
 
-**Answer:** Sample B provides more precise estimates. 
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+
+Sample B provides more precise estimates.
 
 For Sample A: $SE_A = 15/\sqrt{25} = 15/5 = 3$
 
@@ -492,44 +506,57 @@ For Sample B: $SE_B = 15/\sqrt{100} = 15/10 = 1.5$
 Sample B has a standard error half the size of Sample A, even though they have the same sample standard deviation. The fourfold increase in sample size (from 25 to 100) results in a twofold increase in precision (standard error is halved). This demonstrates the principle that larger samples yield more reliable estimates.
 :::
 
-::: {.callout-note icon=false collapse="true"}
-## Question 2: Interpreting Test Statistics
+::: {.callout-note icon=false}
+## Question
 
 A researcher calculates a test statistic of ζ = 2.5 for a large sample test. Explain what this value means in plain language, and describe where this value would fall on a standard normal distribution.
+:::
 
-**Answer:** A test statistic of ζ = 2.5 means that the observed sample mean is 2.5 standard errors above the hypothesized population mean under the null hypothesis.
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+
+A test statistic of ζ = 2.5 means that the observed sample mean is 2.5 standard errors above the hypothesized population mean under the null hypothesis.
 
 On a standard normal distribution (bell curve), this value falls in the right tail. Approximately 99.4% of the distribution lies to the left of 2.5 standard deviations from the mean, so only about 0.6% lies beyond this point. This suggests the observation would be quite unusual if the null hypothesis were true.
 
 For a one-sided test, the p-value would be approximately 0.006 or 0.6%, which would lead to rejection of the null at common significance levels.
 :::
 
-::: {.callout-note icon=false collapse="true"}
-## Question 3: Large vs. Small Sample Tests
+::: {.callout-note icon=false}
+## Question
 
-You conduct the same hypothesis test twice: once with a sample size of 100 and once with a sample size of 20. In both cases, you observe the same sample mean and sample standard deviation. 
+You conduct the same hypothesis test twice: once with a sample size of 100 and once with a sample size of 20. In both cases, you observe the same sample mean and sample standard deviation.
 
 Will the p-values be the same? Why or why not?
+:::
 
-**Answer:** No, the p-values will not be the same, and the small sample will generally produce a larger p-value.
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+
+No, the p-values will not be the same, and the small sample will generally produce a larger p-value.
 
 With $n = 100$, we use the Z-distribution (or t-distribution with 99 df, which is virtually identical). The standard error will be relatively small: $SE = s/\sqrt{100} = s/10$.
 
 With $n = 20$, we must use the t-distribution with 19 degrees of freedom, which has heavier tails than the normal. Additionally, the standard error will be larger: $SE = s/\sqrt{20} \approx s/4.47$.
 
 Two effects compound:
+
 1. The larger standard error makes the test statistic smaller
 2. The t-distribution with few degrees of freedom makes any given test statistic less significant
 
 Both effects work against rejecting the null hypothesis, resulting in a larger p-value for the small sample test.
 :::
 
-::: {.callout-note icon=false collapse="true"}
-## Question 4: Choosing Significance Levels
+::: {.callout-note icon=false}
+## Question
 
 Explain why a researcher might choose a more stringent significance level (say, α = 0.01) rather than a more lenient one (say, α = 0.10). What are the tradeoffs involved?
+:::
 
-**Answer:** The choice of significance level involves a tradeoff between Type I and Type II errors:
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+
+The choice of significance level involves a tradeoff between Type I and Type II errors:
 
 **Choosing a more stringent α (like 0.01):**
 

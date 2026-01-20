@@ -17,7 +17,22 @@ if ! command -v pandoc &> /dev/null; then
     exit 1
 fi
 
-echo "Converting QMD files to HTML (via Pandoc, bypassing Quarto)..."
+# Step 1: Preprocess QMD files with Python code blocks
+# This executes Python code and inserts output into the QMD files
+echo "Step 1: Preprocessing Python code blocks..."
+if command -v python3 &> /dev/null; then
+    python3 "$SCRIPT_DIR/preprocess-python-qmd.py" 2>&1
+    if [ $? -ne 0 ]; then
+        echo "Warning: Python preprocessing had errors (continuing anyway)"
+    fi
+    echo ""
+else
+    echo "Warning: Python3 not found, skipping code preprocessing"
+    echo ""
+fi
+
+# Step 2: Convert QMD to HTML
+echo "Step 2: Converting QMD files to HTML (via Pandoc, bypassing Quarto)..."
 echo ""
 
 # Find all index.qmd files in chapter folders

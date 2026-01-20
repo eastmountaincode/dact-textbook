@@ -8,7 +8,13 @@ By the end of this chapter, you will understand the foundational concepts that u
 ## The Nature of Inferential Statistics
 
 ::: {.callout-note icon=false}
-## What Are We Really Doing?
+## Question
+
+What are we really doing in inferential statistics?
+:::
+
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 
 Inferential statistics is fundamentally about making observations in **sample data** and then attempting to extrapolate causal connections or patterns to the **population data**. When we successfully extrapolate these connections, we say our results are **statistically significant**. When we cannot extrapolate with confidence, we say our results are **not statistically significant**.
 :::
@@ -28,7 +34,7 @@ Because we never truly know the values of $\mu$ or $\sigma^2$, we must estimate 
 - **Sample mean** ($\bar{y}$): The analog to the population mean
 - **Sample variance** ($s^2$): The analog to the population variance
 
-::: {.callout-important icon=false}
+::: {.callout-warning icon=false}
 ## A Critical Distinction
 
 When we call the sample mean and sample variance "analogs" or "counterparts" to their population equivalents, we mean only that they correspond conceptually. We are *not* claiming they are equal or even necessarily good estimates. Establishing which sample statistics make good estimators of population parameters is precisely what this chapter is about.
@@ -66,7 +72,7 @@ $$
 
 The mean shifts by exactly $c$, but the variance remains unchanged. Why? Because variance measures the spread of data around the mean, and when you shift all values by the same amount, their relative positions don't change.
 
-::: {.callout-tip icon=false}
+::: {.callout-warning icon=false}
 ## Connecting to Earlier Concepts
 
 You've already encountered this idea when we discussed the $z$-transformation. When we subtract the mean from a variable, we're performing a translation that shifts the entire distribution to have mean zero. The shape and spread of the distribution remain the same.
@@ -104,7 +110,7 @@ These formulas will prove invaluable as we develop more sophisticated statistica
 
 We now arrive at the conceptual heart of frequentist statistics. The entire edifice of frequentist inference rests on an imaginary exercise: **repeated sampling**.
 
-::: {.callout-note icon=false}
+::: {.callout-warning icon=false}
 ## The Thought Experiment
 
 Imagine that we could:
@@ -150,7 +156,7 @@ For any estimator, we can imagine the repeated sampling process:
 
 The distribution of all these estimates is called the **sampling distribution** of the estimator. Each different estimator has its own sampling distribution.
 
-::: {.callout-important icon=false}
+::: {.callout-warning icon=false}
 ## Key Insight
 
 The sampling distribution is a theoretical construct. We never actually observe it because we only sample once in practice. But by imagining what it would look like, we can develop mathematical criteria for judging the quality of different estimators.
@@ -220,7 +226,7 @@ We've just discovered our first desirable property of estimators: **unbiasedness
 ### Unbiasedness: Accuracy on Average
 
 ::: {.callout-important icon=false}
-## Definition: Unbiasedness
+## Definition
 
 An estimator $\hat{\theta}$ is **unbiased** for a parameter $\theta$ if its expected value equals the parameter:
 
@@ -233,8 +239,14 @@ In words: on average across all possible samples, an unbiased estimator gets the
 
 Any single estimate from an unbiased estimator might be far from the truth. But the errors balance out—sometimes we overestimate, sometimes we underestimate, and on average we hit the bullseye.
 
-::: {.callout-tip icon=false collapse=true}
-## Question: Is the sample mean unbiased?
+::: {.callout-note icon=false}
+## Question
+
+Is the sample mean unbiased?
+:::
+
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 
 Yes! The sample mean $\bar{Y} = \frac{1}{n}\sum_{i=1}^{n} Y_i$ is an unbiased estimator of the population mean $\mu$. Here's the proof:
 
@@ -265,7 +277,7 @@ All of these are unbiased! So if unbiasedness is all we care about, we could pic
 Look carefully at the sampling distributions of different unbiased estimators. You'll notice something important: some have smaller variance than others. An estimator with smaller variance gives us more *precise* estimates—they cluster more tightly around the parameter value.
 
 ::: {.callout-important icon=false}
-## Definition: Efficiency
+## Definition
 
 Among all unbiased estimators of a parameter, the most **efficient** estimator is the one with the smallest variance in its sampling distribution.
 :::
@@ -287,7 +299,7 @@ The sample mean has the smallest variance! It turns out that among all unbiased 
 Both unbiasedness and efficiency are properties that hold for a fixed sample size. But what happens as we gather more data? This brings us to our third fundamental property.
 
 ::: {.callout-important icon=false}
-## Definition: Consistency
+## Definition
 
 An estimator $\hat{\theta}$ is **consistent** if it converges in probability to the parameter value as the sample size approaches infinity. Formally, for any $\epsilon > 0$:
 
@@ -306,10 +318,10 @@ $$
 
 As $n$ increases, the variance shrinks toward zero. The sampling distribution collapses to a spike at $\mu$. This is the **Law of Large Numbers**—one of the most fundamental theorems in probability and statistics.
 
-::: {.callout-note icon=false}
-## The Law of Large Numbers
+::: {.callout-important icon=false}
+## Definition
 
-As the sample size $n$ approaches infinity, the sample mean $\bar{Y}$ converges to the population mean $\mu$. Formally:
+**The Law of Large Numbers**: As the sample size $n$ approaches infinity, the sample mean $\bar{Y}$ converges to the population mean $\mu$. Formally:
 
 $$
 \bar{Y} \xrightarrow{P} \mu \quad \text{as } n \to \infty
@@ -368,7 +380,7 @@ Traditional frequentist statistics often prioritizes unbiasedness. The reasoning
 Sometimes we might accept a small amount of bias to achieve a large reduction in variance. This insight drives modern techniques like ridge regression and regularization methods.
 
 ::: {.callout-important icon=false}
-## Mean Squared Error
+## Definition
 
 The **mean squared error (MSE)** combines bias and variance into a single measure:
 

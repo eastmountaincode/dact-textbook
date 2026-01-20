@@ -11,15 +11,18 @@ In this chapter, we'll introduce some fundamental concepts in probability theory
 
 ## What is probability?
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 What is probability?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Probability is a mathematical framework for quantifying uncertainty. It assigns numerical values between 0 and 1 to events, where 0 indicates impossibility and 1 indicates certainty.
 :::
 
-::: {.callout-note title="Important Definition"}
+::: {.callout-important icon=false}
+## Definition
 The **sample space** is the set of all possible outcomes of an experiment. For a coin flip, the sample space is $\{H, T\}$.
 :::
 
@@ -33,11 +36,13 @@ $$P(H) = \frac{\text{Number of favorable outcomes}}{\text{Total number of possib
 
 A random variable is a function that assigns numerical values to the outcomes of a random experiment.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 Can you give an example of a random variable?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Consider rolling a six-sided die. Let $X$ be the random variable representing the number that appears on the top face. Then $X$ can take values $\{1, 2, 3, 4, 5, 6\}$, each with probability $1/6$ if the die is fair.
 :::
 

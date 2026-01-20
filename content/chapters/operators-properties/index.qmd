@@ -12,7 +12,7 @@ By the end of this chapter, you will be able to:
 
 ## What is an Operator?
 
-::: {.callout-note icon="false"}
+::: {.callout-important icon=false}
 ## Definition
 
 An **operator** is a mapping that takes elements from one space and produces elements in another space (which may be the same space). In statistics, operators act on random variables to produce new quantities.
@@ -20,9 +20,13 @@ An **operator** is a mapping that takes elements from one space and produces ele
 
 Think of an operator as a special kind of function that acts on random variables rather than on simple numbers. Just as the square root function takes a number and returns another number, statistical operators take random variables and return quantities that summarize key features of those variables.
 
-::: {.callout-tip icon="false" collapse="true"}
-## Question: Why do we call them "operators" instead of just "functions"?
+::: {.callout-note icon=false}
+## Question
+Why do we call them "operators" instead of just "functions"?
+:::
 
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 The term "operator" emphasizes that these mappings act on objects (random variables) that are themselves functions. This distinguishes them from ordinary functions that act on numbers. The expectation operator, for instance, takes an entire probability distribution and distills it down to a single number representing its center.
 :::
 
@@ -32,8 +36,8 @@ The term "operator" emphasizes that these mappings act on objects (random variab
 
 Intuitively, a random variable's expected value represents the average we would see if we observed many independent realizations of that variable. For example, if we roll a fair six-sided die thousands of times and compute the average of all the outcomes, that average will converge to 3.5. This value---3.5---is the expected value of the die roll.
 
-::: {.callout-important icon="false"}
-## Definition: Expected Value
+::: {.callout-important icon=false}
+## Definition
 
 The **expected value** (or **expectation**) of a discrete random variable $X$ is the probability-weighted average of all its possible values:
 
@@ -60,9 +64,13 @@ $$
 
 where $f(x)$ is the probability density function of $X$.
 
-::: {.callout-tip icon="false" collapse="true"}
-## Question: Can you give a concrete example of computing an expected value?
+::: {.callout-note icon=false}
+## Question
+Can you give a concrete example of computing an expected value?
+:::
 
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Consider a simple game where you flip a fair coin. If it lands heads, you win \$10; if it lands tails, you lose \$5. What are your expected winnings?
 
 Let $X$ represent your winnings. Then:
@@ -82,7 +90,7 @@ The expectation operator has several important properties that make it remarkabl
 
 If $X$ is a random variable such that $\mathrm{P}(X \geq 0) = 1$ (that is, $X$ is always non-negative), then $\mathbb{E}[X] \geq 0$.
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 If $\mathrm{P}(X \geq 0) = 1$, then the probability mass function satisfies $p_X(x) = 0$ for all $x < 0$. Therefore:
@@ -100,7 +108,7 @@ This property formalizes an intuitive idea: if a random variable can only take n
 
 If $X$ is a random variable such that $\mathrm{P}(X = r) = 1$ for some fixed number $r$, then $\mathbb{E}[X] = r$. In other words, the expectation of a constant equals that constant.
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 If $\mathrm{P}(X = r) = 1$, then $p_X(r) = 1$ and $p_X(x) = 0$ for all $x \neq r$. Therefore:
@@ -120,7 +128,7 @@ $$
 \mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]
 $$
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 For discrete random variables with joint probability mass function $p_{X,Y}(x,y)$:
@@ -137,15 +145,19 @@ $$
 where in the third line we used the fact that $\sum_y p_{X,Y}(x,y) = p_X(x)$ (the marginal distribution).
 :::
 
-::: {.callout-important icon="false"}
+::: {.callout-warning icon=false}
 ## Why Linearity Matters
 
 Linearity is perhaps the most important property of expectation. It allows us to break complex random variables into simpler parts, compute expectations of the parts separately, and combine them. Moreover, linearity holds *regardless of whether the random variables are independent*---a remarkable and powerful feature.
 :::
 
-::: {.callout-tip icon="false" collapse="true"}
-## Question: How can we use linearity in practice?
+::: {.callout-note icon=false}
+## Question
+How can we use linearity in practice?
+:::
 
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Suppose you're analyzing a portfolio with investments in three different assets. Let $X_1, X_2, X_3$ represent the returns on these assets, and suppose you invest amounts $w_1, w_2, w_3$ in each. Your total return is $R = w_1 X_1 + w_2 X_2 + w_3 X_3$. By linearity:
 
 $$
@@ -172,8 +184,8 @@ While the expected value tells us about the center of a distribution, it says no
 
 Variance measures how far a set of random values typically lie from their expected value. A small variance indicates that values cluster tightly around the mean; a large variance indicates that values are more dispersed.
 
-::: {.callout-important icon="false"}
-## Definition: Variance
+::: {.callout-important icon=false}
+## Definition
 
 The **variance** of a random variable $X$ is the expected value of the squared deviation from the mean:
 
@@ -190,9 +202,13 @@ $$
 \mathrm{Var}(Y) = \sum_{i=1}^n p_i (Y_i - \mu)^2 = \sigma^2
 $$
 
-::: {.callout-tip icon="false" collapse="true"}
-## Question: Why do we square the deviations? Why not just take the absolute value?
+::: {.callout-note icon=false}
+## Question
+Why do we square the deviations? Why not just take the absolute value?
+:::
 
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Squaring serves several purposes. First, it ensures that positive and negative deviations don't cancel out (which would happen if we just summed the deviations directly). Second, squaring gives more weight to extreme deviations, making variance sensitive to outliers. Third, the squared form has beautiful mathematical properties that simplify many derivations. While we could use absolute deviations instead (this gives the "mean absolute deviation"), the squared form is more tractable mathematically and appears naturally in many statistical contexts.
 :::
 
@@ -223,7 +239,7 @@ In words: the variance equals the expected value of the square minus the square 
 
 Variance is always non-negative: $\mathrm{Var}(X) \geq 0$.
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 Since $(X - \mu)^2 \geq 0$ for all values of $X$, we have:
@@ -239,7 +255,7 @@ by the non-negativity property of expectation.
 
 The variance of a constant is zero: $\mathrm{Var}(a) = 0$.
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 $$
@@ -258,7 +274,7 @@ This makes intuitive sense: if a variable doesn't vary (it's constant), its vari
 
 If the variance of a random variable is zero, then the variable must be constant with probability 1: $\mathrm{Var}(X) = 0 \Rightarrow \mathrm{P}(X = a) = 1$ for some constant $a$.
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 Let $\mathbb{E}[X] = a$ for some constant $a$. Then:
@@ -285,7 +301,7 @@ $$
 
 where $\mathrm{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$ is the covariance between $X$ and $Y$.
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 $$
@@ -301,8 +317,8 @@ $$
 $$
 :::
 
-::: {.callout-important icon="false"}
-## Special Case: Independent Variables
+::: {.callout-important icon=false}
+## Definition
 
 If $X$ and $Y$ are independent random variables, then $\mathrm{Cov}(X,Y) = 0$, and the formula simplifies to:
 
@@ -321,7 +337,7 @@ $$
 \mathrm{Var}(X + a) = \mathrm{Var}(X)
 $$
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 $$
@@ -344,7 +360,7 @@ $$
 \mathrm{Var}(aX) = a^2 \mathrm{Var}(X)
 $$
 
-::: {.callout-tip icon="false" collapse="true"}
+::: {.callout-tip icon=false collapse="true"}
 ## Proof
 
 $$
@@ -359,9 +375,13 @@ $$
 $$
 :::
 
-::: {.callout-tip icon="false" collapse="true"}
-## Question: Why does variance scale with the square of the constant rather than just the constant itself?
+::: {.callout-note icon=false}
+## Question
+Why does variance scale with the square of the constant rather than just the constant itself?
+:::
 
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Remember that variance involves squared deviations: $\mathrm{Var}(X) = \mathbb{E}[(X-\mu)^2]$. When we scale $X$ by $a$, we also scale the deviations by $a$: $(aX - a\mu) = a(X - \mu)$. When we square this, we get $a^2(X-\mu)^2$, which explains the $a^2$ factor.
 
 This property is why the standard deviation (the square root of variance) scales linearly with $a$: if we double all values, we double the standard deviation but quadruple the variance.
@@ -383,13 +403,13 @@ This property is fundamental to understanding sampling distributions and the beh
 
 Let's work through a comprehensive example that uses both operators and their properties.
 
-::: {.callout-tip icon="false" collapse="true"}
-## Question: Quality Control Example
-
+::: {.callout-note icon=false}
+## Question
 Suppose you're managing quality control for a manufacturing process. Each item has a production cost that's normally distributed with mean \$50 and variance \$25. If an item passes inspection (which happens 90% of the time), you can sell it for \$100. If it fails inspection, you must sell it at a loss for \$30. You produce 100 items. What are the expected total profit and the variance of total profit?
+:::
 
-**Solution:**
-
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Let's define our random variables carefully. For item $i$:
 
 - Let $C_i$ be the production cost (mean \$50, variance \$25)

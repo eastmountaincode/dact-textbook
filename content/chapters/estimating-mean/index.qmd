@@ -45,3 +45,5 @@ We start with the definition of the sample mean:
 $$
 \bar{Y} = \frac{Y_1 + Y_2 + \cdots + Y_n}{n}
 $$
+
+**This chapter is unfinished.**

@@ -5,7 +5,7 @@
 
 In the 1980s, researchers Ben-Akiva and Lerman interviewed commuters in Boston about their transportation choices. Their specific research question was simple but important: *Does the difference in commute time between car and bus affect people's mode choice?*
 
-To answer this, they surveyed huundreds of commuters, collecting data on:
+To answer this, they surveyed hundreds of commuters, collecting data on:
 - Their actual commute times by car and by bus
 - Their actual commuting choice (0 = drove to work, 1 = took the bus)
 
@@ -120,8 +120,8 @@ So let's get on with our task. We will build a model that answers the following 
 
 To begin, let's establish some basic foundations. When people make dichotomous (two-choice) decisions, we can describe the outcome using the **Bernoulli distribution**.
 
-::: {.callout-important}
-## The Bernoulli Distribution
+::: {.callout-important icon=false}
+## Definition
 
 For a dichotomous outcome $Y$ that takes the value 1 with probability $p$ and the value 0 with probability $(1-p)$, the probability function is:
 
@@ -129,16 +129,16 @@ $$f(y) = p^y(1-p)^{1-y}$$
 
 The expected value of $Y$ is simply:
 
-$$E(Y) = (1-p) 	imes 0 + p 	imes 1 = p$$
+$$E(Y) = (1-p) \times 0 + p \times 1 = p$$
 :::
 
 In our commuting example, $Y = 1$ represents choosing transit and $Y = 0$ represents choosing a car. The probability $p$ represents the probability that an individual will choose transit, given their specific circumstances.
 
 Following standard econometric practice, we decompose the observed outcome into a deterministic part (what we can predict) and a stochastic part (random variation):
 
-$$Y_i = p_i + psilon_i$$
+$$Y_i = p_i + \epsilon_i$$
 
-where $p_i$ is the predicted probability for individual $i$ and $psilon_i$ is the error term.
+where $p_i$ is the predicted probability for individual $i$ and $\epsilon_i$ is the error term.
 
 The key question becomes: **How does the difference in commute times relate to $p$?**
 
@@ -146,4 +146,4 @@ The key question becomes: **How does the difference in commute times relate to $
 
 The most straightforward approach is the **Linear Probability Model (LPM)**, which assumes a linear relationship between the commute time difference and the probability of choosing transit:
 
-$$p_i = eta_0 + eta_1 
+**This chapter is unfinished.**

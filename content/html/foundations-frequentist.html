@@ -14,9 +14,13 @@ of repeated sampling, the nature of estimators, and the mathematical
 criteria we use to distinguish good estimators from poor ones.</p>
 <h2 id="the-nature-of-inferential-statistics">The Nature of Inferential
 Statistics</h2>
-<section id="what-are-we-really-doing" class="callout-note"
-data-icon="false">
-<h2>What Are We Really Doing?</h2>
+<section id="question" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>What are we really doing in inferential statistics?</p>
+</section>
+<section id="answer" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Inferential statistics is fundamentally about making observations in
 <strong>sample data</strong> and then attempting to extrapolate causal
 connections or patterns to the <strong>population data</strong>. When we
@@ -57,7 +61,7 @@ mean</li>
 class="math inline">s^2</span>): The analog to the population
 variance</li>
 </ul>
-<section id="a-critical-distinction" class="callout-important"
+<section id="a-critical-distinction" class="callout-warning"
 data-icon="false">
 <h2>A Critical Distinction</h2>
 <p>When we call the sample mean and sample variance “analogs” or
@@ -110,7 +114,7 @@ c</span>:</p>
 the variance remains unchanged. Why? Because variance measures the
 spread of data around the mean, and when you shift all values by the
 same amount, their relative positions don’t change.</p>
-<section id="connecting-to-earlier-concepts" class="callout-tip"
+<section id="connecting-to-earlier-concepts" class="callout-warning"
 data-icon="false">
 <h2>Connecting to Earlier Concepts</h2>
 <p>You’ve already encountered this idea when we discussed the <span
@@ -153,7 +157,7 @@ Philosophy: Repeated Sampling</h2>
 <p>We now arrive at the conceptual heart of frequentist statistics. The
 entire edifice of frequentist inference rests on an imaginary exercise:
 <strong>repeated sampling</strong>.</p>
-<section id="the-thought-experiment" class="callout-note"
+<section id="the-thought-experiment" class="callout-warning"
 data-icon="false">
 <h2>The Thought Experiment</h2>
 <p>Imagine that we could:</p>
@@ -212,7 +216,7 @@ distribution</strong> of each estimator.</p>
 <p>The distribution of all these estimates is called the
 <strong>sampling distribution</strong> of the estimator. Each different
 estimator has its own sampling distribution.</p>
-<section id="key-insight" class="callout-important" data-icon="false">
+<section id="key-insight" class="callout-warning" data-icon="false">
 <h2>Key Insight</h2>
 <p>The sampling distribution is a theoretical construct. We never
 actually observe it because we only sample once in practice. But by
@@ -313,9 +317,8 @@ hits the target.</p>
 properties that statisticians use to evaluate estimators.</p>
 <h3 id="unbiasedness-accuracy-on-average">Unbiasedness: Accuracy on
 Average</h3>
-<section id="definition-unbiasedness" class="callout-important"
-data-icon="false">
-<h2>Definition: Unbiasedness</h2>
+<section id="definition" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>An estimator <span class="math inline">\hat{\theta}</span> is
 <strong>unbiased</strong> for a parameter <span
 class="math inline">\theta</span> if its expected value equals the
@@ -329,9 +332,13 @@ estimator gets the right answer.</p>
 <p>Any single estimate from an unbiased estimator might be far from the
 truth. But the errors balance out—sometimes we overestimate, sometimes
 we underestimate, and on average we hit the bullseye.</p>
-<section id="question-is-the-sample-mean-unbiased" class="callout-tip"
-data-icon="false" data-collapse="true">
-<h2>Question: Is the sample mean unbiased?</h2>
+<section id="question-1" class="callout-note" data-icon="false">
+<h2>Question</h2>
+<p>Is the sample mean unbiased?</p>
+</section>
+<section id="answer-1" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Yes! The sample mean <span class="math inline">\bar{Y} =
 \frac{1}{n}\sum_{i=1}^{n} Y_i</span> is an unbiased estimator of the
 population mean <span class="math inline">\mu</span>. Here’s the
@@ -367,9 +374,8 @@ estimators. You’ll notice something important: some have smaller
 variance than others. An estimator with smaller variance gives us more
 <em>precise</em> estimates—they cluster more tightly around the
 parameter value.</p>
-<section id="definition-efficiency" class="callout-important"
-data-icon="false">
-<h2>Definition: Efficiency</h2>
+<section id="definition-1" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>Among all unbiased estimators of a parameter, the most
 <strong>efficient</strong> estimator is the one with the smallest
 variance in its sampling distribution.</p>
@@ -416,9 +422,8 @@ with More Data</h3>
 <p>Both unbiasedness and efficiency are properties that hold for a fixed
 sample size. But what happens as we gather more data? This brings us to
 our third fundamental property.</p>
-<section id="definition-consistency" class="callout-important"
-data-icon="false">
-<h2>Definition: Consistency</h2>
+<section id="definition-2" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>An estimator <span class="math inline">\hat{\theta}</span> is
 <strong>consistent</strong> if it converges in probability to the
 parameter value as the sample size approaches infinity. Formally, for
@@ -439,13 +444,12 @@ toward zero. The sampling distribution collapses to a spike at <span
 class="math inline">\mu</span>. This is the <strong>Law of Large
 Numbers</strong>—one of the most fundamental theorems in probability and
 statistics.</p>
-<section id="the-law-of-large-numbers" class="callout-note"
-data-icon="false">
-<h2>The Law of Large Numbers</h2>
-<p>As the sample size <span class="math inline">n</span> approaches
-infinity, the sample mean <span class="math inline">\bar{Y}</span>
-converges to the population mean <span class="math inline">\mu</span>.
-Formally:</p>
+<section id="definition-3" class="callout-important" data-icon="false">
+<h2>Definition</h2>
+<p><strong>The Law of Large Numbers</strong>: As the sample size <span
+class="math inline">n</span> approaches infinity, the sample mean <span
+class="math inline">\bar{Y}</span> converges to the population mean
+<span class="math inline">\mu</span>. Formally:</p>
 <p><span class="math display">
 \bar{Y} \xrightarrow{P} \mu \quad \text{as } n \to \infty
 </span></p>
@@ -521,9 +525,8 @@ The Bias-Variance Tradeoff</h3>
 <p>Sometimes we might accept a small amount of bias to achieve a large
 reduction in variance. This insight drives modern techniques like ridge
 regression and regularization methods.</p>
-<section id="mean-squared-error" class="callout-important"
-data-icon="false">
-<h2>Mean Squared Error</h2>
+<section id="definition-4" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>The <strong>mean squared error (MSE)</strong> combines bias and
 variance into a single measure:</p>
 <p><span class="math display">

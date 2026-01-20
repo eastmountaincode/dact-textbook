@@ -5,11 +5,13 @@ Understanding the behavior of extreme values, or outliers, is crucial in statist
 
 ## Why Bounding Outliers Matters
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 Why do we need mathematical tools to bound the probability of outliers?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 In many practical situations, we don't know the complete probability distribution of a random variable. However, we often know simpler properties like the mean or variance. Probability inequalities allow us to make rigorous statements about tail probabilities (the likelihood of extreme values) using only this limited information. This is invaluable for risk assessment, quality control, and understanding the reliability of statistical estimates.
 :::
 
@@ -19,23 +21,25 @@ Consider a manufacturing process where you're monitoring the weight of products.
 
 Markov's inequality provides a remarkably simple bound on tail probabilities for non-negative random variables, requiring only knowledge of the mean.
 
-::: {.importantbox}
-**Markov's Inequality**
+::: {.callout-important icon=false}
+## Definition
 
-Let $Y$ be a random variable defined over the positive subspace of $\mathbb{R}^1$. Then for any positive constant $a > 0$,
+**Markov's Inequality**: Let $Y$ be a random variable defined over the positive subspace of $\mathbb{R}^1$. Then for any positive constant $a > 0$,
 
 $$
-\mathrm{P}(Y \geq a) \leq rac{\mathbb{E}(Y)}{a}
+\mathrm{P}(Y \geq a) \leq \frac{\mathbb{E}(Y)}{a}
 $$ {#eq-markov}
 :::
 
 This inequality tells us that the probability of a non-negative random variable exceeding some value $a$ is at most the mean divided by $a$. The larger the value of $a$ relative to the mean, the smaller this upper bound becomes.
 
-::: {.question}
+::: {.callout-note icon=false}
+## Question
 What does Markov's inequality tell us intuitively?
 :::
 
-::: {.answer}
+::: {.callout-tip icon=false collapse="true"}
+## Answer
 Markov's inequality formalizes the intuition that if a non-negative random variable has a small mean, it's unlikely to take on very large values. For instance, if the average value is 10, the probability of seeing a value of 100 or more cannot exceed 10/100 = 0.1, or 10%.
 :::
 
@@ -46,12 +50,11 @@ Let's return to our manufacturing example. Suppose the average product weight is
 Using Markov's inequality with $a = 1000$:
 
 $$
-\mathrm{P}(Y \geq 1000) \leq rac{500}{1000} = 0.5
+\mathrm{P}(Y \geq 1000) \leq \frac{500}{1000} = 0.5
 $$
 
 This tells us that at most 50% of products can weigh 1000 grams or more. While this bound might seem loose, remember that we derived it using only the mean—no other information about the distribution!
 
 We can also ask: what's the probability of a product weighing at least twice the average?
 
-$$
-\mathrm{P}(Y \geq 1000) = \mathrm{P}(Y \geq 2 
+**This chapter is unfinished.**

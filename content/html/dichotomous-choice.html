@@ -4,7 +4,7 @@
 in Boston about their transportation choices. Their specific research
 question was simple but important: <em>Does the difference in commute
 time between car and bus affect people’s mode choice?</em></p>
-<p>To answer this, they surveyed huundreds of commuters, collecting data
+<p>To answer this, they surveyed hundreds of commuters, collecting data
 on: - Their actual commute times by car and by bus - Their actual
 commuting choice (0 = drove to work, 1 = took the bus)</p>
 <p>Here’s a table showing these data for 21 of the commuters surveyed.
@@ -577,8 +577,8 @@ Function</h2>
 <p>To begin, let’s establish some basic foundations. When people make
 dichotomous (two-choice) decisions, we can describe the outcome using
 the <strong>Bernoulli distribution</strong>.</p>
-<section id="the-bernoulli-distribution" class="callout-important">
-<h2>The Bernoulli Distribution</h2>
+<section id="definition" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p>For a dichotomous outcome <span class="math inline">Y</span> that
 takes the value 1 with probability <span class="math inline">p</span>
 and the value 0 with probability <span class="math inline">(1-p)</span>,
@@ -586,7 +586,7 @@ the probability function is:</p>
 <p><span class="math display">f(y) = p^y(1-p)^{1-y}</span></p>
 <p>The expected value of <span class="math inline">Y</span> is
 simply:</p>
-<p><span class="math display">E(Y) = (1-p)  imes 0 + p  imes 1 =
+<p><span class="math display">E(Y) = (1-p) \times 0 + p \times 1 =
 p</span></p>
 </section>
 <p>In our commuting example, <span class="math inline">Y = 1</span>
@@ -597,10 +597,10 @@ individual will choose transit, given their specific circumstances.</p>
 <p>Following standard econometric practice, we decompose the observed
 outcome into a deterministic part (what we can predict) and a stochastic
 part (random variation):</p>
-<p><span class="math display">Y_i = p_i + psilon_i</span></p>
+<p><span class="math display">Y_i = p_i + \epsilon_i</span></p>
 <p>where <span class="math inline">p_i</span> is the predicted
 probability for individual <span class="math inline">i</span> and <span
-class="math inline">psilon_i</span> is the error term.</p>
+class="math inline">\epsilon_i</span> is the error term.</p>
 <p>The key question becomes: <strong>How does the difference in commute
 times relate to <span class="math inline">p</span>?</strong></p>
 <h2 id="the-linear-probability-model-a-first-attempt">The Linear
@@ -608,4 +608,4 @@ Probability Model: A First Attempt</h2>
 <p>The most straightforward approach is the <strong>Linear Probability
 Model (LPM)</strong>, which assumes a linear relationship between the
 commute time difference and the probability of choosing transit:</p>
-<p>$$p_i = eta_0 + eta_1</p>
+<p>$$p_i = _0 + _1</p>

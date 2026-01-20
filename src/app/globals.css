@@ -298,6 +298,12 @@ html, body {
   border-radius: var(--radius-md);
   overflow-x: auto;
   font-size: var(--text-sm);
+  margin: var(--space-lg) 0;
+}
+
+/* Consecutive code blocks: reduce gap between them */
+.chapter-content pre + pre {
+  margin-top: var(--space-sm);
 }
 
 .chapter-content code {

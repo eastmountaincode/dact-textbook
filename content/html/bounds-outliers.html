@@ -9,11 +9,14 @@ inequality and Chebyshev’s inequality—that help us bound the probability
 of outliers using only basic distributional properties.</p>
 <h2 id="why-bounding-outliers-matters">Why Bounding Outliers
 Matters</h2>
-<div class="question">
+<section id="question" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Why do we need mathematical tools to bound the probability of
 outliers?</p>
-</div>
-<div class="answer">
+</section>
+<section id="answer" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>In many practical situations, we don’t know the complete probability
 distribution of a random variable. However, we often know simpler
 properties like the mean or variance. Probability inequalities allow us
@@ -21,7 +24,7 @@ to make rigorous statements about tail probabilities (the likelihood of
 extreme values) using only this limited information. This is invaluable
 for risk assessment, quality control, and understanding the reliability
 of statistical estimates.</p>
-</div>
+</section>
 <p>Consider a manufacturing process where you’re monitoring the weight
 of products. You know the average weight is 500 grams, but you don’t
 know the full distribution of weights. If a product weighs 1000 grams or
@@ -32,30 +35,33 @@ inequality addresses.</p>
 <p>Markov’s inequality provides a remarkably simple bound on tail
 probabilities for non-negative random variables, requiring only
 knowledge of the mean.</p>
-<div class="importantbox">
-<p><strong>Markov’s Inequality</strong></p>
-<p>Let <span class="math inline">Y</span> be a random variable defined
-over the positive subspace of <span
-class="math inline">\mathbb{R}^1</span>. Then for any positive constant
-<span class="math inline">a &gt; 0</span>,</p>
+<section id="definition" class="callout-important" data-icon="false">
+<h2>Definition</h2>
+<p><strong>Markov’s Inequality</strong>: Let <span
+class="math inline">Y</span> be a random variable defined over the
+positive subspace of <span class="math inline">\mathbb{R}^1</span>. Then
+for any positive constant <span class="math inline">a &gt; 0</span>,</p>
 <p><span class="math display">
-\mathrm{P}(Y \geq a) \leq rac{\mathbb{E}(Y)}{a}
+\mathrm{P}(Y \geq a) \leq \frac{\mathbb{E}(Y)}{a}
 </span> {#eq-markov}</p>
-</div>
+</section>
 <p>This inequality tells us that the probability of a non-negative
 random variable exceeding some value <span class="math inline">a</span>
 is at most the mean divided by <span class="math inline">a</span>. The
 larger the value of <span class="math inline">a</span> relative to the
 mean, the smaller this upper bound becomes.</p>
-<div class="question">
+<section id="question-1" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>What does Markov’s inequality tell us intuitively?</p>
-</div>
-<div class="answer">
+</section>
+<section id="answer-1" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Markov’s inequality formalizes the intuition that if a non-negative
 random variable has a small mean, it’s unlikely to take on very large
 values. For instance, if the average value is 10, the probability of
 seeing a value of 100 or more cannot exceed 10/100 = 0.1, or 10%.</p>
-</div>
+</section>
 <h3 id="example-manufacturing-quality-control">Example: Manufacturing
 Quality Control</h3>
 <p>Let’s return to our manufacturing example. Suppose the average
@@ -66,11 +72,11 @@ what’s the maximum probability that a randomly selected product weighs
 <p>Using Markov’s inequality with <span class="math inline">a =
 1000</span>:</p>
 <p><span class="math display">
-\mathrm{P}(Y \geq 1000) \leq rac{500}{1000} = 0.5
+\mathrm{P}(Y \geq 1000) \leq \frac{500}{1000} = 0.5
 </span></p>
 <p>This tells us that at most 50% of products can weigh 1000 grams or
 more. While this bound might seem loose, remember that we derived it
 using only the mean—no other information about the distribution!</p>
 <p>We can also ask: what’s the probability of a product weighing at
 least twice the average?</p>
-<p>$$ (Y ) = (Y </p>
+<p><strong>This chapter is unfinished.</strong></p>

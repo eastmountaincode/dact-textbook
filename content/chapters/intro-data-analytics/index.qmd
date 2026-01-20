@@ -12,7 +12,7 @@ In this chapter, we'll explore the fundamental purpose and scope of data analyti
 ## What Is Data Analytics Really About?
 
 ::: {.callout-note icon=false}
-## Key Question
+## Question
 What is the ultimate goal of data analytics?
 :::
 
@@ -44,7 +44,7 @@ This is why data analytics matters: we want to establish cause and effect, not j
 One of the most remarkable features of statistical analysis is how patterns emerge from what initially appears to be pure randomness. When we look at individual observations, they often seem chaotic and unpredictable. But when we collect enough observations, macro-level patterns begin to reveal themselves.
 
 ::: {.callout-note icon=false}
-## Conceptual Question
+## Question
 How can predictable patterns emerge from random individual events?
 :::
 
@@ -78,7 +78,7 @@ Different real-world phenomena follow different distributions:
 These distributions are often mathematically related. For instance, when you sum up many independent Bernoulli trials (each ball on the Galton board making left-right decisions), you get a binomial distribution. And when the number of trials becomes very large, that binomial distribution approximates the normal distribution.
 
 ::: {.callout-note icon=false}
-## Conceptual Question
+## Question
 The word "Poisson" comes from French. What does it mean, and who was Poisson?
 :::
 
@@ -94,7 +94,7 @@ Throughout this course, we'll work with many different distributions. Each captu
 In statistical analysis, we make a crucial distinction between two types of data:
 
 ::: {.callout-important icon=false}
-## Definitions
+## Definition
 
 **Population**: All possible data points that exist in the world for a given phenomenon. This includes data that has been collected, data that could be collected, and data that will exist in the future.
 
@@ -135,7 +135,7 @@ The question then becomes: Can we **extrapolate** this relationship from our tin
 This is the central challenge of inferential statistics. We observe patterns in our sample and attempt to make general claims about the population. The entire machinery of statistical inference—hypothesis tests, confidence intervals, p-values, regression analysis—exists to help us make this logical leap from sample to population in a rigorous, quantifiable way.
 
 ::: {.callout-note icon=false}
-## Reflective Question
+## Question
 Why is it more valuable to make inferences about the population than to simply describe our sample?
 :::
 
@@ -159,7 +159,7 @@ Consider flipping a coin. A frequentist interprets "the probability of heads is 
 This philosophical stance has important implications. Imagine I flip a coin and catch it in my hand, concealing the result. I know how it landed, but you don't. What is the probability that it landed heads?
 
 ::: {.callout-note icon=false}
-## Thought Experiment
+## Question
 I've just flipped a coin and caught it in my closed hand. I can see the result, but you cannot. What is the probability that the coin shows heads?
 :::
 
@@ -176,7 +176,7 @@ Let's return to the coin in my hand. A Bayesian would say: given that you don't 
 If I were to give you a hint—say, "It's not tails"—a Bayesian would immediately update your probability to 1 for heads. Your degree of belief changes as you gain new information, even though the physical state of the coin hasn't changed at all.
 
 ::: {.callout-important icon=false}
-## Fundamental Philosophical Difference
+## Definition
 
 **Frequentist view**: Probability is an objective property of repeatable events. It doesn't make sense to assign probabilities to fixed but unknown quantities.
 
@@ -204,7 +204,7 @@ Before we can intelligently discuss either frequentist or Bayesian inference, we
 When we conduct a statistical test, we're making a decision: either reject a hypothesis or fail to reject it. Like any decision made under uncertainty, we can make mistakes. There are two types of mistakes we might make:
 
 ::: {.callout-important icon=false}
-## Type I Error
+## Definition
 
 A **Type I error** occurs when we reject a hypothesis that is actually correct. We declare that something is happening when, in fact, it is not.
 
@@ -214,7 +214,7 @@ In scientific research: claiming we've found an effect when none exists
 :::
 
 ::: {.callout-important icon=false}
-## Type II Error
+## Definition
 
 A **Type II error** occurs when we fail to reject a hypothesis that is actually false. We fail to detect something that is really happening.
 
@@ -260,7 +260,7 @@ Then, about 100 years ago, Albert Einstein developed general relativity, which s
 
 But does this mean Einstein's theory is "correct"? Not necessarily. It's the best explanation we have now, consistent with all currently available evidence. But tomorrow, someone might develop an even better theory that supersedes Einstein's.
 
-::: {.callout-tip icon=false}
+::: {.callout-warning icon=false}
 ## Scientific Humility
 In science, we can demonstrate that theories are *wrong* or *false* (by finding contradictory evidence), but we can never prove that theories are *correct* or *true* (because future evidence might contradict them). This is why we never "accept" hypotheses—we only fail to reject them given current evidence.
 :::

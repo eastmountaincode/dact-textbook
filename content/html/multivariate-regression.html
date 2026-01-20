@@ -4,16 +4,19 @@ groundbreaking study on housing values and air pollution in the Boston
 metropolitan area. Their work introduced what has become one of the most
 studied datasets in econometrics and demonstrated how hedonic pricing
 models can be used to value environmental amenities—specifically, how
-air quality affects property values.</p>
+air quality afects property values.</p>
 <p>The Harrison-Rubinfeld model remains a cornerstone example in applied
 econometrics courses because it elegantly combines theory with empirical
 analysis, using a rich set of neighborhood characteristics to explain
 median home values across census tracts in the Boston area.</p>
-<div class="question">
+<section id="question" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>What is a hedonic pricing model, and why is it useful for valuing
 environmental goods?</p>
-</div>
-<div class="answer">
+</section>
+<section id="answer" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>A hedonic pricing model decomposes the price of a good into the value
 of its constituent characteristics. For housing, this means breaking
 down the home price into components attributable to structural features
@@ -26,40 +29,46 @@ market prices. By observing how home values change with air quality
 while controlling for other factors, we can infer people’s willingness
 to pay for cleaner air. This is crucial for cost-benefit analysis of
 environmental regulations.</p>
-</div>
+</section>
 <h2 id="the-model-specification">The Model Specification</h2>
 <p>The Harrison-Rubinfeld model estimates the logarithm of median home
 value as a function of 13 explanatory variables:</p>
 <p><span class="math display">
-egin{aligned}
-\log(   ext{MEDV}) = eta_0 &amp;+ eta_1   ext{ NOX}^2 + eta_2    ext{
-RM}^2 + eta_3     ext{ AGE} + eta_4 (    ext{B} - 0.63)^2 \
-&amp;+ eta_5 \log( ext{LSTAT}) + eta_6    ext{ CRIM} + eta_7     ext{
-ZN} + eta_8   ext{ INDUS} \
-&amp;+ eta_9   ext{ TAX} + eta_{10}   ext{ PTRATIO} + eta_{11}   ext{
-CHAS} \
-&amp;+ eta_{12} \log(  ext{DIS}) + eta_{13} \log( ext{RAD}) + psilon
-nd{aligned}
+\begin{aligned}
+\log(   \text{MEDV}) = \beta_0 &amp;+ \beta_1   \text{ NOX}^2 +
+\beta_2     \text{ RM}^2 + \beta_3  \text{ AGE} + \beta_4 ( \text{B} -
+0.63)^2 \
+&amp;+ \beta_5 \log(    \text{LSTAT}) + \beta_6     \text{ CRIM} +
+\beta_7  \text{ ZN} + \beta_8    \text{ INDUS} \
+&amp;+ \beta_9  \text{ TAX} + \beta_{10}    \text{ PTRATIO} +
+\beta_{11}    \text{ CHAS} \
+&amp;+ \beta_{12} \log( \text{DIS}) + \beta_{13} \log(  \text{RAD}) +
+\epsilon
+\end{aligned}
 </span></p>
 <p>Before interpreting the coefficients, let’s understand what each
 variable represents and why certain functional forms were chosen.</p>
 <h2 id="the-variables-and-their-transformations">The Variables and Their
 Transformations</h2>
-<div class="definition">
+<section id="definition" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>NOX (Nitric Oxide Concentration)</strong>: Annual average
 concentration of nitric oxides in parts per 10 million, measured at the
 census tract level. This is the key environmental variable in the
 study.</p>
-</div>
+</section>
 <p>The model includes <strong>NOX²</strong> rather than NOX itself. This
 quadratic specification allows for a nonlinear relationship between air
 pollution and housing values—suggesting that the marginal effect of
 pollution may increase at higher pollution levels.</p>
-<div class="question">
+<section id="question-1" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Why might the relationship between pollution and home values be
 nonlinear?</p>
-</div>
-<div class="answer">
+</section>
+<section id="answer-1" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>There are several economic reasons to expect nonlinearity. First, at
 very low pollution levels, small increases may have minimal health
 impacts and thus little effect on property values. But at higher levels,
@@ -75,37 +84,43 @@ are relatively less concerned about pollution, leading to smaller
 marginal price effects at higher pollution levels. However, this
 selection effect would actually suggest the opposite of what Harrison
 and Rubinfeld found.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-1" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>RM (Average Number of Rooms)</strong>: The average number of
 rooms per dwelling in the census tract. This is a proxy for house size
 and quality.</p>
-</div>
+</section>
 <p>The model includes <strong>RM²</strong> to capture potential
 nonlinear effects of house size. Larger homes may command
 disproportionately higher prices, or there may be diminishing returns to
 additional rooms.</p>
-<div class="definition">
+<section id="definition-2" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>AGE (Proportion of Old Units)</strong>: The proportion of
 owner-occupied units built prior to 1940. This captures the age
 composition of the housing stock.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-3" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>B (Proportion Black)</strong>: A transformation of the
 proportion of Black residents, specifically <span
 class="math inline">(1000(B_k - 0.63)^2)</span>, where <span
 class="math inline">B_k</span> is the proportion of the population that
 is Black. The model includes <strong>(B - 0.63)²</strong>.</p>
-</div>
+</section>
 <p>This is perhaps the most controversial variable in the model. The
 quadratic form centered at 0.63 suggests that home values are maximized
 when the proportion of Black residents is 63%, declining as the
 proportion moves away from this value in either direction.</p>
-<div class="question">
+<section id="question-2" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>What does the racial composition variable tell us about housing
 markets in 1970s Boston?</p>
-</div>
-<div class="answer">
+</section>
+<section id="answer-2" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>The inclusion and specification of this variable reflect the
 unfortunate reality of racial segregation and discrimination in housing
 markets during this period. The quadratic form centered at 0.63 could be
@@ -129,39 +144,47 @@ before the Fair Housing Act of 1968.</p></li>
 composition variables, as their interpretation requires careful
 attention to whether they reflect preferences, discrimination, or
 correlated socioeconomic factors.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-4" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>LSTAT (Lower Status Population)</strong>: The percentage of
 the population considered “lower status” (defined by education and
 occupation). The model includes <strong>log(LSTAT)</strong>.</p>
-</div>
+</section>
 <p>The logarithmic transformation suggests that percentage point changes
 in lower-status population have diminishing effects—going from 5% to 10%
 has a larger impact than going from 25% to 30%.</p>
-<div class="definition">
+<section id="definition-5" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>CRIM (Crime Rate)</strong>: Per capita crime rate by town.
 Measured as incidents per capita.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-6" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>ZN (Large Residential Lots)</strong>: The proportion of
 residential land zoned for lots over 25,000 square feet. This captures
 whether the area has large-lot zoning, typically associated with more
 expensive neighborhoods.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-7" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>INDUS (Industrial Land)</strong>: The proportion of
 non-retail business acres per town. This measures the industrial
 character of the area.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-8" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>TAX (Property Tax Rate)</strong>: The full-value property tax
 rate per $10,000 of assessed value.</p>
-</div>
-<div class="question">
+</section>
+<section id="question-3" class="callout-note" data-icon="false">
+<h2>Question</h2>
 <p>Why might property tax rates affect home values even though buyers
 will pay these taxes anyway?</p>
-</div>
-<div class="answer">
+</section>
+<section id="answer-3" class="callout-tip" data-icon="false"
+data-collapse="true">
+<h2>Answer</h2>
 <p>Property taxes affect home values through several channels:</p>
 <ol type="1">
 <li><p><strong>Capitalization</strong>: Higher taxes reduce the present
@@ -180,38 +203,42 @@ preferences and income.</p></li>
 <p>The model doesn’t directly account for the services financed by these
 taxes, so the coefficient primarily captures the capitalization
 effect.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-9" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>PTRATIO (Pupil-Teacher Ratio)</strong>: The pupil-teacher
 ratio by town. Lower ratios indicate smaller class sizes, typically
 associated with better schools.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-10" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>CHAS (Charles River Dummy)</strong>: A binary variable equal
 to 1 if the census tract borders the Charles River, 0 otherwise. This
 captures the amenity value of water proximity.</p>
-</div>
-<div class="definition">
+</section>
+<section id="definition-11" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>DIS (Distance to Employment)</strong>: Weighted distance to
 five Boston employment centers. The model includes
 <strong>log(DIS)</strong>.</p>
-</div>
+</section>
 <p>The logarithmic transformation implies that distance has diminishing
 effects—being 1 mile from employment centers versus 2 miles matters more
 than being 10 miles versus 11 miles.</p>
-<div class="definition">
+<section id="definition-12" class="callout-important" data-icon="false">
+<h2>Definition</h2>
 <p><strong>RAD (Highway Accessibility)</strong>: An index of
 accessibility to radial highways. The model includes
 <strong>log(RAD)</strong>.</p>
-</div>
+</section>
 <h2 id="interpreting-the-coefficients">Interpreting the
 Coefficients</h2>
 <p>Now that we understand the variables, let’s interpret what each
 coefficient tells us. The dependent variable is log(MEDV), which means
 we need to be careful about the interpretation depending on whether the
 independent variable is in levels, logs, or transformed.</p>
-<h3 id="environmental-quality-eta_1-nox²">Environmental Quality: <span
-class="math inline">eta_1</span> (NOX²)</h3>
+<h3 id="environmental-quality-beta_1-nox²">Environmental Quality: <span
+class="math inline">\beta_1</span> (NOX²)</h3>
 <p>Since the model includes NOX², the effect of pollution on home values
 is:</p>
-<p>$$ rac{( ext{MEDV})}{ext{NOX}} = 2eta_1</p>
+<p><strong>This chapter is unfinished.</strong></p>
