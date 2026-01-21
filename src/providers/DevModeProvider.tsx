@@ -26,6 +26,9 @@ export function DevModeProvider({ children }: { children: ReactNode }) {
   const devBorder = (color: DevBorderColor): string => `dev-border-${color}`;
 
   useEffect(() => {
+    // Only enable dev mode toggle in development
+    if (process.env.NODE_ENV !== 'development') return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only toggle if not typing in an input/textarea
       if (

@@ -257,7 +257,7 @@ export default function SignupPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex py-10 px-10 justify-center ${devBorder('blue')}`}>
         <div className={`w-full max-w-2xl ${devBorder('green')}`}>
         {/* Title area */}
         <div className={`text-center mb-4 ${devBorder('amber')}`}>

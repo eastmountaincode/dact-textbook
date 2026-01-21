@@ -84,7 +84,7 @@ function ResetPasswordForm() {
 
   if (success) {
     return (
-      <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex py-10 px-10 justify-center ${devBorder('blue')}`}>
         <div className={`w-full max-w-sm ${devBorder('green')}`}>
           <div className={`text-center mb-4 ${devBorder('amber')}`}>
             <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
@@ -113,7 +113,7 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className={`min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center ${devBorder('blue')}`}>
+    <div className={`min-h-[calc(100vh-3.5rem)] flex py-10 px-10 justify-center ${devBorder('blue')}`}>
       <div className={`w-full max-w-sm ${devBorder('green')}`}>
         <div className={`text-center mb-4 ${devBorder('amber')}`}>
           <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>

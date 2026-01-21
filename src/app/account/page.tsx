@@ -61,7 +61,7 @@ export default function AccountPage() {
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] py-8 px-8 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] py-10 px-10 ${devBorder('blue')}`}>
         <div className={`w-full max-w-4xl mx-auto ${devBorder('green')}`}>
           {/* Title */}
           <h1 className="text-2xl font-semibold mb-6" style={{ color: 'var(--foreground)' }}>

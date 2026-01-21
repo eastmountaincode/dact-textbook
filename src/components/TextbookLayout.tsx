@@ -117,7 +117,7 @@ export default function TextbookLayout({
         className={`${showSidebar ? 'ml-0 md:ml-72' : ''} fixed top-14 bottom-0 left-0 right-0 overflow-y-auto overflow-x-hidden ${devBorder('green')}`}
       >
         <div
-          className={showSidebar ? `max-w-4xl mx-auto px-8 md:px-8 py-8 ${fontFamilyClass}` : ''}
+          className={showSidebar ? `max-w-4xl mx-auto px-10 py-10 ${fontFamilyClass}` : ''}
           style={showSidebar ? { fontSize: `${fontSize}px` } : undefined}
         >
           {children}

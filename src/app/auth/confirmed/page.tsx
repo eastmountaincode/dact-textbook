@@ -10,7 +10,7 @@ function ConfirmedContent() {
   const isLinkInvalid = searchParams.get('already') === 'true';
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center">
+    <div className="min-h-[calc(100vh-3.5rem)] flex py-10 px-10 justify-center">
       <div className="w-full max-w-sm">
         <div className="text-center mb-4">
           <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
@@ -64,7 +64,7 @@ export default function EmailConfirmedPage() {
   return (
     <TextbookLayout>
       <Suspense fallback={
-        <div className="min-h-[calc(100vh-3.5rem)] flex py-8 px-8 justify-center">
+        <div className="min-h-[calc(100vh-3.5rem)] flex py-10 px-10 justify-center">
           <div className="w-full max-w-sm">
             <div className="text-center mb-4">
               <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>

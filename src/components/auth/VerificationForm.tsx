@@ -99,7 +99,7 @@ export function VerificationForm({
 
   return (
     <TextbookLayout>
-      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-8 pb-8 justify-center px-8 ${devBorder('blue')}`}>
+      <div className={`min-h-[calc(100vh-3.5rem)] flex pt-10 pb-10 justify-center px-10 ${devBorder('blue')}`}>
         <div className={`w-full max-w-md ${devBorder('green')}`}>
           <div className={`text-center mb-4 ${devBorder('amber')}`}>
             <h1 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
