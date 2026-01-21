@@ -52,10 +52,12 @@ function extractTagContent(tag) {
 function parseChapter(html, slug) {
   const entries = [];
 
-  // Extract chapter title from h1
-  const h1Match = html.match(/<h1[^>]*id="([^"]*)"[^>]*>([^<]+)<\/h1>/);
-  const chapterTitle = h1Match ? stripHtml(h1Match[2]) : slug.replace(/-/g, ' ');
-  const chapterId = h1Match ? h1Match[1] : slug;
+  // Extract chapter title from h1 (id attribute is optional)
+  const h1Match = html.match(/<h1[^>]*>([^<]+)<\/h1>/);
+  const chapterTitle = h1Match ? stripHtml(h1Match[1]) : slug.replace(/-/g, ' ');
+  // Try to extract id if present
+  const h1IdMatch = html.match(/<h1[^>]*id="([^"]*)"[^>]*>/);
+  const chapterId = h1IdMatch ? h1IdMatch[1] : slug;
 
   // Split content by h2 sections
   const sections = html.split(/<h2[^>]*>/);

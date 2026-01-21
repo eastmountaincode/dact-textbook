@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useSearch, getMatchSnippet, SearchResult } from '../../hooks/useSearch';
+import { useSearch, SearchResult } from '../../hooks/useSearch';
 import { useDevMode } from '@/providers/DevModeProvider';
 
 interface SidebarSearchProps {
@@ -12,11 +12,52 @@ interface SidebarSearchProps {
 export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [hasMounted, setHasMounted] = useState(false);
   const { search, results, isLoading, clearResults } = useSearch();
   const { devBorder } = useDevMode();
 
-  // Debounce search input
+  // Restore from sessionStorage after mount (avoids SSR hydration mismatch)
   useEffect(() => {
+    const init = async () => {
+      const savedQuery = sessionStorage.getItem('searchQuery') || '';
+      if (savedQuery) {
+        setSearchQuery(savedQuery);
+        setDebouncedQuery(savedQuery);
+        // Wait for search to complete before showing UI to prevent flash
+        await search(savedQuery);
+      }
+      setHasMounted(true);
+      // Wait for React to render the results before signaling ready
+      // Double rAF ensures the DOM has been painted
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.dispatchEvent(new CustomEvent('sidebarSearchReady'));
+        });
+      });
+    };
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
+
+  // Save search query to sessionStorage when it changes (after mount)
+  useEffect(() => {
+    if (!hasMounted) return;
+    if (searchQuery) {
+      sessionStorage.setItem('searchQuery', searchQuery);
+    } else {
+      sessionStorage.removeItem('searchQuery');
+    }
+  }, [searchQuery, hasMounted]);
+
+  // Debounce search input
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    // Skip debounce on initial restore from sessionStorage
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
     }, 300);
@@ -32,22 +73,8 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
     }
   }, [debouncedQuery, search, clearResults]);
 
-  const showSearchResults = debouncedQuery.trim().length > 0 && results.length > 0;
-  const showNoResults = debouncedQuery.trim().length > 0 && !isLoading && results.length === 0;
-
-  // Calculate occurrence index for each result - tracks position within same section (same href including hash)
-  const resultsWithOccurrence = results.slice(0, 10).map((result, index) => {
-    // Count how many previous results have the same full href (including section anchor)
-    // This tracks occurrences within the same section, not just the same chapter
-    const href = result.item.href;
-    let occurrenceIndex = 0;
-    for (let i = 0; i < index; i++) {
-      if (results[i].item.href === href) {
-        occurrenceIndex++;
-      }
-    }
-    return { result, occurrenceIndex };
-  });
+  const showSearchResults = hasMounted && debouncedQuery.trim().length > 0 && results.length > 0;
+  const showNoResults = hasMounted && debouncedQuery.trim().length > 0 && !isLoading && results.length === 0;
 
   return (
     <>
@@ -100,13 +127,12 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
             Search Results ({results.length})
           </p>
           <ul className="px-2 pb-2 space-y-1">
-            {resultsWithOccurrence.map(({ result, occurrenceIndex }) => (
+            {results.slice(0, 10).map((result) => (
               <SearchResultItem
                 key={result.item.objectID}
                 result={result}
                 query={debouncedQuery}
                 isActive={result.item.href.includes(currentSlug || '')}
-                occurrenceIndex={occurrenceIndex}
               />
             ))}
           </ul>
@@ -127,29 +153,99 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
   );
 }
 
+/**
+ * Get snippet with match position
+ * For multi-word queries, tries to find the full phrase or individual words
+ */
+function getSnippetWithMatch(
+  result: SearchResult,
+  query: string
+): { snippet: string; matchStart: number; matchEnd: number } {
+  const text = result.item.text;
+  const lowerText = text.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+
+  // First try: exact phrase match
+  let matchIndex = lowerText.indexOf(lowerQuery);
+
+  // Second try: if query has multiple words, try to find them close together
+  if (matchIndex === -1 && query.includes(' ')) {
+    const words = lowerQuery.split(/\s+/).filter((w) => w.length > 2);
+    if (words.length > 0) {
+      // Find the first significant word
+      for (const word of words) {
+        const wordIndex = lowerText.indexOf(word);
+        if (wordIndex !== -1) {
+          matchIndex = wordIndex;
+          // Use the word length for highlighting
+          const snippetStart = Math.max(0, matchIndex - 50);
+          const snippetEnd = Math.min(text.length, matchIndex + word.length + 100);
+          let snippet = text.slice(snippetStart, snippetEnd);
+          let mStart = matchIndex - snippetStart;
+          let mEnd = mStart + word.length;
+
+          if (snippetStart > 0) {
+            snippet = '...' + snippet;
+            mStart += 3;
+            mEnd += 3;
+          }
+          if (snippetEnd < text.length) {
+            snippet = snippet + '...';
+          }
+
+          return { snippet, matchStart: mStart, matchEnd: mEnd };
+        }
+      }
+    }
+  }
+
+  // Found exact match
+  if (matchIndex !== -1) {
+    const snippetStart = Math.max(0, matchIndex - 50);
+    const snippetEnd = Math.min(text.length, matchIndex + query.length + 100);
+    let snippet = text.slice(snippetStart, snippetEnd);
+    let matchStart = matchIndex - snippetStart;
+    let matchEnd = matchStart + query.length;
+
+    if (snippetStart > 0) {
+      snippet = '...' + snippet;
+      matchStart += 3;
+      matchEnd += 3;
+    }
+    if (snippetEnd < text.length) {
+      snippet = snippet + '...';
+    }
+
+    return { snippet, matchStart, matchEnd };
+  }
+
+  // No match found, return beginning of text
+  const snippet = text.slice(0, 150) + (text.length > 150 ? '...' : '');
+  return { snippet, matchStart: -1, matchEnd: -1 };
+}
+
 function SearchResultItem({
   result,
   query,
   isActive,
-  occurrenceIndex,
 }: {
   result: SearchResult;
   query: string;
   isActive: boolean;
-  occurrenceIndex: number;
 }) {
   const { item } = result;
-  const snippet = getMatchSnippet(item.text, query);
 
-  // Add search query, occurrence index, and timestamp to URL so the page can highlight/scroll
-  // The timestamp ensures the effect re-runs even when navigating within the same page
-  // URL format: /chapter/slug?q=term&n=0&t=timestamp#section-id
+  // Get snippet with match position
+  const { snippet, matchStart, matchEnd } = getSnippetWithMatch(result, query);
+
+  // Build URL with search query for highlighting
   const [basePath, hash] = item.href.split('#');
   const separator = basePath.includes('?') ? '&' : '?';
   const timestamp = Date.now();
+  const params = `q=${encodeURIComponent(query)}&t=${timestamp}`;
   const hrefWithQuery = hash
-    ? `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}&t=${timestamp}#${hash}`
-    : `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}&t=${timestamp}`;
+    ? `${basePath}${separator}${params}#${hash}`
+    : `${basePath}${separator}${params}`;
 
   return (
     <li>
@@ -162,33 +258,38 @@ function SearchResultItem({
           <div className="text-xs truncate text-[var(--berkeley-blue)]">{item.section}</div>
         )}
         <div className="text-xs mt-1 line-clamp-2 text-[var(--muted-text)]">
-          <HighlightedText text={snippet} query={query} />
+          <HighlightedSnippet snippet={snippet} matchStart={matchStart} matchEnd={matchEnd} />
         </div>
       </Link>
     </li>
   );
 }
 
-function HighlightedText({ text, query }: { text: string; query: string }) {
-  if (!query.trim()) return <>{text}</>;
+function HighlightedSnippet({
+  snippet,
+  matchStart,
+  matchEnd,
+}: {
+  snippet: string;
+  matchStart: number;
+  matchEnd: number;
+}) {
+  // If no match position, just return the text
+  if (matchStart < 0 || matchEnd < 0 || matchStart >= snippet.length) {
+    return <>{snippet}</>;
+  }
 
-  const parts = text.split(new RegExp(`(${escapeRegex(query)})`, 'gi'));
+  const before = snippet.slice(0, matchStart);
+  const match = snippet.slice(matchStart, matchEnd);
+  const after = snippet.slice(matchEnd);
 
   return (
     <>
-      {parts.map((part, i) =>
-        part.toLowerCase() === query.toLowerCase() ? (
-          <mark key={i} className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] rounded px-0.5">
-            {part}
-          </mark>
-        ) : (
-          <span key={i}>{part}</span>
-        )
-      )}
+      {before}
+      <mark className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] rounded px-0.5">
+        {match}
+      </mark>
+      {after}
     </>
   );
-}
-
-function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

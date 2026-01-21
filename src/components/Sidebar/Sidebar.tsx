@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useLayoutEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useDevMode } from '@/providers/DevModeProvider';
 import SidebarSearch from './SidebarSearch';
@@ -41,15 +41,24 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
     return () => sidebar.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Restore scroll position on mount and after navigation
-  useLayoutEffect(() => {
+  // Restore scroll position after search results have loaded
+  useEffect(() => {
     const sidebar = sidebarRef.current;
     if (!sidebar) return;
 
-    const savedScroll = sessionStorage.getItem('sidebar-scroll');
-    if (savedScroll) {
-      sidebar.scrollTop = parseInt(savedScroll, 10);
-    }
+    const restoreScroll = () => {
+      const savedScroll = sessionStorage.getItem('sidebar-scroll');
+      if (savedScroll) {
+        sidebar.scrollTop = parseInt(savedScroll, 10);
+      }
+    };
+
+    // Listen for search ready event before restoring scroll
+    window.addEventListener('sidebarSearchReady', restoreScroll, { once: true });
+
+    return () => {
+      window.removeEventListener('sidebarSearchReady', restoreScroll);
+    };
   }, [currentSlug]);
 
   // Close sidebar on navigation (mobile)

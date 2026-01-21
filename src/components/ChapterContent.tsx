@@ -16,7 +16,6 @@ export default function ChapterContent({ html, chapterSlug }: ChapterContentProp
   const markInstanceRef = useRef<Mark | null>(null);
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q');
-  const occurrenceIndex = parseInt(searchParams.get('n') || '0', 10);
   const searchTimestamp = searchParams.get('t'); // Used to force re-run when navigating within same page
   const { devBorder } = useDevMode();
   const lastInitializedHtml = useRef<string>('');
@@ -80,7 +79,7 @@ export default function ChapterContent({ html, chapterSlug }: ChapterContentProp
     return () => container.removeEventListener('click', handleCollapseClick);
   }, [html]);
 
-  // Handle search query from URL - scroll to and highlight the specific match using mark.js
+  // Handle search query from URL - highlight ALL occurrences of the search term
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -100,42 +99,18 @@ export default function ChapterContent({ html, chapterSlug }: ChapterContentProp
     const timer = setTimeout(() => {
       if (!containerRef.current) return;
 
-      // Determine search context based on URL hash
-      // Since we only index body text (not headers), we search within the target section
-      const hash = window.location.hash.slice(1);
-      let searchContext: HTMLElement = containerRef.current;
-
-      if (hash) {
-        const hashElement = containerRef.current.querySelector(`#${CSS.escape(hash)}`);
-        if (hashElement) {
-          // Try to find a parent section element to narrow search context
-          const parentSection = hashElement.closest('section');
-          if (parentSection && containerRef.current.contains(parentSection)) {
-            searchContext = parentSection as HTMLElement;
-          }
-          // If no section wrapper, search the whole document but that's fine
-          // since we only index body text, not headers
-        }
-      }
-
-      // Create a new Mark instance for the search context
-      const contextMark = new Mark(searchContext);
-
-      const targetIndex = occurrenceIndex;
-
-      // Use mark.js to find and highlight the specific occurrence
-      let currentMatch = 0;
-      contextMark.mark(searchQuery, {
+      // Highlight ALL occurrences of the search term
+      markInstance.mark(searchQuery, {
         separateWordSearch: false,
         caseSensitive: false,
         acrossElements: true,
         className: 'search-highlight',
-        filter: () => {
-          const isTarget = currentMatch === targetIndex;
-          currentMatch++;
-          return isTarget; // Only mark the target occurrence
-        },
         each: (element: HTMLElement) => {
+          element.style.backgroundColor = 'var(--highlight-bg, #fef08a)';
+          element.style.color = 'var(--highlight-text, inherit)';
+          element.style.padding = '0.1em 0.2em';
+          element.style.borderRadius = '2px';
+
           // Expand any collapsed parent sections
           let parent = element.parentElement;
           while (parent && parent !== containerRef.current) {
@@ -144,26 +119,29 @@ export default function ChapterContent({ html, chapterSlug }: ChapterContentProp
             }
             parent = parent.parentElement;
           }
+        },
+        done: () => {
+          // After highlighting, scroll to the section anchor if present
+          const hash = window.location.hash;
+          if (hash) {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+              requestAnimationFrame(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              });
+            }
+          }
 
-          element.style.backgroundColor = 'var(--highlight-bg, #fef08a)';
-          element.style.color = 'var(--highlight-text, inherit)';
-          element.style.padding = '0.1em 0.2em';
-          element.style.borderRadius = '2px';
-
-          requestAnimationFrame(() => {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          });
-
-          // Remove highlight after 5 seconds
+          // Remove highlights after 10 seconds
           setTimeout(() => {
-            contextMark.unmark();
-          }, 5000);
+            markInstance.unmark();
+          }, 10000);
         },
       });
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, occurrenceIndex, searchTimestamp]);
+  }, [searchQuery, searchTimestamp]);
 
   return (
     <article
