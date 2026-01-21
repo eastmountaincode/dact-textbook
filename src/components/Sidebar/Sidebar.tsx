@@ -3,8 +3,7 @@
 import { useEffect, useRef, useLayoutEffect } from 'react';
 import Link from 'next/link';
 import { useDevMode } from '@/providers/DevModeProvider';
-// TODO: Search disabled temporarily - needs fix for navigating to specific occurrences
-// import SidebarSearch from './SidebarSearch';
+import SidebarSearch from './SidebarSearch';
 
 interface ChapterInfo {
   slug: string;
@@ -95,8 +94,8 @@ export default function Sidebar({ sections, currentSlug, isOpen, onToggle }: Sid
           ref={sidebarRef}
           className={`h-full overflow-y-auto bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] font-serif ${devBorder('blue')}`}
         >
-          {/* Search - disabled temporarily */}
-          {/* <SidebarSearch currentSlug={currentSlug} /> */}
+          {/* Search */}
+          <SidebarSearch currentSlug={currentSlug} />
 
           {/* Section List */}
           <nav className={`${devBorder('cyan')}`}>

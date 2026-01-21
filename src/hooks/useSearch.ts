@@ -18,11 +18,7 @@ export interface SearchResult {
 }
 
 const fuseOptions: IFuseOptions<SearchEntry> = {
-  keys: [
-    { name: 'title', weight: 20 },
-    { name: 'section', weight: 20 },
-    { name: 'text', weight: 10 },
-  ],
+  keys: ['text'], // Only search body content, not titles/headers
   includeScore: true,
   includeMatches: true,
   threshold: 0.1, // Stricter matching to reduce false positives

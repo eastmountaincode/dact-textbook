@@ -86,9 +86,39 @@ function parseChapter(html, slug) {
     const h2Content = section.slice(0, closingH2Idx);
     const afterH2 = section.slice(closingH2Idx + 5);
 
-    // Extract ID from the h2 tag (it was split, so check the original)
-    const idMatch = html.match(new RegExp(`<h2[^>]*id="([^"]+)"[^>]*>${escapeRegex(h2Content.slice(0, 50))}`));
-    const sectionId = idMatch ? idMatch[1] : null;
+    // Try to extract ID from the h2 tag itself
+    const h2IdMatch = html.match(new RegExp(`<h2[^>]*id="([^"]+)"[^>]*>${escapeRegex(h2Content.slice(0, 50))}`));
+    let sectionId = h2IdMatch ? h2IdMatch[1] : null;
+
+    // If h2 doesn't have an id, check if it's inside a section element with an id
+    // We need to find THIS specific h2 occurrence, not just any h2 with similar content
+    if (!sectionId) {
+      let targetH2Pos = -1;
+
+      // Count all h2s up to section i to find the position of the ith h2
+      const allH2Pattern = /<h2[^>]*>/g;
+      let matchNum = 0;
+      let lastMatch;
+      while ((lastMatch = allH2Pattern.exec(html)) !== null) {
+        matchNum++;
+        if (matchNum === i) {
+          targetH2Pos = lastMatch.index;
+          break;
+        }
+      }
+
+      if (targetH2Pos !== -1) {
+        // Look backwards from this h2 for a section tag with id
+        const beforeH2 = html.slice(Math.max(0, targetH2Pos - 200), targetH2Pos);
+        const sectionIdMatch = beforeH2.match(/<section[^>]*id="([^"]+)"[^>]*>\s*$/);
+        if (sectionIdMatch) {
+          sectionId = sectionIdMatch[1];
+        }
+      }
+    }
+
+    // Generate a fallback id if we still don't have one
+    const finalId = sectionId || `section-${i}`;
 
     // Get section title
     const sectionTitle = stripHtml(h2Content);
@@ -99,8 +129,8 @@ function parseChapter(html, slug) {
     if (sectionText.length < 20) continue;
 
     entries.push({
-      objectID: sectionId ? `${slug}#${sectionId}` : `${slug}#section-${i}`,
-      href: sectionId ? `/chapter/${slug}#${sectionId}` : `/chapter/${slug}`,
+      objectID: `${slug}#${finalId}`,
+      href: `/chapter/${slug}#${finalId}`,
       title: chapterTitle,
       section: sectionTitle,
       text: sectionText.slice(0, 2000),

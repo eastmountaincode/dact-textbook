@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import katex from 'katex';
+import Mark from 'mark.js';
 import { useDevMode } from '@/providers/DevModeProvider';
 
 interface ChapterContentProps {
@@ -12,8 +13,11 @@ interface ChapterContentProps {
 
 export default function ChapterContent({ html, chapterSlug }: ChapterContentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const markInstanceRef = useRef<Mark | null>(null);
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q');
+  const occurrenceIndex = parseInt(searchParams.get('n') || '0', 10);
+  const searchTimestamp = searchParams.get('t'); // Used to force re-run when navigating within same page
   const { devBorder } = useDevMode();
   const lastInitializedHtml = useRef<string>('');
 
@@ -76,110 +80,90 @@ export default function ChapterContent({ html, chapterSlug }: ChapterContentProp
     return () => container.removeEventListener('click', handleCollapseClick);
   }, [html]);
 
-  // Handle search query from URL - scroll to and highlight matching text
-  const occurrenceIndex = parseInt(searchParams.get('n') || '0', 10);
-
+  // Handle search query from URL - scroll to and highlight the specific match using mark.js
   useEffect(() => {
-    if (!searchQuery || !containerRef.current) return;
+    if (!containerRef.current) return;
 
+    // Create mark.js instance if needed
+    if (!markInstanceRef.current) {
+      markInstanceRef.current = new Mark(containerRef.current);
+    }
+
+    const markInstance = markInstanceRef.current;
+
+    // Always unmark previous highlights first
+    markInstance.unmark();
+
+    if (!searchQuery) return;
+
+    // Small delay to ensure content is rendered
     const timer = setTimeout(() => {
       if (!containerRef.current) return;
 
-      // Remove any previous search highlights
-      containerRef.current.querySelectorAll('.search-highlight').forEach((el) => {
-        const parent = el.parentNode;
-        if (parent) {
-          parent.replaceChild(document.createTextNode(el.textContent || ''), el);
-          parent.normalize();
+      // Determine search context based on URL hash
+      // Since we only index body text (not headers), we search within the target section
+      const hash = window.location.hash.slice(1);
+      let searchContext: HTMLElement = containerRef.current;
+
+      if (hash) {
+        const hashElement = containerRef.current.querySelector(`#${CSS.escape(hash)}`);
+        if (hashElement) {
+          // Try to find a parent section element to narrow search context
+          const parentSection = hashElement.closest('section');
+          if (parentSection && containerRef.current.contains(parentSection)) {
+            searchContext = parentSection as HTMLElement;
+          }
+          // If no section wrapper, search the whole document but that's fine
+          // since we only index body text, not headers
         }
-      });
+      }
 
-      // Search the entire document to find the nth occurrence
-      const walker = document.createTreeWalker(
-        containerRef.current,
-        NodeFilter.SHOW_TEXT,
-        null
-      );
+      // Create a new Mark instance for the search context
+      const contextMark = new Mark(searchContext);
 
-      let node: Text | null;
-      const searchLower = searchQuery.toLowerCase();
-      let currentOccurrence = 0;
-      let foundMatch = false;
+      const targetIndex = occurrenceIndex;
 
-      while ((node = walker.nextNode() as Text | null)) {
-        const nodeText = node.textContent || '';
-        let searchIndex = 0;
-
-        // Find all occurrences within this text node
-        while (searchIndex < nodeText.length) {
-          const index = nodeText.toLowerCase().indexOf(searchLower, searchIndex);
-          if (index === -1) break;
-
-          if (currentOccurrence === occurrenceIndex) {
-            // Expand any collapsed parent sections before highlighting
-            let parent = node.parentElement;
-            while (parent && parent !== containerRef.current) {
-              if (parent.classList.contains('callout-collapsed')) {
-                parent.classList.remove('callout-collapsed');
-              }
-              parent = parent.parentElement;
+      // Use mark.js to find and highlight the specific occurrence
+      let currentMatch = 0;
+      contextMark.mark(searchQuery, {
+        separateWordSearch: false,
+        caseSensitive: false,
+        acrossElements: true,
+        className: 'search-highlight',
+        filter: () => {
+          const isTarget = currentMatch === targetIndex;
+          currentMatch++;
+          return isTarget; // Only mark the target occurrence
+        },
+        each: (element: HTMLElement) => {
+          // Expand any collapsed parent sections
+          let parent = element.parentElement;
+          while (parent && parent !== containerRef.current) {
+            if (parent.classList.contains('callout-collapsed')) {
+              parent.classList.remove('callout-collapsed');
             }
-
-            // Create a highlight mark element
-            const range = document.createRange();
-            range.setStart(node, index);
-            range.setEnd(node, index + searchQuery.length);
-
-            const highlight = document.createElement('mark');
-            highlight.className = 'search-highlight';
-            highlight.style.backgroundColor = 'var(--highlight-bg, #fef08a)';
-            highlight.style.color = 'var(--highlight-text, inherit)';
-            highlight.style.padding = '0.1em 0.2em';
-            highlight.style.borderRadius = '2px';
-            highlight.style.boxShadow = '0 0 0 2px var(--highlight-bg, #fef08a)';
-
-            try {
-              range.surroundContents(highlight);
-            } catch {
-              // If surroundContents fails (crosses element boundaries), fall back to selection
-              const sel = window.getSelection();
-              sel?.removeAllRanges();
-              sel?.addRange(range);
-              setTimeout(() => sel?.removeAllRanges(), 2000);
-            }
-
-            // Wait a frame for layout to update after expanding, then scroll
-            requestAnimationFrame(() => {
-              const rect = highlight.getBoundingClientRect();
-              window.scrollTo({
-                top: window.scrollY + rect.top - 150,
-                behavior: 'smooth'
-              });
-            });
-
-            // Remove highlight after 3 seconds
-            setTimeout(() => {
-              if (highlight.parentNode) {
-                const text = document.createTextNode(highlight.textContent || '');
-                highlight.parentNode.replaceChild(text, highlight);
-                text.parentNode?.normalize();
-              }
-            }, 3000);
-
-            foundMatch = true;
-            break;
+            parent = parent.parentElement;
           }
 
-          currentOccurrence++;
-          searchIndex = index + 1;
-        }
+          element.style.backgroundColor = 'var(--highlight-bg, #fef08a)';
+          element.style.color = 'var(--highlight-text, inherit)';
+          element.style.padding = '0.1em 0.2em';
+          element.style.borderRadius = '2px';
 
-        if (foundMatch) break;
-      }
-    }, 300);
+          requestAnimationFrame(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+
+          // Remove highlight after 5 seconds
+          setTimeout(() => {
+            contextMark.unmark();
+          }, 5000);
+        },
+      });
+    }, 400);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, occurrenceIndex]);
+  }, [searchQuery, occurrenceIndex, searchTimestamp]);
 
   return (
     <article

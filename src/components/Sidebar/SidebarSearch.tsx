@@ -35,14 +35,14 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
   const showSearchResults = debouncedQuery.trim().length > 0 && results.length > 0;
   const showNoResults = debouncedQuery.trim().length > 0 && !isLoading && results.length === 0;
 
-  // Calculate occurrence index for each result - tracks position within same chapter
+  // Calculate occurrence index for each result - tracks position within same section (same href including hash)
   const resultsWithOccurrence = results.slice(0, 10).map((result, index) => {
-    // Count how many previous results have the same base path (same chapter)
-    const basePath = result.item.href.split('#')[0].split('?')[0];
+    // Count how many previous results have the same full href (including section anchor)
+    // This tracks occurrences within the same section, not just the same chapter
+    const href = result.item.href;
     let occurrenceIndex = 0;
     for (let i = 0; i < index; i++) {
-      const prevBasePath = results[i].item.href.split('#')[0].split('?')[0];
-      if (prevBasePath === basePath) {
+      if (results[i].item.href === href) {
         occurrenceIndex++;
       }
     }
@@ -72,12 +72,23 @@ export default function SidebarSearch({ currentSlug }: SidebarSearchProps) {
             placeholder="Search content..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-base rounded-lg bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--berkeley-blue)] focus:border-transparent"
+            className="w-full pl-10 pr-10 py-2 text-base rounded-lg bg-[var(--input-bg)] border border-[var(--input-border)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--berkeley-blue)] focus:border-transparent"
           />
-          {isLoading && (
+          {isLoading ? (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
               <div className="w-4 h-4 border-2 border-[var(--input-border)] border-t-[var(--berkeley-blue)] rounded-full animate-spin" />
             </div>
+          ) : searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded hover:bg-[var(--sidebar-hover)] text-[var(--muted-text)] hover:text-[var(--foreground)] cursor-pointer"
+              aria-label="Clear search"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           )}
         </div>
       </div>
@@ -130,13 +141,15 @@ function SearchResultItem({
   const { item } = result;
   const snippet = getMatchSnippet(item.text, query);
 
-  // Add search query and occurrence index to URL so the page can highlight/scroll to the specific match
-  // URL format: /chapter/slug?q=term&n=0#section-id (query params before hash)
+  // Add search query, occurrence index, and timestamp to URL so the page can highlight/scroll
+  // The timestamp ensures the effect re-runs even when navigating within the same page
+  // URL format: /chapter/slug?q=term&n=0&t=timestamp#section-id
   const [basePath, hash] = item.href.split('#');
   const separator = basePath.includes('?') ? '&' : '?';
+  const timestamp = Date.now();
   const hrefWithQuery = hash
-    ? `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}#${hash}`
-    : `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}`;
+    ? `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}&t=${timestamp}#${hash}`
+    : `${basePath}${separator}q=${encodeURIComponent(query)}&n=${occurrenceIndex}&t=${timestamp}`;
 
   return (
     <li>

@@ -1,28 +1,28 @@
 [
   {
     "objectID": "about-the-author#section-1",
-    "href": "/chapter/about-the-author",
+    "href": "/chapter/about-the-author#section-1",
     "title": "about the author",
     "section": "Gautam Sethi",
     "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
   },
   {
     "objectID": "about-the-author#section-2",
-    "href": "/chapter/about-the-author",
+    "href": "/chapter/about-the-author#section-2",
     "title": "about the author",
     "section": "Noor Sethi",
     "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis."
   },
   {
     "objectID": "about-the-author#section-3",
-    "href": "/chapter/about-the-author",
+    "href": "/chapter/about-the-author#section-3",
     "title": "about the author",
     "section": "Contact",
     "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
   },
   {
     "objectID": "about-the-author#section-4",
-    "href": "/chapter/about-the-author",
+    "href": "/chapter/about-the-author#section-4",
     "title": "about the author",
     "section": "Acknowledgments",
     "text": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem."
@@ -49,15 +49,15 @@
     "text": "Bounding Outliers Understanding the behavior of extreme values, or outliers, is crucial in statistical analysis. In real-world data, we often encounter observations that lie far from the center of a distribution. While we may not know the exact probability of such extreme events, probability inequalities allow us to establish upper bounds on how likely they are to occur. This chapter introduces two fundamental inequalities—Markov’s inequality and Chebyshev’s inequality—that help us bound the probability of outliers using only basic distributional properties."
   },
   {
-    "objectID": "bounds-outliers#section-2",
-    "href": "/chapter/bounds-outliers",
+    "objectID": "bounds-outliers#question",
+    "href": "/chapter/bounds-outliers#question",
     "title": "Bounding Outliers",
     "section": "Question",
     "text": "Why do we need mathematical tools to bound the probability of outliers?"
   },
   {
-    "objectID": "bounds-outliers#section-3",
-    "href": "/chapter/bounds-outliers",
+    "objectID": "bounds-outliers#answer",
+    "href": "/chapter/bounds-outliers#answer",
     "title": "Bounding Outliers",
     "section": "Answer",
     "text": "In many practical situations, we don’t know the complete probability distribution of a random variable. However, we often know simpler properties like the mean or variance. Probability inequalities allow us to make rigorous statements about tail probabilities (the likelihood of extreme values) using only this limited information. This is invaluable for risk assessment, quality control, and understanding the reliability of statistical estimates. Consider a manufacturing process where you’re monitoring the weight of products. You know the average weight is 500 grams, but you don’t know the full distribution of weights. If a product weighs 1000 grams or more, it might indicate a defect. How can you bound the probability of such an outlier? This is precisely the type of question that Markov’s inequality addresses."
@@ -70,22 +70,22 @@
     "text": "Markov’s inequality provides a remarkably simple bound on tail probabilities for non-negative random variables, requiring only knowledge of the mean."
   },
   {
-    "objectID": "bounds-outliers#section-5",
-    "href": "/chapter/bounds-outliers",
+    "objectID": "bounds-outliers#definition",
+    "href": "/chapter/bounds-outliers#definition",
     "title": "Bounding Outliers",
     "section": "Definition",
     "text": "Markov’s Inequality : Let Y be a random variable defined over the positive subspace of \\mathbb{R}^1 . Then for any positive constant a > 0 , \\mathrm{P}(Y \\geq a) \\leq \\frac{\\mathbb{E}(Y)}{a} {#eq-markov} This inequality tells us that the probability of a non-negative random variable exceeding some value a is at most the mean divided by a . The larger the value of a relative to the mean, the smaller this upper bound becomes."
   },
   {
-    "objectID": "bounds-outliers#section-6",
-    "href": "/chapter/bounds-outliers",
+    "objectID": "bounds-outliers#question-1",
+    "href": "/chapter/bounds-outliers#question-1",
     "title": "Bounding Outliers",
     "section": "Question",
     "text": "What does Markov’s inequality tell us intuitively?"
   },
   {
-    "objectID": "bounds-outliers#section-7",
-    "href": "/chapter/bounds-outliers",
+    "objectID": "bounds-outliers#answer-1",
+    "href": "/chapter/bounds-outliers#answer-1",
     "title": "Bounding Outliers",
     "section": "Answer",
     "text": "Markov’s inequality formalizes the intuition that if a non-negative random variable has a small mean, it’s unlikely to take on very large values. For instance, if the average value is 10, the probability of seeing a value of 100 or more cannot exceed 10/100 = 0.1, or 10%. Example: Manufacturing Quality Control Let’s return to our manufacturing example. Suppose the average product weight is \\mathbb{E}(Y) = 500 grams, and all products have non-negative weight. We want to know: what’s the maximum probability that a randomly selected product weighs 1000 grams or more? Using Markov’s inequality with a = 1000 : \\mathrm{P}(Y \\geq 1000) \\leq \\frac{500}{1000} = 0.5 This tells us that at most 50% of products can weigh 1000 grams or more. While this bound might seem loose, remember that we derived it using only the mean—no other information about the distribution! We can also ask: what’s the probability of a product weighing at least twice the average? This chapter is unfinished."
@@ -140,8 +140,8 @@
     "text": "To begin, let’s establish some basic foundations. When people make dichotomous (two-choice) decisions, we can describe the outcome using the Bernoulli distribution ."
   },
   {
-    "objectID": "dichotomous-choice#section-6",
-    "href": "/chapter/dichotomous-choice",
+    "objectID": "dichotomous-choice#definition",
+    "href": "/chapter/dichotomous-choice#definition",
     "title": "Dichotomous Choice Modeling",
     "section": "Definition",
     "text": "For a dichotomous outcome Y that takes the value 1 with probability p and the value 0 with probability (1-p) , the probability function is: f(y) = p^y(1-p)^{1-y} The expected value of Y is simply: E(Y) = (1-p) \\times 0 + p \\times 1 = p In our commuting example, Y = 1 represents choosing transit and Y = 0 represents choosing a car. The probability p represents the probability that an individual will choose transit, given their specific circumstances. Following standard econometric practice, we decompose the observed outcome into a deterministic part (what we can predict) and a stochastic part (random variation): Y_i = p_i + \\epsilon_i where p_i is the predicted probability for individual i and \\epsilon_i is the error term. The key question becomes: How does the difference in commute times relate to p ?"
@@ -168,15 +168,15 @@
     "text": "Let’s begin with a fundamental question that underlies all of statistical inference."
   },
   {
-    "objectID": "estimating-mean#section-2",
-    "href": "/chapter/estimating-mean",
+    "objectID": "estimating-mean#question",
+    "href": "/chapter/estimating-mean#question",
     "title": "Estimating the population mean",
     "section": "Question",
     "text": "How do we know that the sample mean is a reliable estimator of the population mean? Could there be systematic error in our estimates?"
   },
   {
-    "objectID": "estimating-mean#section-3",
-    "href": "/chapter/estimating-mean",
+    "objectID": "estimating-mean#answer",
+    "href": "/chapter/estimating-mean#answer",
     "title": "Estimating the population mean",
     "section": "Answer",
     "text": "The sample mean is unbiased , meaning that if we could take infinitely many samples and calculate the mean for each one, the average of all those sample means would exactly equal the population mean. This property holds regardless of sample size or the shape of the population distribution—it’s assumption-free except for requiring that the population mean is finite. Understanding Unbiasedness An estimator is unbiased if its expected value equals the parameter it’s trying to estimate. For the sample mean \\bar{Y} estimating the population mean \\mu , we want to show: E[\\bar{Y}] = \\mu This is a powerful property because it guarantees that our estimator has no systematic tendency to overestimate or underestimate the true parameter. Some samples will give us values above \\mu , others below, but on average—across infinitely many samples—we hit the target exactly. The Proof The proof is remarkably elegant. Let’s work through it step by step. We start with the definition of the sample mean: \\bar{Y} = \\frac{Y_1 + Y_2 + \\cdots + Y_n}{n} This chapter is unfinished."
@@ -196,22 +196,22 @@
     "text": "Foundations of Frequentist Statistics In this chapter, we embark on a journey into the heart of frequentist statistical inference—a framework that dominates modern empirical research. At its core, frequentist statistics is about making observations from a sample and then drawing inferences about the broader population from which that sample was drawn. The fundamental question we seek to answer is: How confident can we be that the patterns we observe in our limited sample reflect true patterns in the population? By the end of this chapter, you will understand the foundational concepts that underpin frequentist inference, including the philosophy of repeated sampling, the nature of estimators, and the mathematical criteria we use to distinguish good estimators from poor ones."
   },
   {
-    "objectID": "foundations-frequentist#section-2",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#question",
+    "href": "/chapter/foundations-frequentist#question",
     "title": "Foundations of Frequentist Statistics",
     "section": "Question",
     "text": "What are we really doing in inferential statistics?"
   },
   {
-    "objectID": "foundations-frequentist#section-3",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#answer",
+    "href": "/chapter/foundations-frequentist#answer",
     "title": "Foundations of Frequentist Statistics",
     "section": "Answer",
     "text": "Inferential statistics is fundamentally about making observations in sample data and then attempting to extrapolate causal connections or patterns to the population data . When we successfully extrapolate these connections, we say our results are statistically significant . When we cannot extrapolate with confidence, we say our results are not statistically significant . This distinction—between what we observe in our sample and what we can confidently claim about the population—lies at the heart of all inferential statistics. But what exactly are we making claims about when we talk about populations? Population Parameters vs. Sample Statistics When we make claims about a population, we are not making claims about individual observations. After all, populations are conceptually infinite in size. Instead, we make claims about specific parameters of the population’s distribution. The two parameters we encounter most frequently are: The population mean ( \\mu ): This is by far the most common parameter we test hypotheses about in applied statistics. The population variance ( \\sigma^2 ): This parameter is crucial because tests for the population mean often depend on our ability to estimate the population variance. Because we never truly know the values of \\mu or \\sigma^2 , we must estimate them using sample data. The corresponding quantities we calculate from our sample are: Sample mean ( \\bar{y} ): The analog to the population mean Sample variance ( s^2 ): The analog to the population variance"
   },
   {
-    "objectID": "foundations-frequentist#section-4",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#a-critical-distinction",
+    "href": "/chapter/foundations-frequentist#a-critical-distinction",
     "title": "Foundations of Frequentist Statistics",
     "section": "A Critical Distinction",
     "text": "When we call the sample mean and sample variance “analogs” or “counterparts” to their population equivalents, we mean only that they correspond conceptually. We are not claiming they are equal or even necessarily good estimates. Establishing which sample statistics make good estimators of population parameters is precisely what this chapter is about."
@@ -224,8 +224,8 @@
     "text": "Before we dive into the philosophy of estimation, we need to develop some mathematical machinery. In statistics, we routinely transform data—we take numbers, apply formulas to them, and generate new numbers. Understanding how these transformations affect the mean and variance of our data is essential. Affine Transformations Consider a simple but powerful type of transformation called an affine transformation . If we have a random variable X with mean \\bar{x} and variance s^2 , we might create a new variable: Y = mX + c where m is a multiplicative constant (the slope) and c is an additive constant (the intercept). This is exactly the form of a linear equation you’ve seen since high school algebra. The question is: if we know the mean and variance of X , what are the mean and variance of Y ? We can decompose this affine transformation into two simpler operations: Translation : X \\rightarrow X + c (adding a constant) Linear transformation : X \\rightarrow mX (multiplying by a constant) Properties of Translation When you add a constant c to every value in your dataset, creating Y = X + c : \\begin{aligned} \\text{Mean of } Y &= \\bar{x} + c \\\\ \\text{Variance of } Y &= s^2 \\end{aligned} The mean shifts by exactly c , but the variance remains unchanged. Why? Because variance measures the spread of data around the mean, and when you shift all values by the same amount, their relative positions don’t change."
   },
   {
-    "objectID": "foundations-frequentist#section-6",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#connecting-to-earlier-concepts",
+    "href": "/chapter/foundations-frequentist#connecting-to-earlier-concepts",
     "title": "Foundations of Frequentist Statistics",
     "section": "Connecting to Earlier Concepts",
     "text": "You’ve already encountered this idea when we discussed the z -transformation. When we subtract the mean from a variable, we’re performing a translation that shifts the entire distribution to have mean zero. The shape and spread of the distribution remain the same. Properties of Linear Transformation When you multiply every value by a constant m , creating Y = mX : \\begin{aligned} \\text{Mean of } Y &= m\\bar{x} \\\\ \\text{Variance of } Y &= m^2 s^2 \\\\ \\text{Standard deviation of } Y &= |m| s \\end{aligned} Notice that the variance is multiplied by m^2 , not m . This occurs because variance involves squared deviations, so a multiplicative constant gets squared in the process. Combining Both Transformations For the full affine transformation Y = mX + c : \\begin{aligned} \\text{Mean of } Y &= m\\bar{x} + c \\\\ \\text{Variance of } Y &= m^2 s^2 \\\\ \\text{Standard deviation of } Y &= |m| s \\end{aligned} These formulas will prove invaluable as we develop more sophisticated statistical techniques."
@@ -238,15 +238,15 @@
     "text": "We now arrive at the conceptual heart of frequentist statistics. The entire edifice of frequentist inference rests on an imaginary exercise: repeated sampling ."
   },
   {
-    "objectID": "foundations-frequentist#section-8",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#the-thought-experiment",
+    "href": "/chapter/foundations-frequentist#the-thought-experiment",
     "title": "Foundations of Frequentist Statistics",
     "section": "The Thought Experiment",
     "text": "Imagine that we could: Draw a random sample from the population Calculate some statistic from that sample Return the sample to the population Draw another random sample Calculate the statistic again Repeat this process infinitely many times This thought experiment—sampling repeatedly from the same population—forms the foundation for how we evaluate estimators in frequentist statistics. Here’s the crucial point: in practice, we only sample once . But theoretically, we imagine what would happen if we could sample infinitely many times. The behavior of our estimator across these hypothetical repeated samples tells us whether it’s a good estimator or not. The Concept of an Estimator An estimator is simply a formula that we apply to sample data to estimate a population parameter. Importantly, there are infinitely many possible estimators for any given parameter. For example, suppose we want to estimate the population mean \\mu . Here are just a few of the infinitely many estimators we could choose: The first observation: \\hat{\\mu}_1 = y_1 The sum of the first two observations: \\hat{\\mu}_2 = y_1 + y_2 The cube of the first observation: \\hat{\\mu}_3 = y_1^3 The fourth power of the seventh observation times the sine of the second: \\hat{\\mu}_4 = y_7^4 \\times \\sin(y_2) The sample mean: \\hat{\\mu}_5 = \\bar{y} = \\frac{1}{n}\\sum_{i=1}^{n} y_i Most of these are obviously terrible estimators. But the point is that we can construct any formula we want, and each formula defines a different estimator. The set of all possible estimators is infinite. So how do we choose among them? How do we determine which estimators are “good” and which are “bad”? The answer lies in examining the sampling distribution of each estimator. Sampling Distributions For any estimator, we can imagine the repeated sampling process: Draw a sample of size n Apply the estimator to get an estimate Record that estimate Repeat infinitely many times The distribution of all these estimates is called the sampling distrib"
   },
   {
-    "objectID": "foundations-frequentist#section-9",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#key-insight",
+    "href": "/chapter/foundations-frequentist#key-insight",
     "title": "Foundations of Frequentist Statistics",
     "section": "Key Insight",
     "text": "The sampling distribution is a theoretical construct. We never actually observe it because we only sample once in practice. But by imagining what it would look like, we can develop mathematical criteria for judging the quality of different estimators."
@@ -266,50 +266,50 @@
     "text": "We’ve just discovered our first desirable property of estimators: unbiasedness . Let’s now systematically examine the key properties that statisticians use to evaluate estimators. Unbiasedness: Accuracy on Average"
   },
   {
-    "objectID": "foundations-frequentist#section-12",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#definition",
+    "href": "/chapter/foundations-frequentist#definition",
     "title": "Foundations of Frequentist Statistics",
     "section": "Definition",
     "text": "An estimator \\hat{\\theta} is unbiased for a parameter \\theta if its expected value equals the parameter: \\mathbb{E}[\\hat{\\theta}] = \\theta In words: on average across all possible samples, an unbiased estimator gets the right answer. Any single estimate from an unbiased estimator might be far from the truth. But the errors balance out—sometimes we overestimate, sometimes we underestimate, and on average we hit the bullseye."
   },
   {
-    "objectID": "foundations-frequentist#section-13",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#question-1",
+    "href": "/chapter/foundations-frequentist#question-1",
     "title": "Foundations of Frequentist Statistics",
     "section": "Question",
     "text": "Is the sample mean unbiased?"
   },
   {
-    "objectID": "foundations-frequentist#section-14",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#answer-1",
+    "href": "/chapter/foundations-frequentist#answer-1",
     "title": "Foundations of Frequentist Statistics",
     "section": "Answer",
     "text": "Yes! The sample mean \\bar{Y} = \\frac{1}{n}\\sum_{i=1}^{n} Y_i is an unbiased estimator of the population mean \\mu . Here’s the proof: \\mathbb{E}[\\bar{Y}] = \\mathbb{E}\\left[\\frac{1}{n}\\sum_{i=1}^{n} Y_i\\right] = \\frac{1}{n}\\sum_{i=1}^{n} \\mathbb{E}[Y_i] = \\frac{1}{n} \\cdot n\\mu = \\mu Each Y_i is drawn from the population, so \\mathbb{E}[Y_i] = \\mu for all i . The Abundance of Unbiased Estimators Here’s something remarkable: for a sample of size 2, there are infinitely many unbiased estimators of the population mean! Any weighted average of the form: \\hat{\\mu} = w_1 Y_1 + w_2 Y_2 \\quad \\text{where } w_1 + w_2 = 1 is an unbiased estimator. For example: - 0.5 Y_1 + 0.5 Y_2 (the sample mean) - 0.1 Y_1 + 0.9 Y_2 - 0.8 Y_1 + 0.2 Y_2 All of these are unbiased! So if unbiasedness is all we care about, we could pick any of these weighted averages. But surely some are better than others. This leads us to our second criterion. Efficiency: Achieving Precision Look carefully at the sampling distributions of different unbiased estimators. You’ll notice something important: some have smaller variance than others. An estimator with smaller variance gives us more precise estimates—they cluster more tightly around the parameter value."
   },
   {
-    "objectID": "foundations-frequentist#section-15",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#definition-1",
+    "href": "/chapter/foundations-frequentist#definition-1",
     "title": "Foundations of Frequentist Statistics",
     "section": "Definition",
     "text": "Among all unbiased estimators of a parameter, the most efficient estimator is the one with the smallest variance in its sampling distribution. Consider our sample of size 2 from the population \\{1, 2, 3\\} . The variances of different unbiased estimators are: Estimator Variance Y_1 (first observation only) \\sigma^2 = 2/3 Y_2 (second observation only) \\sigma^2 = 2/3 0.1Y_1 + 0.9Y_2 0.82\\sigma^2 0.8Y_1 + 0.2Y_2 0.68\\sigma^2 \\bar{Y} = \\frac{Y_1 + Y_2}{2} \\frac{\\sigma^2}{2} = 1/3 The sample mean has the smallest variance! It turns out that among all unbiased estimators of the population mean, the sample mean is the most efficient—it has the minimum possible variance. This remarkable result is known as the Gauss-Markov theorem . Consistency: Convergence with More Data Both unbiasedness and efficiency are properties that hold for a fixed sample size. But what happens as we gather more data? This brings us to our third fundamental property."
   },
   {
-    "objectID": "foundations-frequentist#section-16",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#definition-2",
+    "href": "/chapter/foundations-frequentist#definition-2",
     "title": "Foundations of Frequentist Statistics",
     "section": "Definition",
     "text": "An estimator \\hat{\\theta} is consistent if it converges in probability to the parameter value as the sample size approaches infinity. Formally, for any \\epsilon > 0 : \\lim_{n \\to \\infty} P(|\\hat{\\theta} - \\theta| > \\epsilon) = 0 In plain language: as we gather more data, the probability that our estimate is far from the parameter approaches zero. For the sample mean, we can see consistency directly from its variance: \\mathrm{Var}(\\bar{Y}) = \\frac{\\sigma^2}{n} As n increases, the variance shrinks toward zero. The sampling distribution collapses to a spike at \\mu . This is the Law of Large Numbers —one of the most fundamental theorems in probability and statistics."
   },
   {
-    "objectID": "foundations-frequentist#section-17",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#definition-3",
+    "href": "/chapter/foundations-frequentist#definition-3",
     "title": "Foundations of Frequentist Statistics",
     "section": "Definition",
     "text": "The Law of Large Numbers : As the sample size n approaches infinity, the sample mean \\bar{Y} converges to the population mean \\mu . Formally: \\bar{Y} \\xrightarrow{P} \\mu \\quad \\text{as } n \\to \\infty This theorem is what makes empirical knowledge possible. It tells us that our effort in collecting more data is worthwhile—more data leads to better estimates."
   },
   {
-    "objectID": "foundations-frequentist#section-18",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#the-gamblers-fallacy",
+    "href": "/chapter/foundations-frequentist#the-gamblers-fallacy",
     "title": "Foundations of Frequentist Statistics",
     "section": "The Gambler’s Fallacy",
     "text": "The Law of Large Numbers is often misunderstood. Consider flipping a fair coin ten times and getting heads all ten times. Many people reason: “The coin should come up heads 50% of the time in the long run. I’ve gotten too many heads, so tails are ‘due’—the next flip is more likely to be tails.” This reasoning is completely wrong ! Each flip is independent. The probability of heads on the eleventh flip is still exactly 50%. The coin has no memory and no desire for balance. The Law of Large Numbers says that as n grows large, the probability that the proportion deviates far from 50% becomes small. It does not say that outcomes will “even out” in any deterministic way."
@@ -329,8 +329,8 @@
     "text": "When properties conflict, statisticians must choose which to prioritize. The Classical Approach: Prioritizing Unbiasedness Traditional frequentist statistics often prioritizes unbiasedness. The reasoning: if our method is systematically biased, we’re building error into our procedure from the start. Better to be right on average with high variance than systematically wrong with low variance. Modern Approaches: The Bias-Variance Tradeoff Sometimes we might accept a small amount of bias to achieve a large reduction in variance. This insight drives modern techniques like ridge regression and regularization methods."
   },
   {
-    "objectID": "foundations-frequentist#section-21",
-    "href": "/chapter/foundations-frequentist",
+    "objectID": "foundations-frequentist#definition-4",
+    "href": "/chapter/foundations-frequentist#definition-4",
     "title": "Foundations of Frequentist Statistics",
     "section": "Definition",
     "text": "The mean squared error (MSE) combines bias and variance into a single measure: \\text{MSE}(\\hat{\\theta}) = \\mathbb{E}[(\\hat{\\theta} - \\theta)^2] = \\text{Bias}(\\hat{\\theta})^2 + \\mathrm{Var}(\\hat{\\theta}) An estimator with small MSE might have some bias but sufficiently low variance that its overall performance is superior to an unbiased but high-variance alternative. The bias-variance tradeoff, quantified through MSE, has become one of the central organizing principles of modern statistical learning."
@@ -357,15 +357,15 @@
     "text": "The Purpose of Data Analytics In this chapter, we’ll explore the fundamental purpose and scope of data analytics. By the end of this chapter, you will understand: The distinction between correlation and causation How patterns emerge from randomness The difference between population and sample data The two primary goals of statistical analysis The philosophical divide between frequentist and Bayesian approaches"
   },
   {
-    "objectID": "intro-data-analytics#section-2",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#question",
+    "href": "/chapter/intro-data-analytics#question",
     "title": "The Purpose of Data Analytics",
     "section": "Question",
     "text": "What is the ultimate goal of data analytics? Data analytics is fundamentally about understanding cause and effect relationships in the world. While it’s easy to observe that two variables move together—that they are correlated—establishing causation is far more challenging and far more valuable. Consider a simple example: we might observe that ice cream sales and drowning incidents are correlated. They both increase during summer months. But does ice cream cause drowning? Of course not. Both are caused by a third factor: warm weather, which leads people to buy ice cream and also to swim more frequently."
   },
   {
-    "objectID": "intro-data-analytics#section-3",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#important-distinction",
+    "href": "/chapter/intro-data-analytics#important-distinction",
     "title": "The Purpose of Data Analytics",
     "section": "Important Distinction",
     "text": "Correlation does not imply causation. Two variables can move together without one causing the other. Establishing causal relationships requires careful analysis and often experimental design. The distinction between correlation and causation is not merely academic—it has profound implications for how we understand the world and make decisions. Consider the famous closing lines of Robert Frost’s poem “The Road Not Taken”: Two roads diverged in a wood, and I— I took the one less traveled by, And that has made all the difference. Frost claims that taking the road less traveled “made all the difference” to his life. But as statisticians, we must ask: how does he know? To establish causation, we would need a counterfactual —an alternative version of his life where he took the other road. Without observing this counterfactual, Frost cannot definitively claim that his choice caused the difference in his life’s trajectory. Perhaps his life would have turned out similarly regardless of which road he chose. Or perhaps taking the more traveled road would have led to even better outcomes. This challenge—the impossibility of observing counterfactuals in our own lives—is precisely what makes causal inference so difficult and why rigorous statistical methods are essential. In policy work—especially environmental policy and climate science—we need causal understanding. When we ask “how much warming will occur if we add X more tons of carbon dioxide to the atmosphere?”, we’re asking a causal question. The relationship between greenhouse gas concentrations and temperature change is incredibly complicated, random, and stochastic. Yet climate scientists have developed good estimates of what is called the global warming potential of different greenhouse gases. These estimates are based on a causal understanding of physical processes, not mere correlation. This is why data analytics matters: we want to establish cause and effect, not just observe patterns. We’re here to understand how th"
@@ -378,36 +378,36 @@
     "text": "One of the most remarkable features of statistical analysis is how patterns emerge from what initially appears to be pure randomness. When we look at individual observations, they often seem chaotic and unpredictable. But when we collect enough observations, macro-level patterns begin to reveal themselves."
   },
   {
-    "objectID": "intro-data-analytics#section-5",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#question-1",
+    "href": "/chapter/intro-data-analytics#question-1",
     "title": "The Purpose of Data Analytics",
     "section": "Question",
     "text": "How can predictable patterns emerge from random individual events?"
   },
   {
-    "objectID": "intro-data-analytics#section-6",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#answer",
+    "href": "/chapter/intro-data-analytics#answer",
     "title": "The Purpose of Data Analytics",
     "section": "Answer",
     "text": "While individual events may be unpredictable, the aggregate behavior of many random events often follows predictable patterns. This is the fundamental insight of probability theory—that randomness at the micro level produces regularity at the macro level. Consider the classic example of a Galton board (sometimes called a bean machine). When a single ball drops through the board, hitting pegs as it falls, its path is essentially random—at each peg, it bounces left or right unpredictably. We cannot predict where any individual ball will land. However, when we drop hundreds or thousands of balls, a clear pattern emerges: they pile up in the shape of a bell curve, forming what statisticians call the normal distribution . The randomness of individual ball drops gives way to a predictable aggregate pattern. This emergence of order from randomness is not magic—it’s mathematics. And it’s the foundation of statistical inference."
   },
   {
-    "objectID": "intro-data-analytics#section-8",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#beware-of-normalitis",
+    "href": "/chapter/intro-data-analytics#beware-of-normalitis",
     "title": "The Purpose of Data Analytics",
     "section": "Beware of Normalitis",
     "text": "One common misconception in statistics is that every pattern follows the normal distribution (the familiar bell curve). This is simply not true. While the normal distribution is important and widely applicable, it is just one of dozens of probability distributions used in statistics. I call the mistaken belief that everything is normally distributed normalitis —and it’s a condition to avoid. Different real-world phenomena follow different distributions: Bernoulli distribution : Events with only two possible outcomes (coin flip: heads or tails; ball at a peg: left or right) Binomial distribution : The number of successes in a fixed number of independent Bernoulli trials (how many heads in 10 coin flips?) Poisson distribution : Count data and waiting times (how long you wait for the bus each day; how many customers arrive per hour) Normal distribution : Many continuous phenomena in nature and society (heights, test scores, measurement errors) These distributions are often mathematically related. For instance, when you sum up many independent Bernoulli trials (each ball on the Galton board making left-right decisions), you get a binomial distribution. And when the number of trials becomes very large, that binomial distribution approximates the normal distribution."
   },
   {
-    "objectID": "intro-data-analytics#section-9",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#question-2",
+    "href": "/chapter/intro-data-analytics#question-2",
     "title": "The Purpose of Data Analytics",
     "section": "Question",
     "text": "The word “Poisson” comes from French. What does it mean, and who was Poisson?"
   },
   {
-    "objectID": "intro-data-analytics#section-10",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#answer-1",
+    "href": "/chapter/intro-data-analytics#answer-1",
     "title": "The Purpose of Data Analytics",
     "section": "Answer",
     "text": "“Poisson” means “fish” in French (related to “Pisces,” the astrological sign). Siméon Denis Poisson was a French mathematician and physicist who discovered this particular distribution, which describes the probability of a given number of events occurring in a fixed interval of time or space. Throughout this course, we’ll work with many different distributions. Each captures a different kind of pattern in data. The key is learning to recognize which pattern fits which situation—and to never assume that one pattern applies universally."
@@ -420,8 +420,8 @@
     "text": "In statistical analysis, we make a crucial distinction between two types of data:"
   },
   {
-    "objectID": "intro-data-analytics#section-12",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#definition",
+    "href": "/chapter/intro-data-analytics#definition",
     "title": "The Purpose of Data Analytics",
     "section": "Definition",
     "text": "Population : All possible data points that exist in the world for a given phenomenon. This includes data that has been collected, data that could be collected, and data that will exist in the future. Sample : A subset of the population that we have actually collected and can analyze. The sample is always smaller—often infinitesimally smaller—than the population. Consider studying human height. The population would include the heights of all humans who have ever lived, are living now, and will live in the future. That’s an enormous—indeed, infinite—amount of data. Your sample might be the heights of 1,000 people surveyed in a particular city during a particular year. No matter how large your sample, it remains tiny compared to the population. Even if you collect data on millions of individuals, that’s still just a tiny fraction of the theoretical population. As a mathematical principle: \\lim_{n \\to \\infty} \\text{Sample} = \\text{Population} As the sample size approaches infinity, it approaches the population. But in practice, our samples are always finite and small relative to the population."
@@ -434,15 +434,15 @@
     "text": "What do we do with sample data once we collect it? We pursue one or both of two fundamental goals: 1. Description The first goal is to describe the data we have collected. This is called descriptive statistics . We might: Calculate the average (mean) age in our sample Determine the most common (mode) educational level Find the middle value (median) of family incomes Measure the spread (variance or standard deviation) of environmental commitment scores Descriptive statistics summarize and organize data in meaningful ways. They help us understand what our sample looks like. When we describe sample data, we’re making statements only about that specific set of observations. 2. Inference The second, more ambitious goal is to infer patterns and relationships that extend beyond our sample to the broader population. This is called inferential statistics or statistical inference . Suppose we collect sample data on 25 different variables for each person: age, education level, commitment to environmental causes, family income, transportation choices, and so on. We might discover relationships among these variables in our sample—for instance, that people with higher education levels tend to show stronger commitment to environmental causes. The question then becomes: Can we extrapolate this relationship from our tiny sample to the entire population? Can we say with confidence that the relationship we found in this specific dataset also exists more broadly? This is the central challenge of inferential statistics. We observe patterns in our sample and attempt to make general claims about the population. The entire machinery of statistical inference—hypothesis tests, confidence intervals, p-values, regression analysis—exists to help us make this logical leap from sample to population in a rigorous, quantifiable way."
   },
   {
-    "objectID": "intro-data-analytics#section-14",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#question-3",
+    "href": "/chapter/intro-data-analytics#question-3",
     "title": "The Purpose of Data Analytics",
     "section": "Question",
     "text": "Why is it more valuable to make inferences about the population than to simply describe our sample?"
   },
   {
-    "objectID": "intro-data-analytics#section-15",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#answer-2",
+    "href": "/chapter/intro-data-analytics#answer-2",
     "title": "The Purpose of Data Analytics",
     "section": "Answer",
     "text": "Describing our sample tells us only about the specific observations we happened to collect. But policy decisions, scientific theories, and practical applications require understanding that extends beyond our particular sample. We need to know whether the patterns we observe are likely to hold generally, not just in the specific cases we studied. This is what makes statistical inference so powerful and so essential for decision-making. When we perform inference successfully—when we can say with justified confidence that our sample findings reflect population patterns—we achieve what statisticians call external validity . But before we can even attempt to generalize to the population, we must first ensure that our findings within the sample are sound. When our causal analysis within the sample is properly conducted and the relationships we identify are genuine (not artifacts of confounding variables or measurement error), we say our analysis has internal validity . Both forms of validity are essential for credible statistical work."
@@ -455,15 +455,15 @@
     "text": "How many fundamentally different approaches exist for making statistical inferences? The answer is two: the frequentist approach and the Bayesian approach . These represent two distinct philosophical frameworks for reasoning about probability and uncertainty. The Frequentist Approach The frequentist approach, which has dominated statistical practice for much of the 20th century, interprets probability in terms of long-run frequencies. From this perspective, probability statements only make sense for events that can be repeated many times. Consider flipping a coin. A frequentist interprets “the probability of heads is 0.5” to mean: if we flip this coin infinitely many times, heads will appear in 50% of the flips. Probability, in this view, is an objective property of the world—a statement about what would happen if we could repeat an experiment indefinitely. This philosophical stance has important implications. Imagine I flip a coin and catch it in my hand, concealing the result. I know how it landed, but you don’t. What is the probability that it landed heads?"
   },
   {
-    "objectID": "intro-data-analytics#section-17",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#question-4",
+    "href": "/chapter/intro-data-analytics#question-4",
     "title": "The Purpose of Data Analytics",
     "section": "Question",
     "text": "I’ve just flipped a coin and caught it in my closed hand. I can see the result, but you cannot. What is the probability that the coin shows heads? A frequentist would say: the probability is either 0 or 1, depending on how it actually landed. If it landed heads, the probability is 1 (certainty). If it landed tails, the probability is 0 (impossibility). The coin has already landed—there’s nothing probabilistic about it anymore. The event has occurred, and its outcome is now a fact of the world, even if you don’t know what that fact is. This reveals a key feature of frequentist thinking: probabilities apply to events that haven’t happened yet , not to events that have already occurred but whose outcomes we simply don’t know. From a frequentist perspective, once the coin has landed, talking about the “probability” of how it landed is meaningless. It landed some particular way. The uncertainty you feel is about your knowledge, not about the event itself. The Bayesian Approach The Bayesian approach takes a fundamentally different view. Bayesians interpret probability as a measure of our degree of belief or state of knowledge about an event. Probability, from this perspective, is subjective—it represents how confident we are, given the information we have. Let’s return to the coin in my hand. A Bayesian would say: given that you don’t know how it landed and you have no reason to believe the coin is unfair, your probability assessment should be 0.5. This doesn’t mean the coin is somehow in a superposition of states. Rather, it means that given your current state of knowledge, you should be equally uncertain about whether it shows heads or tails. If I were to give you a hint—say, “It’s not tails”—a Bayesian would immediately update your probability to 1 for heads. Your degree of belief changes as you gain new information, even though the physical state of the coin hasn’t changed at all."
   },
   {
-    "objectID": "intro-data-analytics#section-18",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#definition-1",
+    "href": "/chapter/intro-data-analytics#definition-1",
     "title": "The Purpose of Data Analytics",
     "section": "Definition",
     "text": "Frequentist view : Probability is an objective property of repeatable events. It doesn’t make sense to assign probabilities to fixed but unknown quantities. Bayesian view : Probability represents our degree of belief or state of knowledge. We can assign probabilities to any uncertain proposition, including fixed but unknown quantities. This philosophical difference leads to very different statistical methodologies. Frequentists develop procedures that work well in the long run—if we used this test over and over, we’d make correct decisions most of the time. Bayesians explicitly incorporate prior knowledge and update their beliefs as new evidence arrives. Most practicing statisticians today are implicitly Bayesian in their everyday reasoning about uncertainty, even if they use frequentist methods in their formal analyses. When we say “there’s a 70% chance it will rain tomorrow,” we’re thinking like Bayesians—probability as degree of belief. When we conduct a hypothesis test with a significance level of 0.05, we’re using frequentist methodology—probability as long-run frequency. Which Approach Is “Right”? Neither approach is universally correct or incorrect. They answer different questions and serve different purposes. Frequentist methods provide objective procedures with well-understood long-run properties, which makes them particularly valuable in fields like medical research where regulatory decisions require clear standards. Bayesian methods allow us to explicitly incorporate prior knowledge and provide direct probability statements about hypotheses, which makes them particularly valuable in fields where we have genuine prior information and want to update our beliefs. Throughout this course, we’ll primarily use frequentist methods, as these remain the dominant framework in most applied fields and are what you’ll encounter in published research. However, we’ll also discuss Bayesian perspectives where they provide valuable insights or alternative ways of thinking a"
@@ -476,29 +476,29 @@
     "text": "Before we can intelligently discuss either frequentist or Bayesian inference, we need to understand some fundamental concepts that appear throughout statistical testing. These ideas—particularly around errors in decision-making—form the conceptual foundation for statistical inference. Types of Errors When we conduct a statistical test, we’re making a decision: either reject a hypothesis or fail to reject it. Like any decision made under uncertainty, we can make mistakes. There are two types of mistakes we might make:"
   },
   {
-    "objectID": "intro-data-analytics#section-20",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#definition-2",
+    "href": "/chapter/intro-data-analytics#definition-2",
     "title": "The Purpose of Data Analytics",
     "section": "Definition",
     "text": "A Type I error occurs when we reject a hypothesis that is actually correct. We declare that something is happening when, in fact, it is not. In medical testing: declaring a healthy patient is sick (false positive) In criminal justice: convicting an innocent person In scientific research: claiming we’ve found an effect when none exists"
   },
   {
-    "objectID": "intro-data-analytics#section-21",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#definition-3",
+    "href": "/chapter/intro-data-analytics#definition-3",
     "title": "The Purpose of Data Analytics",
     "section": "Definition",
     "text": "A Type II error occurs when we fail to reject a hypothesis that is actually false. We fail to detect something that is really happening. In medical testing: declaring a sick patient is healthy (false negative) In criminal justice: acquitting a guilty person In scientific research: failing to detect an effect that actually exists These two types of errors are in tension with each other. If we make it harder to commit a Type I error (by requiring very strong evidence before rejecting a hypothesis), we inevitably make it easier to commit a Type II error (we’ll fail to detect real effects more often). Conversely, if we’re very eager to detect effects (reducing Type II errors), we’ll end up making more Type I errors by seeing patterns that aren’t really there. The P-Value The p-value is the probability of making a Type I error—the probability of rejecting a correct hypothesis. More precisely, it’s the probability of observing data as extreme as (or more extreme than) what we actually observed, assuming the hypothesis we’re testing is true. The p-value is calculated from your data using statistical procedures. It’s an output of your analysis, not an input. In the old days, p-values were looked up in printed tables at the back of statistics textbooks. Today, statistical software calculates them instantly."
   },
   {
-    "objectID": "intro-data-analytics#section-22",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#common-misconception",
+    "href": "/chapter/intro-data-analytics#common-misconception",
     "title": "The Purpose of Data Analytics",
     "section": "Common Misconception",
     "text": "The p-value is not “the probability that our results are wrong” or “the probability that the hypothesis is true.” It is specifically the probability of observing our data (or more extreme data) if the hypothesis we’re testing is actually correct. The Significance Level (α) The significance level , denoted by the Greek letter α (alpha), is the threshold probability you choose before collecting data. It represents how much Type I error risk you’re willing to tolerate. Commonly used significance levels include: - α = 0.05 (5%): The most common choice in many fields - α = 0.01 (1%): Used when Type I errors are particularly costly - α = 0.10 (10%): Used when Type I errors are less concerning or when sample sizes are small Here’s the crucial point: you choose α before looking at your data . The significance level is an input to your analysis, while the p-value is an output. You then compare them: If p-value < α: Reject the hypothesis (the evidence is strong enough) If p-value ≥ α: Fail to reject the hypothesis (the evidence is not strong enough) Why We Never “Accept” Hypotheses Notice the careful language: we “reject” or “fail to reject” hypotheses. We never “accept” a hypothesis. Why this asymmetry? The reason is fundamental to the nature of scientific reasoning. Consider the history of physics. About 500 years ago, Isaac Newton developed his theory of gravity, which explained why objects fall to the ground. For over two centuries, Newton’s theory was supported by all available evidence. Scientists didn’t say “we accept Newton’s theory as correct”—they said “we fail to reject it; it’s the best explanation we have so far.” Then, about 100 years ago, Albert Einstein developed general relativity, which showed that Newton’s theory, while extremely useful for everyday purposes, is actually incorrect in important ways. Einstein’s theory superseded Newton’s. But does this mean Einstein’s theory is “correct”? Not necessarily. It’s the best explanation we have now, consistent wit"
   },
   {
-    "objectID": "intro-data-analytics#section-23",
-    "href": "/chapter/intro-data-analytics",
+    "objectID": "intro-data-analytics#scientific-humility",
+    "href": "/chapter/intro-data-analytics#scientific-humility",
     "title": "The Purpose of Data Analytics",
     "section": "Scientific Humility",
     "text": "In science, we can demonstrate that theories are wrong or false (by finding contradictory evidence), but we can never prove that theories are correct or true (because future evidence might contradict them). This is why we never “accept” hypotheses—we only fail to reject them given current evidence. This principle, articulated by philosopher Karl Popper, is called falsificationism . Scientific theories can be falsified but never verified with absolute certainty. This is why statistical hypothesis testing is framed around rejection rather than acceptance. Statistical Power There’s one more important concept related to errors: statistical power . Power is defined as the probability of not making a Type II error—that is, the probability of correctly rejecting a false hypothesis. High statistical power is desirable: it means your test is good at detecting effects when they exist. Power depends on several factors: - Sample size (larger samples → higher power) - Effect size (larger effects → easier to detect → higher power) - Significance level (higher α → higher power, but also more Type I errors) - Variability in the data (less noise → higher power) While there’s no standard name for the “probability of making a Type II error” (parallel to how we call Type I error probability the “p-value”), it’s typically denoted β (beta). Then power = 1 - β."
@@ -518,15 +518,15 @@
     "text": "Multiple Regression In 1978, David Harrison and Daniel Rubinfeld published a groundbreaking study on housing values and air pollution in the Boston metropolitan area. Their work introduced what has become one of the most studied datasets in econometrics and demonstrated how hedonic pricing models can be used to value environmental amenities—specifically, how air quality afects property values. The Harrison-Rubinfeld model remains a cornerstone example in applied econometrics courses because it elegantly combines theory with empirical analysis, using a rich set of neighborhood characteristics to explain median home values across census tracts in the Boston area."
   },
   {
-    "objectID": "multivariate-regression#section-1",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#question",
+    "href": "/chapter/multivariate-regression#question",
     "title": "Multiple Regression",
     "section": "Question",
     "text": "What is a hedonic pricing model, and why is it useful for valuing environmental goods?"
   },
   {
-    "objectID": "multivariate-regression#section-2",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#answer",
+    "href": "/chapter/multivariate-regression#answer",
     "title": "Multiple Regression",
     "section": "Answer",
     "text": "A hedonic pricing model decomposes the price of a good into the value of its constituent characteristics. For housing, this means breaking down the home price into components attributable to structural features (number of rooms, age), neighborhood characteristics (crime rate, school quality), and environmental amenities (air quality, proximity to employment centers). This approach is particularly valuable for environmental economics because many environmental goods—like clean air—don’t have explicit market prices. By observing how home values change with air quality while controlling for other factors, we can infer people’s willingness to pay for cleaner air. This is crucial for cost-benefit analysis of environmental regulations."
@@ -539,134 +539,134 @@
     "text": "The Harrison-Rubinfeld model estimates the logarithm of median home value as a function of 13 explanatory variables: \\begin{aligned} \\log( \\text{MEDV}) = \\beta_0 &+ \\beta_1 \\text{ NOX}^2 + \\beta_2 \\text{ RM}^2 + \\beta_3 \\text{ AGE} + \\beta_4 ( \\text{B} - 0.63)^2 \\ &+ \\beta_5 \\log( \\text{LSTAT}) + \\beta_6 \\text{ CRIM} + \\beta_7 \\text{ ZN} + \\beta_8 \\text{ INDUS} \\ &+ \\beta_9 \\text{ TAX} + \\beta_{10} \\text{ PTRATIO} + \\beta_{11} \\text{ CHAS} \\ &+ \\beta_{12} \\log( \\text{DIS}) + \\beta_{13} \\log( \\text{RAD}) + \\epsilon \\end{aligned} Before interpreting the coefficients, let’s understand what each variable represents and why certain functional forms were chosen."
   },
   {
-    "objectID": "multivariate-regression#section-5",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition",
+    "href": "/chapter/multivariate-regression#definition",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "NOX (Nitric Oxide Concentration) : Annual average concentration of nitric oxides in parts per 10 million, measured at the census tract level. This is the key environmental variable in the study. The model includes NOX² rather than NOX itself. This quadratic specification allows for a nonlinear relationship between air pollution and housing values—suggesting that the marginal effect of pollution may increase at higher pollution levels."
   },
   {
-    "objectID": "multivariate-regression#section-6",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#question-1",
+    "href": "/chapter/multivariate-regression#question-1",
     "title": "Multiple Regression",
     "section": "Question",
     "text": "Why might the relationship between pollution and home values be nonlinear?"
   },
   {
-    "objectID": "multivariate-regression#section-7",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#answer-1",
+    "href": "/chapter/multivariate-regression#answer-1",
     "title": "Multiple Regression",
     "section": "Answer",
     "text": "There are several economic reasons to expect nonlinearity. First, at very low pollution levels, small increases may have minimal health impacts and thus little effect on property values. But at higher levels, additional pollution could have increasingly severe health consequences, making marginal increases more harmful. Second, there may be threshold effects—once pollution reaches certain levels, it becomes visibly obvious (as smog) or causes noticeable health effects, triggering a sharper decline in willingness to pay for homes in that area. Third, people who are highly sensitive to pollution likely already avoid high-pollution areas, so the remaining residents may be those who are relatively less concerned about pollution, leading to smaller marginal price effects at higher pollution levels. However, this selection effect would actually suggest the opposite of what Harrison and Rubinfeld found."
   },
   {
-    "objectID": "multivariate-regression#section-8",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-1",
+    "href": "/chapter/multivariate-regression#definition-1",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "RM (Average Number of Rooms) : The average number of rooms per dwelling in the census tract. This is a proxy for house size and quality. The model includes RM² to capture potential nonlinear effects of house size. Larger homes may command disproportionately higher prices, or there may be diminishing returns to additional rooms."
   },
   {
-    "objectID": "multivariate-regression#section-9",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-2",
+    "href": "/chapter/multivariate-regression#definition-2",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "AGE (Proportion of Old Units) : The proportion of owner-occupied units built prior to 1940. This captures the age composition of the housing stock."
   },
   {
-    "objectID": "multivariate-regression#section-10",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-3",
+    "href": "/chapter/multivariate-regression#definition-3",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "B (Proportion Black) : A transformation of the proportion of Black residents, specifically (1000(B_k - 0.63)^2) , where B_k is the proportion of the population that is Black. The model includes (B - 0.63)² . This is perhaps the most controversial variable in the model. The quadratic form centered at 0.63 suggests that home values are maximized when the proportion of Black residents is 63%, declining as the proportion moves away from this value in either direction."
   },
   {
-    "objectID": "multivariate-regression#section-11",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#question-2",
+    "href": "/chapter/multivariate-regression#question-2",
     "title": "Multiple Regression",
     "section": "Question",
     "text": "What does the racial composition variable tell us about housing markets in 1970s Boston?"
   },
   {
-    "objectID": "multivariate-regression#section-12",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#answer-2",
+    "href": "/chapter/multivariate-regression#answer-2",
     "title": "Multiple Regression",
     "section": "Answer",
     "text": "The inclusion and specification of this variable reflect the unfortunate reality of racial segregation and discrimination in housing markets during this period. The quadratic form centered at 0.63 could be interpreted in different ways: Tipping point dynamics : Housing economics literature has documented “tipping points” in neighborhood racial composition, where rapid demographic change leads to accelerated White flight and declining property values. The centered quadratic could capture these dynamics. Preference heterogeneity : Different demographic groups may have different preferences regarding neighborhood racial composition, and the quadratic form could reflect these varying preferences. Historical discrimination : The pattern likely reflects discriminatory practices including redlining, steering by real estate agents, and discriminatory lending practices that were widespread before the Fair Housing Act of 1968. Modern researchers often exclude or carefully respecify racial composition variables, as their interpretation requires careful attention to whether they reflect preferences, discrimination, or correlated socioeconomic factors."
   },
   {
-    "objectID": "multivariate-regression#section-13",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-4",
+    "href": "/chapter/multivariate-regression#definition-4",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "LSTAT (Lower Status Population) : The percentage of the population considered “lower status” (defined by education and occupation). The model includes log(LSTAT) . The logarithmic transformation suggests that percentage point changes in lower-status population have diminishing effects—going from 5% to 10% has a larger impact than going from 25% to 30%."
   },
   {
-    "objectID": "multivariate-regression#section-14",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-5",
+    "href": "/chapter/multivariate-regression#definition-5",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "CRIM (Crime Rate) : Per capita crime rate by town. Measured as incidents per capita."
   },
   {
-    "objectID": "multivariate-regression#section-15",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-6",
+    "href": "/chapter/multivariate-regression#definition-6",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "ZN (Large Residential Lots) : The proportion of residential land zoned for lots over 25,000 square feet. This captures whether the area has large-lot zoning, typically associated with more expensive neighborhoods."
   },
   {
-    "objectID": "multivariate-regression#section-16",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-7",
+    "href": "/chapter/multivariate-regression#definition-7",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "INDUS (Industrial Land) : The proportion of non-retail business acres per town. This measures the industrial character of the area."
   },
   {
-    "objectID": "multivariate-regression#section-17",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-8",
+    "href": "/chapter/multivariate-regression#definition-8",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "TAX (Property Tax Rate) : The full-value property tax rate per $10,000 of assessed value."
   },
   {
-    "objectID": "multivariate-regression#section-18",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#question-3",
+    "href": "/chapter/multivariate-regression#question-3",
     "title": "Multiple Regression",
     "section": "Question",
     "text": "Why might property tax rates affect home values even though buyers will pay these taxes anyway?"
   },
   {
-    "objectID": "multivariate-regression#section-19",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#answer-3",
+    "href": "/chapter/multivariate-regression#answer-3",
     "title": "Multiple Regression",
     "section": "Answer",
     "text": "Property taxes affect home values through several channels: Capitalization : Higher taxes reduce the present value of owning the home, which gets capitalized into lower purchase prices. Buyers are willing to pay less upfront if they face higher ongoing costs. Public services : Property taxes fund local services like schools, police, and infrastructure. If high taxes reflect good services, they might increase values. If they reflect inefficient government, they decrease values. Tax competition : In metropolitan areas with many municipalities, people can “vote with their feet,” choosing towns with favorable tax-service packages. This leads to stratification by preferences and income. The model doesn’t directly account for the services financed by these taxes, so the coefficient primarily captures the capitalization effect."
   },
   {
-    "objectID": "multivariate-regression#section-20",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-9",
+    "href": "/chapter/multivariate-regression#definition-9",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "PTRATIO (Pupil-Teacher Ratio) : The pupil-teacher ratio by town. Lower ratios indicate smaller class sizes, typically associated with better schools."
   },
   {
-    "objectID": "multivariate-regression#section-21",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-10",
+    "href": "/chapter/multivariate-regression#definition-10",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "CHAS (Charles River Dummy) : A binary variable equal to 1 if the census tract borders the Charles River, 0 otherwise. This captures the amenity value of water proximity."
   },
   {
-    "objectID": "multivariate-regression#section-22",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-11",
+    "href": "/chapter/multivariate-regression#definition-11",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "DIS (Distance to Employment) : Weighted distance to five Boston employment centers. The model includes log(DIS) . The logarithmic transformation implies that distance has diminishing effects—being 1 mile from employment centers versus 2 miles matters more than being 10 miles versus 11 miles."
   },
   {
-    "objectID": "multivariate-regression#section-23",
-    "href": "/chapter/multivariate-regression",
+    "objectID": "multivariate-regression#definition-12",
+    "href": "/chapter/multivariate-regression#definition-12",
     "title": "Multiple Regression",
     "section": "Definition",
     "text": "RAD (Highway Accessibility) : An index of accessibility to radial highways. The model includes log(RAD) ."
@@ -693,22 +693,22 @@
     "text": "Expectation and Variance Operators Statistical operators are powerful tools that transform random variables in systematic ways. In this chapter, we’ll explore two fundamental operators: the expectation operator and the variance operator. These operators will appear throughout the rest of this book, so understanding their properties deeply will pay dividends as we tackle more complex statistical concepts. By the end of this chapter, you will be able to: Define what an operator is in the statistical context Calculate and interpret expected values Calculate and interpret variances Apply the properties of expectation and variance to simplify complex expressions Understand how these operators behave under linear transformations"
   },
   {
-    "objectID": "operators-properties#section-2",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#definition",
+    "href": "/chapter/operators-properties#definition",
     "title": "Expectation and Variance Operators",
     "section": "Definition",
     "text": "An operator is a mapping that takes elements from one space and produces elements in another space (which may be the same space). In statistics, operators act on random variables to produce new quantities. Think of an operator as a special kind of function that acts on random variables rather than on simple numbers. Just as the square root function takes a number and returns another number, statistical operators take random variables and return quantities that summarize key features of those variables."
   },
   {
-    "objectID": "operators-properties#section-3",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#question",
+    "href": "/chapter/operators-properties#question",
     "title": "Expectation and Variance Operators",
     "section": "Question",
     "text": "Why do we call them “operators” instead of just “functions”?"
   },
   {
-    "objectID": "operators-properties#section-4",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#answer",
+    "href": "/chapter/operators-properties#answer",
     "title": "Expectation and Variance Operators",
     "section": "Answer",
     "text": "The term “operator” emphasizes that these mappings act on objects (random variables) that are themselves functions. This distinguishes them from ordinary functions that act on numbers. The expectation operator, for instance, takes an entire probability distribution and distills it down to a single number representing its center."
@@ -721,64 +721,64 @@
     "text": "Intuition and Definition Intuitively, a random variable’s expected value represents the average we would see if we observed many independent realizations of that variable. For example, if we roll a fair six-sided die thousands of times and compute the average of all the outcomes, that average will converge to 3.5. This value—3.5—is the expected value of the die roll."
   },
   {
-    "objectID": "operators-properties#section-6",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#definition-1",
+    "href": "/chapter/operators-properties#definition-1",
     "title": "Expectation and Variance Operators",
     "section": "Definition",
     "text": "The expected value (or expectation ) of a discrete random variable X is the probability-weighted average of all its possible values: \\mathbb{E}[X] = \\sum_{i=1}^n x_i p_i where x_i are the possible values and p_i = \\mathrm{P}(X = x_i) are their respective probabilities. More generally, we can write this as: \\mathbb{E}[X] = \\sum_{i=1}^n p_i X_i = \\mu where we often use the Greek letter \\mu (mu) to denote the expected value. For continuous random variables, the sum becomes an integral: \\mathbb{E}[X] = \\int_{\\mathbb{R}} x f(x) \\, dx where f(x) is the probability density function of X ."
   },
   {
-    "objectID": "operators-properties#section-7",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#question-1",
+    "href": "/chapter/operators-properties#question-1",
     "title": "Expectation and Variance Operators",
     "section": "Question",
     "text": "Can you give a concrete example of computing an expected value?"
   },
   {
-    "objectID": "operators-properties#section-8",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#answer-1",
+    "href": "/chapter/operators-properties#answer-1",
     "title": "Expectation and Variance Operators",
     "section": "Answer",
     "text": "Consider a simple game where you flip a fair coin. If it lands heads, you win $10; if it lands tails, you lose $5. What are your expected winnings? Let X represent your winnings. Then: \\mathbb{E}[X] = 10 \\cdot \\mathrm{P}(H) + (-5) \\cdot \\mathrm{P}(T) = 10 \\cdot \\frac{1}{2} + (-5) \\cdot \\frac{1}{2} = \\$2.50 On average, you expect to win $2.50 per game. This doesn’t mean you’ll ever actually win $2.50 in any single game—you’ll either win $10 or lose $5. But over many games, your average winnings will approach $2.50 per game. Properties of the Expectation Operator The expectation operator has several important properties that make it remarkably useful for statistical analysis. These properties allow us to simplify complex calculations and derive important results. Property 1: Non-negativity If X is a random variable such that \\mathrm{P}(X \\geq 0) = 1 (that is, X is always non-negative), then \\mathbb{E}[X] \\geq 0 ."
   },
   {
-    "objectID": "operators-properties#section-9",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof",
+    "href": "/chapter/operators-properties#proof",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "If \\mathrm{P}(X \\geq 0) = 1 , then the probability mass function satisfies p_X(x) = 0 for all x < 0 . Therefore: \\mathbb{E}[X] = \\sum_x x p_X(x) = \\sum_{x: x \\geq 0} x p_X(x) \\geq 0 since we’re summing only non-negative terms ( x \\geq 0 and p_X(x) \\geq 0 ). This property formalizes an intuitive idea: if a random variable can only take non-negative values, its average must also be non-negative. Property 2: Expectation of a Constant If X is a random variable such that \\mathrm{P}(X = r) = 1 for some fixed number r , then \\mathbb{E}[X] = r . In other words, the expectation of a constant equals that constant."
   },
   {
-    "objectID": "operators-properties#section-10",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-1",
+    "href": "/chapter/operators-properties#proof-1",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "If \\mathrm{P}(X = r) = 1 , then p_X(r) = 1 and p_X(x) = 0 for all x \\neq r . Therefore: \\mathbb{E}[X] = \\sum_x x p_X(x) = r \\cdot 1 = r This property tells us that constants behave exactly as we’d expect under the expectation operator—their “average” value is simply themselves. Property 3: Linearity The expectation operator is linear . Given two random variables X and Y and two real constants a and b : \\mathbb{E}[aX + bY] = a\\mathbb{E}[X] + b\\mathbb{E}[Y]"
   },
   {
-    "objectID": "operators-properties#section-11",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-2",
+    "href": "/chapter/operators-properties#proof-2",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "For discrete random variables with joint probability mass function p_{X,Y}(x,y) : \\begin{aligned} \\mathbb{E}[aX + bY] &= \\sum_{x,y}(ax+by)p_{X,Y}(x,y) \\\\ &= a\\sum_x x \\sum_y p_{X,Y}(x,y) + b\\sum_y y \\sum_x p_{X,Y}(x,y) \\\\ &= a\\sum_x x \\, p_{X}(x) + b\\sum_y y \\, p_{Y}(y) \\\\ &= a\\mathbb{E}[X] + b\\mathbb{E}[Y] \\end{aligned} where in the third line we used the fact that \\sum_y p_{X,Y}(x,y) = p_X(x) (the marginal distribution)."
   },
   {
-    "objectID": "operators-properties#section-12",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#why-linearity-matters",
+    "href": "/chapter/operators-properties#why-linearity-matters",
     "title": "Expectation and Variance Operators",
     "section": "Why Linearity Matters",
     "text": "Linearity is perhaps the most important property of expectation. It allows us to break complex random variables into simpler parts, compute expectations of the parts separately, and combine them. Moreover, linearity holds regardless of whether the random variables are independent —a remarkable and powerful feature."
   },
   {
-    "objectID": "operators-properties#section-13",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#question-2",
+    "href": "/chapter/operators-properties#question-2",
     "title": "Expectation and Variance Operators",
     "section": "Question",
     "text": "How can we use linearity in practice?"
   },
   {
-    "objectID": "operators-properties#section-14",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#answer-2",
+    "href": "/chapter/operators-properties#answer-2",
     "title": "Expectation and Variance Operators",
     "section": "Answer",
     "text": "Suppose you’re analyzing a portfolio with investments in three different assets. Let X_1, X_2, X_3 represent the returns on these assets, and suppose you invest amounts w_1, w_2, w_3 in each. Your total return is R = w_1 X_1 + w_2 X_2 + w_3 X_3 . By linearity: \\mathbb{E}[R] = w_1 \\mathbb{E}[X_1] + w_2 \\mathbb{E}[X_2] + w_3 \\mathbb{E}[X_3] This means you can calculate your expected portfolio return simply by taking a weighted average of the expected returns of the individual assets—no need to work out the entire joint distribution of all three assets together. Additional properties that follow from linearity include: \\begin{aligned} \\mathbb{E}[kY] &= k\\mathbb{E}[Y] \\quad \\text{(scaling)} \\\\ \\mathbb{E}[X + Y] &= \\mathbb{E}[X] + \\mathbb{E}[Y] \\quad \\text{(additivity)} \\end{aligned}"
@@ -791,85 +791,85 @@
     "text": "Intuition and Definition While the expected value tells us about the center of a distribution, it says nothing about the spread. Consider two random variables: one that always equals 10, and one that equals 0 half the time and 20 half the time. Both have an expected value of 10, but they behave very differently. The variance operator captures this difference. Variance measures how far a set of random values typically lie from their expected value. A small variance indicates that values cluster tightly around the mean; a large variance indicates that values are more dispersed."
   },
   {
-    "objectID": "operators-properties#section-16",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#definition-2",
+    "href": "/chapter/operators-properties#definition-2",
     "title": "Expectation and Variance Operators",
     "section": "Definition",
     "text": "The variance of a random variable X is the expected value of the squared deviation from the mean: \\mathrm{Var}(X) = \\mathbb{E}[(X - \\mu)^2] where \\mu = \\mathbb{E}[X] is the mean of X . We often denote variance as \\sigma^2 (sigma squared). For a discrete random variable, we can write this explicitly as: \\mathrm{Var}(Y) = \\sum_{i=1}^n p_i (Y_i - \\mu)^2 = \\sigma^2"
   },
   {
-    "objectID": "operators-properties#section-17",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#question-3",
+    "href": "/chapter/operators-properties#question-3",
     "title": "Expectation and Variance Operators",
     "section": "Question",
     "text": "Why do we square the deviations? Why not just take the absolute value?"
   },
   {
-    "objectID": "operators-properties#section-18",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#answer-3",
+    "href": "/chapter/operators-properties#answer-3",
     "title": "Expectation and Variance Operators",
     "section": "Answer",
     "text": "Squaring serves several purposes. First, it ensures that positive and negative deviations don’t cancel out (which would happen if we just summed the deviations directly). Second, squaring gives more weight to extreme deviations, making variance sensitive to outliers. Third, the squared form has beautiful mathematical properties that simplify many derivations. While we could use absolute deviations instead (this gives the “mean absolute deviation”), the squared form is more tractable mathematically and appears naturally in many statistical contexts. An Alternative Formula The definition of variance can be algebraically rearranged into a form that’s often more convenient for computation: \\begin{aligned} \\mathrm{Var}(X) &= \\mathbb{E}[(X - \\mathbb{E}[X])^2] \\\\ &= \\mathbb{E}[X^2 - 2X\\mathbb{E}[X] + \\mathbb{E}[X]^2] \\\\ &= \\mathbb{E}[X^2] - 2\\mathbb{E}[X]\\mathbb{E}[X] + \\mathbb{E}[X]^2 \\\\ &= \\mathbb{E}[X^2] - \\mathbb{E}[X]^2 \\end{aligned} This gives us the memorable formula: \\mathrm{Var}(X) = \\mathbb{E}[X^2] - (\\mathbb{E}[X])^2 In words: the variance equals the expected value of the square minus the square of the expected value. This computational formula is often easier to work with than the definitional formula. Properties of the Variance Operator Property 1: Non-negativity Variance is always non-negative: \\mathrm{Var}(X) \\geq 0 ."
   },
   {
-    "objectID": "operators-properties#section-19",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-3",
+    "href": "/chapter/operators-properties#proof-3",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "Since (X - \\mu)^2 \\geq 0 for all values of X , we have: \\mathrm{Var}(X) = \\mathbb{E}[(X - \\mu)^2] \\geq 0 by the non-negativity property of expectation. Property 2: Variance of a Constant The variance of a constant is zero: \\mathrm{Var}(a) = 0 ."
   },
   {
-    "objectID": "operators-properties#section-20",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-4",
+    "href": "/chapter/operators-properties#proof-4",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "\\begin{aligned} \\mathrm{Var}(a) &= \\mathbb{E}[(a - \\mathbb{E}[a])^2] \\\\ &= \\mathbb{E}[(a - a)^2] \\\\ &= \\mathbb{E}[0^2] \\\\ &= 0 \\end{aligned} This makes intuitive sense: if a variable doesn’t vary (it’s constant), its variance should be zero. Property 3: Zero Variance Implies Constant If the variance of a random variable is zero, then the variable must be constant with probability 1: \\mathrm{Var}(X) = 0 \\Rightarrow \\mathrm{P}(X = a) = 1 for some constant a ."
   },
   {
-    "objectID": "operators-properties#section-21",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-5",
+    "href": "/chapter/operators-properties#proof-5",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "Let \\mathbb{E}[X] = a for some constant a . Then: \\begin{aligned} \\mathrm{Var}(X) = 0 &\\Rightarrow \\mathbb{E}[(X - a)^2] = 0 \\\\ &\\Rightarrow (X - a)^2 = 0 \\quad \\text{(since $(X-a)^2$ cannot be negative)} \\\\ &\\Rightarrow X - a = 0 \\\\ &\\Rightarrow X = a \\end{aligned} Together, Properties 2 and 3 tell us that constants are precisely the random variables with zero variance—and vice versa. Property 4: Variance of a Sum The variance of a sum of two random variables is: \\mathrm{Var}(X + Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) + 2\\mathrm{Cov}(X,Y) where \\mathrm{Cov}(X,Y) = \\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y] is the covariance between X and Y ."
   },
   {
-    "objectID": "operators-properties#section-22",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-6",
+    "href": "/chapter/operators-properties#proof-6",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "\\begin{aligned} \\mathrm{Var}(X+Y) &= \\mathbb{E}[(X+Y - \\mathbb{E}[X+Y])^2] \\\\ &= \\mathbb{E}[(X+Y)^2 - 2(X+Y)\\mathbb{E}[X+Y] + (\\mathbb{E}[X+Y])^2] \\\\ &= \\mathbb{E}[(X+Y)^2] - \\mathbb{E}[X+Y]^2 \\\\ &= \\mathbb{E}[X^2] + 2\\mathbb{E}[XY] + \\mathbb{E}[Y^2] - (\\mathbb{E}[X] + \\mathbb{E}[Y])^2 \\\\ &= \\mathbb{E}[X^2] + 2\\mathbb{E}[XY] + \\mathbb{E}[Y^2] - \\mathbb{E}[X]^2 - 2\\mathbb{E}[X]\\mathbb{E}[Y] - \\mathbb{E}[Y]^2 \\\\ &= (\\mathbb{E}[X^2] - \\mathbb{E}[X]^2) + (\\mathbb{E}[Y^2] - \\mathbb{E}[Y]^2) + 2(\\mathbb{E}[XY] - \\mathbb{E}[X]\\mathbb{E}[Y]) \\\\ &= \\mathrm{Var}(X) + \\mathrm{Var}(Y) + 2\\mathrm{Cov}(X,Y) \\end{aligned}"
   },
   {
-    "objectID": "operators-properties#section-23",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#definition-3",
+    "href": "/chapter/operators-properties#definition-3",
     "title": "Expectation and Variance Operators",
     "section": "Definition",
     "text": "If X and Y are independent random variables, then \\mathrm{Cov}(X,Y) = 0 , and the formula simplifies to: \\mathrm{Var}(X + Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) Similarly, for the difference of independent variables: \\mathrm{Var}(X - Y) = \\mathrm{Var}(X) + \\mathrm{Var}(Y) . Property 5: Variance is Invariant to Location Shifts If a constant is added to all values of a variable, the variance is unchanged: \\mathrm{Var}(X + a) = \\mathrm{Var}(X)"
   },
   {
-    "objectID": "operators-properties#section-24",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-7",
+    "href": "/chapter/operators-properties#proof-7",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "\\begin{aligned} \\mathrm{Var}(X + a) &= \\mathrm{Var}(X) + \\mathrm{Var}(a) + 2\\mathrm{Cov}(X, a) \\\\ &= \\mathrm{Var}(X) \\end{aligned} since \\mathrm{Var}(a) = 0 and \\mathrm{Cov}(X, a) = 0 (a constant has zero covariance with any variable). This property reflects the fact that variance measures spread, not location. Shifting all values by the same amount doesn’t change how spread out they are. Property 6: Variance Under Scaling If all values are scaled by a constant, the variance is scaled by the square of that constant: \\mathrm{Var}(aX) = a^2 \\mathrm{Var}(X)"
   },
   {
-    "objectID": "operators-properties#section-25",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#proof-8",
+    "href": "/chapter/operators-properties#proof-8",
     "title": "Expectation and Variance Operators",
     "section": "Proof",
     "text": "\\begin{aligned} \\mathrm{Var}(aX) &= \\mathbb{E}[(aX - \\mathbb{E}[aX])^2] \\\\ &= \\mathbb{E}[(aX - a\\mathbb{E}[X])^2] \\\\ &= \\mathbb{E}[(a(X - \\mathbb{E}[X]))^2] \\\\ &= \\mathbb{E}[a^2(X - \\mathbb{E}[X])^2] \\\\ &= a^2\\mathbb{E}[(X - \\mathbb{E}[X])^2] \\\\ &= a^2 \\mathrm{Var}(X) \\end{aligned}"
   },
   {
-    "objectID": "operators-properties#section-26",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#question-4",
+    "href": "/chapter/operators-properties#question-4",
     "title": "Expectation and Variance Operators",
     "section": "Question",
     "text": "Why does variance scale with the square of the constant rather than just the constant itself?"
   },
   {
-    "objectID": "operators-properties#section-27",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#answer-4",
+    "href": "/chapter/operators-properties#answer-4",
     "title": "Expectation and Variance Operators",
     "section": "Answer",
     "text": "Remember that variance involves squared deviations: \\mathrm{Var}(X) = \\mathbb{E}[(X-\\mu)^2] . When we scale X by a , we also scale the deviations by a : (aX - a\\mu) = a(X - \\mu) . When we square this, we get a^2(X-\\mu)^2 , which explains the a^2 factor. This property is why the standard deviation (the square root of variance) scales linearly with a : if we double all values, we double the standard deviation but quadruple the variance. Property 7: Variance of a Sum of Independent Identically Distributed Variables If Y_1, Y_2, \\ldots, Y_n are independent and identically distributed random variables, then: \\mathrm{Var}\\left(\\sum_{i=1}^n Y_i\\right) = \\sum_{i=1}^n \\mathrm{Var}(Y_i) = n\\mathrm{Var}(Y) where the last equality uses the fact that all the Y_i have the same variance. This property is fundamental to understanding sampling distributions and the behavior of sample means."
@@ -882,15 +882,15 @@
     "text": "Let’s work through a comprehensive example that uses both operators and their properties."
   },
   {
-    "objectID": "operators-properties#section-29",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#question-5",
+    "href": "/chapter/operators-properties#question-5",
     "title": "Expectation and Variance Operators",
     "section": "Question",
     "text": "Suppose you’re managing quality control for a manufacturing process. Each item has a production cost that’s normally distributed with mean $50 and variance $25. If an item passes inspection (which happens 90% of the time), you can sell it for $100. If it fails inspection, you must sell it at a loss for $30. You produce 100 items. What are the expected total profit and the variance of total profit?"
   },
   {
-    "objectID": "operators-properties#section-30",
-    "href": "/chapter/operators-properties",
+    "objectID": "operators-properties#answer-5",
+    "href": "/chapter/operators-properties#answer-5",
     "title": "Expectation and Variance Operators",
     "section": "Answer",
     "text": "Let’s define our random variables carefully. For item i : Let C_i be the production cost (mean $50, variance $25) Let R_i be the revenue, which is $100 with probability 0.9 and $30 with probability 0.1 The profit for item i is P_i = R_i - C_i First, let’s find \\mathbb{E}[R_i] : \\mathbb{E}[R_i] = 100(0.9) + 30(0.1) = 90 + 3 = \\$93 For the expected profit on one item: \\mathbb{E}[P_i] = \\mathbb{E}[R_i - C_i] = \\mathbb{E}[R_i] - \\mathbb{E}[C_i] = 93 - 50 = \\$43 For 100 items, by linearity of expectation: \\mathbb{E}\\left[\\sum_{i=1}^{100} P_i\\right] = \\sum_{i=1}^{100} \\mathbb{E}[P_i] = 100 \\times 43 = \\$4,300 Now for the variance. First, we need \\mathrm{Var}(R_i) : \\begin{aligned} \\mathrm{Var}(R_i) &= \\mathbb{E}[R_i^2] - (\\mathbb{E}[R_i])^2 \\\\ &= [100^2(0.9) + 30^2(0.1)] - 93^2 \\\\ &= [9000 + 90] - 8649 \\\\ &= 441 \\end{aligned} For the variance of profit on one item, assuming cost and revenue are independent: \\mathrm{Var}(P_i) = \\mathrm{Var}(R_i - C_i) = \\mathrm{Var}(R_i) + \\mathrm{Var}(C_i) = 441 + 25 = 466 Finally, if items are produced independently: \\mathrm{Var}\\left(\\sum_{i=1}^{100} P_i\\right) = \\sum_{i=1}^{100} \\mathrm{Var}(P_i) = 100 \\times 466 = 46,600 Therefore, expected total profit is $4,300 with variance $46,600 (standard deviation of approximately $216)."
@@ -910,15 +910,15 @@
     "text": "Panel Data Methods Panel data—repeated observations on the same individuals over time—offers researchers a powerful tool for addressing one of the most vexing problems in observational research: unobserved heterogeneity. In this chapter, we’ll explore how the longitudinal structure of panel data allows us to control for time-invariant individual characteristics that would otherwise bias our estimates. Our running example throughout this chapter will draw from the National Longitudinal Survey of Youth 1979 (NLSY79), which has followed a cohort of young Americans since 1979. We’ll focus on a fundamental question in labor economics: What is the return to education? That is, how much more do workers earn for each additional year of schooling they complete? By the end of this chapter, you will understand: Why panel data helps address omitted variable bias Fixed effects estimation and the within transformation Random effects estimation and when it’s appropriate First-differencing as an alternative to fixed effects How to implement these methods in R The key assumptions underlying each approach"
   },
   {
-    "objectID": "panel-data#section-1",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question",
+    "href": "/chapter/panel-data#question",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "Why can’t we just estimate the return to education by regressing wages on years of schooling using cross-sectional data?"
   },
   {
-    "objectID": "panel-data#section-2",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer",
+    "href": "/chapter/panel-data#answer",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "If we simply regress wages on education using a single cross-section of workers, we face a severe omitted variable bias problem. Workers with more education may differ from workers with less education in many unobserved ways that also affect earnings—ability, motivation, family background, social networks, and so on. If these unobserved characteristics are positively correlated with both education and wages, a simple OLS regression will overstate the causal effect of education on earnings."
@@ -931,15 +931,15 @@
     "text": "The National Longitudinal Survey of Youth 1979 began with 12,686 respondents aged 14-22 in 1979. These individuals have been surveyed repeatedly (annually through 1994, biennially since then), providing detailed information about their education, employment, earnings, family background, and test scores. For our analysis, we’ll focus on a subset of the data: male respondents observed during their prime working years (ages 25-35). This gives us multiple observations per person, typically spanning 5-10 years. Here’s what our data structure looks like: # Load required packages library (tidyverse) library (plm) # For panel data methods library (lfe) # For high-dimensional fixed effects library (stargazer) # For nice regression tables # Load NLSY data (hypothetical structure) nlsy <- read_csv ( \"nlsy_panel.csv\" ) # Look at the structure head (nlsy) id year age educ logwage experience union married region 1 1986 28 12 2.45 6 0 1 NE 1 1987 29 12 2.52 7 0 1 NE 1 1988 30 12 2.58 8 1 1 NE 2 1986 27 16 2.88 3 0 0 S 2 1987 28 16 2.95 4 0 1 S 2 1988 29 16 3.02 5 0 1 S"
   },
   {
-    "objectID": "panel-data#section-4",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-1",
+    "href": "/chapter/panel-data#question-1",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "What features of this data structure make it “panel data”?"
   },
   {
-    "objectID": "panel-data#section-5",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-1",
+    "href": "/chapter/panel-data#answer-1",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "Panel data has two key features visible here: Multiple individuals : Each person has a unique identifier ( id ) Multiple time periods : Each person appears in multiple years This creates a two-dimensional structure: we observe variation both across individuals and within individuals over time. It’s this within-person variation that we’ll exploit to control for unobserved individual characteristics."
@@ -952,22 +952,22 @@
     "text": "Let’s start by understanding exactly what problem panel data helps us solve. Suppose we’re interested in estimating the causal effect of education on log wages. We might write down a simple model: \\log(wage_{it}) = \\beta_0 + \\beta_1 educ_i + u_{it} where i indexes individuals and t indexes time periods. The parameter \\beta_1 represents the return to education—the percentage increase in wages associated with one additional year of schooling. But this specification has a critical flaw. The error term u_{it} likely contains many unobserved factors that affect wages: u_{it} = \\alpha_i + \\varepsilon_{it} Here, \\alpha_i represents all time-invariant characteristics of individual i (ability, family background, motivation, etc.), while \\varepsilon_{it} captures time-varying shocks to wages."
   },
   {
-    "objectID": "panel-data#section-7",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-2",
+    "href": "/chapter/panel-data#question-2",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "Under what conditions will OLS estimation of the simple model above produce unbiased estimates of \\beta_1 ?"
   },
   {
-    "objectID": "panel-data#section-8",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-2",
+    "href": "/chapter/panel-data#answer-2",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "OLS will be unbiased if and only if E[u_{it} | educ_i] = 0 . But this fails if unobserved ability \\alpha_i is correlated with education. Smart, motivated individuals likely get more education and earn higher wages even conditional on education. This means: E[\\alpha_i | educ_i] \\neq 0 which implies E[u_{it} | educ_i] \\neq 0 , violating the key OLS assumption. Our estimate of \\beta_1 will be biased upward—it captures both the true effect of education and the effect of correlated unobserved ability. A Naive Cross-Sectional Approach Let’s see this bias in action using our NLSY data. First, we’ll estimate a simple cross-sectional regression using data from 1990: # Cross-sectional regression (1990 only) cross_section <- nlsy %>% filter (year == 1990 ) %>% lm (logwage ~ educ + experience + I (experience ^ 2 ) + union + married + factor (region), data = .) summary (cross_section) Coefficients: Estimate Std. Error t value Pr(>|t|) (Intercept) 1.234 0.156 7.91 < 2e-16 *** educ 0.108 0.008 13.50 < 2e-16 *** experience 0.045 0.012 3.75 0.00018 *** I(experience^2) -0.001 0.001 -1.12 0.26234 ... This regression suggests that each additional year of education is associated with approximately 10.8% higher wages. But is this the causal effect of education? Almost certainly not."
   },
   {
-    "objectID": "panel-data#section-9",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#the-key-insight",
+    "href": "/chapter/panel-data#the-key-insight",
     "title": "Panel Data Methods",
     "section": "The Key Insight",
     "text": "The cross-sectional estimate conflates two distinct effects: The causal effect of education on wages The correlation between education and unobserved ability Panel data methods allow us to separate these two effects by exploiting the longitudinal structure of the data."
@@ -980,57 +980,57 @@
     "text": "The fundamental insight of fixed effects estimation is surprisingly simple: if unobserved ability doesn’t change over time, we can eliminate it by looking at changes within individuals. The Fixed Effects Model We start with a more explicit model that separates time-invariant from time-varying factors: \\log(wage_{it}) = \\beta_0 + \\beta_1 educ_{it} + \\beta_2 experience_{it} + \\beta_3 experience_{it}^2 + \\alpha_i + \\varepsilon_{it} The key addition is \\alpha_i —an individual-specific intercept that captures all time-invariant characteristics of person i . This includes: Innate ability Family background Personality traits Network effects from childhood Anything else about person i that doesn’t change over our observation period"
   },
   {
-    "objectID": "panel-data#section-11",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-3",
+    "href": "/chapter/panel-data#question-3",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "If \\alpha_i is unobserved and correlated with education, why doesn’t this cause omitted variable bias just like before?"
   },
   {
-    "objectID": "panel-data#section-12",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-3",
+    "href": "/chapter/panel-data#answer-3",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "The crucial difference is that \\alpha_i doesn’t vary over time. This allows us to eliminate it through a clever transformation. If we take the time average of our equation for each individual: \\overline{\\log(wage_i)} = \\beta_0 + \\beta_1 \\overline{educ_i} + \\beta_2 \\overline{experience_i} + \\beta_3 \\overline{experience_i^2} + \\alpha_i + \\overline{\\varepsilon_i} and subtract this from the original equation, \\alpha_i disappears completely. This is called the within transformation or time-demeaning . The Within Transformation Let’s see this transformation explicitly. For each individual i , we compute the time averages: \\begin{aligned} \\overline{\\log(wage_i)} &= \\frac{1}{T_i} \\sum_{t=1}^{T_i} \\log(wage_{it}) \\ \\overline{educ_i} &= \\frac{1}{T_i} \\sum_{t=1}^{T_i} educ_{it} \\end{aligned} where T_i is the number of time periods we observe individual i . Now subtract these averages from the original equation: \\log(wage_{it}) - \\overline{\\log(wage_i)} = \\beta_1(educ_{it} - \\overline{educ_i}) + \\beta_2(experience_{it} - \\overline{experience_i}) + ... + (\\varepsilon_{it} - \\overline{\\varepsilon_i}) Notice what’s missing: \\alpha_i has completely disappeared! We can write this more compactly using “double-dot” notation for time-demeaned variables: \\ddot{\\log(wage_{it})} = \\beta_1 \\ddot{educ_{it}} + \\beta_2 \\ddot{experience_{it}} + \\beta_3 \\ddot{experience_{it}^2} + \\ddot{\\varepsilon_{it}} where \\ddot{x_{it}} = x_{it} - \\bar{x_i} denotes the deviation from the individual-specific mean."
   },
   {
-    "objectID": "panel-data#section-13",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-4",
+    "href": "/chapter/panel-data#question-4",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "What does the time-demeaned education variable \\ddot{educ_{it}} actually measure?"
   },
   {
-    "objectID": "panel-data#section-14",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-4",
+    "href": "/chapter/panel-data#answer-4",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "\\ddot{educ_{it}} measures how person i ’s education in year t compares to their average education across all years. For someone who completes schooling before entering our sample, education never changes, so \\ddot{educ_{it}} = 0 in every period. These individuals contribute nothing to identifying \\beta_1 in a fixed effects regression! Fixed effects estimation identifies the effect of education only from people whose education changes during our observation period. In the NLSY79, this primarily means individuals who complete additional schooling while working. Implementing Fixed Effects in R The plm package makes fixed effects estimation straightforward: # Convert to panel data format nlsy_panel <- pdata.frame (nlsy, index = c ( \"id\" , \"year\" )) # Fixed effects regression fe_model <- plm (logwage ~ educ + experience + I (experience ^ 2 ) + union + married, data = nlsy_panel, model = \"within\" , effect = \"individual\" ) summary (fe_model) Oneway (individual) effect Within Model Coefficients: Estimate Std. Error t-value Pr(>|t|) educ 0.0523 0.0142 3.683 0.00023 *** experience 0.0812 0.0098 8.286 < 2e-16 *** I(experience^2) -0.0024 0.0007 -3.429 0.00061 *** union 0.0654 0.0185 3.535 0.00041 *** married 0.0432 0.0167 2.587 0.00968 ** Notice how the estimated return to education has fallen from 10.8% in the cross-section to 5.2% in the fixed effects model. This substantial reduction reflects the omitted variable bias we discussed—smart, motivated individuals both get more education and earn more, inflating the cross-sectional estimate."
   },
   {
-    "objectID": "panel-data#section-15",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-5",
+    "href": "/chapter/panel-data#question-5",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "Why can’t we include time-invariant variables like race or gender in a fixed effects regression?"
   },
   {
-    "objectID": "panel-data#section-16",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-5",
+    "href": "/chapter/panel-data#answer-5",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "Time-invariant variables are perfectly collinear with the individual fixed effects \\alpha_i . When we apply the within transformation, these variables have zero variation: \\ddot{x_i} = x_i - \\bar{x_i} = x_i - x_i = 0 For example, if person i is male in every period, then male_i = 1 in every period, so \\overline{male_i} = 1 , and \\ddot{male_i} = 0 . There’s no within-person variation to exploit. This is not a limitation of the method—it’s fundamental to the approach. Fixed effects eliminates all time-invariant heterogeneity, which means we can’t estimate coefficients on time-invariant variables. What Gets Absorbed by Fixed Effects? It’s worth being explicit about what the individual fixed effects \\alpha_i capture in our NLSY application: Ability : Measured and unmeasured cognitive skills Family background : Parents’ education, income, connections Personality : Conscientiousness, extraversion, risk preferences Geography : Location effects (if individuals don’t move) Network effects : Access to information and opportunities Discrimination : Any systematic wage differences based on race, gender, or other immutable characteristics This is both the power and the limitation of fixed effects. By eliminating all time-invariant heterogeneity, we solve the omitted variable bias problem for these factors. But we also lose the ability to estimate effects of time-invariant variables. The Interpretation Challenge The 5.2% return to education we estimated using fixed effects has a specific interpretation: it measures how wages change when someone completes additional schooling while working . In the NLSY79 context, this primarily captures: Workers completing high school or college while employed Workers pursuing additional degrees or certifications Workers completing vocational or technical training"
   },
   {
-    "objectID": "panel-data#section-17",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-6",
+    "href": "/chapter/panel-data#question-6",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "Is this the same as the return to education for someone choosing whether to attend college right after high school?"
   },
   {
-    "objectID": "panel-data#section-18",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-6",
+    "href": "/chapter/panel-data#answer-6",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "No, and this is a crucial limitation of fixed effects estimation. The “local average treatment effect” identified by fixed effects applies specifically to the population whose education changes during the sample period. These individuals may differ systematically from those who complete their schooling before entering the labor market. Someone who returns to school while working might have different motivations, ability levels, or circumstances than traditional students. The 5.2% estimate might understate the returns to education for traditional college-goers if those who interrupt their careers to study have lower returns. This is an example of the broader principle in causal inference: the treatment effect we identify depends on the source of identifying variation . Different research designs identify different treatment effects, even for the “same” treatment."
@@ -1043,29 +1043,29 @@
     "text": "Fixed effects estimation is wonderfully robust—it requires no assumptions about the relationship between \\alpha_i and our regressors. But this robustness comes at a cost: we lose the ability to estimate coefficients on time-invariant variables, and we only use within-person variation to identify our coefficients. Random effects estimation offers an alternative approach that uses both within- and between-person variation. The trade-off? We need stronger assumptions. The Random Effects Model The random effects model makes a crucial assumption: the individual effects \\alpha_i are uncorrelated with all regressors: E[\\alpha_i | X_{i1}, X_{i2}, ..., X_{iT}] = 0 where X_{it} denotes all regressors in period t ."
   },
   {
-    "objectID": "panel-data#section-20",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-7",
+    "href": "/chapter/panel-data#question-7",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "Why is this called “random effects” if we still have an individual-specific term \\alpha_i ?"
   },
   {
-    "objectID": "panel-data#section-21",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-7",
+    "href": "/chapter/panel-data#answer-7",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "The term “random effects” can be misleading. It doesn’t mean that \\alpha_i varies randomly—it’s still a fixed characteristic of individual i . Rather, it means that we treat \\alpha_i as random from the econometrician’s perspective , drawn from a distribution that’s uncorrelated with our regressors. This is fundamentally an assumption about selection: are individuals with different values of \\alpha_i randomly sorted into different levels of education? Fixed effects says “no, we can’t assume that.” Random effects says “yes, we’re willing to assume that.” The GLS Transformation If the random effects assumption holds, we can do better than fixed effects by using Generalized Least Squares (GLS). The idea is to use a weighted combination of within- and between-person variation. The random effects estimator takes the form: \\ddot{y_{it}}^{RE} = y_{it} - \\theta \\bar{y_i} where the weight \\theta depends on the relative variance of \\alpha_i and \\varepsilon_{it} : \\theta = 1 - \\sqrt{\\frac{\\sigma_\\varepsilon^2}{\\sigma_\\varepsilon^2 + T\\sigma_\\alpha^2}} Notice two extreme cases: If \\sigma_\\alpha^2 = 0 (no individual heterogeneity), then \\theta = 0 and we get pooled OLS If \\sigma_\\alpha^2 \\to \\infty (huge individual heterogeneity), then \\theta \\to 1 and we get fixed effects In practice, \\theta is typically between 0.5 and 0.9, meaning random effects uses mostly within-person variation but also incorporates some between-person variation. Implementing Random Effects in R # Random effects regression re_model <- plm (logwage ~ educ + experience + I (experience ^ 2 ) + union + married + factor (region) + black + hispanic, data = nlsy_panel, model = \"random\" , effect = \"individual\" ) summary (re_model) Oneway (individual) effect Random Effect Model Coefficients: Estimate Std. Error t-value Pr(>|t|) (Intercept) 1.445 0.128 11.29 < 2e-16 *** educ 0.0876 0.0067 13.07 < 2e-16 *** experience 0.0698 0.0089 7.84 < 2e-16 *** I(experience^2) -0.0019 0.0006 -3.17 0.00152 ** union 0.0623 0.0179 3."
   },
   {
-    "objectID": "panel-data#section-22",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-8",
+    "href": "/chapter/panel-data#question-8",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "Should we prefer the random effects estimate because it’s more efficient and allows us to estimate effects of time-invariant variables?"
   },
   {
-    "objectID": "panel-data#section-23",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-8",
+    "href": "/chapter/panel-data#answer-8",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "Only if we believe the random effects assumption! The higher efficiency and ability to estimate time-invariant effects come at the cost of assuming \\alpha_i is uncorrelated with education. If this assumption fails—if smarter individuals get more education—then the random effects estimator is biased. In our NLSY application, the assumption almost certainly fails. We have strong theoretical reasons to believe ability is correlated with education. This makes fixed effects the more credible approach, despite its limitations. The Hausman Test How do we decide between fixed and random effects? The Hausman test provides a formal way to test whether the random effects assumption is plausible. The logic is simple: if the random effects assumption holds, both fixed and random effects estimators are consistent, but random effects is more efficient. If the random effects assumption fails, fixed effects is consistent but random effects is biased. So we can test the assumption by comparing the two estimates: If they’re similar: random effects assumption likely holds If they’re different: random effects assumption likely fails # Hausman test phtest (fe_model, re_model) Hausman Test data: logwage ~ educ + experience + ... chisq = 42.316, df = 5, p-value = 5.987e-08 alternative hypothesis: one model is inconsistent The strongly significant p-value indicates we should reject the random effects assumption. The fixed and random effects estimates differ systematically, suggesting that \\alpha_i is indeed correlated with our regressors. Fixed effects is the appropriate choice for this application."
@@ -1078,15 +1078,15 @@
     "text": "First-differencing offers another way to eliminate individual fixed effects. Instead of subtracting individual-specific means, we subtract the previous period’s values: \\Delta \\log(wage_{it}) = \\log(wage_{it}) - \\log(wage_{i,t-1}) = \\beta_1 \\Delta educ_{it} + \\beta_2 \\Delta experience_{it} + ... + \\Delta \\varepsilon_{it} The individual effect \\alpha_i disappears because it’s constant over time: \\alpha_i - \\alpha_i = 0"
   },
   {
-    "objectID": "panel-data#section-25",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#question-9",
+    "href": "/chapter/panel-data#question-9",
     "title": "Panel Data Methods",
     "section": "Question",
     "text": "If first-differencing and fixed effects both eliminate \\alpha_i , why would we ever prefer one over the other?"
   },
   {
-    "objectID": "panel-data#section-26",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#answer-9",
+    "href": "/chapter/panel-data#answer-9",
     "title": "Panel Data Methods",
     "section": "Answer",
     "text": "The two methods are asymptotically equivalent (they give the same answer as T \\to \\infty ), but they differ in small samples and under different assumptions about the error structure: Efficiency : If \\varepsilon_{it} is serially uncorrelated, fixed effects is more efficient because it uses all available time periods. First-differencing uses only adjacent pairs. Serial correlation : If \\varepsilon_{it} follows a random walk, first-differencing is actually more efficient than fixed effects. Measurement error : First-differencing can exacerbate attenuation bias from measurement error because it amplifies the noise-to-signal ratio. Time-varying effects : First-differencing naturally accommodates time-varying coefficients, while fixed effects implicitly imposes constant effects. Implementing First-Differences in R # First-difference regression # Method 1: Using plm fd_model <- plm (logwage ~ educ + experience + I (experience ^ 2 ) + union + married, data = nlsy_panel, model = \"fd\" ) summary (fd_model) # Method 2: Manual first-differencing nlsy_fd <- nlsy_panel %>% group_by (id) %>% arrange (id, year) %>% mutate ( dlogwage = logwage - lag (logwage), deduc = educ - lag (educ), dexper = experience - lag (experience), dexper2 = I (experience ^ 2 ) - lag ( I (experience ^ 2 )), dunion = union - lag (union), dmarried = married - lag (married) ) %>% filter ( ! is.na (dlogwage)) # Drop first observation for each person fd_manual <- lm (dlogwage ~ deduc + dexper + dexper2 + dunion + dmarried - 1 , data = nlsy_fd) summary (fd_manual) Coefficients: Estimate Std. Error t-value Pr(>|t|) deduc 0.0489 0.0167 2.928 0.00342 ** dexper 0.0795 0.0104 7.644 < 2e-16 *** dexper2 -0.0023 0.0008 -2.875 0.00405 ** dunion 0.0671 0.0193 3.476 0.00051 *** dmarried 0.0445 0.0174 2.557 0.01056 * The first-difference estimate (4.9%) is similar to but slightly smaller than the fixed effects estimate (5.2%). This suggests that serial correlation in the errors is not a major issue in our application. When"
@@ -1099,8 +1099,8 @@
     "text": "Clustered Standard Errors A critical issue in panel data analysis is that observations for the same individual are unlikely to be independent. Wage shocks might persist over time, leading to serial correlation in \\varepsilon_{it} . This violates the standard OLS assumption and causes our standard errors to understate uncertainty. The solution is to compute cluster-robust standard errors , clustering at the individual level: # Fixed effects with clustered standard errors library (lmtest) library (sandwich) # Compute robust covariance matrix fe_vcov_cluster <- vcovHC (fe_model, type = \"HC1\" , cluster = \"group\" ) # Get corrected standard errors and test statistics coeftest (fe_model, vcov = fe_vcov_cluster) Coefficients: Estimate Std. Error t value Pr(>|t|) educ 0.0523 0.0189 2.767 0.00566 ** experience 0.0812 0.0132 6.152 < 2e-16 *** I(experience^2) -0.0024 0.0009 -2.667 0.00766 ** union 0.0654 0.0221 2.959 0.00309 ** married 0.0432 0.0198 2.182 0.02912 * Notice how the clustered standard errors are larger than the default standard errors, reflecting the within-person correlation in wage shocks. This is typical in panel data applications."
   },
   {
-    "objectID": "panel-data#section-28",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#always-cluster-your-standard-errors",
+    "href": "/chapter/panel-data#always-cluster-your-standard-errors",
     "title": "Panel Data Methods",
     "section": "Always Cluster Your Standard Errors",
     "text": "In panel data applications, you should almost always compute cluster-robust standard errors, clustering at the individual (or higher) level. Failing to do so will lead to overstated precision and too-frequent rejection of null hypotheses. This is one of the most common errors in applied panel data analysis. Time Fixed Effects Our model so far has assumed that there are no aggregate time effects—that is, nothing systematic happens to all workers’ wages in particular years. This is unrealistic. Recessions, inflation, technological change, and policy reforms affect everyone. We can add time fixed effects (year dummies) to control for these aggregate shocks: \\log(wage_{it}) = \\beta_1 educ_{it} + \\beta_2 experience_{it} + \\beta_3 experience_{it}^2 + \\alpha_i + \\lambda_t + \\varepsilon_{it} where \\lambda_t is a year-specific intercept. # Two-way fixed effects (individual + time) fe_twoway <- plm (logwage ~ educ + experience + I (experience ^ 2 ) + union + married, data = nlsy_panel, model = \"within\" , effect = \"twoways\" ) summary (fe_twoway) Including time fixed effects is generally a good idea in panel data applications. It ensures that our estimates aren’t contaminated by aggregate trends or shocks. Testing for Individual Effects Should we use fixed effects at all, or would pooled OLS be sufficient? We can test this formally: # Test for individual effects pooled_model <- plm (logwage ~ educ + experience + I (experience ^ 2 ) + union + married, data = nlsy_panel, model = \"pooling\" ) # F-test for individual effects pFtest (fe_model, pooled_model) F test for individual effects data: logwage ~ educ + experience + ... F = 127.34, df1 = 2451, df2 = 15673, p-value < 2.2e-16 alternative hypothesis: significant effects The strongly significant F-statistic confirms that individual fixed effects are important. Pooled OLS would produce biased estimates due to omitted heterogeneity."
@@ -1120,8 +1120,8 @@
     "text": "Panel data methods offer powerful tools for addressing omitted variable bias by exploiting repeated observations on the same individuals. Here are the key takeaways:"
   },
   {
-    "objectID": "panel-data#section-31",
-    "href": "/chapter/panel-data",
+    "objectID": "panel-data#key-points",
+    "href": "/chapter/panel-data#key-points",
     "title": "Panel Data Methods",
     "section": "Key Points",
     "text": "Fixed effects eliminates time-invariant unobserved heterogeneity by using within-person variation. It requires no assumptions about the relationship between \\alpha_i and regressors, but sacrifices the ability to estimate effects of time-invariant variables. Random effects uses both within- and between-person variation, gaining efficiency and allowing estimation of time-invariant effects. But it requires the strong assumption that \\alpha_i is uncorrelated with all regressors. First-differencing is an alternative to fixed effects that may be preferred when errors follow a random walk or when there are only two time periods. The Hausman test helps choose between fixed and random effects by testing whether they produce systematically different estimates. Always use cluster-robust standard errors in panel data applications to account for within-person correlation in errors. Time fixed effects should generally be included to control for aggregate time trends and shocks. The variation that identifies panel data estimates may be local —applying to specific subpopulations (like those whose treatment status changes). Extrapolation requires caution. Applied Lessons from the NLSY Our analysis of returns to education in the NLSY79 illustrates several important points: Cross-sectional estimates (10.8%) substantially overstate returns due to omitted ability bias Fixed effects estimates (5.2%) are roughly half the cross-sectional estimates, suggesting ability bias is large and positive These estimates apply specifically to workers who complete additional schooling while employed—a selected group The Hausman test strongly rejects the random effects assumption, confirming that ability is correlated with education The broader lesson: the source of identifying variation matters . Panel data methods don’t eliminate all endogeneity concerns—they only address time-invariant unobserved heterogeneity. Time-varying confounders, reverse causality, and measurement error remain potential threat"
@@ -1141,22 +1141,22 @@
     "text": "Probability In this chapter, we’ll introduce some fundamental concepts in probability theory. By the end of this chapter, you will be able to define the following: Sample space Outcome Event Probability Random variable"
   },
   {
-    "objectID": "probability-distributions#section-2",
-    "href": "/chapter/probability-distributions",
+    "objectID": "probability-distributions#question",
+    "href": "/chapter/probability-distributions#question",
     "title": "Probability",
     "section": "Question",
     "text": "What is probability?"
   },
   {
-    "objectID": "probability-distributions#section-3",
-    "href": "/chapter/probability-distributions",
+    "objectID": "probability-distributions#answer",
+    "href": "/chapter/probability-distributions#answer",
     "title": "Probability",
     "section": "Answer",
     "text": "Probability is a mathematical framework for quantifying uncertainty. It assigns numerical values between 0 and 1 to events, where 0 indicates impossibility and 1 indicates certainty."
   },
   {
-    "objectID": "probability-distributions#section-4",
-    "href": "/chapter/probability-distributions",
+    "objectID": "probability-distributions#definition",
+    "href": "/chapter/probability-distributions#definition",
     "title": "Probability",
     "section": "Definition",
     "text": "The sample space is the set of all possible outcomes of an experiment. For a coin flip, the sample space is \\{H, T\\} . Let’s consider a simple example. Imagine you’re flipping a fair coin. The sample space consists of two possible outcomes: heads (H) and tails (T). The probability of getting heads is: P(H) = \\frac{\\text{Number of favorable outcomes}}{\\text{Total number of possible outcomes}} = \\frac{1}{2} = 0.5"
@@ -1169,15 +1169,15 @@
     "text": "A random variable is a function that assigns numerical values to the outcomes of a random experiment."
   },
   {
-    "objectID": "probability-distributions#section-6",
-    "href": "/chapter/probability-distributions",
+    "objectID": "probability-distributions#question-1",
+    "href": "/chapter/probability-distributions#question-1",
     "title": "Probability",
     "section": "Question",
     "text": "Can you give an example of a random variable?"
   },
   {
-    "objectID": "probability-distributions#section-7",
-    "href": "/chapter/probability-distributions",
+    "objectID": "probability-distributions#answer-1",
+    "href": "/chapter/probability-distributions#answer-1",
     "title": "Probability",
     "section": "Answer",
     "text": "Consider rolling a six-sided die. Let X be the random variable representing the number that appears on the top face. Then X can take values \\{1, 2, 3, 4, 5, 6\\} , each with probability 1/6 if the die is fair."
@@ -1197,15 +1197,15 @@
     "text": "Propensity Score Matching Imagine you’re tasked with evaluating whether a job training program actually helps people earn more money. You collect data on hundreds of workers—some who participated in the program and some who didn’t. You compare their earnings and find that, on average, those who went through the training actually earn less than those who didn’t. Should you conclude the program is harmful? Not so fast. The problem is that people don’t randomly stumble into job training programs. Those who seek out such programs often start from a position of disadvantage—they might have less education, weaker employment histories, or face other barriers to employment. In other words, the two groups aren’t comparable to begin with. This is the fundamental challenge of causal inference from observational data: when treatment isn’t randomly assigned, how can we estimate what would have happened to the treated individuals if they hadn’t received treatment? In this chapter, we’ll explore one elegant solution to this problem: propensity score matching ."
   },
   {
-    "objectID": "propensity-score#section-1",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question",
+    "href": "/chapter/propensity-score#question",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "What makes propensity score matching different from simply comparing averages between treated and untreated groups?"
   },
   {
-    "objectID": "propensity-score#section-2",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer",
+    "href": "/chapter/propensity-score#answer",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "Propensity score matching explicitly accounts for the fact that treated and untreated individuals may differ systematically in their observable characteristics. Rather than comparing all treated individuals to all untreated individuals, it finds pairs (or small groups) of individuals who look similar in terms of their background characteristics but differ in whether they received treatment. This creates a more “apples-to-apples” comparison."
@@ -1225,15 +1225,15 @@
     "text": "Let’s start with the most obvious approach: simply comparing the average earnings of the treated and untreated groups. # Calculate simple difference in means treated_mean = df_nsw[df_nsw[ 'treat' ] == 1 ][ 're78' ].mean() control_mean = df_nsw[df_nsw[ 'treat' ] == 0 ][ 're78' ].mean() naive_effect = treated_mean - control_mean print ( f\"Average earnings (treated): $ { treated_mean :,.2f} \" ) print ( f\"Average earnings (control): $ { control_mean :,.2f} \" ) print ( f\"Naive treatment effect: $ { naive_effect :,.2f} \" ) Average earnings (treated): $4,698.75 Average earnings (control): $2,365.07 Naive treatment effect: $2,333.69 This naive comparison suggests the program increased earnings by a certain amount. But can we trust this estimate? Let’s check whether the treated and control groups were actually comparable to begin with. # Create balance table covariates = [ 'age' , 'educ' , 'black' , 'hisp' , 'married' , 'nodegree' , 're74' , 're75' ] balance_data = [] for var in covariates: treated_val = df_nsw[df_nsw[ 'treat' ] == 1 ][var].mean() control_val = df_nsw[df_nsw[ 'treat' ] == 0 ][var].mean() diff = treated_val - control_val balance_data.append({ 'Variable' : var, 'Treated' : f' { treated_val :.2f} ' , 'Control' : f' { control_val :.2f} ' , 'Difference' : f' { diff :.2f} ' }) balance_df = pd.DataFrame(balance_data) print ( \" \\n Balance Table: Pre-treatment Characteristics\" ) print (balance_df.to_string(index = False )) Balance Table: Pre-treatment Characteristics Variable Treated Control Difference age 24.81 24.82 -0.01 educ 10.08 10.05 0.04 black 0.83 0.84 -0.02 hisp 0.04 0.08 -0.04 married 0.18 0.14 0.04 nodegree 0.67 0.84 -0.17 re74 2126.22 2182.12 -55.90 re75 2421.47 2111.91 309.56"
   },
   {
-    "objectID": "propensity-score#section-5",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question-1",
+    "href": "/chapter/propensity-score#question-1",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "Looking at this balance table, what do you notice about the treated and control groups?"
   },
   {
-    "objectID": "propensity-score#section-6",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer-1",
+    "href": "/chapter/propensity-score#answer-1",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "In this experimental sample, the treated and control groups are quite similar across most pre-treatment characteristics. This is exactly what we’d expect from randomization—the groups are balanced. However, in many real-world settings without randomization, we would see substantial differences, making simple comparisons problematic."
@@ -1246,15 +1246,15 @@
     "text": "To illustrate why propensity score matching matters, let’s consider what happens when we use a non-experimental control group. Instead of comparing NSW participants to the randomized control group, imagine we compared them to a sample drawn from a national survey like the Panel Study of Income Dynamics (PSID). These are also non-participants in the program, but they represent a very different population. # Create a PSID comparison group (more advantaged) n_psid = 2490 psid_data = { 'treat' : np.zeros(n_psid), 'age' : np.random.normal( 33 , 11 , n_psid), # Older 'educ' : np.random.normal( 12 , 3 , n_psid), # More education 'black' : np.random.binomial( 1 , 0.25 , n_psid), # Less likely to be Black 'hisp' : np.random.binomial( 1 , 0.03 , n_psid), # Less likely to be Hispanic 'married' : np.random.binomial( 1 , 0.87 , n_psid), # More likely married 'nodegree' : np.random.binomial( 1 , 0.31 , n_psid), # More likely to have degree 're74' : np.random.gamma( 5 , 3500 , n_psid), # Higher prior earnings 're75' : np.random.gamma( 5 , 3600 , n_psid), } psid_data[ 're78' ] = psid_data[ 're75' ] + np.random.normal( 1000 , 4000 , n_psid) psid_data[ 're78' ] = np.maximum( 0 , psid_data[ 're78' ]) df_psid = pd.DataFrame(psid_data) # Combine NSW treated with PSID controls df_obs = pd.concat([ pd.DataFrame(treated_data), df_psid ], ignore_index = True ) # Compare with PSID controls treated_mean_obs = df_obs[df_obs[ 'treat' ] == 1 ][ 're78' ].mean() psid_mean = df_obs[df_obs[ 'treat' ] == 0 ][ 're78' ].mean() naive_effect_obs = treated_mean_obs - psid_mean print ( \" \\n Comparison with PSID controls:\" ) print ( f\"Average earnings (NSW treated): $ { treated_mean_obs :,.2f} \" ) print ( f\"Average earnings (PSID controls): $ { psid_mean :,.2f} \" ) print ( f\"Naive treatment effect: $ { naive_effect_obs :,.2f} \" ) Comparison with PSID controls: Average earnings (NSW treated): $4,698.75 Average earnings (PSID controls): $18,988.45 Naive treatment effect: $-14,289.70 Now the estimate is dramat"
   },
   {
-    "objectID": "propensity-score#section-8",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question-2",
+    "href": "/chapter/propensity-score#question-2",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "Why does this selection problem matter for causal inference?"
   },
   {
-    "objectID": "propensity-score#section-9",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer-2",
+    "href": "/chapter/propensity-score#answer-2",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "When treatment and control groups differ systematically in their characteristics, we can’t tell whether differences in outcomes are due to the treatment or due to these pre-existing differences. For example, if PSID controls earn more in 1978, is that because they didn’t participate in the program (suggesting the program is harmful)? Or is it simply because they started from a more advantaged position—more education, stronger employment histories, etc.?"
@@ -1267,22 +1267,22 @@
     "text": "This is where the propensity score comes in. Rather than trying to match on all these different characteristics simultaneously—age and education and race and earnings history—we can summarize all of them into a single number: the probability that an individual received treatment, given their characteristics. Formally, the propensity score for individual i is: e(X_i) = P(\\text{Treat}_i = 1 \\mid X_i) where X_i represents all of the individual’s observed pre-treatment characteristics. The remarkable property of the propensity score, proven by Rosenbaum and Rubin (1983), is that if we compare individuals with similar propensity scores, we’ve effectively balanced all of the observed characteristics in X_i . In other words, among people with the same propensity score, treatment assignment is “as if” random."
   },
   {
-    "objectID": "propensity-score#section-11",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question-3",
+    "href": "/chapter/propensity-score#question-3",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "How do we estimate propensity scores in practice?"
   },
   {
-    "objectID": "propensity-score#section-12",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer-3",
+    "href": "/chapter/propensity-score#answer-3",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "We typically use logistic regression, where the dependent variable is treatment status (1 for treated, 0 for control) and the independent variables are all the pre-treatment characteristics we want to balance on. The predicted probabilities from this regression are the estimated propensity scores. Let’s estimate propensity scores for our NSW participants and PSID controls: from sklearn.linear_model import LogisticRegression # Prepare data for propensity score estimation X = df_obs[covariates].values y = df_obs[ 'treat' ].values # Estimate propensity scores using logistic regression ps_model = LogisticRegression(max_iter = 1000 , random_state = 42 ) ps_model.fit(X, y) df_obs[ 'propensity_score' ] = ps_model.predict_proba(X)[:, 1 ] print ( \" \\n Propensity Score Summary Statistics:\" ) print (df_obs.groupby( 'treat' )[ 'propensity_score' ].describe()) Propensity Score Summary Statistics: count mean std min 25% 50% 75% max treat 0.0 2490.0 0.001332 0.022641 2.490600e-33 9.663518e-15 1.777903e-11 1.776816e-08 0.528043 1.0 185.0 0.982062 0.094362 1.407498e-01 9.980161e-01 9.995102e-01 9.999020e-01 0.999994 Let’s visualize the distribution of propensity scores for treated and control units: # Create propensity score distribution plot fig, ax = plt.subplots(figsize = ( 10 , 6 )) # Plot histograms treated_ps = df_obs[df_obs[ 'treat' ] == 1 ][ 'propensity_score' ] control_ps = df_obs[df_obs[ 'treat' ] == 0 ][ 'propensity_score' ] ax.hist(control_ps, bins = 30 , alpha = 0.6 , color = '#003262' , label = 'PSID Controls' , density = True ) ax.hist(treated_ps, bins = 30 , alpha = 0.6 , color = '#FDB515' , label = 'NSW Treated' , density = True ) ax.set_xlabel( 'Propensity Score' , fontsize = 12 ) ax.set_ylabel( 'Density' , fontsize = 12 ) ax.set_title( 'Distribution of Propensity Scores' , fontsize = 14 , fontweight = 'bold' ) ax.legend(fontsize = 11 ) ax.grid(axis = 'y' , alpha = 0.3 ) plt.tight_layout() plt.savefig( 'figures/propensity_scores_dist.png' , dpi = 150 , bbox_inches "
   },
   {
-    "objectID": "propensity-score#section-13",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#common-support-and-the-overlap-assumption",
+    "href": "/chapter/propensity-score#common-support-and-the-overlap-assumption",
     "title": "Propensity Score Matching",
     "section": "Common Support and the Overlap Assumption",
     "text": "For propensity score matching to work, we need common support —that is, for every treated individual, there must be at least some control individuals with similar propensity scores. When propensity score distributions barely overlap, we’re trying to compare individuals who are so different that no amount of statistical adjustment can make them truly comparable. In such cases, we should limit our analysis to the region of common support."
@@ -1302,15 +1302,15 @@
     "text": "The key test of whether matching worked is whether it achieved balance—that is, whether the matched treated and control groups now look similar in terms of their pre-treatment characteristics. Let’s check: # Create matched sample matched_treated_idx = matches[ 'treated_idx' ].values matched_control_idx = matches[ 'control_idx' ].values matched_treated = df_obs.loc[matched_treated_idx] matched_control = df_obs.loc[matched_control_idx] # Balance table for matched sample print ( \" \\n Balance After Matching:\" ) balance_data_matched = [] for var in covariates: treated_val = matched_treated[var].mean() control_val = matched_control[var].mean() diff = treated_val - control_val # Also compute standardized difference pooled_sd = np.sqrt((matched_treated[var].std() ** 2 + matched_control[var].std() ** 2 ) / 2 ) std_diff = diff / pooled_sd if pooled_sd > 0 else 0 balance_data_matched.append({ 'Variable' : var, 'Treated' : f' { treated_val :.2f} ' , 'Control' : f' { control_val :.2f} ' , 'Difference' : f' { diff :.2f} ' , 'Std. Diff.' : f' { std_diff :.3f} ' }) balance_df_matched = pd.DataFrame(balance_data_matched) print (balance_df_matched.to_string(index = False )) Balance After Matching: Variable Treated Control Difference Std. Diff. age 28.50 29.08 -0.58 -0.076 educ 11.60 13.52 -1.91 -0.885 black 0.33 0.00 0.33 0.816 hisp 0.00 0.00 0.00 0.000 married 0.67 1.00 -0.33 -0.816 nodegree 0.67 0.33 0.33 0.577 re74 5002.87 3853.17 1149.70 0.783 re75 6367.74 5635.21 732.54 0.269 Much better! The standardized differences are now much smaller. A common rule of thumb is that standardized differences should be less than 0.1 (or sometimes 0.25) for adequate balance. While not perfect, matching has substantially reduced the imbalance between treated and control groups."
   },
   {
-    "objectID": "propensity-score#section-16",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question-4",
+    "href": "/chapter/propensity-score#question-4",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "What is a standardized difference, and why do we use it instead of just looking at raw differences?"
   },
   {
-    "objectID": "propensity-score#section-17",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer-4",
+    "href": "/chapter/propensity-score#answer-4",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "A standardized difference expresses the difference between groups in units of standard deviations. It’s calculated as the difference in means divided by the pooled standard deviation. We use it because it’s scale-invariant—a difference of 2 years in age means something very different from a difference of $2,000 in earnings. By standardizing, we can assess balance consistently across variables measured in different units. We can also visualize balance using a “love plot,” which shows standardized differences before and after matching: # Create love plot fig, ax = plt.subplots(figsize = ( 10 , 8 )) # Get before matching standardized differences before_std_diffs = [] for var in covariates: treated_val = df_obs[df_obs[ 'treat' ] == 1 ][var].mean() control_val = df_obs[df_obs[ 'treat' ] == 0 ][var].mean() pooled_sd = np.sqrt((df_obs[df_obs[ 'treat' ] == 1 ][var].std() ** 2 + df_obs[df_obs[ 'treat' ] == 0 ][var].std() ** 2 ) / 2 ) std_diff = (treated_val - control_val) / pooled_sd if pooled_sd > 0 else 0 before_std_diffs.append(std_diff) # Get after matching standardized differences after_std_diffs = [] for var in covariates: treated_val = matched_treated[var].mean() control_val = matched_control[var].mean() pooled_sd = np.sqrt((matched_treated[var].std() ** 2 + matched_control[var].std() ** 2 ) / 2 ) std_diff = (treated_val - control_val) / pooled_sd if pooled_sd > 0 else 0 after_std_diffs.append(std_diff) # Create plot y_pos = np.arange( len (covariates)) ax.scatter(before_std_diffs, y_pos, s = 100 , alpha = 0.6 , color = '#003262' , label = 'Before Matching' ) ax.scatter(after_std_diffs, y_pos, s = 100 , alpha = 0.6 , color = '#FDB515' , label = 'After Matching' ) # Connect with lines for i in range ( len (covariates)): ax.plot([before_std_diffs[i], after_std_diffs[i]], [y_pos[i], y_pos[i]], 'k-' , alpha = 0.3 , linewidth = 1 ) # Add reference lines ax.axvline(x = 0 , color = 'black' , linestyle = '-' , linewidth = 1 ) ax.axvline(x = 0.1 , color = 'red' , linestyle = '"
@@ -1323,15 +1323,15 @@
     "text": "Now that we have a matched sample with good balance, we can estimate the treatment effect. The simplest approach is to compare average outcomes between the matched treated and control groups: # Estimate treatment effect on matched sample matched_treated_outcome = matched_treated[ 're78' ].mean() matched_control_outcome = matched_control[ 're78' ].mean() matched_effect = matched_treated_outcome - matched_control_outcome print ( \" \\n Treatment Effect Estimates:\" ) print ( f\" { 'Method' :<30} { 'Estimate' :>12} \" ) print ( f\" { '-' * 42 } \" ) print ( f\" { 'Experimental benchmark' :<30} $ { naive_effect :>11,.2f} \" ) print ( f\" { 'Naive (PSID controls)' :<30} $ { naive_effect_obs :>11,.2f} \" ) print ( f\" { 'Propensity score matching' :<30} $ { matched_effect :>11,.2f} \" ) Treatment Effect Estimates: Method Estimate ------------------------------------------ Experimental benchmark $ 2,333.69 Naive (PSID controls) $ -14,289.70 Propensity score matching $ -2,522.60 The propensity score matching estimate is much closer to the experimental benchmark than the naive comparison! This demonstrates the power of matching: by creating comparable groups, we can recover estimates that approximate what we would have found in a randomized experiment."
   },
   {
-    "objectID": "propensity-score#section-19",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question-5",
+    "href": "/chapter/propensity-score#question-5",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "Why isn’t the propensity score matching estimate exactly equal to the experimental benchmark?"
   },
   {
-    "objectID": "propensity-score#section-20",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer-5",
+    "href": "/chapter/propensity-score#answer-5",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "There are several reasons: Matching only balances observed characteristics—if there are important unobserved differences between NSW participants and PSID controls, matching won’t eliminate that bias. Even with the same data, different matching methods (nearest neighbor vs. kernel, different calipers, etc.) can produce slightly different estimates. The experimental benchmark itself has sampling variability. The key point is that matching gets us much closer to the truth than naive comparisons."
@@ -1344,15 +1344,15 @@
     "text": "All of this analysis rests on a critical assumption called unconfoundedness or selection on observables . This assumption states that, conditional on the observed covariates X , treatment assignment is independent of potential outcomes: (Y_1, Y_0) \\perp \\text{Treat} \\mid X In plain English: once we account for all the observed characteristics, there are no remaining systematic differences between treated and control groups that affect outcomes. This is a strong assumption, and it’s fundamentally untestable. We can check whether we’ve achieved balance on observed characteristics, but we can never know whether there are unobserved confounders lurking in the background."
   },
   {
-    "objectID": "propensity-score#section-22",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#question-6",
+    "href": "/chapter/propensity-score#question-6",
     "title": "Propensity Score Matching",
     "section": "Question",
     "text": "When is the unconfoundedness assumption most plausible?"
   },
   {
-    "objectID": "propensity-score#section-23",
-    "href": "/chapter/propensity-score",
+    "objectID": "propensity-score#answer-6",
+    "href": "/chapter/propensity-score#answer-6",
     "title": "Propensity Score Matching",
     "section": "Answer",
     "text": "The assumption is most credible when: We have rich data on pre-treatment characteristics that are likely to affect both treatment assignment and outcomes. We understand the treatment assignment process well enough to know what variables matter. The treatment decision is based primarily on factors we can observe. In the NSW example, if individuals selected into the program based solely on observable characteristics like employment history and demographics, unconfoundedness is plausible. If they also selected based on unobservable factors like motivation or family support, we may still have bias."
@@ -1421,8 +1421,8 @@
     "text": "Let’s begin with a concrete problem that will guide our exploration of hypothesis testing. Suppose we’re trying to improve the logical ability of students through a new curriculum. The old curriculum, which has been in use for many years, produces an average test score of 80 points. We’ve developed a new curriculum and trained a large group of students using this approach. The central question we want to answer is: Is the new curriculum more effective at raising average test scores? To investigate this question, we randomly sample 38 students from those trained under the new curriculum and record their test scores. Our sample yields a mean score of 83 points. Our data: Test scores from 38 randomly selected students"
   },
   {
-    "objectID": "testing-mean-large#section-2",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#initial-observation",
+    "href": "/chapter/testing-mean-large#initial-observation",
     "title": "Testing a claim about a population mean",
     "section": "Initial Observation",
     "text": "While our sample mean of 83 is higher than the old curriculum mean of 80, we cannot immediately conclude that the population mean of all students trained under the new curriculum exceeds 80. Why not? Because our sample is just one of many possible samples we could have drawn, and sample means vary due to random sampling. The Logic of Hypothesis Testing Frequentist hypothesis testing operates on a principle analogous to proof by contradiction in mathematics. We temporarily assume the opposite of what we hope to demonstrate, then show that this assumption leads to implausible results. The nature of hypothesis testing: the probabilistic equivalent of proof by contradiction The intuition is straightforward: we set up a hypothesis about a population parameter, assume it’s correct, then calculate the conditional probability of observing our sample data. If this probability is sufficiently small, we reject the hypothesis. Intuition underlying frequentist hypothesis testing"
@@ -1435,15 +1435,15 @@
     "text": "Before we can conduct a proper hypothesis test, we need to understand a crucial concept: standard error ."
   },
   {
-    "objectID": "testing-mean-large#section-4",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#definition",
+    "href": "/chapter/testing-mean-large#definition",
     "title": "Testing a claim about a population mean",
     "section": "Definition",
     "text": "Standard error measures how far, on average , a sample mean deviates from the population mean across repeated samples. It quantifies the precision of our estimator. Mathematically, the standard error of the sample mean is: SE = \\frac{\\sigma}{\\sqrt{n}} where \\sigma is the population standard deviation and n is the sample size. The Concept of Repeated Sampling To truly understand standard error, we need to embrace a core principle of frequentist statistics: repeated sampling . Imagine we could draw not just one sample of 38 students, but millions of such samples from our population. Each sample would give us a different sample mean. Here’s the remarkable thing: if we computed all these sample means and calculated their average, that average would equal the true population mean. This property is called unbiasedness , and it’s why we use the sample mean as our estimator. But these individual sample means would vary around the population mean. The standard error tells us the typical size of this variation. In our example, with a sample size of 38 and a calculated standard error of 1.64 points, we know that a typical sample mean deviates from the population mean by about 1.64 points."
   },
   {
-    "objectID": "testing-mean-large#section-5",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#key-insight",
+    "href": "/chapter/testing-mean-large#key-insight",
     "title": "Testing a claim about a population mean",
     "section": "Key Insight",
     "text": "Smaller standard error = More precision = Greater reliability When the standard error is small, we can be more confident that our single observed sample mean is close to the true population mean. The standard error decreases as sample size increases, which is why larger samples give us more reliable estimates. The Relationship: Population Variance to Sample Mean Variance There’s a fundamental relationship connecting the population variance to the variance of the sample mean: \\text{Var}(\\bar{Y}) = \\frac{\\sigma^2}{n} Taking the square root of both sides gives us the standard error formula. This relationship tells us that: The variance of sample means is smaller than the population variance This variance decreases as sample size increases The relationship is inverse with sample size (doubling n doesn’t double precision)"
@@ -1456,29 +1456,29 @@
     "text": "Now that we understand standard error, we can proceed with our hypothesis test. We’ll work through this systematically in three stages. We will follow a three-stage process to test hypotheses Stage 1: Formulating the Hypotheses Stage I: Setup The first step in any hypothesis test is to clearly state what we’re testing. We need two competing hypotheses. Expressing Our Claim in English Elucidate claim and its complement in English Claim: Students trained under the new curriculum will score, on average, higher than 80 on the test. Complement: Students trained under the new curriculum will not score, on average, higher than 80 on the test. The Law of the Excluded Middle In formulating our hypotheses, we’re invoking a fundamental principle of logic: the law of the excluded middle . The law of the excluded middle This law states that a statement is either true or false—there is no middle ground between truth and falsity. Either the new curriculum improves scores beyond 80, or it doesn’t. Our job is to determine which is more likely given our data. Symbolic Representation Express claim and its complement symbolically Let the mean score of students trained under the new curriculum be \\mu . Claim: \\mu > 80 Complement: \\mu \\leq 80 Assigning Null and Alternative Hypotheses Specify null and alternative hypotheses Null Hypothesis ( H_0 ): The population mean test score under the new curriculum is less than or equal to 80. H_0: \\mu \\leq 80 Alternative Hypothesis ( H_A ): The population mean test score under the new curriculum exceeds 80. H_A: \\mu > 80 The null hypothesis represents the status quo or the claim we’re trying to find evidence against. The alternative hypothesis represents what we hope to demonstrate with our data. By convention, we assign the complement of our claim to the null hypothesis—this is what we will attempt to falsify. We also need to choose a significance level \\alpha , which represents our tolerance for making a Type I error (rejecting a true null hypothe"
   },
   {
-    "objectID": "testing-mean-large#section-7",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#why-this-setup",
+    "href": "/chapter/testing-mean-large#why-this-setup",
     "title": "Testing a claim about a population mean",
     "section": "Why This Setup?",
     "text": "Notice that our null hypothesis includes the equality. This is a one-sided test because we’re only interested in whether the new curriculum is better , not just different. If we cared about any difference (better or worse), we’d use a two-sided test. Understanding Type I and Type II Errors Before proceeding, we must acknowledge that hypothesis testing involves the possibility of error. There are two types of errors we might make: Anticipating the possibility of erring Type I Error: Rejecting a true null hypothesis (false positive) Type II Error: Failing to reject a false null hypothesis (false negative) It’s crucial to understand that we cannot make both errors simultaneously: We cannot make both errors simultaneously Each error is associated with a unique decision If we reject the null, we can make only a Type I error If we don’t reject the null, we can make only a Type II error Choosing the Significance Level We also need to choose a significance level \\alpha , which represents our tolerance for making a Type I error (rejecting a true null hypothesis). The level of significance is the largest probability of making a Type I error that a researcher is willing to tolerate In many academic papers, the level of significance is set at either 5% or 1%. But where do these specific values come from? Why are these specific values used commonly? The answer involves both history and convention. The story begins with an afternoon tea party and R.A. Fischer. The Lady Tasting Tea Fischer’s work on experimental design, inspired by a colleague who claimed she could tell whether milk was added before or after tea, led to the development of significance testing as we know it today. Stage 2: Estimating the Sampling Distribution In this stage, we need to characterize the distribution of our test statistic under the assumption that the null hypothesis is true. Step 1: Choose an Estimator We use the sample mean \\bar{Y} as our estimator of the population mean \\mu . Our observed value is "
   },
   {
-    "objectID": "testing-mean-large#section-8",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#the-sampling-distribution",
+    "href": "/chapter/testing-mean-large#the-sampling-distribution",
     "title": "Testing a claim about a population mean",
     "section": "The Sampling Distribution",
     "text": "We now have a complete picture of the sampling distribution under H_0 : \\bar{Y} \\sim N(80, 1.64^2) This means if the null hypothesis is true, sample means from repeated samples would be normally distributed around 80 with a standard deviation of 1.64. Visualizing the Distribution Imagine a bell curve centered at 80. This represents all possible sample means we could observe if the true population mean were 80. Some sample means would be less than 80, some greater, but they’d cluster around 80 with most values falling within a few standard errors of the center. Our observed sample mean of 83 lies to the right of this center. The question is: is it far enough to the right that we should doubt the null hypothesis? Stage 3: Computing the Test Statistic and P-value To answer our question, we need to standardize our observed value and determine how unusual it is. The Test Statistic: Zeta (ζ) We define a test statistic called zeta (ζ) as: \\zeta = \\frac{\\bar{Y} - \\mu_0}{SE} where \\mu_0 is the hypothesized population mean under the null (80 in our case). This standardization accomplishes two things: 1. It converts our result to a unit-free measure 2. It tells us how many standard errors our observed mean is from the hypothesized mean"
   },
   {
-    "objectID": "testing-mean-large#section-9",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#interpretation-of-ζ",
+    "href": "/chapter/testing-mean-large#interpretation-of-ζ",
     "title": "Testing a claim about a population mean",
     "section": "Interpretation of ζ",
     "text": "The value of ζ represents the number of standard deviations (or standard errors) that the observed sample mean is from the hypothesized population mean. If our observed sample had a mean of 83 kg, the population mean were 80 kg, and the standard error were 1.64 kg, then: \\zeta = \\frac{83 - 80}{1.64} = 1.83 The “kg” units cancel out, leaving us with a pure number: 1.83 standard errors above the hypothesized mean. Calculating Our Test Statistic For our problem: \\zeta = \\frac{83 - 80}{1.64} = \\frac{3}{1.64} \\approx 1.83 Our observed sample mean is 1.83 standard errors above the hypothesized mean of 80. The Distribution of Zeta When the sample size is large and we know (or can estimate) the population standard deviation, the test statistic ζ follows a standard normal distribution (also called a Z-distribution). This is the same as the Z-scores you may have encountered before. \\zeta \\sim N(0, 1) Computing the P-value The p-value answers the question: “If the null hypothesis were true, what is the probability of observing a test statistic as extreme as or more extreme than what we actually observed?” For our one-sided test: p \\text{-value} = P(\\zeta \\geq 1.83 \\mid H_0 \\text{ is true}) Using a standard normal table or software, we find: p \\text{-value} \\approx 0.034 \\text{ or } 3.4\\% Making the Decision We compare our p-value to our significance level: - p-value = 3.4% - \\alpha = 4% Since the p-value (3.4%) is less than our significance level (4%), we reject the null hypothesis ."
   },
   {
-    "objectID": "testing-mean-large#section-10",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#conclusion",
+    "href": "/chapter/testing-mean-large#conclusion",
     "title": "Testing a claim about a population mean",
     "section": "Conclusion",
     "text": "We have sufficient evidence at the 4% significance level to conclude that the new curriculum improves average test scores beyond 80. The probability of observing a sample mean as high as 83 (or higher) purely by chance, if the true population mean were 80 or less, is only 3.4%."
@@ -1498,36 +1498,36 @@
     "text": "Everything we’ve done so far assumes a large sample (typically n \\geq 30 ). But what happens when we have a small sample? The mathematics changes in an important way. The Problem with Small Samples Consider the same problem, but now suppose we only have n = 24 students in our sample. The sample mean is still 83, and the sample standard deviation is still 10.1. The key difference: when we use the sample standard deviation s to estimate the population standard deviation \\sigma , we introduce additional uncertainty. This uncertainty becomes problematic when the sample size is small. William Gosset’s T-Distribution In the early 1900s, William Sealy Gosset (writing under the pseudonym “Student” because his employer, Guinness Brewery, didn’t allow employees to publish) discovered that for small samples, the test statistic doesn’t follow a normal distribution—it follows a t-distribution . The test statistic is still calculated the same way: \\zeta = \\frac{\\bar{Y} - \\mu_0}{s/\\sqrt{n}} But now, instead of following a Z-distribution, ζ follows a t-distribution with \\nu = n-1 degrees of freedom : \\zeta \\sim t_{\\nu}"
   },
   {
-    "objectID": "testing-mean-large#section-13",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#question",
+    "href": "/chapter/testing-mean-large#question",
     "title": "Testing a claim about a population mean",
     "section": "Question",
     "text": "Why do we lose a degree of freedom in the t-distribution?"
   },
   {
-    "objectID": "testing-mean-large#section-14",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#answer",
+    "href": "/chapter/testing-mean-large#answer",
     "title": "Testing a claim about a population mean",
     "section": "Answer",
     "text": "We lose one degree of freedom because we used one piece of information from our sample to estimate the population standard deviation. We “expended” one observation to estimate the mean, which we then used to calculate the standard deviation. In our example with n = 24 , we have \\nu = n-1 = 23 degrees of freedom. Properties of the T-Distribution The t-distribution looks similar to the normal distribution—it’s symmetric and bell-shaped—but it has heavier tails . This reflects the additional uncertainty from estimating the standard deviation. Key properties: As the degrees of freedom increase, the t-distribution approaches the normal distribution For small degrees of freedom, the tails are much heavier than the normal By \\nu \\approx 30 , the t-distribution is virtually indistinguishable from the normal Comparing the Two Ratios Let’s clarify the distinction between two similar-looking ratios: Ratio A (with known σ): \\text{Andrew} = \\frac{\\bar{Y} - \\mu_0}{\\sigma/\\sqrt{n}} Ratio B (with estimated s): \\text{Ben} = \\frac{\\bar{Y} - \\mu_0}{s/\\sqrt{n}}"
   },
   {
-    "objectID": "testing-mean-large#section-15",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#question-1",
+    "href": "/chapter/testing-mean-large#question-1",
     "title": "Testing a claim about a population mean",
     "section": "Question",
     "text": "Which ratio fluctuates more from sample to sample—Andrew or Ben?"
   },
   {
-    "objectID": "testing-mean-large#section-16",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#answer-1",
+    "href": "/chapter/testing-mean-large#answer-1",
     "title": "Testing a claim about a population mean",
     "section": "Answer",
     "text": "Ben fluctuates more because both the numerator AND the denominator are random variables. In Andrew, only the numerator ( \\bar{Y} ) varies; the denominator ( \\sigma/\\sqrt{n} ) is a known constant. In Ben, both \\bar{Y} and s vary from sample to sample, creating additional volatility. This extra volatility is exactly what the t-distribution accounts for. Small Sample Analysis: Our Example Let’s return to our curriculum problem with the small sample of 24 students: n = 24 \\bar{y} = 83 s = 10.1 SE = 10.1/\\sqrt{24} \\approx 2.06 Test statistic: \\zeta = \\frac{83 - 80}{2.06} \\approx 1.46 This time, ζ follows a t-distribution with 23 degrees of freedom. Looking up this value in a t-table or using software: p \\text{-value} \\approx 0.08 \\text{ or } 8\\% The Decision Changes Now our p-value (8%) exceeds our significance level (4%). We fail to reject the null hypothesis ."
   },
   {
-    "objectID": "testing-mean-large#section-17",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#critical-insight",
+    "href": "/chapter/testing-mean-large#critical-insight",
     "title": "Testing a claim about a population mean",
     "section": "Critical Insight",
     "text": "Notice what happened: With the same sample mean (83) and the same sample standard deviation (10.1), we reached opposite conclusions depending on our sample size! Large sample ( n=38 ): Reject H_0 (p = 3.4%) Small sample ( n=24 ): Fail to reject H_0 (p = 8%) The difference lies in the additional uncertainty from estimating σ with a small sample. The t-distribution’s heavier tails mean we need more extreme evidence to reject the null hypothesis. When to Use Each Distribution Use the Z-distribution (normal) when: - Sample size is large ( n \\geq 30 ) - Population standard deviation σ is known (rare in practice) Use the t-distribution when: - Sample size is small ( n < 30 ) - Population standard deviation σ is unknown and must be estimated from the sample In practice, many statisticians use the t-distribution for all tests involving estimated standard deviations, regardless of sample size. As the degrees of freedom increase, the t-distribution becomes virtually identical to the normal, so using the t-distribution is a conservative choice that’s always appropriate."
@@ -1540,8 +1540,8 @@
     "text": "Let’s review the complete process we’ve developed: Stage 1: Set Up State the null and alternative hypotheses Choose a significance level α Identify the test type (one-sided or two-sided) Stage 2: Characterize the Sampling Distribution Select an appropriate estimator Use theory (CLT) to establish its distribution Estimate the parameters of this distribution Visualize the distribution under H_0 Stage 3: Test and Decide Calculate the test statistic (ζ) Determine its distribution (Z or t) Compute the p-value Compare p-value to α and make a decision State your conclusion in context"
   },
   {
-    "objectID": "testing-mean-large#section-19",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#the-theoretical-foundation",
+    "href": "/chapter/testing-mean-large#the-theoretical-foundation",
     "title": "Testing a claim about a population mean",
     "section": "The Theoretical Foundation",
     "text": "Notice how our hypothesis testing framework rests on a foundation of theoretical results: Markov’s Inequality → proves Chebyshev’s Inequality Chebyshev’s Inequality → proves the Law of Large Numbers Law of Large Numbers → proves the Central Limit Theorem Central Limit Theorem → justifies the normality of sampling distributions Unbiasedness → tells us where distributions are centered Standard Error Formula → quantifies sampling variability Each piece plays a crucial role in the edifice we’ve constructed."
@@ -1554,64 +1554,64 @@
     "text": "The hypothesis test we’ve developed compares a population mean to a known constant (80). While this is valuable for understanding the mechanics of hypothesis testing, it’s relatively rare in practice. More commonly, we want to compare two groups : a control group and a treatment group. This leads to two-sample tests, which will be our next topic. Two-sample tests look very similar mechanically to what we’ve done here, with a crucial philosophical difference: they allow us to investigate causality . By comparing a treatment group to a control group, we can begin to assess whether an intervention has a causal effect on an outcome. The foundation you’ve built here—understanding sampling distributions, standard errors, test statistics, and p-values—will carry forward directly to these more powerful tests. The transition is a relatively small mechanical extension, but it opens the door to answering causal questions."
   },
   {
-    "objectID": "testing-mean-large#section-21",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#key-takeaways",
+    "href": "/chapter/testing-mean-large#key-takeaways",
     "title": "Testing a claim about a population mean",
     "section": "Key Takeaways",
     "text": "Standard error measures the precision of an estimator across repeated samples Hypothesis testing provides a formal framework for making decisions under uncertainty The Central Limit Theorem justifies using normal distributions for large samples P-values quantify how unusual our observed data would be if H_0 were true Small samples require the t-distribution to account for additional uncertainty Larger samples provide more reliable estimates and more powerful tests Always visualize your distributions to develop intuition about your tests"
   },
   {
-    "objectID": "testing-mean-large#section-23",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#question-2",
+    "href": "/chapter/testing-mean-large#question-2",
     "title": "Testing a claim about a population mean",
     "section": "Question",
     "text": "Suppose you have two samples from the same population: Sample A: n = 25 , s = 15 Sample B: n = 100 , s = 15 Which sample provides more precise estimates of the population mean? Calculate the standard error for each and explain the difference."
   },
   {
-    "objectID": "testing-mean-large#section-24",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#answer-2",
+    "href": "/chapter/testing-mean-large#answer-2",
     "title": "Testing a claim about a population mean",
     "section": "Answer",
     "text": "Sample B provides more precise estimates. For Sample A: SE_A = 15/\\sqrt{25} = 15/5 = 3 For Sample B: SE_B = 15/\\sqrt{100} = 15/10 = 1.5 Sample B has a standard error half the size of Sample A, even though they have the same sample standard deviation. The fourfold increase in sample size (from 25 to 100) results in a twofold increase in precision (standard error is halved). This demonstrates the principle that larger samples yield more reliable estimates."
   },
   {
-    "objectID": "testing-mean-large#section-25",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#question-3",
+    "href": "/chapter/testing-mean-large#question-3",
     "title": "Testing a claim about a population mean",
     "section": "Question",
     "text": "A researcher calculates a test statistic of ζ = 2.5 for a large sample test. Explain what this value means in plain language, and describe where this value would fall on a standard normal distribution."
   },
   {
-    "objectID": "testing-mean-large#section-26",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#answer-3",
+    "href": "/chapter/testing-mean-large#answer-3",
     "title": "Testing a claim about a population mean",
     "section": "Answer",
     "text": "A test statistic of ζ = 2.5 means that the observed sample mean is 2.5 standard errors above the hypothesized population mean under the null hypothesis. On a standard normal distribution (bell curve), this value falls in the right tail. Approximately 99.4% of the distribution lies to the left of 2.5 standard deviations from the mean, so only about 0.6% lies beyond this point. This suggests the observation would be quite unusual if the null hypothesis were true. For a one-sided test, the p-value would be approximately 0.006 or 0.6%, which would lead to rejection of the null at common significance levels."
   },
   {
-    "objectID": "testing-mean-large#section-27",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#question-4",
+    "href": "/chapter/testing-mean-large#question-4",
     "title": "Testing a claim about a population mean",
     "section": "Question",
     "text": "You conduct the same hypothesis test twice: once with a sample size of 100 and once with a sample size of 20. In both cases, you observe the same sample mean and sample standard deviation. Will the p-values be the same? Why or why not?"
   },
   {
-    "objectID": "testing-mean-large#section-28",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#answer-4",
+    "href": "/chapter/testing-mean-large#answer-4",
     "title": "Testing a claim about a population mean",
     "section": "Answer",
     "text": "No, the p-values will not be the same, and the small sample will generally produce a larger p-value. With n = 100 , we use the Z-distribution (or t-distribution with 99 df, which is virtually identical). The standard error will be relatively small: SE = s/\\sqrt{100} = s/10 . With n = 20 , we must use the t-distribution with 19 degrees of freedom, which has heavier tails than the normal. Additionally, the standard error will be larger: SE = s/\\sqrt{20} \\approx s/4.47 . Two effects compound: The larger standard error makes the test statistic smaller The t-distribution with few degrees of freedom makes any given test statistic less significant Both effects work against rejecting the null hypothesis, resulting in a larger p-value for the small sample test."
   },
   {
-    "objectID": "testing-mean-large#section-29",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#question-5",
+    "href": "/chapter/testing-mean-large#question-5",
     "title": "Testing a claim about a population mean",
     "section": "Question",
     "text": "Explain why a researcher might choose a more stringent significance level (say, α = 0.01) rather than a more lenient one (say, α = 0.10). What are the tradeoffs involved?"
   },
   {
-    "objectID": "testing-mean-large#section-30",
-    "href": "/chapter/testing-mean-large",
+    "objectID": "testing-mean-large#answer-5",
+    "href": "/chapter/testing-mean-large#answer-5",
     "title": "Testing a claim about a population mean",
     "section": "Answer",
     "text": "The choice of significance level involves a tradeoff between Type I and Type II errors: Choosing a more stringent α (like 0.01): Benefit: Lower risk of Type I error (falsely rejecting a true null hypothesis) Cost: Higher risk of Type II error (failing to reject a false null hypothesis) When appropriate: When the cost of a false positive is high (e.g., approving an unsafe drug, implementing an expensive program that doesn’t work) Choosing a more lenient α (like 0.10): Benefit: Lower risk of Type II error (more power to detect real effects) Cost: Higher risk of Type I error When appropriate: When we want to detect potentially important effects for further investigation, or when the cost of a false negative is high In fields where the consequences of a Type I error are severe (like medical research or engineering safety), researchers typically use stricter significance levels. In exploratory research or preliminary studies, more lenient levels might be acceptable."
@@ -1646,21 +1646,21 @@
   },
   {
     "objectID": "welcome#section-1",
-    "href": "/chapter/welcome",
+    "href": "/chapter/welcome#section-1",
     "title": "welcome",
     "section": "What You'll Learn",
     "text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur: Lorem Ipsum — Excepteur sint occaecat cupidatat non proident Dolor Sit Amet — Sunt in culpa qui officia deserunt mollit anim id est laborum Consectetur Adipiscing — Sed ut perspiciatis unde omnis iste natus error sit voluptatem Tempor Incididunt — Accusantium doloremque laudantium totam rem aperiam Magna Aliqua — Eaque ipsa quae ab illo inventore veritatis et quasi architecto"
   },
   {
     "objectID": "welcome#section-2",
-    "href": "/chapter/welcome",
+    "href": "/chapter/welcome#section-2",
     "title": "welcome",
     "section": "How to Use This Textbook",
     "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit: Neque Porro — Quisquam est qui dolorem ipsum quia dolor sit amet Consectetur — Adipisci velit sed quia non numquam eius modi tempora Incidunt — Ut labore et dolore magnam aliquam quaerat voluptatem Quis Autem — Vel eum iure reprehenderit qui in ea voluptate velit Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur."
   },
   {
     "objectID": "welcome#section-3",
-    "href": "/chapter/welcome",
+    "href": "/chapter/welcome#section-3",
     "title": "welcome",
     "section": "Getting Started",
     "text": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur. Chapter 1: Introduction to Data Analytics , vel illum qui dolorem eum fugiat quo voluptas nulla pariatur."
