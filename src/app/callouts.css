@@ -338,3 +338,262 @@
 .callout[data-title=""]::before {
   display: none;
 }
+
+/* ======================================================================
+   BERKELEY BRANDED CALLOUTS
+   Six categories with official Berkeley colors
+   Usage: Add class like .callout-pedagogical to any callout div
+   ====================================================================== */
+
+/* Berkeley Color Variables */
+:root {
+  --berkeley-medalist: #C4820E;
+  --berkeley-medalist-dark: #8B5A00;
+  --berkeley-medalist-bg: rgba(196, 130, 14, 0.08);
+
+  --berkeley-blue: #003262;
+  --berkeley-blue-bg: rgba(0, 50, 98, 0.05);
+
+  --berkeley-sather-gate: #B9D3B6;
+  --berkeley-sather-gate-dark: #6B9067;
+  --berkeley-sather-gate-bg: rgba(185, 211, 182, 0.12);
+
+  --berkeley-lawrence: #00B0DA;
+  --berkeley-lawrence-dark: #007B9A;
+  --berkeley-lawrence-bg: rgba(0, 176, 218, 0.08);
+
+  --berkeley-bay-fog: #C2B9A7;
+  --berkeley-bay-fog-dark: #6B5E4F;
+  --berkeley-bay-fog-bg: rgba(194, 185, 167, 0.12);
+
+  --berkeley-rose-garden: #EE1F60;
+  --berkeley-rose-garden-dark: #C41850;
+  --berkeley-rose-garden-bg: rgba(238, 31, 96, 0.05);
+}
+
+/* Dark mode adjustments for Berkeley callouts */
+.dark {
+  --berkeley-medalist-bg: rgba(196, 130, 14, 0.15);
+  --berkeley-blue-bg: rgba(0, 50, 98, 0.12);
+  --berkeley-sather-gate-bg: rgba(185, 211, 182, 0.08);
+  --berkeley-lawrence-bg: rgba(0, 176, 218, 0.12);
+  --berkeley-bay-fog-bg: rgba(194, 185, 167, 0.08);
+  --berkeley-rose-garden-bg: rgba(238, 31, 96, 0.12);
+}
+
+/* Base styles for Berkeley callouts */
+.callout-pedagogical,
+.callout-foundational,
+.callout-insights,
+.callout-motivation,
+.callout-examples,
+.callout-cautions {
+  border: 1px solid #dee2e6 !important;
+  border-left: none !important;
+  border-radius: 0 !important;
+  padding: var(--space-md) !important;
+  margin: var(--space-lg) 0 !important;
+  margin-left: 4px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ====================================================================
+   1. PEDAGOGICAL / INTERACTIVE (Medalist)
+   For: Questions, Answers, Worked Examples
+   ==================================================================== */
+.callout-pedagogical {
+  background-color: #fefbf5 !important;
+  box-shadow: -4px 0 0 0 var(--berkeley-medalist) !important;
+}
+
+.callout-pedagogical h2,
+.chapter-content .callout-pedagogical h2 {
+  color: var(--berkeley-medalist-dark) !important;
+  background-color: #fef8ed !important;
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+}
+
+.dark .callout-pedagogical {
+  background-color: #3d3020 !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-pedagogical h2,
+.dark .chapter-content .callout-pedagogical h2 {
+  color: #f5c775 !important;
+  background-color: #4a3a2a !important;
+}
+
+/* ====================================================================
+   2. FOUNDATIONAL CONCEPTS (Berkeley Blue)
+   For: Definitions, Theorems
+   ==================================================================== */
+.callout-foundational {
+  background-color: #f5f7fa !important;
+  box-shadow: -4px 0 0 0 var(--berkeley-blue) !important;
+}
+
+.callout-foundational h2,
+.chapter-content .callout-foundational h2 {
+  color: var(--berkeley-blue) !important;
+  background-color: #eef2f8 !important;
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+}
+
+.dark .callout-foundational {
+  background-color: #1f2837 !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-foundational h2,
+.dark .chapter-content .callout-foundational h2 {
+  color: #4a90c2 !important;
+  background-color: #2a3a4a !important;
+}
+
+/* ====================================================================
+   3. INSIGHTS & CONNECTIONS (Sather Gate)
+   For: Key Insights, Technical Notes
+   ==================================================================== */
+.callout-insights {
+  background-color: #f7faf7 !important;
+  box-shadow: -4px 0 0 0 var(--berkeley-sather-gate) !important;
+}
+
+.callout-insights h2,
+.chapter-content .callout-insights h2 {
+  color: var(--berkeley-sather-gate-dark) !important;
+  background-color: #eef5ee !important;
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+}
+
+.dark .callout-insights {
+  background-color: #232d23 !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-insights h2,
+.dark .chapter-content .callout-insights h2 {
+  color: #9fcd9b !important;
+  background-color: #2a3a2a !important;
+}
+
+/* ====================================================================
+   4. MOTIVATION & CONTEXT (Lawrence)
+   For: Why This Matters
+   ==================================================================== */
+.callout-motivation {
+  background-color: #f5fbfd !important;
+  box-shadow: -4px 0 0 0 var(--berkeley-lawrence) !important;
+}
+
+.callout-motivation h2,
+.chapter-content .callout-motivation h2 {
+  color: var(--berkeley-lawrence-dark) !important;
+  background-color: #e8f6fc !important;
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+}
+
+.dark .callout-motivation {
+  background-color: #1a2d35 !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-motivation h2,
+.dark .chapter-content .callout-motivation h2 {
+  color: #5fc8ed !important;
+  background-color: #2a3a45 !important;
+}
+
+/* ====================================================================
+   5. EXAMPLES (Bay Fog)
+   For: Examples, Case Studies
+   ==================================================================== */
+.callout-examples {
+  background-color: #fafaf8 !important;
+  box-shadow: -4px 0 0 0 var(--berkeley-bay-fog) !important;
+}
+
+.callout-examples h2,
+.chapter-content .callout-examples h2 {
+  color: var(--berkeley-bay-fog-dark) !important;
+  background-color: #f5f3ef !important;
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+}
+
+.dark .callout-examples {
+  background-color: #2d2c28 !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-examples h2,
+.dark .chapter-content .callout-examples h2 {
+  color: #d4cbbf !important;
+  background-color: #3a3a35 !important;
+}
+
+/* ====================================================================
+   6. CAUTIONS (Rose Garden)
+   For: Warnings, Common Mistakes
+   ==================================================================== */
+.callout-cautions {
+  background-color: #fef7f9 !important;
+  box-shadow: -4px 0 0 0 var(--berkeley-rose-garden) !important;
+}
+
+.callout-cautions h2,
+.chapter-content .callout-cautions h2 {
+  color: var(--berkeley-rose-garden-dark) !important;
+  background-color: #fceef3 !important;
+  font-size: var(--text-base) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  border: none !important;
+}
+
+.dark .callout-cautions {
+  background-color: #3d1d28 !important;
+  border-color: #4a4a4a !important;
+}
+
+.dark .callout-cautions h2,
+.dark .chapter-content .callout-cautions h2 {
+  color: #f58fb8 !important;
+  background-color: #4a2a35 !important;
+}
+
+/* Shared paragraph styling for Berkeley callouts */
+.callout-pedagogical p,
+.callout-foundational p,
+.callout-insights p,
+.callout-motivation p,
+.callout-examples p,
+.callout-cautions p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  padding: var(--space-sm) var(--space-md);
+}

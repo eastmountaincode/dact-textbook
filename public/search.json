@@ -91,6 +91,97 @@
     "text": "Markov’s inequality formalizes the intuition that if a non-negative random variable has a small mean, it’s unlikely to take on very large values. For instance, if the average value is 10, the probability of seeing a value of 100 or more cannot exceed 10/100 = 0.1, or 10%. Example: Manufacturing Quality Control Let’s return to our manufacturing example. Suppose the average product weight is \\mathbb{E}(Y) = 500 grams, and all products have non-negative weight. We want to know: what’s the maximum probability that a randomly selected product weighs 1000 grams or more? Using Markov’s inequality with a = 1000 : \\mathrm{P}(Y \\geq 1000) \\leq \\frac{500}{1000} = 0.5 This tells us that at most 50% of products can weigh 1000 grams or more. While this bound might seem loose, remember that we derived it using only the mean—no other information about the distribution! We can also ask: what’s the probability of a product weighing at least twice the average? This chapter is unfinished."
   },
   {
+    "objectID": "callout-examples",
+    "href": "/chapter/callout-examples",
+    "title": "Callout Examples",
+    "section": "",
+    "text": "Callout Examples This chapter demonstrates the available callout styles."
+  },
+  {
+    "objectID": "callout-examples#question",
+    "href": "/chapter/callout-examples#question",
+    "title": "Callout Examples",
+    "section": "Question",
+    "text": "What is the expected value of a fair die roll?"
+  },
+  {
+    "objectID": "callout-examples#answer",
+    "href": "/chapter/callout-examples#answer",
+    "title": "Callout Examples",
+    "section": "Answer",
+    "text": "The expected value is 3.5, calculated as (1+2+3+4+5+6)/6."
+  },
+  {
+    "objectID": "callout-examples#definition",
+    "href": "/chapter/callout-examples#definition",
+    "title": "Callout Examples",
+    "section": "Definition",
+    "text": "The sample space is the set of all possible outcomes of an experiment."
+  },
+  {
+    "objectID": "callout-examples#important-distinction",
+    "href": "/chapter/callout-examples#important-distinction",
+    "title": "Callout Examples",
+    "section": "Important Distinction",
+    "text": "Correlation does not imply causation."
+  },
+  {
+    "objectID": "callout-examples#question-1",
+    "href": "/chapter/callout-examples#question-1",
+    "title": "Callout Examples",
+    "section": "Question",
+    "text": "What is probability?"
+  },
+  {
+    "objectID": "callout-examples#answer-1",
+    "href": "/chapter/callout-examples#answer-1",
+    "title": "Callout Examples",
+    "section": "Answer",
+    "text": "Probability is a mathematical framework for quantifying uncertainty. Foundational (Berkeley Blue)"
+  },
+  {
+    "objectID": "callout-examples#definition-1",
+    "href": "/chapter/callout-examples#definition-1",
+    "title": "Callout Examples",
+    "section": "Definition",
+    "text": "A random variable is a function that assigns a numerical value to each outcome in a sample space."
+  },
+  {
+    "objectID": "callout-examples#theorem",
+    "href": "/chapter/callout-examples#theorem",
+    "title": "Callout Examples",
+    "section": "Theorem",
+    "text": "The sum of probabilities in a sample space equals 1. Insights (Sather Gate Green)"
+  },
+  {
+    "objectID": "callout-examples#key-insight",
+    "href": "/chapter/callout-examples#key-insight",
+    "title": "Callout Examples",
+    "section": "Key Insight",
+    "text": "Linearity of expectation holds regardless of whether variables are independent. Motivation (Lawrence Cyan)"
+  },
+  {
+    "objectID": "callout-examples#why-this-matters",
+    "href": "/chapter/callout-examples#why-this-matters",
+    "title": "Callout Examples",
+    "section": "Why This Matters",
+    "text": "Understanding sampling distributions is fundamental to all of inferential statistics. Examples (Bay Fog Grey)"
+  },
+  {
+    "objectID": "callout-examples#example",
+    "href": "/chapter/callout-examples#example",
+    "title": "Callout Examples",
+    "section": "Example",
+    "text": "After 10 heads in a row, the probability of tails on the next flip is still 0.5. Cautions (Rose Garden Pink)"
+  },
+  {
+    "objectID": "callout-examples#caution",
+    "href": "/chapter/callout-examples#caution",
+    "title": "Callout Examples",
+    "section": "Caution",
+    "text": "Do not apply the Central Limit Theorem with sample sizes less than 30 unless the population is approximately normal."
+  },
+  {
     "objectID": "correlation",
     "href": "/chapter/correlation",
     "title": "Correlation",

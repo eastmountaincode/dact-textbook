@@ -9,6 +9,7 @@ sections:
     chapters:
       - welcome
       - about-the-author
+      - callout-examples
 
   - name: "Theoretical Foundations"
     chapters:

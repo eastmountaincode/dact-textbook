@@ -1,0 +1,79 @@
+# Callout Examples
+
+This chapter demonstrates the available callout styles.
+
+## Original Callouts
+
+::: {.callout-note icon=false}
+## Question
+What is the expected value of a fair die roll?
+:::
+
+::: {.callout-tip icon=false collapse="true"}
+## Answer
+The expected value is 3.5, calculated as (1+2+3+4+5+6)/6.
+:::
+
+::: {.callout-important icon=false}
+## Definition
+The **sample space** is the set of all possible outcomes of an experiment.
+:::
+
+::: {.callout-warning icon=false}
+## Important Distinction
+Correlation does not imply causation.
+:::
+
+## Berkeley Callouts
+
+### Pedagogical (Gold)
+
+::: {.callout-pedagogical}
+## Question
+What is probability?
+:::
+
+::: {.callout-pedagogical collapse="true"}
+## Answer
+Probability is a mathematical framework for quantifying uncertainty.
+:::
+
+### Foundational (Berkeley Blue)
+
+::: {.callout-foundational}
+## Definition
+A **random variable** is a function that assigns a numerical value to each outcome in a sample space.
+:::
+
+::: {.callout-foundational}
+## Theorem
+The sum of probabilities in a sample space equals 1.
+:::
+
+### Insights (Sather Gate Green)
+
+::: {.callout-insights}
+## Key Insight
+Linearity of expectation holds regardless of whether variables are independent.
+:::
+
+### Motivation (Lawrence Cyan)
+
+::: {.callout-motivation}
+## Why This Matters
+Understanding sampling distributions is fundamental to all of inferential statistics.
+:::
+
+### Examples (Bay Fog Grey)
+
+::: {.callout-examples}
+## Example
+After 10 heads in a row, the probability of tails on the next flip is still 0.5.
+:::
+
+### Cautions (Rose Garden Pink)
+
+::: {.callout-cautions}
+## Caution
+Do not apply the Central Limit Theorem with sample sizes less than 30 unless the population is approximately normal.
+:::

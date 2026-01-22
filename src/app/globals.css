@@ -318,280 +318,6 @@ html, body {
   font-size: var(--text-sm);
 }
 
-/* ======================================================================
-   Q/A/D BOXES
-   Styled to match callout boxes with left color strip
-   ====================================================================== */
-.question,
-.qmd-question,
-.answer,
-.qmd-answer,
-.definition,
-.qmd-definition {
-  margin: var(--space-lg) 0;
-  margin-left: 4px;
-  padding: var(--space-md);
-  border: 1px solid #dee2e6;
-  border-left: none;
-  border-radius: 0;
-  position: relative;
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: var(--space-sm);
-  align-items: start;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.question,
-.qmd-question {
-  background-color: #fdf8f8;
-  box-shadow: -4px 0 0 0 var(--question-color);
-}
-
-.answer,
-.qmd-answer {
-  background-color: #f8fafc;
-  box-shadow: -4px 0 0 0 var(--answer-color);
-  margin-top: calc(-1 * var(--space-sm));
-}
-
-.definition,
-.qmd-definition {
-  background-color: #fefcf3;
-  box-shadow: -4px 0 0 0 var(--definition-color);
-}
-
-/* Q/A/D Circle badges */
-.question::before,
-.qmd-question::before,
-.answer::before,
-.qmd-answer::before,
-.definition::before,
-.qmd-definition::before {
-  grid-column: 1;
-  grid-row: 1;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  color: white;
-  text-align: center;
-  line-height: 24px;
-  font-weight: 600;
-  font-size: 1rem;
-  margin-top: 2px;
-}
-
-.question::before,
-.qmd-question::before {
-  content: "Q";
-  background-color: var(--question-color);
-}
-
-.answer::before,
-.qmd-answer::before {
-  content: "A";
-  background-color: var(--answer-color);
-}
-
-.definition::before,
-.qmd-definition::before {
-  content: "D";
-  background-color: var(--definition-color);
-}
-
-/* Content inside Q/A/D boxes - all content goes to column 2 */
-.question > *,
-.qmd-question > *,
-.answer > *,
-.qmd-answer > *,
-.definition > *,
-.qmd-definition > * {
-  grid-column: 2;
-}
-
-.question > p,
-.qmd-question > p,
-.answer > p,
-.qmd-answer > p,
-.definition > p,
-.qmd-definition > p {
-  margin: 0 0 var(--space-sm) 0;
-  font-size: var(--text-base);
-  line-height: var(--leading-relaxed);
-}
-
-.question > p:last-child,
-.qmd-question > p:last-child,
-.answer > p:last-child,
-.qmd-answer > p:last-child,
-.definition > p:last-child,
-.qmd-definition > p:last-child {
-  margin-bottom: 0;
-}
-
-/* Lists inside Q/A/D boxes */
-.question > ol,
-.qmd-question > ol,
-.answer > ol,
-.qmd-answer > ol,
-.definition > ol,
-.qmd-definition > ol,
-.question > ul,
-.qmd-question > ul,
-.answer > ul,
-.qmd-answer > ul,
-.definition > ul,
-.qmd-definition > ul {
-  margin: var(--space-sm) 0;
-  padding-left: var(--space-lg);
-}
-
-/* Dark mode Q/A/D boxes */
-.dark .question,
-.dark .qmd-question {
-  background-color: #2d1f1f;
-  border-color: #4a3a3a;
-}
-
-.dark .answer,
-.dark .qmd-answer {
-  background-color: #1f2937;
-  border-color: #374151;
-}
-
-.dark .definition,
-.dark .qmd-definition {
-  background-color: #2d2a1f;
-  border-color: #4a4530;
-}
-
-/* ======================================================================
-   THEOREM / PROOF / IMPORTANTBOX
-   ====================================================================== */
-.importantbox,
-.qmd-importantbox {
-  margin: var(--space-lg) 0;
-  margin-left: 4px;
-  padding: var(--space-md);
-  background-color: #f5f5f5;
-  border: 1px solid #dee2e6;
-  border-left: none;
-  border-radius: 0;
-  box-shadow: -4px 0 0 0 #6b7280;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-/* Dark mode importantbox */
-.dark .importantbox,
-.dark .qmd-importantbox {
-  background-color: #2d2d2d;
-  border-color: #4a4a4a;
-}
-
-.importantbox > p:first-child strong,
-.qmd-importantbox > p:first-child strong {
-  display: block;
-  font-size: var(--text-lg);
-  font-weight: 600;
-  color: var(--foreground);
-  margin: calc(-1 * var(--space-md)) calc(-1 * var(--space-md)) var(--space-md) calc(-1 * var(--space-md));
-  padding: var(--space-md);
-  background-color: transparent;
-  border-bottom: 1px solid var(--card-border);
-}
-
-.theorem,
-.qmd-theorem {
-  margin: var(--space-lg) 0;
-  margin-left: 4px;
-  padding: var(--space-md);
-  background-color: #f8f5fc;
-  border: 1px solid #dee2e6;
-  border-left: none;
-  border-radius: 0;
-  box-shadow: -4px 0 0 0 #8b5cf6;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.proof,
-.qmd-proof {
-  margin: var(--space-md) 0 var(--space-lg) 0;
-  margin-left: 4px;
-  padding: var(--space-md);
-  background-color: #f9fafb;
-  border: 1px solid #dee2e6;
-  border-left: none;
-  border-radius: 0;
-  box-shadow: -4px 0 0 0 #9ca3af;
-  font-style: italic;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.proof::before,
-.qmd-proof::before {
-  content: "Proof.";
-  font-weight: 600;
-  font-style: normal;
-  margin-right: var(--space-sm);
-}
-
-/* Dark mode theorem/proof */
-.dark .theorem,
-.dark .qmd-theorem {
-  background-color: #2d2535;
-  border-color: #4a4a4a;
-}
-
-.dark .proof,
-.dark .qmd-proof {
-  background-color: #2d2d2d;
-  border-color: #4a4a4a;
-}
-
-.qmd-block {
-  margin: var(--space-lg) 0;
-  padding: var(--space-md);
-  background-color: var(--card-bg);
-  border-left: 3px solid var(--card-border);
-  border-radius: var(--radius-sm);
-}
-
-/* ======================================================================
-   VIDEO CONTAINER
-   ====================================================================== */
-.video-container {
-  margin: var(--space-xl) 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  background-color: #000;
-}
-
-.video-container video {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.video-caption {
-  padding: var(--space-md);
-  background-color: var(--card-bg);
-  font-size: var(--text-sm);
-  color: var(--muted-text);
-  border-top: 1px solid var(--card-border);
-}
-
-.video-caption strong {
-  color: var(--foreground);
-}
 
 /* ======================================================================
    MATH (KaTeX)
@@ -619,28 +345,6 @@ html, body {
 
   .chapter-content h2 {
     font-size: var(--text-xl);
-  }
-
-  .question,
-  .answer,
-  .definition,
-  .qmd-question,
-  .qmd-answer,
-  .qmd-definition {
-    grid-template-columns: 20px 1fr;
-    padding: var(--space-sm);
-  }
-
-  .question::before,
-  .answer::before,
-  .definition::before,
-  .qmd-question::before,
-  .qmd-answer::before,
-  .qmd-definition::before {
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-size: var(--text-xs);
   }
 }
 
@@ -688,25 +392,6 @@ html, body {
 .dev-mode .chapter-content figcaption { border: 1px solid #64748b !important; } /* slate-500 */
 .dev-mode .chapter-content img { border: 2px solid #f97316 !important; } /* orange-500 */
 
-/* DEV MODE - Q/A/D boxes */
-.dev-mode .chapter-content .question,
-.dev-mode .chapter-content .qmd-question { border: 2px solid #b91c1c !important; } /* red-700 */
-.dev-mode .chapter-content .answer,
-.dev-mode .chapter-content .qmd-answer { border: 2px solid #1d4ed8 !important; } /* blue-700 */
-.dev-mode .chapter-content .definition,
-.dev-mode .chapter-content .qmd-definition { border: 2px solid #a16207 !important; } /* yellow-700 */
-.dev-mode .chapter-content .question > p,
-.dev-mode .chapter-content .qmd-question > p { border: 1px dashed #f87171 !important; } /* red-400 */
-.dev-mode .chapter-content .answer > p,
-.dev-mode .chapter-content .qmd-answer > p { border: 1px dashed #60a5fa !important; } /* blue-400 */
-.dev-mode .chapter-content .definition > p,
-.dev-mode .chapter-content .qmd-definition > p { border: 1px dashed #facc15 !important; } /* yellow-400 */
-.dev-mode .chapter-content .question::before,
-.dev-mode .chapter-content .qmd-question::before { outline: 2px solid #22c55e !important; } /* green-500 */
-.dev-mode .chapter-content .answer::before,
-.dev-mode .chapter-content .qmd-answer::before { outline: 2px solid #22c55e !important; } /* green-500 */
-.dev-mode .chapter-content .definition::before,
-.dev-mode .chapter-content .qmd-definition::before { outline: 2px solid #22c55e !important; } /* green-500 */
 
 /* DEV MODE - Callouts */
 .dev-mode .chapter-content .callout { border: 2px solid #059669 !important; } /* emerald-600 */
@@ -715,16 +400,6 @@ html, body {
 .dev-mode .chapter-content .callout-important { border: 2px solid #d97706 !important; } /* amber-600 */
 .dev-mode .chapter-content .callout-warning { border: 2px solid #dc2626 !important; } /* red-600 */
 
-/* DEV MODE - Theorem/Proof/ImportantBox */
-.dev-mode .chapter-content .theorem,
-.dev-mode .chapter-content .qmd-theorem { border: 2px solid #4f46e5 !important; } /* indigo-600 */
-.dev-mode .chapter-content .proof,
-.dev-mode .chapter-content .qmd-proof { border: 2px solid #7c3aed !important; } /* violet-600 */
-.dev-mode .chapter-content .importantbox,
-.dev-mode .chapter-content .qmd-importantbox { border: 2px solid #475569 !important; } /* slate-600 */
-
-/* DEV MODE - Video */
-.dev-mode .chapter-content .video-container { border: 2px solid #c026d3 !important; } /* fuchsia-600 */
 
 /* DEV MODE - Math */
 .dev-mode .chapter-content .math-display { border: 1px solid #8b5cf6 !important; } /* violet-500 */
@@ -742,17 +417,12 @@ html, body {
   border-radius: 8px;
 }
 
-/* DEV MODE - Iframe */
+/* DEV MODE - Iframe & Interactive Elements */
 .dev-mode .chapter-content iframe { border: 2px solid #f97316 !important; } /* orange-500 */
 
 /* ======================================================================
    UTILITIES
    ====================================================================== */
-.writing-mode-vertical {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-}
-
 /* Hide scrollbar but allow scrolling */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
