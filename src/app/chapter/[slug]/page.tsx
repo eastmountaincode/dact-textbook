@@ -1,7 +1,6 @@
 import { loadChapter, getOrderedChapterSlugs, getChaptersBySection, getChapterNavigation } from '@/lib/chapter-loader';
 import ChapterContent from '@/components/ChapterContent';
 import ChapterNavigation from '@/components/ChapterNavigation';
-import TextbookLayout from '@/components/TextbookLayout';
 import GatedContent from '@/components/GatedContent';
 import ReadingTimeTracker from '@/components/ReadingTimeTracker';
 import { auth } from '@clerk/nextjs/server';
@@ -50,18 +49,14 @@ export default async function ChapterPage({ params }: PageProps) {
 
   // Show gated content for non-preface pages when not authenticated
   if (!isPrefacePage && !isAuthenticated) {
-    return (
-      <TextbookLayout sections={sections} currentSlug={slug}>
-        <GatedContent chapterTitle={chapter.title} />
-      </TextbookLayout>
-    );
+    return <GatedContent chapterTitle={chapter.title} />;
   }
 
   return (
-    <TextbookLayout sections={sections} currentSlug={slug}>
+    <>
       {isAuthenticated && <ReadingTimeTracker chapterSlug={slug} />}
       <ChapterContent html={chapter.html} chapterSlug={slug} />
       <ChapterNavigation prev={navigation.prev} next={navigation.next} />
-    </TextbookLayout>
+    </>
   );
 }
