@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>index</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="dichotomous-choice-modeling" class="level1">
+<h1>Dichotomous choice modeling</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In the early 1990s, researchers studying the Montreal-Toronto corridor—one of Canada’s busiest intercity travel routes—wanted to understand how travelers actually choose between transportation modes. It’s a practical question: if you know how people make these choices, you can forecast demand and predict what happens when prices or schedules change. The data come from the Canadian Travel Survey, conducted by Transport Canada (Canada’s federal transportation department). Frank Koppelman and colleagues pulled intercity mode choice data from this survey, which captured real travel decisions along with the details that matter: ticket cost, how long the trip takes (both sitting in the vehicle and waiting around), how often service runs, and who’s traveling (their income, trip distance, and so on).</p>
+<p>The full dataset included 3,880 travelers across four modes, but our binary choice scenario is a better place to start learning the core ideas. We’re going to focus on a smaller slice: 206 travelers who faced a straightforward choice between commuting by train or by car. Why this subset? Because when you’re trying to understand the fundamentals of how people make choices, having only two options is cleaner. You can see the cost-versus-convenience trade-off without other alternatives muddying the picture.</p>
+<p>Here are the data for a randomly-chosen subset of 10 commuters:</p>
+<div id="tbl-commuter-choices" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-commuter-choices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Sample of 10 commuter transportation choices
+</figcaption>
+<div aria-describedby="tbl-commuter-choices-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">ID</th>
+<th style="text-align: center;">Decision</th>
+<th style="text-align: right;">Train cost</th>
+<th style="text-align: right;">Car cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$28.25</td>
+<td style="text-align: right;">$15.77</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">282</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$34.80</td>
+<td style="text-align: right;">$38.76</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">486</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$35.35</td>
+<td style="text-align: right;">$19.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">502</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$45.40</td>
+<td style="text-align: right;">$15.58</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">579</td>
+<td style="text-align: center;">train</td>
+<td style="text-align: right;">$20.45</td>
+<td style="text-align: right;">$12.35</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2867</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$29.10</td>
+<td style="text-align: right;">$12.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2870</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$29.10</td>
+<td style="text-align: right;">$12.54</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2890</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$29.35</td>
+<td style="text-align: right;">$10.83</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3037</td>
+<td style="text-align: center;">train</td>
+<td style="text-align: right;">$62.80</td>
+<td style="text-align: right;">$69.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4323</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: right;">$60.60</td>
+<td style="text-align: right;">$61.37</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Our goal in this chapter is to learn how to develop a causal model that helps make good predictions about commuters’ choices. To do this, we start by making another simplifying assumption: that only <em>one</em> factor determines commuters’ choices between two options. We will relax this assumption later in the chapter. For now, though, we assume that the only factor that determines these commuters’ modal choice is the difference in cost of the two modes of commuting. <a href="#tbl-cost-difference" class="quarto-xref">Table&nbsp;2</a> shows the same data as <a href="#tbl-commuter-choices" class="quarto-xref">Table&nbsp;1</a>, except that it shows the difference in modal costs instead of the individual modal costs.</p>
+<div id="tbl-cost-difference" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cost-difference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Modal choice and cost difference (train - car)
+</figcaption>
+<div aria-describedby="tbl-cost-difference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">ID</th>
+<th style="text-align: right;">Cost difference</th>
+<th style="text-align: center;">Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">$12.48</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">282</td>
+<td style="text-align: right;">-$3.96</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">486</td>
+<td style="text-align: right;">$15.59</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">502</td>
+<td style="text-align: right;">$29.82</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">579</td>
+<td style="text-align: right;">$8.10</td>
+<td style="text-align: center;">train</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2867</td>
+<td style="text-align: right;">$16.56</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2870</td>
+<td style="text-align: right;">$16.56</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2890</td>
+<td style="text-align: right;">$18.52</td>
+<td style="text-align: center;">car</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3037</td>
+<td style="text-align: right;">-$6.36</td>
+<td style="text-align: center;">train</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4323</td>
+<td style="text-align: right;">-$0.77</td>
+<td style="text-align: center;">car</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Looking at this table, there seems to be no discernible pattern between modal choice and cost difference. However, <a href="#tbl-choice-by-cost" class="quarto-xref">Table&nbsp;3</a>, which uses data from all 206 commuters, shows a clearer result.</p>
+<div id="tbl-choice-by-cost" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-choice-by-cost-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Modal choice by cost difference sign
+</figcaption>
+<div aria-describedby="tbl-choice-by-cost-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: right;">Train</th>
+<th style="text-align: right;">Car</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Train costs more</td>
+<td style="text-align: right;">6.0%</td>
+<td style="text-align: right;">94.0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Train costs less</td>
+<td style="text-align: right;">17.5%</td>
+<td style="text-align: right;">82.5%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>While only 6% of commuters choose to travel by train when the train costs more than driving, this proportion is almost three times as much when the train costs less than driving. This pattern can also be seen in <a href="#fig-modal-choice" class="quarto-xref">Figure&nbsp;1</a>, where train choices (points at <span class="math inline">\(Y=1\)</span>) tend to cluster on the left side of the plot where cost differences are negative, meaning the train is cheaper than driving.</p>
+<div id="fig-modal-choice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modal-choice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/modal-choice-scatter.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modal-choice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Modal choice vs cost difference
+</figcaption>
+</figure>
+</div>
+<p>We now turn to the task of modeling this relationship so we can better understand how the difference in costs influences the probability that an individual will choose to commute by train, which we use interchangeably with the word transit. But before we lay out the formal model, I want to bring you on a brief historical journey.</p>
+</section>
+<section id="a-problem-of-transportation-planning" class="level2">
+<h2 class="anchored" data-anchor-id="a-problem-of-transportation-planning">A Problem of Transportation Planning</h2>
+<p>In the mid-1960s, traffic congestion in the Bay Area had reached a critical juncture. The California Highway Commission faced a fundamental decision: should they continue investing in freeway expansion, or could a new mass transit system offer a better path forward? They proposed an ambitious solution—a network of buses and rail that would connect the region, fundamentally reshaping how people commuted. But there was a problem. Before committing billions in public resources, the Commission needed to answer a deceptively simple question:</p>
+<p><strong>How many people would actually use this system?</strong></p>
+<p>In 1969, with the first BART station under construction, the Commission faced a pilot phase evaluation. They needed to estimate ridership—not based on hunches or optimistic projections, but on actual data about people’s choices. So they conducted an extensive survey of Bay Area residents, asking a seemingly straightforward question:</p>
+<p><strong>Would you take the bus instead of driving? Yes or no?</strong></p>
+<p>This binary question—a dichotomous choice—would unlock something far more significant than transit planning. It would lead to the discovery of a new statistical framework that would transform how economists, marketers, and policymakers understand decision-making itself.</p>
+</section>
+<section id="the-birth-of-a-framework-dan-mcfaddens-insight" class="level2">
+<h2 class="anchored" data-anchor-id="the-birth-of-a-framework-dan-mcfaddens-insight">The Birth of a Framework: Dan McFadden’s Insight</h2>
+<p>The Commission’s first instinct was to use standard regression—treating the yes/no responses as if they were continuous measurements. Using this linear probability model, they estimated that about 15% of Bay Area residents would use the new transit system.</p>
+<p>But then they hired a young economist named Daniel McFadden, who recently arrived at Berkeley. McFadden looked at the problem differently. He recognized something fundamental: when people make discrete choices—yes or no, use transit or drive, buy or don’t buy—the standard tools of regression analysis were fundamentally mismatched to the problem.</p>
+<p>McFadden developed a new approach using what he called latent variable modeling. The insight was elegant: behind every observed choice lies an unobserved psychological disposition. When someone decides whether to take the train, they’re processing information about commute time, cost, convenience, and comfort—all of which feed into a latent evaluation of the option. When that latent evaluation exceeds some threshold, they choose to use transit.</p>
+<p>Using this framework, McFadden predicted that only about 6.3% of residents would use BART. His colleagues dismissed this as too pessimistic. Yet when BART opened and ridership was measured, it came in at 6.2%—remarkably close to McFadden’s prediction.</p>
+<p>This work on discrete choice modeling was so significant that in 2000—more than three decades later—McFadden was awarded the Nobel Prize in Economics. The Nobel citation recognized his contribution: “He showed how to statistically handle fundamental aspects of microdata, namely data on the most important decisions we make in life: the choice of education, occupation, place of residence, marital status, number of children, so called discrete choices.”</p>
+<p>Today, the methods McFadden pioneered are used everywhere: predicting consumer behavior, understanding labor market decisions, analyzing election outcomes, and evaluating policy interventions.</p>
+<p>So let’s get on with our task. We will build a model that answers the following question: if the commute cost by transit could be reduced, by how much would the probability that someone will choose transit increase?</p>
+</section>
+<section id="the-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-model">The Model</h2>
+<p>To begin, let’s establish some basic foundations. When people make dichotomous decisions (i.e.&nbsp;one that involves picking one of two options), we can describe the outcome using the <strong>Bernoulli distribution</strong>.</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a dichotomous outcome <span class="math inline">\(Y\)</span> that takes the value 1 with probability <span class="math inline">\(p\)</span> and the value 0 with probability <span class="math inline">\((1-p)\)</span>, the probability function is:</p>
+<p><span class="math display">\[f(Y) = p^Y(1-p)^{1-Y}\]</span></p>
+</div>
+</div>
+<p>In our commuting example, <span class="math inline">\(Y_i = 1\)</span> represents the <span class="math inline">\(i^{\text{th}}\)</span> commuter’s decision to choose transit and <span class="math inline">\(Y_i = 0\)</span> represents their decision to drive to work. The probability <span class="math inline">\(p_i\)</span> represents the probability that the <span class="math inline">\(i^{\text{th}}\)</span> commuter will choose transit, given their specific circumstances. At times, I will be suppressing the subscript <span class="math inline">\(i\)</span> from the notation for expositional ease but you should remember that this subscript is lurking in the equations that follow.</p>
+<p>Following standard econometric practice, we can decompose the observed outcome, <span class="math inline">\(Y\)</span>, into a deterministic part, <span class="math inline">\(\hat{Y}\)</span>, and a random error term, <span class="math inline">\(\epsilon\)</span>: <span id="eq-universal"><span class="math display">\[ Y = \hat{Y} + \epsilon  \tag{1}\]</span></span></p>
+<p>Our prediction <span class="math inline">\(\hat{Y}\)</span> is the expected value of <span class="math inline">\(Y\)</span>, which minimizes the expected squared prediction error. For a binary outcome where <span class="math inline">\(Y \in \{0,1\}\)</span>, the expected value is simply the probability that <span class="math inline">\(Y=1\)</span>: <span class="math display">\[\hat{Y} = E(Y) = (1-p) \times 0 + p \times 1 = p\]</span></p>
+<p>Therefore: <span id="eq-dcm"><span class="math display">\[Y = p + \epsilon \tag{2}\]</span></span> where <span class="math inline">\(p\)</span> is the predicted probability and <span class="math inline">\(\epsilon\)</span> is the error term.</p>
+<p>Our next key question is: <strong>how does the difference in commute costs, which we will abbreviate as <span class="math inline">\(\text{Diff}\)</span>, relate to <span class="math inline">\(p\)</span>?</strong></p>
+</section>
+<section id="the-linear-probability-model-a-first-attempt" class="level2">
+<h2 class="anchored" data-anchor-id="the-linear-probability-model-a-first-attempt">The Linear Probability Model: A First Attempt</h2>
+<p>The most straightforward approach is the <strong>Linear Probability Model (LPM)</strong>, which assumes a linear relationship between the difference in commuting costs and the probability of choosing transit:</p>
+<p><span id="eq-lpm"><span class="math display">\[p = \beta_0 + \beta_1 \text{Diff} \tag{3}\]</span></span></p>
+<p>Combining equations <a href="#eq-dcm" class="quarto-xref">2</a> and <a href="#eq-lpm" class="quarto-xref">3</a>, we get</p>
+<p><span id="eq-lpm-model"><span class="math display">\[Y = \beta_0 + \beta_1 \text{Diff} + \epsilon \tag{4}\]</span></span></p>
+<p>The coefficients of the LPM can be estimated using OLS:</p>
+<div id="tbl-lpm-estimates" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lpm-estimates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Linear Probability Model Results
+</figcaption>
+<div aria-describedby="tbl-lpm-estimates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;"><em>p</em>-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Intercept</td>
+<td style="text-align: right;">0.1283</td>
+<td style="text-align: right;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td>Diff</td>
+<td style="text-align: right;">0.0054</td>
+<td style="text-align: right;">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>These results can also be expressed in the form of the estimated equation:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{Y} &amp;= 0.1283 + 0.0054 \text{ Diff} \\
+&amp;\phantom{...} (0.001) \phantom{&gt;.} (0.001)
+\end{aligned}
+\]</span></p>
+<p>The <span class="math inline">\(\text{R}^2\)</span> of this model is 0.072, which implies that the difference in commuting costs explains only about 7% of the variation in commuting choice. This is not at all surprising since commuters account for many other variables, all of which we’re ignoring in this simple model.</p>
+<p>How do we interpret the estimated coefficients presented here?</p>
+<p>First, the estimated intercept equals 0.1283. Remember, if the commuting cost is the same for a specific person, their value of <span class="math inline">\(\text{Diff}\)</span> equals 0. For such commuters, the estimated model simplifies to</p>
+<p><span class="math display">\[\hat{Y} = 0.1283\text{.}\]</span></p>
+<p>Since <span class="math inline">\(p = \hat{Y}\)</span>, this implies there is a 13% chance that such a commuter will take the train to work.</p>
+<p>Now let’s interpret the coefficient of <span class="math inline">\(\text{Diff}\)</span>. Partially differentiating equation <a href="#eq-lpm-model" class="quarto-xref">4</a> with respect to <span class="math inline">\(\text{Diff}\)</span>,</p>
+<p><span class="math display">\[\frac{\partial \hat{Y}}{\partial  \text{Diff}} = \beta_1 + \frac{\partial \epsilon}{\partial  \text{Diff}}\text{.}\]</span></p>
+<p>Making the usual assumption that the random error term <span class="math inline">\(\epsilon\)</span> is uncorrelated with the differences in cost of commuting, <span class="math inline">\(\frac{\partial \epsilon}{\partial  \text{Diff}} = 0\text{.}\)</span> Thus, the estimated coefficient <span class="math inline">\(\hat{\beta}_1\)</span> represents the change in probability for a $1 change in the difference in commuting costs.</p>
+<p>Our results show that for each $1 increase in cost difference (car becomes more expensive relative to train), the probability of choosing train increases by 0.54 percentage points. Equivalently, a $10 subsidy on train fare increases the chance of individuals commuting by train by 5.4 percentage points.</p>
+<section id="problems-with-lpm" class="level3">
+<h3 class="anchored" data-anchor-id="problems-with-lpm">Problems with LPM</h3>
+<p>The LPM simply ignores the fact that the variable takes on only 2 values, 0 and 1. Further, it imposes a linear relationship between <span class="math inline">\(\text{Diff}\)</span> and <span class="math inline">\(Y\)</span>. This implies that every additional dollar in cost difference leads to the same change in the commuters’ probability of taking the train, which is not very realistic. Second, because the LPM is linear, it is also unbounded. This means that it can theoretically predict values of <span class="math inline">\(Y\)</span> less than 0 and greater than 1, which makes little sense. Finally, the LPM suffers from heteroskedasticity (see proof in Appendix).</p>
+<p>There are two possible methods to overcome the deficiencies of the LPM. One possibility is to use a non-linear model, and estimate it using <strong>non-linear least squares</strong>. The second, easier approach is to use <strong>latent variable models</strong>, which is what we now turn to.</p>
+</section>
+</section>
+<section id="latent-variable-models" class="level2">
+<h2 class="anchored" data-anchor-id="latent-variable-models">Latent Variable Models</h2>
+<p>In this class of models, we make the (realistic) assumption that the decision of a commuter, <span class="math inline">\(Y\)</span>, depends on some latent (unobserved) variable <span class="math inline">\(\tilde{Y}\)</span>. In our commuting example, <span class="math inline">\(\tilde{Y}\)</span> represents each commuter’s underlying propensity or utility for choosing train over car—a measure of how much they favor train travel that exists in their mind but isn’t directly observable to us. This latent variable is influenced by factors like cost differences, travel time, and personal preferences, and it can take any value along a continuous scale.</p>
+<p>We only observe the final binary decision <span class="math inline">\(Y\)</span>: when <span class="math inline">\(\tilde{Y}\)</span> is positive (favoring train), the commuter chooses train (<span class="math inline">\(Y = 1\)</span>), and when <span class="math inline">\(\tilde{Y}\)</span> is negative or zero (favoring car), they choose car (<span class="math inline">\(Y = 0\)</span>). Formally, we are postulating that the decision variable <span class="math inline">\(Y\)</span> and the latent variable <span class="math inline">\(\tilde{Y}\)</span> are linked via the following <strong>indicator function</strong>:</p>
+<p><span id="eq-y2lv"><span class="math display">\[Y = \begin{cases} 1 &amp; \text{if } \tilde{Y} &gt; 0\\ 0 &amp; \text{if } \tilde{Y} \leq 0\end{cases} \tag{5}\]</span></span></p>
+<p>It follows from equation <a href="#eq-y2lv" class="quarto-xref">5</a> that <span id="eq-plv2px"><span class="math display">\[\text{Pr}(Y = 1) = \text{Pr}(\tilde{Y} &gt; 0) \text{.} \tag{6}\]</span></span></p>
+<p>Further, we assume that the latent variable <span class="math inline">\(\tilde{Y}\)</span> depends on observable factors through a linear relationship. While many factors influence a commuter’s choice between train and car—such as travel time, comfort, reliability, and personal preferences—in our simplified story we will focus on just one: the difference in cost between the two modes. This simplification allows us to write <span id="eq-lv2x"><span class="math display">\[\tilde{Y} = \beta_0 + \beta_1 \text{Diff} + \epsilon \text{,} \tag{7}\]</span></span></p>
+<p>which implies</p>
+<p><span id="eq-plv2px2"><span class="math display">\[
+\begin{align}
+\text{Pr}(\tilde{Y} &gt; 0) &amp;= \text{Pr}(\beta_0 + \beta_1 \text{Diff} + \epsilon &gt; 0) \\
+&amp;= \text{Pr}(\epsilon &gt; -\beta_0 - \beta_1 \text{Diff}) \text{.}
+\end{align}
+\tag{8}\]</span></span></p>
+<p>Combining equation <a href="#eq-plv2px" class="quarto-xref">6</a> with equation <a href="#eq-plv2px2" class="quarto-xref">8</a>, we have</p>
+<p><span id="eq-almost-there"><span class="math display">\[
+\begin{align}
+\text{Pr}(Y = 1) &amp;= \text{Pr}(\epsilon &gt; - \beta_0 - \beta_1 \text{Diff}) \\
+&amp;= 1 - F(-  \beta_0 - \beta_1 \text{Diff}) \\
+&amp;= 1 - F(- \hat{\tilde{Y}}) \text{,}
+\end{align}
+\tag{9}\]</span></span></p>
+<p>where <span class="math inline">\(\hat{\tilde{Y}} = \beta_0 + \beta_1 \text{Diff}\)</span> is the non-random part of the latent variable <span class="math inline">\(\tilde{Y}\)</span>, and <span class="math inline">\(F\)</span> is the distribution function of <span class="math inline">\(\epsilon\)</span>, it’s random part.</p>
+<p>We now make two additional assumptions. The first is very standard, that the expected value of <span class="math inline">\(\epsilon\)</span> is zero. The second one is harder to swallow: we assume that the density function of the random variable <span class="math inline">\(\epsilon\)</span> is symmetric around the mean. With these under our belt, we can assert that</p>
+<p><span id="eq-prepenultimate"><span class="math display">\[F(\hat{\tilde{Y}}) = 1 - F(-\hat{\tilde{Y}}) \text{.} \tag{10}\]</span></span></p>
+<p>Finally, we can combine equations <a href="#eq-almost-there" class="quarto-xref">9</a> with <a href="#eq-prepenultimate" class="quarto-xref">10</a> to write</p>
+<p><span id="eq-penultimate"><span class="math display">\[
+\begin{align}
+\text{Pr}(Y = 1) &amp;= F(\hat{\tilde{Y}}) \\
+&amp;=  F(\beta_0 + \beta_1 \text{Diff}) \text{.}
+\end{align}
+\tag{11}\]</span></span></p>
+<p>Whew! That was a ton of mathy gymnastics but we’re home, finally! Given the assumption that the model has been correctly specified and that the random part of individuals’ decision making process has symmetric distribution, we are able to assert that <span id="eq-final-lvm"><span class="math display">\[ \text{Pr}(Y = 1) = F(\beta_0 + \beta_1 \text{Diff}) \text{.}  \tag{12}\]</span></span></p>
+<p>We are now in a position to employ any distribution function <span class="math inline">\(F\)</span> whose density function has zero mean and is symmetric. This is exactly what the probit and logit specifications do, each using a distinct distribution function with these properties, as shown in figure <a href="#fig-logit-probit-densities" class="quarto-xref">2</a>.</p>
+<div id="fig-logit-probit-densities" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logit-probit-densities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/normal-logistic-densities.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-probit-densities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Logit and Probit Density Functions
+</figcaption>
+</figure>
+</div>
+<p>We now turn to the analytical expressions of these densities.</p>
+<section id="the-probit-model" class="level3">
+<h3 class="anchored" data-anchor-id="the-probit-model">The Probit Model</h3>
+<p>The probit model assumes that the function <span class="math inline">\(F(.)\)</span> can be approximated by the distribution function of the standard normal variable, where</p>
+<p><span class="math display">\[
+\begin{align}
+F(\epsilon) &amp;= \int_{-\infty}^{\epsilon} \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{x^2}{2\sigma^2}\right) dx \\
+&amp;= \Phi(\epsilon)
+\end{align}
+\]</span></p>
+<p>In the context of our example, therefore, the probit version of the latent variable model asserts</p>
+<p><span class="math display">\[p = \text{Pr}(Y = 1) = \Phi(\beta_0 + \beta_1 \text{Diff}) \text{.}\]</span> To estimate the marginal effect of the difference in commuting costs, <span class="math inline">\(\text{Diff}\)</span>, on the probability <span class="math inline">\(p\)</span> that a commuter will take the train to work, we need to partially differentiate <span class="math inline">\(p\)</span> with respect to <span class="math inline">\(\text{Diff}\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\partial p}{\partial \text{Diff}} &amp;= \frac{\partial \Phi}{\partial \text{Diff}} \\
+&amp;= \beta_1 \, \, \phi(\beta_0 + \beta_1\text{Diff})
+\end{align} \text{,}
+\]</span></p>
+<p>where <span class="math inline">\(\phi\)</span> is the standard normal density.</p>
+</section>
+<section id="the-logit-model" class="level3">
+<h3 class="anchored" data-anchor-id="the-logit-model">The Logit Model</h3>
+<p>The logit assumption is</p>
+<p><span class="math display">\[F(\epsilon) = \frac{e^\epsilon}{1 + e^\epsilon} = \frac{1}{1 + e^{-\epsilon}}\]</span></p>
+<p>In our example, this translates into</p>
+<p><span id="eq-logit-p"><span class="math display">\[p = \text{Pr}(Y = 1) = \frac{e^{( \beta_0 + \beta_1 \text{Diff})}}{1+e^{( \beta_0 + \beta_1 \text{Diff} )}} \tag{13}\]</span></span></p>
+<p>The expression above yields the probability that a commuter will take the train to commute. We can use it estimate the probability that a commuter will <em>not</em> take the train to commute:</p>
+<p><span id="eq-logit-q"><span class="math display">\[\begin{align}
+1 - p = \text{Pr}(Y = 0) &amp;= 1 - \frac{e^{( \beta_0 + \beta_1 \text{Diff} )}}{1+e^{( \beta_0 + \beta_1 \text{Diff} )}} \\
+&amp;= \frac{1}{1+e^{( \beta_0 + \beta_1 \text{Diff} )}}
+\end{align}
+\tag{14}\]</span></span></p>
+<p>Taking the ratio of equations <a href="#eq-logit-p" class="quarto-xref">13</a> and <a href="#eq-logit-q" class="quarto-xref">14</a>, we get</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{p}{1-p} &amp;= \frac{\text{Pr}(Y = 1)}{\text{Pr}(Y = 0)} \\
+&amp;= e^{( \beta_0 + \beta_1 \text{Diff})}
+\end{align}
+\]</span></p>
+<p>Taking logs on both sides, we get</p>
+<p><span class="math display">\[\log \left( \frac{p}{1-p} \right)= \beta_0 + \beta_1 \text{Diff,}\]</span></p>
+<p>which simply states that the log of the odds that a commuter will take the train is a linear function of the difference in commuting costs. Differentiating <span class="math inline">\(p\)</span> with respect to <span class="math inline">\(\text{Diff}\)</span> yields</p>
+<p><span class="math display">\[\frac{\partial p}{\partial \text{Diff}} = \beta_1 p(1-p) \text{.}\]</span></p>
+<p>This is the key result for logit: the marginal effect equals the coefficient times p times (1-p).</p>
+<p>You can also write it in the expanded form:</p>
+<p><span class="math display">\[\frac{\partial p}{\partial \text{Diff}} = \beta_1 \frac{e^{\beta_0 + \beta_1 \text{Diff}}}{(1 + e^{\beta_0 + \beta_1 \text{Diff}})^2}\]</span></p>
+<p>The first form is cleaner and shows that the marginal effect depends on the probability level p.</p>
+</section>
+<section id="comparison-of-probit-logit" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-of-probit-logit">Comparison of Probit &amp; Logit</h3>
+<p>Probit and logit yield coefficients and marginal effects that are very similar, though not identical. So which of these methods should one employ? Probit and logit models yield very similar results in practice, with coefficients and marginal effects that are close but not identical. The choice between them often comes down to context and convention rather than statistical superiority.</p>
+<p>From a technical standpoint, probit models have an advantage when dealing with heteroskedasticity (unequal error variances across observations). The probit framework can be more easily extended to account for varying error variances, making it preferred when this is a concern. Additionally, probit models have a natural connection to utility maximization theory in economics, since they arise from assuming normally distributed errors in the utility function.</p>
+<p>Another key difference is interpretability: in the logit model, the coefficients can be directly interpreted in terms of odds ratios, which makes them particularly attractive in fields like epidemiology and biostatistics where odds ratios are a natural way to communicate risk. For example, exponentiating the coefficient <code>$\beta_1$</code> gives the multiplicative change in the odds of choosing train for each one-unit increase in the cost difference. This interpretation has no equivalent in the probit model.</p>
+<p>However, for most practical applications where heteroskedasticity is not a major issue and odds ratios are not the primary focus, the choice between probit and logit is largely a matter of researcher preference and disciplinary convention. Both models will generally lead to similar substantive conclusions about which variables matter and how they affect choice probabilities.</p>
+</section>
+</section>
+<section id="the-likelihood-function" class="level2">
+<h2 class="anchored" data-anchor-id="the-likelihood-function">The Likelihood Function</h2>
+<p>The expressions in <strong>?@eq-probit-p</strong> and <strong>?@eq-logit-marginal</strong> describe the probability that a given agent will choose <span class="math inline">\(y=1\)</span> for the probit and the logit models respectively. However, the sample contains several agents, some of whom choose <span class="math inline">\(y=0\)</span>. Using these expressions, <em>assuming that each agent is making his or her choice independently</em>, we can write the <strong>joint likelihood function</strong> of observing the sample.</p>
+<p><span class="math display">\[\mathcal{L} = \prod [p | y=1] \times \prod [(1-p) | y = 0]\]</span></p>
+<p>These assume the form</p>
+<p><span class="math display">\[\mathcal{L} = \prod (\Phi(\beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n | y = 1) \times \prod ([ 1- \Phi(\beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n) ] | y = 0)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\mathcal{L} = \prod \left( \frac{e^{( \beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n )}}{1+e^{( \beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n )}} | y =1 \right) \times \prod \left( \frac{1}{1+e^{( \beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n )}} | y = 0 \right)\]</span></p>
+<p>for probit and logit respectively.</p>
+<section id="the-maximum-likelihood-estimator-mle" class="level3">
+<h3 class="anchored" data-anchor-id="the-maximum-likelihood-estimator-mle">The Maximum Likelihood Estimator (MLE)</h3>
+<p>Suppose you are told that President George W. Bush had proposed a new initiative called The Frolicking Fisheries, which he claimed would restore the ecosystem health of all fisheries in the United States. If you had to guess whether this new initiative would actually cause harm to the fisheries, what would you think? While one’s prediction can turn out to be false, given the President’s environmental record many would guess that his proposed initiative would actually harm fisheries. The guesser knows that her guess <em>could</em> be incorrect, but she will attempt to choose the option that is more likely to be right than wrong. This is the central idea underlying the <strong>maximum likelihood estimator (MLE)</strong>: given a dataset and a regression model, choose those values of the coefficients that maximize the likelihood of being consistent with the data. In other words, we wish to maximize the value of the likelihood function by appropriately choosing the <span class="math inline">\(\beta\)</span>s.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Let us now apply this idea to voting behavior data at hand.</p>
+</section>
+</section>
+<section id="probit-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="probit-estimation">Probit Estimation</h2>
+<p>In the probit model, we postulate that</p>
+<p><span class="math display">\[\text{VOTE}_i = \Phi ( \beta_0 + \beta_1 \text{CONTRIB}_i )\]</span></p>
+<p>where <span class="math inline">\(\Phi\)</span> is the cumulative distribution function of the standard normal density.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Our task is to make the best guess about <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, given our dataset. While you will never need to follow the recipe I outline below (the software does it for you), it’s a good idea for you to understand the mechanics of how these estimates are arrived at.</p>
+<ol type="1">
+<li><p>The software starts with a random initial guess about the values of the <span class="math inline">\(\beta\)</span>s. Suppose that it guesses <span class="math inline">\(\beta_0 = -2\)</span> and <span class="math inline">\(\beta_1 = 1.5 \times 10^{-4}\)</span></p></li>
+<li><p>For each legislator, the software then computes the value in the parenthesis. Thus, for example, this value is -1.025 for the <span class="math inline">\(67^{\text{th}}\)</span> legislator, who received a contribution of $6,500. Likewise, it is 4.855 for the <span class="math inline">\(459^{\text{th}}\)</span> legislator, who received a contribution of $45,700. Call this the <span class="math inline">\(z\)</span>-score of each legislator.</p></li>
+<li><p>Using the <span class="math inline">\(z\)</span>-score of each legislator, the software computes the area under the standard normal curve from <span class="math inline">\(-\infty\)</span> to the corresponding <span class="math inline">\(z\)</span>-score for each legislator. This value is 0.152681593833111 for the <span class="math inline">\(67^{\text{th}}\)</span> legislator, and 0.99999939806622 for the <span class="math inline">\(459^{\text{th}}\)</span> legislator. These numbers represent our guesses that, given the amounts of contribution they received, these legislators would vote YES.</p></li>
+<li><p>Next, the software computes the probability that each legislator would vote the way he or she actually did. In other words, since we know from our data that the <span class="math inline">\(67^{\text{th}}\)</span> legislator voted NO and the <span class="math inline">\(459^{\text{th}}\)</span> one voted YES, the software calculates these from the above step. Since we know the probabilities of each legislator’s YES vote, this is a simple matter. The probability that the <span class="math inline">\(67^{\text{th}}\)</span> legislator will vote NO is 0.847318406166889 (1 - 0.152681593833111). For the <span class="math inline">\(459^{\text{th}}\)</span> legislator, we already have the answer: 0.99999939806622. We now have the probability of observing each legislator’s actual behavior, conditional on our initial guess.</p></li>
+<li><p>Assuming that each legislator voted independently (possibly a tricky assumption in this case!), it multiplies each of the individual legislator’s probabilities to compute the <strong>joint likelihood of observing the sample</strong>. For our dataset, and given our guess, this number is <span class="math inline">\(1.2156 \times 10^{-154}\)</span>. Since this number is hard to fathom, we can take its natural log, which is -354.40. This is typically the number that software programs report, and is called the log likelihood.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p></li>
+<li><p>The calculated joint likelihood (or log likelihood) is contingent on our initial guess of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>. Using sophisticated algorithms, the software then makes another guess to increase the joint likelihood and repeats all the steps above. When it finds that it has maximized the joint likelihood, it stops iterating, and outputs the result. The final estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> can be represented by <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span>.</p></li>
+</ol>
+<section id="results" class="level3">
+<h3 class="anchored" data-anchor-id="results">Results</h3>
+<p>The MLE results for the given dataset are shown in <a href="#tbl-probit-results" class="quarto-xref">Table&nbsp;5</a>. Our probit results also show that campaign contributions significantly affect the voting behavior of legislators.</p>
+<div id="tbl-probit-results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-probit-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: MLE Estimation Using Probit
+</figcaption>
+<div aria-describedby="tbl-probit-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;"><em>p</em>-Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CONTRIB</td>
+<td style="text-align: right;">0.0001247</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td>Intercept</td>
+<td style="text-align: right;">-3.127849</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="fig-fitted-model" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fitted-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fitted.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fitted-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Fitted Model
+</figcaption>
+</figure>
+</div>
+<section id="threshold-contribution" class="level4">
+<h4 class="anchored" data-anchor-id="threshold-contribution">Threshold Contribution</h4>
+<p>To calculate the threshold level of contribution that would make a legislator vote YES, we find the level of contribution where <span class="math inline">\(\hat{\beta}_0 + \hat{\beta}_1 \times \widetilde{\text{CONTRIB}} = 0\)</span> (why?). Solving this equation, we find that <span class="math inline">\(\widetilde{\text{CONTRIB}} = \$25,082.99\)</span>. Again, this is quite different from the LPM result, and seems more reasonable for this dataset.</p>
+</section>
+<section id="marginal-effects" class="level4">
+<h4 class="anchored" data-anchor-id="marginal-effects">Marginal Effects</h4>
+<p>To calculate the marginal effect of contribution on voting behavior, we turn to our estimated model.</p>
+<p><span class="math display">\[\widehat{\text{VOTE}}_i = \Phi ( \hat{\beta}_0 + \hat{\beta}_1 \times \text{CONTRIB}_i )\]</span></p>
+<p>Taking the derivative of <span class="math inline">\(\widehat{\text{VOTE}}\)</span> with respect to <span class="math inline">\(\text{CONTRIB}\)</span>, we get</p>
+<p><span class="math display">\[\frac{d \widehat{\text{VOTE}}_i}{d \text{CONTRIB}} = \phi ( \hat{\beta}_0 + \hat{\beta}_1 \times \text{CONTRIB}_i ) \times \hat{\beta}_1\]</span></p>
+<p>where <span class="math inline">\(\phi\)</span> is the standard normal density. The probit model implies that the effect of campaign contributions is <em>not</em> constant, but that it varies by level of contribution. For example, an increase in contribution by $1 for a legislator receiving $10,000 is</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{d \widehat{\text{VOTE}}_i}{d \text{CONTRIB}} &amp;= 0.0001247 \times \phi ( -3.127849 + 0.0001247 \times 10,000 ) \\
+&amp;= 0.0001247 \times \phi ( -1.880849 ) \\
+&amp;= 0.0001247 \times 0.0680348630275953 \\
+&amp;= 8.48394741954113 \times 10^{-6}
+\end{align}
+\]</span></p>
+<p>This estimate is about a third of the corresponding estimate of the LPM.</p>
+</section>
+</section>
+</section>
+<section id="extensions" class="level2">
+<h2 class="anchored" data-anchor-id="extensions">Extensions</h2>
+<p>The ideas outlined above can be generalized to more than two discrete choices via the use of <strong>multinomial models</strong>. Another important extension applies to situations where the data is <strong>censored</strong>, for which the <strong>Tobit model</strong> is used.</p>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In practice, the models are estimated by maximizing the log of <span class="math inline">\(\mathcal{L}\)</span>, which is equivalent to maximizing <span class="math inline">\(\mathcal{L}\)</span> since the logarithmic function is strictly positive and monotonic.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>To understand the theory underlying this specification, see Appendix.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Since the log function is monotonically increasing, maximizing a quantity and maximizing its log value are equivalent. For computational reasons, it is easier to maximize the log likelihood function rather than the likelihood function directly.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
